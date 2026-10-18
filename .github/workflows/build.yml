@@ -1,0 +1,27 @@
+name: ASP.NET Build
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ASP.NET build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore UnivManagement.slnx
+
+      - name: Build
+        run: dotnet build UnivManagement.slnx --configuration Release --no-restore
