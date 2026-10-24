@@ -6,7 +6,7 @@ namespace UnivManagement.Controllers.Accommodation_Group_5
     {
         public IActionResult Index()
         {
-            return View("~/Views/Accommodation/Index.cshtml");
+            return View("~/Views/Accommodation_Group_5/Index.cshtml");
         }
     }
 }
