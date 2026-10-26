@@ -15,7 +15,7 @@ namespace UnivManagement.Data {
             base.OnModelCreating(modelBuilder);
 
             //faz referencia a chave primaria da tabela UC
-            modelBuilder.Entity<Uc>().HasKey(u => u.IdUc);
+            modelBuilder.Entity<Uc>().HasKey(u => u.UcId);
 
             //indica uqe o atributo code é unico, não podendo haver duas UCs com o mesmo código
             modelBuilder.Entity<Uc>()

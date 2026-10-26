@@ -5,7 +5,7 @@ namespace UnivManagement.Models
     public class Uc
     {
 
-        public int IdUc { get; set; }
+        public int UcId { get; set; }
 
         [Required(ErrorMessage = "O {0} da UC é obrigatório. | The UC {0} is required.")]
         [StringLength(10, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
