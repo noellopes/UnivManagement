@@ -2,17 +2,24 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    
+
 }
 
 <div class="container py-4">
-    <header class="text-left mb-5">
-        <h1 class="display-5">Minhas Disciplinas</h1>
-        <p class="lead text-body-secondary">
+	<header class="text-left mb-5">
+		<h1 class="display-5">Minhas Disciplinas</h1>
+		<p class="lead text-body-secondary">
 			disciplinas e cursos que leciono
-        </p>
-    </header>
-    </div>
+		</p>
+	</header>
+</div>
+<div class="text-rigth mb-5">
+	<a asp-controller="Grupo_3"
+	   asp-action="Sub_Trab"
+	   class="btn btn-outline-primary w-100 mt-3">
+		Submeter Trabalho
+	</a>
+</div>
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
 	<div class="col">
 		<div class="card h-100 shadow-sm">
@@ -53,10 +60,6 @@
 			</div>
 		</div>
 
-		<div class="col">
-			<a asp-controller="Grupo_3"
-			   asp-action="Sub_Trab"
-			   class="btn btn-outline-primary w-100 mt-3">
-				Submeter Trabalho
-			</a>
-		</div>
+		
+</div>
+</div>
