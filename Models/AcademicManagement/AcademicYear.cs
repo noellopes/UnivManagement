@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UnivManagement.Models;
+namespace UnivManagement.Models.AcademicManagement;
 
 /*
 AcademicYear:
