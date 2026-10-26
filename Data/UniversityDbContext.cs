@@ -6,7 +6,7 @@ namespace UnivManagement.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
-            //indica uqe o atributo code é unico, não podendo haver duas UCs com o mesmo código
+            // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
                 .IsUnique();
