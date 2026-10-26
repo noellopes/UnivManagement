@@ -20,7 +20,7 @@ namespace UnivManagement.Models
         [EmailAddress(ErrorMessage = "Insira um endereço de {0} válido.")]
         public required string Email { get; set; }
 
-        [Required(ErrorMessage = "Por favor, insira o {0}.")]
+        [Required(ErrorMessage =  "Por favor, insira o {0}.")]
         [Phone(ErrorMessage = "Insira um {0} válido.")]
         public required string Telefone { get; set; }
 
