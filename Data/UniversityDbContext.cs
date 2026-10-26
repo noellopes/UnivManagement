@@ -12,6 +12,7 @@ namespace UnivManagement.Data {
                 .IsUnique();
         }
 
+
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
     }
 }
