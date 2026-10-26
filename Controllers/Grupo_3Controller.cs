@@ -2,7 +2,7 @@
 
 namespace UnivManagement.Controllers
 {
-    public class Grupo_3Controller1 : Controller
+    public class Grupo_3Controller : Controller
     {
         public IActionResult Index()
         {
