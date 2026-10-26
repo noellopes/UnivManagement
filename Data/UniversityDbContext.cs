@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UnivManagement.Models;
 
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
-        public DbSet<UnivManagement.Models.Refeicao> Refeicao { get; set; } 
+        public DbSet<Refeicao> Refeicoes { get; set; }
     }
 }
