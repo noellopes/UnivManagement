@@ -2,9 +2,9 @@
 
 namespace UnivManagement.Models
 {
-    public class Servico
+    public class ServicoFuncionario
     {
-        public int ServicoId { get; set; }
+        public int ServicoFuncionarioId { get; set; }
 
         [Required(ErrorMessage = "Por favor, insira o {0}.")]
         [StringLength(200, ErrorMessage = "O campo {0} não pode exceder {1} carateres.")]
