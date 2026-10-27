@@ -25,8 +25,15 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.Telephone)
                 .IsUnique();
+          
+            // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
+            modelBuilder.Entity<Models.AcademicManagement.UC>()
+                .HasIndex(u => u.Code)
+                .IsUnique();
         }
+      
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
     }
 }
