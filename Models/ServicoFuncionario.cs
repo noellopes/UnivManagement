@@ -2,7 +2,7 @@
 
 namespace UnivManagement.Models
 {
-    public class Servico
+    public class ServicoFuncionario
     {
         public int ServicoId { get; set; }
 
