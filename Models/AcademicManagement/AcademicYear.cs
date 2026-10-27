@@ -20,11 +20,11 @@ public class AcademicYear {
     [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
     [Range(2000, 9999, ErrorMessage = "Ano de início deve ter o máximo de 4 dígitos | Start year must have the maximum of 9 digits.")]
     [Display(Name = "Início")]
-    public required decimal StartYear { get; set; }
+    public required int StartYear { get; set; }
 
     /* END YEAR: */
     [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
     [Range(2000, 9999, ErrorMessage = "Ano de fim deve ter o máximo de 4 dígitos | End year must have the maximum of 9 digits.")]
     [Display(Name = "Fim")]
-    public required decimal EndYear { get; set; }
+    public required int EndYear { get; set; }
 }
