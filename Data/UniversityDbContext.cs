@@ -30,10 +30,17 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
                 .IsUnique();
+
+            // indica que o atributo Code é único na tabela Course:
+            modelBuilder.Entity<Models.AcademicManagement.Course>()
+                .HasIndex(c => c.Code)
+                .IsUnique();
         }
       
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.SchoolCalendar> SchoolCalendar { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.Course> Course { get; set; } = default!;
     }
 }
