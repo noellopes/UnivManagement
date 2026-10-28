@@ -1,38 +1,83 @@
 @model UnivManagement.Models.ServicoFuncionario
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Serviço";
 }
 
-<h1>Details</h1>
+<!-- Incluir Bootstrap Icons caso ainda não esteja no _Layout.cshtml -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-<div>
-    <h4>ServicoFuncionario</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ativo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ativo)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataCriacao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataCriacao)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ServicoFuncionarioId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="card shadow-sm border-0 rounded-3">
+                <!-- Cabeçalho do Cartão -->
+                <div class="card-header bg-info text-white py-3">
+                    <h4 class="card-title mb-0 fw-bold">
+                        <i class="bi bi-info-circle-fill me-2"></i>Detalhes do Serviço
+                    </h4>
+                </div>
+
+                <!-- Corpo dos Detalhes -->
+                <div class="card-body p-4">
+                    <dl class="row mb-0">
+
+                        <!-- Nome -->
+                        <dt class="col-sm-4 text-muted fw-semibold">
+                            <i class="bi bi-tag-fill me-1 text-info"></i> @Html.DisplayNameFor(model => model.Nome)
+                        </dt>
+                        <dd class="col-sm-8 fw-bold text-dark fs-5">
+                            @Html.DisplayFor(model => model.Nome)
+                        </dd>
+
+                        <hr class="my-3 text-muted opacity-25" />
+
+                        <!-- Estado (Ativo/Inativo) -->
+                        <dt class="col-sm-4 text-muted fw-semibold">
+                            <i class="bi bi-toggle-on me-1 text-info"></i> Estado
+                        </dt>
+                        <dd class="col-sm-8">
+                            @if (Model != null && Model.Ativo)
+                            {
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">
+                                    <i class="bi bi-check-circle-fill me-1"></i> Ativo
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3 py-2">
+                                    <i class="bi bi-x-circle-fill me-1"></i> Inativo
+                                </span>
+                            }
+                        </dd>
+
+                        <hr class="my-3 text-muted opacity-25" />
+
+                        <!-- Data de Criação -->
+                        <dt class="col-sm-4 text-muted fw-semibold">
+                            <i class="bi bi-calendar-event me-1 text-info"></i> @Html.DisplayNameFor(model => model.DataCriacao)
+                        </dt>
+                        <dd class="col-sm-8 text-dark">
+                            @(Model?.DataCriacao.ToString("dd/MM/yyyy HH:mm") ?? "-")
+                        </dd>
+
+                    </dl>
+
+                    <hr class="my-4" />
+
+                    <!-- Botões de Ação -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-3">
+                            <i class="bi bi-arrow-left me-1"></i> Voltar à Lista
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model?.ServicoFuncionarioId" class="btn btn-warning rounded-pill px-4 shadow-sm fw-bold">
+                            <i class="bi bi-pencil-fill me-1"></i> Editar Serviço
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
