@@ -20,6 +20,7 @@ public class ServicoFuncionarioController : Controller
     }
 
     // GET: SERVICOFUNCIONARIOS/Details/5
+    [HttpGet("/ServicoFuncionario/Details/{servicofuncionarioid}")]
     public async Task<IActionResult> Details(int? servicofuncionarioid)
     {
         if (servicofuncionarioid == null)
@@ -60,6 +61,7 @@ public class ServicoFuncionarioController : Controller
     }
 
     // GET: SERVICOFUNCIONARIOS/Edit/5
+    [HttpGet("/ServicoFuncionario/Edit/{ServicoFuncionarioId}")]
     public async Task<IActionResult> Edit(int? servicofuncionarioid)
     {
         if (servicofuncionarioid == null)
@@ -111,6 +113,7 @@ public class ServicoFuncionarioController : Controller
     }
 
     // GET: SERVICOFUNCIONARIOS/Delete/5
+    [HttpGet("/ServicoFuncionario/Delete/{servicofuncionarioid}")]
     public async Task<IActionResult> Delete(int? servicofuncionarioid)
     {
         if (servicofuncionarioid == null)
