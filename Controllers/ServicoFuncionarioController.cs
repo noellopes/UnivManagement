@@ -13,7 +13,7 @@ public class ServicoFuncionarioController : Controller
         _context = context;
     }
 
-    // GET: SERVICOFUNCIONARIOS
+    // GET: SERVICOFUNCIONARIOS  
     public async Task<IActionResult> Index()    
     {
         return View(await _context.ServicoFuncionario.ToListAsync());
