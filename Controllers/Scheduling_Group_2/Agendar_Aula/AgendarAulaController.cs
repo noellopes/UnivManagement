@@ -2,6 +2,7 @@
 namespace UnivManagement.Controllers.Scheduling_Group_2.Agendar_Aula
 {
     public class AgendarAulaController : Controller
+
     {
 
         public IActionResult Agendar_Aula()
