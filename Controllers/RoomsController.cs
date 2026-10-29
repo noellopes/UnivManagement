@@ -142,4 +142,6 @@ public class RoomsController : Controller
 
     private bool RoomExists(int id)
     {
-        return _context.Room.Any(e
+        return _context.Room.Any(e => e.RoomId == id);
+    }
+}
