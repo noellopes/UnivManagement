@@ -11,7 +11,7 @@ namespace UnivManagement.Data {
             // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.NumStudent)
-                .IsUnique();
+                .IsUnique(); 
 
             // Student: atributo NIF é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
