@@ -32,6 +32,12 @@ namespace UnivManagement.Data {
                 .HasIndex(p => p.Name)
                 .IsUnique();
 
+            // ServiceRequest: a priority that is used by a request cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequest>()
+                .HasOne(r => r.Priority)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.NumStudent)
