@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace UnivManagement.Controllers.Accommodation_Group_5
+namespace UnivManagement.Controllers
 {
     public class AccommodationController : Controller
     {
