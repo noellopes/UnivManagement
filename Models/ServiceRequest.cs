@@ -50,5 +50,12 @@ namespace UnivManagement.Models
 
         [Display(Name = "Closed at")]
         public DateTime? ClosedAt { get; set; }
+
+        public ICollection<ServiceRequestHistory> History { get; set; } = new List<ServiceRequestHistory>();
+
+        public ICollection<ServiceRequestComment> Comments { get; set; } = new List<ServiceRequestComment>();
+
+        // ClosedAt is set when the request gets a status that closes it (resolved, rejected...)
+        public bool IsClosed => ClosedAt.HasValue;
     }
 }
