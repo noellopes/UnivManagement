@@ -1,0 +1,64 @@
+@model ServiceRequest
+
+@{
+    string accept = string.Join(",", ServiceRequestAttachment.AllowedExtensions);
+    long maxMegabytes = ServiceRequestAttachment.MaxSize / (1024 * 1024);
+}
+
+<section id="attachments" class="card shadow-sm mt-4">
+    <div class="card-header">
+        <i class="bi bi-paperclip"></i> Attachments
+        <span class="badge text-bg-light border">@Model.Attachments.Count</span>
+    </div>
+
+    @if (Model.Attachments.Any()) {
+        <ul class="list-group list-group-flush">
+            @foreach (var attachment in Model.Attachments) {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="text-truncate me-2">
+                        <i class="bi @(attachment.ContentType.StartsWith("image/") ? "bi-file-earmark-image" : "bi-file-earmark")"></i>
+                        <a asp-controller="ServiceRequestAttachments" asp-action="Download"
+                           asp-route-id="@attachment.ServiceRequestAttachmentId">@attachment.FileName</a>
+                        <small class="text-body-secondary d-block">
+                            @attachment.SizeText &middot; @attachment.UploadedAt.ToString("yyyy-MM-dd HH:mm")
+                        </small>
+                    </div>
+                    @if (!Model.IsClosed) {
+                        <form asp-controller="ServiceRequestAttachments" asp-action="Delete"
+                              asp-route-id="@attachment.ServiceRequestAttachmentId" method="post">
+                            <button type="submit" class="btn btn-sm btn-link link-danger p-0" title="Remove file">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    }
+                </li>
+            }
+        </ul>
+    } else {
+        <div class="card-body text-body-secondary">There are no files attached.</div>
+    }
+
+    @if (Model.IsClosed) {
+        <div class="card-body border-top small text-body-secondary">
+            This request is closed, so its files cannot be changed.
+        </div>
+    } else {
+        <div class="card-body border-top">
+            <form asp-controller="ServiceRequestAttachments" asp-action="Upload" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="serviceRequestId" value="@Model.ServiceRequestId" />
+
+                <div class="mb-2">
+                    <label for="file" class="form-label">Attach a file</label>
+                    <input id="file" name="file" type="file" class="form-control" accept="@accept" required />
+                    <div class="form-text">
+                        Allowed types: @string.Join(", ", ServiceRequestAttachment.AllowedExtensions). Up to @maxMegabytes MB.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-outline-primary">
+                    <i class="bi bi-upload"></i> Upload
+                </button>
+            </form>
+        </div>
+    }
+</section>
