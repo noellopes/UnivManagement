@@ -6,7 +6,7 @@ namespace UnivManagement.Models.AccommodationManagement
     /// <summary>
     /// AccommodationContract model class from Accommodation Management domain.
     /// </summary>
-    public class AccommodationContract : IValidatableObject
+    public class AccommodationContracts : IValidatableObject
     {
         /* ID: */
         public int AccommodationContractId { get; set; }

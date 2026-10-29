@@ -47,7 +47,7 @@ namespace UnivManagement.Controllers // Adicionado o namespace correto
         // POST: AccommodationContracts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AccommodationContractId,StudentId,RoomAllocationId,SignatureDate,StartDate,EndDate,Status")] AccommodationContract accommodationcontract)
+        public async Task<IActionResult> Create([Bind("AccommodationContractId,StudentId,RoomAllocationId,SignatureDate,StartDate,EndDate,Status")] AccommodationContracts accommodationcontract)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +77,7 @@ namespace UnivManagement.Controllers // Adicionado o namespace correto
         // POST: AccommodationContracts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AccommodationContractId,StudentId,RoomAllocationId,SignatureDate,StartDate,EndDate,Status")] AccommodationContract accommodationcontract) // Corrigido de int? accommodationcontractid para int id (no POST convém não ser nullable)
+        public async Task<IActionResult> Edit(int id, [Bind("AccommodationContractId,StudentId,RoomAllocationId,SignatureDate,StartDate,EndDate,Status")] AccommodationContracts accommodationcontract) // Corrigido de int? accommodationcontractid para int id (no POST convém não ser nullable)
         {
             if (id != accommodationcontract.AccommodationContractId) // Corrigido
             {

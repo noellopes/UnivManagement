@@ -36,6 +36,6 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
 
-        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContracts> AccommodationContract { get; set; } = default!;
     }
 }
