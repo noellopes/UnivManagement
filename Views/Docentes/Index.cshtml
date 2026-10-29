@@ -6,7 +6,7 @@
 
 <!-- Cabeçalho idêntico ao modelo -->
 <div class="card bg-light border-0 mb-4 p-4 shadow-sm">
-    <h2 class="fw-bold text-dark mb-0">Gestão de Docentes</h2>
+    <h2 class="fw-bold text-dark mb-0">Index</h2>
 </div>
 
 <!-- Botão Adicionar -->
@@ -15,6 +15,8 @@
         Create
     </a>
 </div>
+
+
 
 <!-- Tabela com as colunas reais da tua classe Docente -->
 <div class="table-responsive">
@@ -26,7 +28,7 @@
                 <th class="fw-bold">Endereço</th>
                 <th class="fw-bold">Telefone</th>
                 <th class="fw-bold">Email</th>
-                <th class="fw-bold text-center">Ação</th>
+                <th class="fw-bold text-center">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -40,8 +42,8 @@
                     <td>@item.Email</td>
                     <td class="text-center">
                         <div class="d-inline-flex gap-1">
-                            <a asp-action="Details" asp-route-id="@item.DocenteId" class="btn btn-primary btn-sm px-3">Edit</a>
-                            <a asp-action="Edit" asp-route-id="@item.DocenteId" class="btn btn-warning btn-sm px-3 text-dark">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.DocenteId" class="btn btn-primary btn-sm px-3">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.DocenteId" class="btn btn-info btn-sm px-3">Details</a>
                             <a asp-action="Delete" asp-route-id="@item.DocenteId" class="btn btn-danger btn-sm px-3">Delete</a>
                         </div>
                     </td>

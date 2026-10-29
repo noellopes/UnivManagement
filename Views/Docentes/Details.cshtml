@@ -81,7 +81,7 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.DocenteId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="mt-4 d-flex align-items-center gap-2">
+    <a asp-action="Details" asp-route-id="@Model?.DocenteId" class="btn btn-primary">Details</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>

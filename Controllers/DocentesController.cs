@@ -20,15 +20,15 @@ public class DocentesController : Controller
     }
 
     // GET: DOCENTES/Details/5
-    public async Task<IActionResult> Details(int? docenteid)
+    public async Task<IActionResult> Details(int? id)
     {
-        if (docenteid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var docente = await _context.Docente
-            .FirstOrDefaultAsync(m => m.DocenteId == docenteid);
+            .FirstOrDefaultAsync(m => m.DocenteId == id);
         if (docente == null)
         {
             return NotFound();
@@ -60,14 +60,14 @@ public class DocentesController : Controller
     }
 
     // GET: DOCENTES/Edit/5
-    public async Task<IActionResult> Edit(int? docenteid)
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (docenteid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var docente = await _context.Docente.FindAsync(docenteid);
+        var docente = await _context.Docente.FindAsync(id);
         if (docente == null)
         {
             return NotFound();
@@ -111,15 +111,15 @@ public class DocentesController : Controller
     }
 
     // GET: DOCENTES/Delete/5
-    public async Task<IActionResult> Delete(int? docenteid)
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (docenteid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var docente = await _context.Docente
-            .FirstOrDefaultAsync(m => m.DocenteId == docenteid);
+            .FirstOrDefaultAsync(m => m.DocenteId == id);
         if (docente == null)
         {
             return NotFound();
