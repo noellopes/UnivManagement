@@ -11,7 +11,7 @@ public class ServicoFuncionarioController : Controller
     public ServicoFuncionarioController(UniversityDbContext context)
     {
         _context = context;
-    }
+    }  
 
     // GET: SERVICOFUNCIONARIOS
     public async Task<IActionResult> Index()    
