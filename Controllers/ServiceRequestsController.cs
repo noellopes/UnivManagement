@@ -71,10 +71,26 @@ namespace UnivManagement.Controllers {
                     .ThenInclude(h => h.NewStatus)
                 .Include(r => r.Comments.OrderBy(c => c.CreatedAt))
                 .AsSplitQuery()
+                .AsNoTracking()
                 .FirstOrDefaultAsync(r => r.ServiceRequestId == id);
             if (serviceRequest == null) {
                 return NotFound();
             }
+
+            // The file contents are only needed to download them, not to list them
+            serviceRequest.Attachments = await _context.ServiceRequestAttachments
+                .Where(a => a.ServiceRequestId == serviceRequest.ServiceRequestId)
+                .OrderBy(a => a.UploadedAt)
+                .Select(a => new ServiceRequestAttachment {
+                    ServiceRequestAttachmentId = a.ServiceRequestAttachmentId,
+                    ServiceRequestId = a.ServiceRequestId,
+                    FileName = a.FileName,
+                    ContentType = a.ContentType,
+                    Size = a.Size,
+                    Content = Array.Empty<byte>(),
+                    UploadedAt = a.UploadedAt
+                })
+                .ToListAsync();
 
             // The statuses for the process form of the details page
             await PopulateListsAsync(selectedStatusId: serviceRequest.ServiceRequestStatusId);
