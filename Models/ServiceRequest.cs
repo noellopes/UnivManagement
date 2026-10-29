@@ -72,6 +72,8 @@ namespace UnivManagement.Models
 
         public ICollection<ServiceRequestComment> Comments { get; set; } = new List<ServiceRequestComment>();
 
+        public ICollection<ServiceRequestAttachment> Attachments { get; set; } = new List<ServiceRequestAttachment>();
+
         // ClosedAt is set when the request gets a status that closes it (resolved, rejected...)
         public bool IsClosed => ClosedAt.HasValue;
 
