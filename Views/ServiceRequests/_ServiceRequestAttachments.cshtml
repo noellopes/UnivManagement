@@ -49,7 +49,9 @@
 
                 <div class="mb-2">
                     <label for="file" class="form-label">Attach a file</label>
-                    <input id="file" name="file" type="file" class="form-control" accept="@accept" required />
+                    <input id="file" name="file" type="file" class="form-control" accept="@accept" required
+                           data-max-size="@ServiceRequestAttachment.MaxSize" />
+                    <div class="invalid-feedback">The file cannot be larger than @maxMegabytes MB.</div>
                     <div class="form-text">
                         Allowed types: @string.Join(", ", ServiceRequestAttachment.AllowedExtensions). Up to @maxMegabytes MB.
                     </div>
@@ -60,5 +62,14 @@
                 </button>
             </form>
         </div>
+
+        <script>
+            // Check the size in the browser, so a file that is too big is not even sent
+            document.getElementById("file").addEventListener("change", function () {
+                const tooBig = this.files.length > 0 && this.files[0].size > Number(this.dataset.maxSize);
+                this.classList.toggle("is-invalid", tooBig);
+                this.setCustomValidity(tooBig ? "The file cannot be larger than @maxMegabytes MB." : "");
+            });
+        </script>
     }
 </section>
