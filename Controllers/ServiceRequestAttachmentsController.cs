@@ -17,7 +17,9 @@ namespace UnivManagement.Controllers {
         // POST: ServiceRequestAttachments/Upload
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [RequestSizeLimit(ServiceRequestAttachment.MaxSize + 1024 * 1024)]
+        // The request limit is higher than MaxSize so that bigger files still reach the action
+        // and the user gets a clear message instead of an error page
+        [RequestSizeLimit(30 * 1024 * 1024)]
         public async Task<IActionResult> Upload(int serviceRequestId, IFormFile? file) {
             var serviceRequest = await _context.ServiceRequests.FindAsync(serviceRequestId);
             if (serviceRequest == null) {
