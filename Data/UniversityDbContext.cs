@@ -34,6 +34,9 @@ namespace UnivManagement.Data {
             // Evita duplicações na tabela CourseStudyPlanYear:
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
+            // indica que o atributo Code é único na tabela Course:
+            modelBuilder.Entity<Models.AcademicManagement.Course>()
+                .HasIndex(c => c.Code)
                 .IsUnique();
         }
       
