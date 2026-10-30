@@ -5,7 +5,6 @@ namespace UnivManagement.Models.Scheduling_Group_2
 {
     public class RoomManager
     {
-        [Key]
         public int RoomManagerId { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique o {0}.")]
