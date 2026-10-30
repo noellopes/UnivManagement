@@ -1,0 +1,42 @@
+@model UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ApplicationStatusHistory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="AccommodationApplicationId" class="control-label"></label>
+                <input asp-for="AccommodationApplicationId" class="form-control" />
+                <span asp-validation-for="AccommodationApplicationId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ChangedAt" class="control-label"></label>
+                <input asp-for="ChangedAt" class="form-control" />
+                <span asp-validation-for="ChangedAt" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ChangedBy" class="control-label"></label>
+                <input asp-for="ChangedBy" class="form-control" />
+                <span asp-validation-for="ChangedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
