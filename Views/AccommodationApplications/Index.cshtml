@@ -1,0 +1,71 @@
+@model IEnumerable<UnivManagement.Models.AccommodationManagement.AccommodationApplication>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AcademicYearId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubmittedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasScholarshipPriority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriorityCheckedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriorityOverrideReason)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.StudentId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AcademicYearId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.SubmittedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.HasScholarshipPriority)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PriorityCheckedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PriorityOverrideReason)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AccommodationApplicationId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AccommodationApplicationId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AccommodationApplicationId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
