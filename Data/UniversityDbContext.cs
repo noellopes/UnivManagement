@@ -11,6 +11,11 @@ namespace UnivManagement.Data {
                 .HasIndex(t => t.Name)
                 .IsUnique();
 
+            // ServiceRequestStatus: two statuses cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestStatus>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
             // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.NumStudent)
@@ -38,6 +43,7 @@ namespace UnivManagement.Data {
         }
       
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
 
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
