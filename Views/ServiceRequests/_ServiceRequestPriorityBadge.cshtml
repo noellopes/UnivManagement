@@ -1,0 +1,6 @@
+@model ServiceRequestPriority
+
+@* Used in every page that shows the priority of a request, with the colour chosen in the list of priorities *@
+<span class="badge border text-bg-@Model.Color" title="Response time: @Model.ResponseDays day(s)">
+    <i class="bi bi-flag-fill"></i> @Model.Name
+</span>

@@ -6,12 +6,16 @@
     var currentSearch = ViewData["Search"] as string;
     var currentStatus = (ViewData["Status"] as int?)?.ToString();
     var currentType = (ViewData["Type"] as int?)?.ToString();
+    var currentPriority = (ViewData["Priority"] as int?)?.ToString();
+    var onlyOverdue = ViewData["Overdue"] as bool? == true;
 
-    // The controller already marks the selected type and status
+    // The controller already marks the selected type, status and priority
     var statusItems = ViewData["Statuses"] as SelectList;
     var typeItems = ViewData["Types"] as SelectList;
+    var priorityItems = ViewData["Priorities"] as SelectList;
 
-    bool isFiltered = !string.IsNullOrEmpty(currentSearch) || currentStatus != null || currentType != null;
+    bool isFiltered = !string.IsNullOrEmpty(currentSearch) || currentStatus != null || currentType != null
+        || currentPriority != null || onlyOverdue;
 }
 
 <div class="container py-4">
@@ -31,19 +35,31 @@
     }
 
     <form asp-action="Index" method="get" class="row g-2 mb-4">
-        <div class="col-md-5">
-            <input type="text" name="search" value="@currentSearch" class="form-control"
-                   placeholder="Search by title or requester name" aria-label="Search" />
-        </div>
         <div class="col-md-3">
+            <input type="text" name="search" value="@currentSearch" class="form-control"
+                   placeholder="Search by title, requester name or email" aria-label="Search" />
+        </div>
+        <div class="col-md-2">
             <select name="type" class="form-select" aria-label="Request type" asp-items="typeItems">
                 <option value="">All types</option>
             </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <select name="status" class="form-select" aria-label="Status" asp-items="statusItems">
                 <option value="">All statuses</option>
             </select>
+        </div>
+        <div class="col-md-2">
+            <select name="priority" class="form-select" aria-label="Priority" asp-items="priorityItems">
+                <option value="">All priorities</option>
+            </select>
+        </div>
+        <div class="col-md-2 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="overdue" value="true" id="overdue"
+                       checked="@onlyOverdue" />
+                <label class="form-check-label" for="overdue">Only overdue</label>
+            </div>
         </div>
         <div class="col-md-1 d-grid">
             <button type="submit" class="btn btn-outline-primary" title="Filter">
@@ -71,23 +87,35 @@
                         <th>@Html.DisplayNameFor(m => m.Title)</th>
                         <th>@Html.DisplayNameFor(m => m.Type)</th>
                         <th>@Html.DisplayNameFor(m => m.Status)</th>
+                        <th>@Html.DisplayNameFor(m => m.Priority)</th>
                         <th>@Html.DisplayNameFor(m => m.RequesterName)</th>
                         <th>@Html.DisplayNameFor(m => m.AssignedTo)</th>
-                        <th>@Html.DisplayNameFor(m => m.CreatedAt)</th>
+                        <th>@Html.DisplayNameFor(m => m.DueDate)</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model) {
-                        <tr>
-                            <td>@item.Title</td>
+                        <tr class="@(item.IsOverdue ? "table-danger" : null)">
+                            <td>
+                                @item.Title
+                                <small class="text-body-secondary d-block">@item.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
+                            </td>
                             <td>@item.Type?.Name</td>
                             <td>
                                 <partial name="_ServiceRequestStatusBadge" model="item.Status" />
                             </td>
+                            <td>
+                                <partial name="_ServiceRequestPriorityBadge" model="item.Priority" />
+                            </td>
                             <td>@item.RequesterName</td>
                             <td>@(item.AssignedTo ?? "—")</td>
-                            <td>@item.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td class="text-nowrap">
+                                @(item.DueDate?.ToString("yyyy-MM-dd") ?? "—")
+                                @if (item.IsOverdue) {
+                                    <span class="badge text-bg-danger d-block mt-1">Overdue</span>
+                                }
+                            </td>
                             <td class="text-end text-nowrap">
                                 <a asp-action="Details" asp-route-id="@item.ServiceRequestId"
                                    class="btn btn-sm btn-outline-secondary" title="Details">
