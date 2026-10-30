@@ -84,6 +84,7 @@
             <table class="table table-striped table-hover align-middle">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>@Html.DisplayNameFor(m => m.Title)</th>
                         <th>@Html.DisplayNameFor(m => m.Type)</th>
                         <th>@Html.DisplayNameFor(m => m.Status)</th>
@@ -97,11 +98,19 @@
                 <tbody>
                     @foreach (var item in Model) {
                         <tr class="@(item.IsOverdue ? "table-danger" : null)">
+                            <td class="text-body-secondary">@item.ServiceRequestId</td>
                             <td>
                                 @item.Title
                                 <small class="text-body-secondary d-block">@item.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
                             </td>
-                            <td>@item.Type?.Name</td>
+                            <td>
+                                @item.Type?.Name
+                                @if (item.CatalogItem != null) {
+                                    <small class="text-body-secondary d-block">
+                                        <i class="bi bi-journal-bookmark"></i> @item.CatalogItem.Name
+                                    </small>
+                                }
+                            </td>
                             <td>
                                 <partial name="_ServiceRequestStatusBadge" model="item.Status" />
                             </td>
