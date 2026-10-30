@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Sala - Gestão de Horários e Salas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <style>
+            body {
+                background-color: #f4f6f9;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            .card-custom {
+                border: none;
+                border-radius: 0.6rem;
+                box-shadow: 0 0.125rem 0.35rem rgba(0, 0, 0, 0.075);
+            }
+
+            .form-label {
+                font-weight: 600;
+                color: #374151;
+                font-size: 0.875rem;
+            }
+
+            .required::after {
+                content: " *";
+                color: #dc3545;
+            }
+
+            .badge-active {
+                background-color: #d1fae5;
+                color: #065f46;
+                border: 1px solid #a7f3d0;
+            }
+
+            .badge-inactive {
+                background-color: #fee2e2;
+                color: #991b1b;
+                border: 1px solid #fecaca;
+            }
+    </style>
+</head>
+<body class="py-4">
+
+    <div class="container" style="max-width: 980px;">
+
+        <!-- cabecalho titulo -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold text-dark mb-1">
+                    <i class="bi bi-door-open-fill text-primary me-2"></i>Registar Nova Sala
+                </h3>
+                <p class="text-muted small mb-0">Introduza os dados da sala física para disponibilizar no sistema de alocação de horários.</p>
+            </div>
+            <a href="#" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Voltar à Lista
+            </a>
+        </div>
+
+        <!-- formulario criacao -->
+        <div class="card card-custom bg-white mb-4">
+            <div class="card-header bg-white border-bottom py-3">
+                <h6 class="mb-0 fw-bold text-primary">
+                    <i class="bi bi-pencil-square me-2"></i>Formulário de Registo de Espaço
+                </h6>
+            </div>
+            <div class="card-body p-4">
+                <form id="formCriarSala">
+                    <div class="row g-3">
+
+                        <!-- nome sala -->
+                        <div class="col-md-4">
+                            <label for="numeroSala" class="form-label required">Identificador / Número</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                                <input type="text" class="form-control" id="numeroSala" name="NumeroSala" placeholder="ex: 101, Lab Info 1" required>
+                            </div>
+                            <div class="form-text">Nome ou número visível na porta.</div>
+                        </div>
+
+                        <!-- edificio -->
+                        <div class="col-md-4">
+                            <label for="edificio" class="form-label required">Edifício</label>
+                            <select class="form-select" id="edificio" name="Edificio" required>
+                                <option value="">Selecione o edifício...</option>
+                                <option value="Edifício Central">Edifício Central</option>
+                                <option value="Edifício A - Tecnologias">Edifício A - Tecnologias</option>
+                                <option value="Edifício B - Ciências">Edifício B - Ciências</option>
+                                <option value="Complexo Desportivo">Complexo Desportivo</option>
+                            </select>
+                        </div>
+
+                        <!-- piso -->
+                        <div class="col-md-4">
+                            <label for="piso" class="form-label required">Piso / Andar</label>
+                            <input type="number" class="form-control" id="piso" name="Piso" placeholder="ex: 0, 1, 2" min="-2" max="10" required>
+                        </div>
+
+                        <!-- capacidade -->
+                        <div class="col-md-4">
+                            <label for="lotacao" class="form-label required">Capacidade (Lugares)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-people"></i></span>
+                                <input type="number" class="form-control" id="lotacao" name="Lotacao" placeholder="ex: 35" min="1" max="500" required>
+                            </div>
+                        </div>
+
+                        <!-- tipo sala -->
+                        <div class="col-md-4">
+                            <label for="tipoSala" class="form-label required">Tipo de Sala</label>
+                            <select class="form-select" id="tipoSala" name="TipoSala" required>
+                                <option value="">Selecione o tipo...</option>
+                                <option value="Sala de Aula Teórica">Sala de Aula Teórica</option>
+                                <option value="Laboratório de Informática">Laboratório de Informática</option>
+                                <option value="Laboratório de Eletrónica">Laboratório de Eletrónica</option>
+                                <option value="Anfiteatro">Anfiteatro</option>
+                                <option value="Gabinete / Sala de Reunião">Gabinete / Sala de Reunião</option>
+                            </select>
+                        </div>
+
+                        <!-- estado sala -->
+                        <div class="col-md-4">
+                            <label for="estado" class="form-label required">Estado Operacional</label>
+                            <select class="form-select" id="estado" name="Estado" required>
+                                <option value="Ativa" selected>Ativa (Disponível para reservas)</option>
+                                <option value="Manutenção">Em Manutenção</option>
+                                <option value="Inativa">Inativa / Encerrada</option>
+                            </select>
+                        </div>
+
+                        <!-- equipamentos disponiveis -->
+                        <div class="col-12 mt-3">
+                            <label class="form-label mb-2">Equipamentos e Recursos Disponíveis</label>
+                            <div class="p-3 bg-light rounded border d-flex flex-wrap gap-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="recProjetor" checked>
+                                    <label class="form-check-label" for="recProjetor">Videoprojetor / Ecrã</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="recComputadores">
+                                    <label class="form-check-label" for="recComputadores">Computadores p/ Alunos</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="recAC" checked>
+                                    <label class="form-check-label" for="recAC">Ar Condicionado</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="recQuadroInteligente">
+                                    <label class="form-check-label" for="recQuadroInteligente">Quadro Interativo</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- observacoes -->
+                        <div class="col-12">
+                            <label for="notas" class="form-label">Observações / Notas</label>
+                            <textarea class="form-control" id="notas" rows="2" placeholder="Informação adicional sobre tomadas de rede, chave de acesso, etc."></textarea>
+                        </div>
+
+                        <!-- botoes acao formulario -->
+                        <div class="col-12 d-flex justify-content-end gap-2 mt-4 pt-2 border-top">
+                            <button type="reset" class="btn btn-light px-4 border">Limpar</button>
+                            <button type="submit" class="btn btn-primary px-4 fw-semibold">
+                                <i class="bi bi-plus-circle me-1"></i>Registar Sala
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- resumo salas registadas -->
+        <div class="card card-custom bg-white">
+            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-bold text-dark">
+                    <i class="bi bi-list-columns-reverse me-2"></i>Salas Registadas Recentemente
+                </h6>
+                <span class="badge bg-secondary-subtle text-secondary border px-2 py-1" id="totalSalas">3 salas listadas</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-muted small">
+                        <tr>
+                            <th class="ps-3">Identificador</th>
+                            <th>Edifício / Piso</th>
+                            <th>Tipo</th>
+                            <th class="text-center">Capacidade</th>
+                            <th>Estado</th>
+                            <th class="text-end pe-3">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaSalasCorpo">
+                        <tr>
+                            <td class="ps-3 fw-bold text-dark">Sala 101</td>
+                            <td>Edifício Central (Piso 1)</td>
+                            <td><span class="badge bg-light text-dark border">Sala de Aula Teórica</span></td>
+                            <td class="text-center">40 lug.</td>
+                            <td><span class="badge badge-active">Ativa</span></td>
+                            <td class="text-end pe-3">
+                                <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 me-1" title="Editar"><i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger py-1 px-2" title="Eliminar"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-3 fw-bold text-dark">Lab Info 2</td>
+                            <td>Edifício A - Tecnologias (Piso 0)</td>
+                            <td><span class="badge bg-light text-dark border">Laboratório de Informática</span></td>
+                            <td class="text-center">25 lug.</td>
+                            <td><span class="badge badge-active">Ativa</span></td>
+                            <td class="text-end pe-3">
+                                <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 me-1" title="Editar"><i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger py-1 px-2" title="Eliminar"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-3 fw-bold text-dark">Anfiteatro 1</td>
+                            <td>Edifício Central (Piso 0)</td>
+                            <td><span class="badge bg-light text-dark border">Anfiteatro</span></td>
+                            <td class="text-center">120 lug.</td>
+                            <td><span class="badge badge-inactive">Manutenção</span></td>
+                            <td class="text-end pe-3">
+                                <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 me-1" title="Editar"><i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger py-1 px-2" title="Eliminar"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
