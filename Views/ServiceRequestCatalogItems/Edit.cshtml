@@ -1,0 +1,75 @@
+@model ServiceRequestCatalogItem
+
+@{
+    ViewData["Title"] = "Edit service";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to catalog
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">Edit service</h1>
+    </header>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="ServiceRequestCatalogItemId" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ServiceRequestTypeId" class="form-label"></label>
+                        <select asp-for="ServiceRequestTypeId" class="form-select" asp-items="ViewBag.Types"></select>
+                        <span asp-validation-for="ServiceRequestTypeId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ProcessingDays" class="form-label"></label>
+                        <input asp-for="ProcessingDays" class="form-control" min="1" max="60" />
+                        <span asp-validation-for="ProcessingDays" class="text-danger small"></span>
+                        <div class="form-text">Only new requests use the new value.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RequiredDocuments" class="form-label"></label>
+                    <textarea asp-for="RequiredDocuments" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="RequiredDocuments" class="text-danger small"></span>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label">Available to be requested</label>
+                    <div class="form-text">
+                        Unavailable services stay in the catalog and in their requests, but cannot be chosen in new requests.
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to catalog</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
