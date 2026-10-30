@@ -12,11 +12,12 @@ namespace UnivManagement.Controllers {
             _context = context;
         }
 
-        // GET: ServiceRequests?search=...&status=2&type=1
-        public async Task<IActionResult> Index(string? search, int? status, int? type) {
+        // GET: ServiceRequests?search=...&status=2&type=1&priority=3&overdue=true
+        public async Task<IActionResult> Index(string? search, int? status, int? type, int? priority, bool overdue = false) {
             var requests = _context.ServiceRequests
                 .Include(r => r.Type)
                 .Include(r => r.Status)
+                .Include(r => r.Priority)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search)) {
@@ -31,12 +32,21 @@ namespace UnivManagement.Controllers {
             if (type.HasValue) {
                 requests = requests.Where(r => r.ServiceRequestTypeId == type.Value);
             }
+            if (priority.HasValue) {
+                requests = requests.Where(r => r.ServiceRequestPriorityId == priority.Value);
+            }
+            if (overdue) {
+                // Same rule as ServiceRequest.IsOverdue, written so EF can translate it to SQL
+                requests = requests.Where(r => r.ClosedAt == null && r.DueDate < DateTime.Today);
+            }
 
             // Keep the filter values so the view can show them again
             ViewData["Search"] = search;
             ViewData["Status"] = status;
             ViewData["Type"] = type;
-            await PopulateListsAsync(type, status);
+            ViewData["Priority"] = priority;
+            ViewData["Overdue"] = overdue;
+            await PopulateListsAsync(type, status, priority);
 
             return View(await requests.OrderByDescending(r => r.CreatedAt).ToListAsync());
         }
@@ -50,6 +60,7 @@ namespace UnivManagement.Controllers {
             var serviceRequest = await _context.ServiceRequests
                 .Include(r => r.Type)
                 .Include(r => r.Status)
+                .Include(r => r.Priority)
                 .Include(r => r.History
                     .OrderByDescending(h => h.ChangedAt)
                     .ThenByDescending(h => h.ServiceRequestHistoryId))
@@ -78,8 +89,9 @@ namespace UnivManagement.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Title,Description,ServiceRequestTypeId,RequesterName,RequesterEmail")] ServiceRequest serviceRequest) {
+            [Bind("Title,Description,ServiceRequestTypeId,ServiceRequestPriorityId,RequesterName,RequesterEmail")] ServiceRequest serviceRequest) {
             await ValidateTypeAsync(serviceRequest.ServiceRequestTypeId);
+            var priority = await FindPriorityAsync(serviceRequest.ServiceRequestPriorityId);
 
             var firstStatus = await FindFirstStatusAsync();
             if (firstStatus == null) {
@@ -87,13 +99,14 @@ namespace UnivManagement.Controllers {
             }
 
             if (!ModelState.IsValid) {
-                await PopulateListsAsync(serviceRequest.ServiceRequestTypeId);
+                await PopulateListsAsync(serviceRequest.ServiceRequestTypeId, selectedPriorityId: serviceRequest.ServiceRequestPriorityId);
                 return View(serviceRequest);
             }
 
             // Status and dates are always set by the server, never by the form
             serviceRequest.ServiceRequestStatusId = firstStatus!.ServiceRequestStatusId;
             serviceRequest.CreatedAt = DateTime.Now;
+            serviceRequest.DueDate = serviceRequest.CreatedAt.Date.AddDays(priority!.ResponseDays);
             serviceRequest.History.Add(new ServiceRequestHistory {
                 Action = "Request submitted",
                 NewStatusId = firstStatus.ServiceRequestStatusId
@@ -117,7 +130,7 @@ namespace UnivManagement.Controllers {
                 return NotFound();
             }
 
-            await PopulateListsAsync(serviceRequest.ServiceRequestTypeId, serviceRequest.ServiceRequestStatusId);
+            await PopulateListsAsync(serviceRequest.ServiceRequestTypeId, serviceRequest.ServiceRequestStatusId, serviceRequest.ServiceRequestPriorityId);
             return View(serviceRequest);
         }
 
@@ -125,7 +138,7 @@ namespace UnivManagement.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
-            [Bind("ServiceRequestId,Title,Description,ServiceRequestTypeId,ServiceRequestStatusId,RequesterName,RequesterEmail,AssignedTo")] ServiceRequest posted) {
+            [Bind("ServiceRequestId,Title,Description,ServiceRequestTypeId,ServiceRequestStatusId,ServiceRequestPriorityId,RequesterName,RequesterEmail,AssignedTo")] ServiceRequest posted) {
             if (id != posted.ServiceRequestId) {
                 return NotFound();
             }
@@ -135,13 +148,16 @@ namespace UnivManagement.Controllers {
             if (status == null) {
                 ModelState.AddModelError(nameof(ServiceRequest.ServiceRequestStatusId), "Please choose a status from the list.");
             }
+            var priority = await FindPriorityAsync(posted.ServiceRequestPriorityId);
 
             if (!ModelState.IsValid) {
-                await PopulateListsAsync(posted.ServiceRequestTypeId, posted.ServiceRequestStatusId);
+                await PopulateListsAsync(posted.ServiceRequestTypeId, posted.ServiceRequestStatusId, posted.ServiceRequestPriorityId);
                 return View(posted);
             }
 
-            var serviceRequest = await _context.ServiceRequests.FindAsync(id);
+            var serviceRequest = await _context.ServiceRequests
+                .Include(r => r.Priority)
+                .FirstOrDefaultAsync(r => r.ServiceRequestId == id);
             if (serviceRequest == null) {
                 return NotFound();
             }
@@ -157,6 +173,15 @@ namespace UnivManagement.Controllers {
                 serviceRequest.History.Add(new ServiceRequestHistory { Action = "Request details updated" });
             }
             RecordChanges(serviceRequest, status!, assignedTo, null);
+
+            // A new priority means a new deadline, counted from the day the request was created
+            if (serviceRequest.ServiceRequestPriorityId != priority!.ServiceRequestPriorityId) {
+                serviceRequest.History.Add(new ServiceRequestHistory {
+                    Action = $"Priority changed from {serviceRequest.Priority?.Name} to {priority.Name}"
+                });
+                serviceRequest.Priority = priority;
+                serviceRequest.DueDate = serviceRequest.CreatedAt.Date.AddDays(priority.ResponseDays);
+            }
 
             // Copy only the editable fields; CreatedAt is kept from the database
             serviceRequest.Title = posted.Title;
@@ -296,8 +321,16 @@ namespace UnivManagement.Controllers {
             }
         }
 
-        // Types and statuses for the select lists of the forms and the filters
-        private async Task PopulateListsAsync(int? selectedTypeId = null, int? selectedStatusId = null) {
+        private async Task<ServiceRequestPriority?> FindPriorityAsync(int priorityId) {
+            var priority = await _context.ServiceRequestPriorities.FindAsync(priorityId);
+            if (priority == null) {
+                ModelState.AddModelError(nameof(ServiceRequest.ServiceRequestPriorityId), "Please choose a priority from the list.");
+            }
+            return priority;
+        }
+
+        // Types, statuses and priorities for the select lists of the forms and the filters
+        private async Task PopulateListsAsync(int? selectedTypeId = null, int? selectedStatusId = null, int? selectedPriorityId = null) {
             var types = await _context.ServiceRequestTypes.OrderBy(t => t.Name).ToListAsync();
             ViewData["Types"] = new SelectList(types,
                 nameof(ServiceRequestType.ServiceRequestTypeId), nameof(ServiceRequestType.Name), selectedTypeId);
@@ -305,6 +338,11 @@ namespace UnivManagement.Controllers {
             var statuses = await _context.ServiceRequestStatuses.OrderBy(s => s.DisplayOrder).ToListAsync();
             ViewData["Statuses"] = new SelectList(statuses,
                 nameof(ServiceRequestStatus.ServiceRequestStatusId), nameof(ServiceRequestStatus.Name), selectedStatusId);
+
+            // The most urgent priorities first
+            var priorities = await _context.ServiceRequestPriorities.OrderByDescending(p => p.Level).ToListAsync();
+            ViewData["Priorities"] = new SelectList(priorities,
+                nameof(ServiceRequestPriority.ServiceRequestPriorityId), nameof(ServiceRequestPriority.Name), selectedPriorityId);
         }
     }
 }
