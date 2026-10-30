@@ -1,0 +1,56 @@
+@model ServiceRequest
+
+@{
+    ViewData["Title"] = "Request details";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to list
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">Request details</h1>
+    </header>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Title)</dt>
+                <dd class="col-sm-9">@Model.Title</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Description)</dt>
+                <dd class="col-sm-9">@(Model.Description ?? "—")</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Type)</dt>
+                <dd class="col-sm-9">@Model.Type?.Name</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Status)</dt>
+                <dd class="col-sm-9">@Model.Status?.Name</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.RequesterName)</dt>
+                <dd class="col-sm-9">@Model.RequesterName</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.RequesterEmail)</dt>
+                <dd class="col-sm-9">@Model.RequesterEmail</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.AssignedTo)</dt>
+                <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.AssignedTo) ? "—" : Model.AssignedTo)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CreatedAt)</dt>
+                <dd class="col-sm-9">@Model.CreatedAt.ToString("g")</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.UpdatedAt)</dt>
+                <dd class="col-sm-9">@(Model.UpdatedAt?.ToString("g") ?? "—")</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.ClosedAt)</dt>
+                <dd class="col-sm-9">@(Model.ClosedAt?.ToString("g") ?? "—")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.ServiceRequestId" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+    </div>
+</div>
