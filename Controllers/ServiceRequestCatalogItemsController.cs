@@ -60,7 +60,8 @@ namespace UnivManagement.Controllers {
         // GET: ServiceRequestCatalogItems/Create
         public async Task<IActionResult> Create() {
             await PopulateTypesAsync();
-            return View();
+            // Pass a new item so the form shows the default values (available, 5 processing days)
+            return View(new ServiceRequestCatalogItem { Name = string.Empty });
         }
 
         // POST: ServiceRequestCatalogItems/Create
