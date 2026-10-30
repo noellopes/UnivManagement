@@ -21,6 +21,13 @@ namespace UnivManagement.Models
         [Display(Name = "Request type")]
         public ServiceRequestType? Type { get; set; }
 
+        // Optional: the service of the catalog that is being requested
+        [Display(Name = "Service")]
+        public int? ServiceRequestCatalogItemId { get; set; }
+
+        [Display(Name = "Service")]
+        public ServiceRequestCatalogItem? CatalogItem { get; set; }
+
         // Set by the server: new requests start with the first status of the list
         [Display(Name = "Status")]
         public int ServiceRequestStatusId { get; set; }
