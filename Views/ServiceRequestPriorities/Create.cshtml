@@ -1,0 +1,68 @@
+@model ServiceRequestPriority
+
+@{
+    ViewData["Title"] = "New priority";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to priorities
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">New priority</h1>
+        <p class="text-body-secondary">
+            How urgent a request is and how many days the administrative services have to resolve it.
+        </p>
+    </header>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="e.g. High" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ResponseDays" class="form-label"></label>
+                        <input asp-for="ResponseDays" class="form-control" min="1" max="60" />
+                        <span asp-validation-for="ResponseDays" class="text-danger small"></span>
+                        <div class="form-text">Days from the creation of the request to its due date.</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Level" class="form-label"></label>
+                        <input asp-for="Level" class="form-control" min="1" max="10" />
+                        <span asp-validation-for="Level" class="text-danger small"></span>
+                        <div class="form-text">From 1 to 10. Higher levels are more urgent and are listed first.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Color" class="form-label"></label>
+                    <select asp-for="Color" class="form-select" asp-items="new SelectList(ServiceRequestPriority.BadgeColors)"></select>
+                    <span asp-validation-for="Color" class="text-danger small"></span>
+                    <div class="form-text">
+                        @foreach (var color in ServiceRequestPriority.BadgeColors) {
+                            <span class="badge border text-bg-@color me-1">@color</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
