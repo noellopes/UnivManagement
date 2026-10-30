@@ -1,0 +1,138 @@
+﻿```cshtml
+@{
+    ViewData["Title"] = "Gestão de Alojamento";
+}
+
+<div class="container py-4">
+    <header class="text-center mb-5">
+        <h1 class="display-5">Gestão de Alojamento</h1>
+        <p class="lead text-body-secondary">
+            Gestão de residências, quartos, candidaturas e atribuições.
+        </p>
+    </header>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Residências</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Gestão das residências universitárias.
+                    </p>
+                    <a asp-controller="Residences" asp-action="Index"
+                       class="btn btn-outline-primary w-100">
+                        Gerir Residências
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Quartos</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Gestão dos quartos, capacidade, tipo e estado.
+                    </p>
+                    <a asp-controller="Rooms" asp-action="Index"
+                       class="btn btn-outline-primary w-100">
+                        Gerir Quartos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Candidaturas</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Consulta e gestão das candidaturas a alojamento.
+                    </p>
+                    <a asp-controller="AccommodationApplications" asp-action="Index"
+                       class="btn btn-outline-primary w-100">
+                        Gerir Candidaturas
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Atribuições de Quartos</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Gestão das atribuições de quartos aos estudantes.
+                    </p>
+                    <a asp-controller="RoomAllocations" asp-action="Index"
+                       class="btn btn-outline-primary w-100">
+                        Gerir Atribuições
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Histórico de Candidaturas</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Consulta do histórico de alterações de estado das candidaturas.
+                    </p>
+                    <a asp-controller="ApplicationStatusHistories" asp-action="Index"
+                       class="btn btn-outline-primary w-100">
+                        Ver Histórico
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Contratos</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Consulta e gestão dos contratos de alojamento.
+                    </p>
+                    <a asp-controller="AccommodationContracts" asp-action="Index"
+                       class="btn btn-outline-primary w-100">
+                        Gerir Contratos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Pagamentos</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Consulta e gestão dos pagamentos de alojamento.
+                    </p>
+                    <a asp-controller="AccommodationPayments" asp-action="Index"
+                       class="btn btn-outline-primary w-100">
+                        Gerir Pagamentos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Registos de Estadia</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Consulta dos registos de entrada e saída dos estudantes.
+                    </p>
+                    <a asp-controller="StayRecords" asp-action="Index"
+                       class="btn btn-outline-primary w-100">
+                        Gerir Estadias
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+```
