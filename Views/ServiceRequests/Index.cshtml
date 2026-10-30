@@ -10,6 +10,8 @@
     // The controller already marks the selected type and status
     var statusItems = ViewData["Statuses"] as SelectList;
     var typeItems = ViewData["Types"] as SelectList;
+
+    bool isFiltered = !string.IsNullOrEmpty(currentSearch) || currentStatus != null || currentType != null;
 }
 
 <div class="container py-4">
@@ -50,6 +52,13 @@
         </div>
     </form>
 
+    @if (isFiltered) {
+        <p class="text-body-secondary">
+            @Model.Count() result(s) for the selected filters.
+            <a asp-action="Index">Clear filters</a>
+        </p>
+    }
+
     @if (!Model.Any()) {
         <div class="alert alert-info" role="alert">
             No requests found.
@@ -74,7 +83,7 @@
                             <td>@item.Title</td>
                             <td>@item.Type?.Name</td>
                             <td>
-                                <span class="badge text-bg-@(item.Status?.Color ?? "secondary")">@item.Status?.Name</span>
+                                <partial name="_ServiceRequestStatusBadge" model="item.Status" />
                             </td>
                             <td>@item.RequesterName</td>
                             <td>@(item.AssignedTo ?? "—")</td>
