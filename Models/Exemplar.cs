@@ -1,20 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace UnivManagement.Models
+﻿namespace UnivManagement.Models
 {
     public class Exemplar
     {
-        [Key]
         public int IdExemplar { get; set; }
 
-        public string Codigo { get; set; } = string.Empty;
+        public String Codigo { get; set; }
 
-        public string Estado { get; set; } = string.Empty;
+        public String Estado { get; set; }
 
         public int IdCatalogoFK { get; set; }
 
-        [ForeignKey(nameof(IdCatalogoFK))]
-        public Catalogo? Catalogo { get; set; }
+        public Catalogo Catalogo { get; set; }
     }
 }
