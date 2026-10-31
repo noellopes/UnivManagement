@@ -40,6 +40,6 @@ namespace UnivManagement.Models
 
     
         public long DepartamentoFk { get; set; }
-     
+        
     }
 }
