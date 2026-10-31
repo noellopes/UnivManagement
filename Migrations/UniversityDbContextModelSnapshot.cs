@@ -48,6 +48,15 @@ namespace UnivManagement.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Morada")
+            modelBuilder.Entity("UnivManagement.Models.Refeicao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -73,6 +82,19 @@ namespace UnivManagement.Migrations
                     b.HasKey("DocenteId");
 
                     b.ToTable("Docente");
+                    b.Property<decimal>("Preco")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("RefeicaoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Refeicoes");
                 });
 #pragma warning restore 612, 618
         }
