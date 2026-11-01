@@ -720,6 +720,11 @@ namespace UnivManagement.Migrations
 
                     b.Navigation("TipoRefeicao");
                 });
+
+            modelBuilder.Entity("UnivManagement.Models.TipoRefeicao", b =>
+                {
+                    b.Navigation("Refeicoes");
+                });
 #pragma warning restore 612, 618
         }
     }
