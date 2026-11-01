@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
 using UnivManagement.Models;
@@ -17,7 +18,10 @@ namespace UnivManagement.Controllers
         // GET: Refeicoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Refeicoes.ToListAsync());
+            var refeicoes = await _context.Refeicoes
+                .Include(r => r.TipoRefeicao)
+                .ToListAsync();
+            return View(refeicoes);
         }
 
         // GET: Refeicoes/Details/5
@@ -35,6 +39,7 @@ namespace UnivManagement.Controllers
         // GET: Refeicoes/Create
         public IActionResult Create()
         {
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TiposRefeicoes, "Id", "Nome");
             return View();
         }
 
@@ -55,10 +60,18 @@ namespace UnivManagement.Controllers
         // GET: Refeicoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
             var refeicao = await _context.Refeicoes.FindAsync(id);
-            if (refeicao == null) return NotFound();
+            if (refeicao == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TiposRefeicoes, "Id", "Nome");
             return View(refeicao);
         }
 
