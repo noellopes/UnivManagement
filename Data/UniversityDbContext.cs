@@ -3,7 +3,6 @@ using UnivManagement.Models;
 
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
-
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
@@ -30,6 +29,16 @@ namespace UnivManagement.Data {
             // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
+                .IsUnique();
+
+            // Room: número único por residência:
+            modelBuilder.Entity<Models.AccommodationManagement.Room>()
+                .HasIndex(r => new { r.ResidenceId, r.Number })
+                .IsUnique();
+
+            // indica que o atributo Code é único na tabela Course:
+            modelBuilder.Entity<Models.AcademicManagement.Course>()
+                .HasIndex(c => c.Code)
                 .IsUnique();
         }
       
