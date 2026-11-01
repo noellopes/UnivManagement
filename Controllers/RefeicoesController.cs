@@ -54,7 +54,7 @@ namespace UnivManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TipoRefeicaoId"] = new SelectList(_context.TipoRefeicoes, "Id", "Nome", refeicao.TipoRefeicaoId);
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TiposRefeicoes, "Id", "Nome", refeicao.TipoRefeicaoId);
             return View(refeicao);
         }
 
@@ -99,7 +99,7 @@ namespace UnivManagement.Controllers
             }
 
             // Se o modelo for inválido, recarrega a dropdown para não perder a seleção ao reentrar na view
-            ViewData["TipoRefeicaoId"] = new SelectList(_context.TipoRefeicoes, "Id", "Nome", refeicao.TipoRefeicaoId);
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TiposRefeicoes, "Id", "Nome", refeicao.TipoRefeicaoId);
             return View(refeicao);
         }
 
