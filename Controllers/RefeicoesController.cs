@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
 using UnivManagement.Models;
@@ -17,7 +18,8 @@ namespace UnivManagement.Controllers
         // GET: Refeicoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Refeicoes.ToListAsync());
+            var universityDbContext = _context.Refeicoes.Include(r => r.TipoRefeicao);
+            return View(await universityDbContext.ToListAsync());
         }
 
         // GET: Refeicoes/Details/5
@@ -35,13 +37,14 @@ namespace UnivManagement.Controllers
         // GET: Refeicoes/Create
         public IActionResult Create()
         {
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TipoRefeicoes, "Id", "Nome");
             return View();
         }
 
         // POST: Refeicoes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Tipo,Preco")] Refeicao refeicao)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Preco,TipoRefeicaoId")] Refeicao refeicao)
         {
             if (ModelState.IsValid)
             {
@@ -49,6 +52,7 @@ namespace UnivManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TipoRefeicoes, "Id", "Nome", refeicao.TipoRefeicaoId);
             return View(refeicao);
         }
 
@@ -59,13 +63,16 @@ namespace UnivManagement.Controllers
 
             var refeicao = await _context.Refeicoes.FindAsync(id);
             if (refeicao == null) return NotFound();
+
+            // Envia a lista de tipos para a view, selecionando o tipo atual da refeição
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TipoRefeicoes, "Id", "Nome", refeicao.TipoRefeicaoId);
             return View(refeicao);
         }
 
         // POST: Refeicoes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Tipo,Preco")] Refeicao refeicao)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Preco,TipoRefeicaoId")] Refeicao refeicao)
         {
             if (id != refeicao.Id) return NotFound();
 
@@ -83,6 +90,9 @@ namespace UnivManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            // Se o modelo for inválido, recarrega a dropdown para não perder a seleção ao reentrar na view
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TipoRefeicoes, "Id", "Nome", refeicao.TipoRefeicaoId);
             return View(refeicao);
         }
 

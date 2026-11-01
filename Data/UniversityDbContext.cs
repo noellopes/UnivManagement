@@ -37,5 +37,6 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
         public DbSet<Refeicao> Refeicoes { get; set; }
+        public DbSet<TipoRefeicao> TipoRefeicoes { get; set; }
     }
 }
