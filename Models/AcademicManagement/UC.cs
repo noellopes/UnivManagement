@@ -17,7 +17,7 @@ namespace UnivManagement.Models.AcademicManagement
         [Display(Name = "Nome da UC")]
         public required string Name { get; set; }
 
-        [RegularExpression(@"^[A-Z0-9]{1,6}$", ErrorMessage = "A {0} deve ter até 6 caracteres e conter apenas letras maiúsculas e números.")]
+        [RegularExpression(@"^[A-Z0-9 ]{1,6}$", ErrorMessage = "A {0} deve ter até 6 caracteres e conter apenas letras maiúsculas e números.")]
         [Display(Name = "Sigla")]
         public string? Acronym { get; set; }
 
