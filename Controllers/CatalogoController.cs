@@ -28,7 +28,7 @@ public class CatalogoController : Controller
         }
 
         var catalogo = await _context.Catalogos
-            .FirstOrDefaultAsync(m => m.IdCatalogo == idcatalogo);
+            .FirstOrDefaultAsync(m => m.CatalogoId == idcatalogo);
         if (catalogo == null)
         {
             return NotFound();
@@ -48,7 +48,7 @@ public class CatalogoController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("IdCatalogo,ISBN,Titulo,Autor")] Catalogo catalogo)
+    public async Task<IActionResult> Create([Bind("ISBN,Titulo,Autor")] Catalogo catalogo)
     {
         if (ModelState.IsValid)
         {
@@ -80,9 +80,9 @@ public class CatalogoController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? idcatalogo, [Bind("IdCatalogo,ISBN,Titulo,Autor")] Catalogo catalogo)
+    public async Task<IActionResult> Edit(int? idcatalogo, [Bind("CatalogoId,ISBN,Titulo,Autor")] Catalogo catalogo)
     {
-        if (idcatalogo != catalogo.IdCatalogo)
+        if (idcatalogo != catalogo.CatalogoId)
         {
             return NotFound();
         }
@@ -96,7 +96,7 @@ public class CatalogoController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CatalogoExists(catalogo.IdCatalogo))
+                if (!CatalogoExists(catalogo.CatalogoId))
                 {
                     return NotFound();
                 }
@@ -119,7 +119,7 @@ public class CatalogoController : Controller
         }
 
         var catalogo = await _context.Catalogos
-            .FirstOrDefaultAsync(m => m.IdCatalogo == idcatalogo);
+            .FirstOrDefaultAsync(m => m.CatalogoId == idcatalogo);
         if (catalogo == null)
         {
             return NotFound();
@@ -145,6 +145,6 @@ public class CatalogoController : Controller
 
     private bool CatalogoExists(int? idcatalogo)
     {
-        return _context.Catalogos.Any(e => e.IdCatalogo == idcatalogo);
+        return _context.Catalogos.Any(e => e.CatalogoId == idcatalogo);
     }
 }
