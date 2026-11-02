@@ -1,10 +1,10 @@
 @model IEnumerable<UnivManagement.Models.AccommodationManagement.AccommodationApplication>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Candidaturas";
 }
 
-<h1>Index</h1>
+<h1>Gestão de Candidaturas</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -62,7 +62,9 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.AccommodationApplicationId">Edit</a> |
+
                 <a asp-action="Details" asp-route-id="@item.AccommodationApplicationId">Details</a> |
+
                 <a asp-action="Delete" asp-route-id="@item.AccommodationApplicationId">Delete</a>
             </td>
         </tr>
