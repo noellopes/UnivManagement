@@ -1,13 +1,11 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace UnivManagement.Models
+namespace UnivManagement.Models.Scheduling_Group_2
 {
-    public class Session
+    public class ClassSession
     {
         [Key]
-        public int ClassSessionId { get; set; }
+        public int IdAula { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique o {0}.")]
         [Range(1, 7, ErrorMessage = "O {0} deve estar entre {1} (Domingo) e {2} (Sábado).")]
@@ -37,13 +35,13 @@ namespace UnivManagement.Models
         public int IdSala { get; set; }
 
         [ForeignKey("IdSala")]
-        //public Room? Room { get; set; }
+        public virtual Sala? Sala { get; set; }
 
         [Required(ErrorMessage = "Por favor, selecione a {0}.")]
         [Display(Name = "Turma")]
         public int IdTurma { get; set; }
 
         [ForeignKey("IdTurma")]
-        public Group? ClassGroup { get; set; }
+        public virtual Turma? Turma { get; set; }
     }
 }
