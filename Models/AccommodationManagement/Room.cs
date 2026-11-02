@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Policy;
 
 namespace UnivManagement.Models.AccommodationManagement;
 
@@ -13,10 +14,11 @@ public class Room
     /* RESIDENCE ID: */
     [Display(Name = "Residência")]
     public int ResidenceId { get; set; }
+    
 
     /* NUMBER: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [StringLength(10, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
+    [Required(ErrorMessage = "O {0} é obrigatório. ")]
+    [StringLength(10, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. ")]
     [Display(Name = "Número")]
     public required string Number { get; set; }
 
@@ -25,7 +27,7 @@ public class Room
     public int Floor { get; set; }
 
     /* CAPACITY: */
-    [Range(1, 6, ErrorMessage = "A {0} deve estar entre {1} e {2}. | The {0} must be between {1} and {2}.")]
+    [Range(1, 6, ErrorMessage = "A {0} deve estar entre {1} e {2}. ")]
     [Display(Name = "Capacidade")]
     public int Capacity { get; set; }
 
@@ -46,8 +48,8 @@ public class RoomType
 {
     public int RoomTypeId { get; set; }
 
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [StringLength(50, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [StringLength(50, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. ")]
     [Display(Name = "Nome")]
     public required string Name { get; set; }
 
@@ -61,8 +63,8 @@ public class RoomStatus
 {
     public int RoomStatusId { get; set; }
 
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [StringLength(50, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
+    [Required(ErrorMessage = "O {0} é obrigatório. ")]
+    [StringLength(50, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. ")]
     [Display(Name = "Nome")]
     public required string Name { get; set; }
 
