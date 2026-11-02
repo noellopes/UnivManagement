@@ -1,0 +1,50 @@
+@model IEnumerable<UnivManagement.Models.Funcionario>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.Nif)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Telefone)</th>
+            <th>@Html.DisplayNameFor(model => model.Ativo)</th>
+            <th>@Html.DisplayNameFor(model => model.DataAdmissao)</th>
+            <th>@Html.DisplayNameFor(model => model.Morada)</th>
+            <!-- Cabeçalho para o Nome do Serviço -->
+            <th>Serviço</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.Nome)</td>
+                <td>@Html.DisplayFor(model => item.Nif)</td>
+                <td>@Html.DisplayFor(model => item.Email)</td>
+                <td>@Html.DisplayFor(model => item.Telefone)</td>
+                <td>@Html.DisplayFor(model => item.Ativo)</td>
+                <td>@Html.DisplayFor(model => item.DataAdmissao)</td>
+                <td>@Html.DisplayFor(model => item.Morada)</td>
+                <!-- Exibe o Nome do Serviço relacionado -->
+                <td>@Html.DisplayFor(model => item.Servico!.Nome)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.FuncionarioId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.FuncionarioId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.FuncionarioId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
