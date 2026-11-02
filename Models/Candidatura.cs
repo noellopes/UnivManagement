@@ -1,14 +1,22 @@
-﻿namespace UnivManagement.Models
+﻿
+using System.ComponentModel.DataAnnotations;
+
+namespace UnivManagement.Models
 {
     public class Candidatura
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public int NumeroEstudante { get; set; }
-        public string Curso { get; set; }
-        public decimal Rendimento { get; set; }
-        public int Agregado { get; set; }
-        //still in example state
+        [Key]
+        public int IdCandidatura { get; set; }
 
+        
+        public DateTime DataSubmissao { get; set; }
+
+        public int IdCandidato { get; set; }
+
+        public int IdPrograma { get; set; }
+
+        public int IdTipoCandidatura { get; set; }
+
+        public int IdEstado { get; set; }
     }
 }
