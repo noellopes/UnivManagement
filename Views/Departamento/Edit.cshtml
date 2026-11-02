@@ -1,0 +1,108 @@
+@model UnivManagement.Models.Departamento
+
+@{
+    ViewData["Title"] = "Editar Departamento";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0 rounded-3">
+                <!-- Cabeçalho do Cartão -->
+                <div class="card-header bg-warning text-white py-3">
+                    <h4 class="card-title mb-0 fw-bold text-dark">
+                        <i class="bi bi-pencil-square me-2"></i>Editar Departamento
+                    </h4>
+                </div>
+
+                <!-- Corpo do Formulário -->
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" role="alert"></div>
+
+                        <!-- Campo Oculto para o ID -->
+                        <input type="hidden" asp-for="DepartamentoId" />
+
+                        <div class="row g-3">
+                            <!-- Nome do Departamento -->
+                            <div class="col-12">
+                                <label asp-for="Nome" class="form-label fw-bold"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                    <input asp-for="Nome" class="form-control" placeholder="Nome do departamento" />
+                                </div>
+                                <span asp-validation-for="Nome" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Data de Criação -->
+                            <div class="col-12">
+                                <label asp-for="DataCriacao" class="form-label fw-bold">Data de Criação</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                                    <input asp-for="DataCriacao" class="form-control" type="date" />
+                                </div>
+                                <span asp-validation-for="DataCriacao" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Estado Ativo (Switch Dinâmico com Ícone) -->
+                            <div class="col-12 mt-4">
+                                <div class="form-check form-switch">
+                                    <input asp-for="Ativo" class="form-check-input" type="checkbox" role="switch" id="switchAtivo" />
+                                    <label class="form-check-label fw-bold" for="switchAtivo">
+                                        <i id="statusIcon" class="bi bi-x-circle-fill me-1 text-danger"></i> 
+                                        <span id="statusLabel">Departamento Inativo</span>
+                                    </label>
+                                </div>
+                                <span asp-validation-for="Ativo" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Botões de Ação -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-3">
+                                <i class="bi bi-arrow-left me-1"></i> Voltar à Lista
+                            </a>
+                            <button type="submit" class="btn btn-warning rounded-pill px-4 shadow-sm text-dark fw-bold">
+                                <i class="bi bi-check-lg me-1"></i> Guardar Alterações
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const switchAtivo = document.getElementById("switchAtivo");
+            const statusIcon = document.getElementById("statusIcon");
+            const statusLabel = document.getElementById("statusLabel");
+
+            function atualizarStatus() {
+                if (switchAtivo.checked) {
+                    statusIcon.className = "bi bi-check-circle-fill me-1 text-success";
+                    statusLabel.textContent = "Departamento Ativo";
+                } else {
+                    statusIcon.className = "bi bi-x-circle-fill me-1 text-danger";
+                    statusLabel.textContent = "Departamento Inativo";
+                }
+            }
+
+            // Inicializa o estado conforme o valor carregado da base de dados
+            atualizarStatus();
+
+            // Ouve alterações do utilizador no switch
+            switchAtivo.addEventListener("change", atualizarStatus);
+        });
+    </script>
+}
