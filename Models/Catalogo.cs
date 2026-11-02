@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace UnivManagement.Models
 {
@@ -13,7 +14,7 @@ namespace UnivManagement.Models
 
         public int AutorId { get; set; }
 
-
+        [ValidateNever]
         public Autor Autor { get; set; } = null!;
 
         public ICollection<Exemplar> Exemplares { get; set; }

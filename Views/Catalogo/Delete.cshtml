@@ -1,0 +1,60 @@
+@model UnivManagement.Models.Catalogo
+
+@{
+    ViewData["Title"] = "Eliminar Livro";
+}
+
+<h1>Eliminar Livro</h1>
+
+<div class="alert alert-warning mt-3">
+    Tens a certeza de que pretendes eliminar este livro?
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h4 class="card-title">@Model.Titulo</h4>
+
+        <dl class="row mt-4">
+
+            <dt class="col-sm-3">
+                ISBN
+            </dt>
+            <dd class="col-sm-9">
+                @Model.ISBN
+            </dd>
+
+            <dt class="col-sm-3">
+                Título
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Titulo
+            </dd>
+
+            <dt class="col-sm-3">
+                Autor
+            </dt>
+            <dd class="col-sm-9">
+                @(Model.Autor?.Nome ?? "Autor não disponível")
+            </dd>
+
+        </dl>
+
+        <form asp-action="Delete"
+              asp-route-id="@Model.CatalogoId"
+              method="post">
+
+            <input type="hidden" asp-for="CatalogoId" />
+
+            <button type="submit" class="btn btn-danger">
+                Eliminar Livro
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Cancelar
+            </a>
+
+        </form>
+
+    </div>
+</div>

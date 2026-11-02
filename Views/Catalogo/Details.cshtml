@@ -1,0 +1,53 @@
+@model UnivManagement.Models.Catalogo
+
+@{
+    ViewData["Title"] = "Detalhes do Livro";
+}
+
+<h1>Detalhes do Livro</h1>
+
+<hr />
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h4 class="card-title">@Model.Titulo</h4>
+
+        <dl class="row mt-4">
+
+            <dt class="col-sm-3">
+                ISBN
+            </dt>
+            <dd class="col-sm-9">
+                @Model.ISBN
+            </dd>
+
+            <dt class="col-sm-3">
+                Título
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Titulo
+            </dd>
+
+            <dt class="col-sm-3">
+                Autor
+            </dt>
+            <dd class="col-sm-9">
+                @(Model.Autor?.Nome ?? "Autor não disponível")
+            </dd>
+
+        </dl>
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.CatalogoId"
+           class="btn btn-warning">
+            Editar
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Voltar à Lista
+        </a>
+
+    </div>
+</div>

@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
@@ -60,31 +61,50 @@ public class CatalogoController : Controller
     }
 
     // GET: CATALOGOS/Edit/5
-    public async Task<IActionResult> Edit(int? idcatalogo)
+
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (idcatalogo == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var catalogo = await _context.Catalogos.FindAsync(idcatalogo);
+        var catalogo = await _context.Catalogos.FindAsync(id);
+
         if (catalogo == null)
         {
             return NotFound();
         }
+
+        ViewBag.AutorId = new SelectList(
+            await _context.Autores.ToListAsync(),
+            "AutorId",
+            "Nome",
+            catalogo.AutorId
+        );
+
         return View(catalogo);
     }
+
 
     // POST: CATALOGOS/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? idcatalogo, [Bind("CatalogoId,ISBN,Titulo,Autor")] Catalogo catalogo)
+    public async Task<IActionResult> Edit(
+        int? id,
+        [Bind("CatalogoId,ISBN,Titulo,AutorId")] Catalogo catalogo)
     {
-        if (idcatalogo != catalogo.CatalogoId)
+        if (id != catalogo.CatalogoId)
         {
             return NotFound();
+        }
+
+        if (!await _context.Autores.AnyAsync(a => a.AutorId == catalogo.AutorId))
+        {
+            ModelState.AddModelError("AutorId", "Selecione um autor válido.");
         }
 
         if (ModelState.IsValid)
@@ -100,15 +120,23 @@ public class CatalogoController : Controller
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
+
             return RedirectToAction(nameof(Index));
         }
+
+        ViewBag.AutorId = new SelectList(
+            await _context.Autores.ToListAsync(),
+            "AutorId",
+            "Nome",
+            catalogo.AutorId
+        );
+
         return View(catalogo);
     }
+
 
     // GET: CATALOGOS/Delete/5
     public async Task<IActionResult> Delete(int? idcatalogo)

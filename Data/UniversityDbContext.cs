@@ -7,5 +7,6 @@ namespace UnivManagement.Data
     {
         public DbSet<Catalogo> Catalogos { get; set; }
         public DbSet<Exemplar> Exemplares { get; set; }
+        public DbSet<Autor> Autores { get; set; }
     }
 }
