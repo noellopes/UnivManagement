@@ -2,12 +2,11 @@
 
 namespace UnivManagement.Models.AccommodationManagement;
 
-    /// <summary>
-    /// Room model class from Accommodation Management domain.
-    /// </summary>
+
+/// Room model class from Accommodation Management domain.
+
 public class Room
 {
-
     /* ID: */
     public int RoomId { get; set; }
 
@@ -30,15 +29,42 @@ public class Room
     [Display(Name = "Capacidade")]
     public int Capacity { get; set; }
 
-    /* TYPE: */
+    /* ROOM TYPE ID: */
     [Display(Name = "Tipo")]
-    public RoomType Type { get; set; }
+    public int RoomTypeId { get; set; }
+    public RoomType? RoomType { get; set; }
 
-    /* STATUS: */
+    /* ROOM STATUS ID: */
     [Display(Name = "Estado")]
-    public RoomStatus Status { get; set; }
+    public int RoomStatusId { get; set; }
+    public RoomStatus? RoomStatus { get; set; }
 }
 
-public enum RoomType { Single, Double, Triple }
+/// Room type (e.g. Single, Double, Triple).
 
-public enum RoomStatus { Available, Maintenance }
+public class RoomType
+{
+    public int RoomTypeId { get; set; }
+
+    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
+    [StringLength(50, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
+    [Display(Name = "Nome")]
+    public required string Name { get; set; }
+
+    public ICollection<Room> Rooms { get; set; } = new List<Room>();
+}
+
+
+/// Room status (e.g. Available, Maintenance).
+
+public class RoomStatus
+{
+    public int RoomStatusId { get; set; }
+
+    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
+    [StringLength(50, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
+    [Display(Name = "Nome")]
+    public required string Name { get; set; }
+
+    public ICollection<Room> Rooms { get; set; } = new List<Room>();
+}
