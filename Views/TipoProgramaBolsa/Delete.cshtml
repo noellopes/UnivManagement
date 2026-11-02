@@ -1,0 +1,65 @@
+@model UnivManagement.Models.TipoProgramaBolsa
+
+@{
+    ViewData["Title"] = "Eliminar Tipo de Bolsa";
+}
+
+<div class="container py-5">
+
+    <div class="mb-4">
+        <h1 class="fw-bold mb-2">Eliminar Tipo de Bolsa</h1>
+        <p class="text-secondary">
+            Confirme se pretende eliminar este tipo de bolsa.
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0"
+         style="border-radius: 0.5rem; max-width: 750px;">
+
+        <div class="card-body p-4">
+
+            <div class="alert alert-warning">
+                Tem a certeza de que pretende eliminar este registo?
+                Esta ação não pode ser anulada.
+            </div>
+
+            <dl class="row mb-4">
+
+                <dt class="col-sm-3">
+                    Nome do tipo
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Model.NomeTipo
+                </dd>
+
+                <dt class="col-sm-3">
+                    Descrição
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Model.Descricao
+                </dd>
+
+            </dl>
+
+            <form asp-action="Delete"
+                  asp-route-idtipoprograma="@Model.IdTipoPrograma"
+                  method="post">
+
+                <button type="submit"
+                        class="btn btn-outline-danger">
+                    Eliminar
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary ms-2">
+                    Cancelar
+                </a>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

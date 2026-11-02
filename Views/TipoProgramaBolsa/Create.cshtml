@@ -1,0 +1,90 @@
+@model UnivManagement.Models.TipoProgramaBolsa
+
+@{
+    ViewData["Title"] = "Adicionar Tipo de Bolsa";
+}
+
+<div class="container py-5">
+
+    <!-- Page Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-2">Adicionar Tipo de Bolsa</h1>
+        <p class="text-secondary">
+            Preencha os campos abaixo para adicionar um novo tipo de bolsa.
+        </p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card shadow-sm border-0"
+         style="border-radius: 0.5rem; max-width: 750px;">
+
+        <div class="card-body p-4">
+
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger">
+                </div>
+
+                <!-- NomeTipo -->
+                <div class="mb-3">
+                    <label asp-for="NomeTipo"
+                           class="form-label fw-semibold">
+                        Nome do tipo
+                    </label>
+
+                    <input asp-for="NomeTipo"
+                           class="form-control"
+                           placeholder="Ex.: Bolsa de Mérito" />
+
+                    <span asp-validation-for="NomeTipo"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <!-- Descricao -->
+                <div class="mb-4">
+                    <label asp-for="Descricao"
+                           class="form-label fw-semibold">
+                        Descrição
+                    </label>
+
+                    <textarea asp-for="Descricao"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Descreva o tipo de bolsa...">
+                    </textarea>
+
+                    <span asp-validation-for="Descricao"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn text-white"
+                            style="background-color: #1d4e6b;">
+                        Guardar tipo de bolsa
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
