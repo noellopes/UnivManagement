@@ -1,0 +1,48 @@
+﻿@model IEnumerable<UnivManagement.Models.Refeicao>
+
+@{
+    ViewData["Title"] = "Refeições";
+}
+
+<h1>Refeições</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Criar nova refeição</a>
+</p>
+
+<table class="table table-hover align-middle">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.TipoRefeicaoId)</th>
+            <th>@Html.DisplayNameFor(model => model.Preco)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TipoRefeicao!.Nome)</td>
+                    <td>@item.Preco.ToString("0.00") €</td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@item.RefeicaoId" class="btn btn-sm btn-outline-warning">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.RefeicaoId" class="btn btn-sm btn-outline-info">Detalhes</a>
+                        <a asp-action="Delete" asp-route-id="@item.RefeicaoId" class="btn btn-sm btn-outline-danger">Apagar</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center text-muted py-4">
+                    Ainda não há refeições registadas.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
