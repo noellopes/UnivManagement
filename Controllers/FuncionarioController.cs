@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,6 @@ public class FuncionarioController : Controller
     // GET: FUNCIONARIOS
     public async Task<IActionResult> Index()
     {
-        // O .Include(f => f.Servico) garante que os dados do ServicoFuncionario vêm preenchidos da BD
         var funcionarios = await _context.Funcionario
             .Include(f => f.Servico)
             .ToListAsync();
@@ -35,7 +33,9 @@ public class FuncionarioController : Controller
         }
 
         var funcionario = await _context.Funcionario
+            .Include(f => f.Servico) // Carrega os dados do serviço
             .FirstOrDefaultAsync(m => m.FuncionarioId == funcionarioid);
+
         if (funcionario == null)
         {
             return NotFound();
@@ -43,11 +43,10 @@ public class FuncionarioController : Controller
 
         return View(funcionario);
     }
-    // GET: Funcionarios/Create
+
     // GET: Funcionarios/Create
     public IActionResult Create()
     {
-        // Carrega a lista de serviços ativos (ou todos) para o SelectList
         ViewData["ServicoFuncionarioId"] = new SelectList(_context.ServicoFuncionario.Where(s => s.Ativo), "ServicoFuncionarioId", "Nome");
         return View();
     }
@@ -64,7 +63,6 @@ public class FuncionarioController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        // Se o formulário tiver erros, recarrega a lista para o dropdown não ficar vazio
         ViewData["ServicoFuncionarioId"] = new SelectList(_context.ServicoFuncionario.Where(s => s.Ativo), "ServicoFuncionarioId", "Nome", funcionario.ServicoFuncionarioId);
         return View(funcionario);
     }
@@ -83,7 +81,6 @@ public class FuncionarioController : Controller
             return NotFound();
         }
 
-        // Preenche o SelectList e pré-seleciona o serviço atual do funcionário
         ViewData["ServicoFuncionarioId"] = new SelectList(_context.ServicoFuncionario.Where(s => s.Ativo), "ServicoFuncionarioId", "Nome", funcionario.ServicoFuncionarioId);
         return View(funcionario);
     }
@@ -119,7 +116,6 @@ public class FuncionarioController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        // Se falhar a validação, recarrega a dropdown mantendo o valor selecionado
         ViewData["ServicoFuncionarioId"] = new SelectList(_context.ServicoFuncionario.Where(s => s.Ativo), "ServicoFuncionarioId", "Nome", funcionario.ServicoFuncionarioId);
         return View(funcionario);
     }
@@ -134,7 +130,9 @@ public class FuncionarioController : Controller
         }
 
         var funcionario = await _context.Funcionario
+            .Include(f => f.Servico) // Carrega os dados do serviço
             .FirstOrDefaultAsync(m => m.FuncionarioId == funcionarioid);
+
         if (funcionario == null)
         {
             return NotFound();
@@ -152,9 +150,9 @@ public class FuncionarioController : Controller
         if (funcionario != null)
         {
             _context.Funcionario.Remove(funcionario);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 

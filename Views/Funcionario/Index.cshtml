@@ -1,50 +1,123 @@
 @model IEnumerable<UnivManagement.Models.Funcionario>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Gestão de Funcionários";
 }
 
-<h1>Index</h1>
+<div class="container py-4">
+    <div class="card shadow-sm border-0 rounded-3">
+        
+        <!-- Cabeçalho com Título e Botão de Adicionar -->
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+            <h4 class="card-title mb-0 fw-bold text-primary">
+                <i class="bi bi-people-fill me-2"></i>Gestão de Funcionários
+            </h4>
+            <a asp-action="Create" class="btn btn-primary rounded-pill px-3 shadow-sm">
+                <i class="bi bi-person-plus-fill me-1"></i> Criar Novo Funcionário
+            </a>
+        </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+        <!-- Tabela Responsiva -->
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">@Html.DisplayNameFor(model => model.Nome)</th>
+                            <th>@Html.DisplayNameFor(model => model.Nif)</th>
+                            <th>@Html.DisplayNameFor(model => model.Email)</th>
+                            <th>@Html.DisplayNameFor(model => model.Telefone)</th>
+                            <th>Serviço</th>
+                            <th>Data de Admissão</th>
+                            <th class="text-center">@Html.DisplayNameFor(model => model.Ativo)</th>
+                            <th class="text-end pe-4">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">
+                                    <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                    Nenhum funcionário registado até ao momento.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <!-- Nome e Morada -->
+                                    <td class="ps-4">
+                                        <div class="fw-bold text-dark">@item.Nome</div>
+                                        <small class="text-muted"><i class="bi bi-geo-alt me-1"></i>@item.Morada</small>
+                                    </td>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Nome)</th>
-            <th>@Html.DisplayNameFor(model => model.Nif)</th>
-            <th>@Html.DisplayNameFor(model => model.Email)</th>
-            <th>@Html.DisplayNameFor(model => model.Telefone)</th>
-            <th>@Html.DisplayNameFor(model => model.Ativo)</th>
-            <th>@Html.DisplayNameFor(model => model.DataAdmissao)</th>
-            <th>@Html.DisplayNameFor(model => model.Morada)</th>
-            <!-- Cabeçalho para o Nome do Serviço -->
-            <th>Serviço</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+                                    <!-- NIF -->
+                                    <td>
+                                        <span class="badge bg-light text-dark border">
+                                            <i class="bi bi-card-heading me-1"></i>@item.Nif
+                                        </span>
+                                    </td>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(model => item.Nome)</td>
-                <td>@Html.DisplayFor(model => item.Nif)</td>
-                <td>@Html.DisplayFor(model => item.Email)</td>
-                <td>@Html.DisplayFor(model => item.Telefone)</td>
-                <td>@Html.DisplayFor(model => item.Ativo)</td>
-                <td>@Html.DisplayFor(model => item.DataAdmissao)</td>
-                <td>@Html.DisplayFor(model => item.Morada)</td>
-                <!-- Exibe o Nome do Serviço relacionado -->
-                <td>@Html.DisplayFor(model => item.Servico!.Nome)</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.FuncionarioId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.FuncionarioId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.FuncionarioId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                                    <!-- Email -->
+                                    <td>
+                                        <a href="mailto:@item.Email" class="text-decoration-none">
+                                            @item.Email
+                                        </a>
+                                    </td>
+
+                                    <!-- Telefone -->
+                                    <td>@item.Telefone</td>
+
+                                    <!-- Nome do Serviço Relacionado -->
+                                    <td>
+                                        <span class="fw-semibold text-primary">
+                                            <i class="bi bi-briefcase me-1"></i>@(item.Servico != null ? item.Servico.Nome : "Sem Serviço")
+                                        </span>
+                                    </td>
+
+                                    <!-- Data de Admissão -->
+                                    <td>@item.DataAdmissao.ToString("dd/MM/yyyy")</td>
+
+                                    <!-- Estado Ativo / Inativo com Badges -->
+                                    <td class="text-center">
+                                        @if (item.Ativo)
+                                        {
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1">
+                                                <i class="bi bi-check-circle-fill me-1"></i>Ativo
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-2 py-1">
+                                                <i class="bi bi-x-circle-fill me-1"></i>Inativo
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <!-- Botões de Ação com Ícones e Tooltips -->
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Edit" asp-route-id="@item.FuncionarioId" class="btn btn-sm btn-outline-warning" title="Editar">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <a asp-action="Details" asp-route-id="@item.FuncionarioId" class="btn btn-sm btn-outline-info" title="Detalhes">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.FuncionarioId" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</div>
