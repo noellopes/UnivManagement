@@ -23,9 +23,6 @@ namespace UnivManagement.Models
         [Phone(ErrorMessage = "Insira um {0} válido.")]
         public required string Telefone { get; set; }
 
-        [Required(ErrorMessage = "Por favor, insira o {0}.")]
-        public required string Regime { get; set; }
-
         public bool Ativo { get; set; } = true;
 
         [DataType(DataType.Date)]
@@ -35,7 +32,12 @@ namespace UnivManagement.Models
         public required string? Morada { get; set; }
 
   
-        public int ServicoFk { get; set; }
-       
+        public int ServicoFuncionarioId { get; set; }
+        public ServicoFuncionario? Servico { get; set; }
+
+      
+        public required string RegimeTrabalhoId { get; set; }
+        public RegimeTrabalho? RegimeTrabalho { get; set; } 
+
     }
 }
