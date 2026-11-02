@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using UnivManagement.Models;
 
-namespace UnivManagement.Models.Scheduling_Group_2
+namespace UnivManagement.Models
 {
-    public class ClassGroup
+    public class Group
     {
-        [Key]
-        public int IdTurma { get; set; }
+        public int GroupId { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique o {0}.")]
         [StringLength(50, ErrorMessage = "O {0} não pode exceder {1} caracteres.")]
@@ -20,6 +20,6 @@ namespace UnivManagement.Models.Scheduling_Group_2
         [Display(Name = "Ativo")]
         public bool Ativo { get; set; } = true;
 
-        public virtual ICollection<Aula> Aulas { get; set; } = new List<Aula>();
+       
     }
 }
