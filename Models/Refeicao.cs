@@ -4,15 +4,8 @@ namespace UnivManagement.Models
 {
     public class Refeicao
     {
-        // Chave primária principal para o Entity Framework
-        public int RefeicaoId { get; set; }
-
-        // Propriedade de compatibilidade para as vistas e código antigo reconhecerem o "Id"
-        public int Id
-        {
-            get => RefeicaoId;
-            set => RefeicaoId = value;
-        }
+        [Key]
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Por favor, insira o nome da refeição.")]
         [StringLength(100, ErrorMessage = "O nome não pode exceder 100 caracteres.")]
