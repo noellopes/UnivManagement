@@ -72,4 +72,6 @@ public class Semester {
     // SCHOOL CALENDAR ID:
     [Display(Name = "Calendário Escolar ID")]
     public int SchoolCalendarId { get; set; }
+    public SchoolCalendar? SchoolCalendar { get; set; }
+
 }

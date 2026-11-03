@@ -94,22 +94,22 @@ namespace UnivManagement.Data {
                     // First semester starts in September,
                     // each subsequent one 5 months later
                     // (with AddMonths to handle year rollover cleanly):
-                    var start       = new DateTime(2025, 9, 1).AddMonths((pos - 1) * 5);
-                    var end         = start.AddMonths(5);
-                    var freqStart   = end.AddMonths(-1);
-                    var freqEnd     = end.AddMonths(-1).AddDays(14);
-                    var resitStart  = end.AddMonths(1);
-                    var resitEnd    = end.AddMonths(1).AddDays(14);
+                    var start = new DateTime(2025, 9, 1).AddMonths((pos - 1) * 5);
+                    var end = start.AddMonths(5);
+                    var freqStart = end.AddMonths(-1);
+                    var freqEnd = end.AddMonths(-1).AddDays(14);
+                    var resitStart = end.AddMonths(1);
+                    var resitEnd = end.AddMonths(1).AddDays(14);
 
                     semesters.Add(new Semester {
-                        PosNum              = pos,
-                        StartSemester       = start,
-                        EndSemester         = end,
-                        StartFreqExam       = freqStart,
-                        EndFreqExam         = freqEnd,
-                        StartResitExam      = resitStart,
-                        EndResitExam        = resitEnd,
-                        SchoolCalendarId    = calendar.SchoolCalendarId
+                        PosNum = pos,
+                        StartSemester = start,
+                        EndSemester = end,
+                        StartFreqExam = freqStart,
+                        EndFreqExam = freqEnd,
+                        StartResitExam = resitStart,
+                        EndResitExam = resitEnd,
+                        SchoolCalendarId = calendar.SchoolCalendarId
                     });
                 }
             }
