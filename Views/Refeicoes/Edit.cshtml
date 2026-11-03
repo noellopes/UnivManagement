@@ -1,0 +1,54 @@
+﻿@model UnivManagement.Models.Refeicao
+
+@{
+    ViewData["Title"] = "Editar refeição";
+}
+
+<h1>Editar refeição</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" asp-route-id="@Model.RefeicaoId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RefeicaoId" />
+
+            <div class="mb-3">
+                <label asp-for="Nome" class="form-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TipoRefeicaoId" class="form-label"></label>
+                <select asp-for="TipoRefeicaoId" class="form-select" asp-items="ViewBag.TipoRefeicaoId"></select>
+                <span asp-validation-for="TipoRefeicaoId" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Preco" class="form-label"></label>
+                <input asp-for="Preco" class="form-control" />
+                <span asp-validation-for="Preco" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success">Guardar alterações</button>
+            <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Aceitar a vírgula como separador decimal (ex: 3,50)
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^\d+([.,]\d{1,2})?$/.test(value);
+        };
+        $.validator.methods.range = function (value, element, param) {
+            var n = parseFloat(value.replace(',', '.'));
+            return this.optional(element) || (n >= param[0] && n <= param[1]);
+        };
+    </script>
+}
