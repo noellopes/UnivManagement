@@ -11,6 +11,8 @@ StudyPlan:
  * MinEctsYear3      int         (value between 60 and 120)
  * NumYears          int         (value between 2 and 3)
  * CreationDate      DateOnly
+ * UseStartDate      int         (value between 2000 and 9999)
+ * UseEndDate        int         (value between 2000 and 9999)
 */
 
 /// <summary>
@@ -19,7 +21,7 @@ StudyPlan:
 public class StudyPlan {
     /* ID: */
     [Display(Name = "ID")]
-    public required int StudyPlanId { get; set; }
+    public int StudyPlanId { get; set; }
 
     /* TOTAL ECTS: */
     [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
@@ -56,4 +58,14 @@ public class StudyPlan {
     [DataType(DataType.Date)]
     [Display(Name = "Data de Criação")]
     public required DateOnly CreationDate { get; set; }
+
+    /* PLAN START USE DATES: */
+    [Range(2000, 9999, ErrorMessage = "Ano de início deve ter o máximo de 4 dígitos")]
+    [Display(Name = "Início Vigor")]
+    public int? UseStartDate { get; set; }
+
+    /* PLAN END USE DATES: */
+    [Range(2000, 9999, ErrorMessage = "Ano de fim deve ter o máximo de 4 dígitos")]
+    [Display(Name = "Fim Vigor")]
+    public int? UseEndDate { get; set; }
 }
