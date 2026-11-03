@@ -9,6 +9,10 @@ namespace UnivManagement.Models
         public int DocenteId { get; set; }
 
         [Required(ErrorMessage = "Por favor, insira o {0}.")]
+        [Range(1, 999, ErrorMessage = "O {0} deve estar entre {1} e {2}.")]
+        public int NumDocente { get; set; }
+
+        [Required(ErrorMessage = "Por favor, insira o {0}.")]
         [StringLength(200, ErrorMessage = "O campo {0} não pode exceder {1} carateres.")]
         public required string Nome { get; set; }
 
@@ -24,11 +28,6 @@ namespace UnivManagement.Models
         [Phone(ErrorMessage = "Insira um {0} válido.")]
         public required string Telefone { get; set; }
 
-        
-        public required string FuncaoDocenteFK { get; set; }
-
-        public required string RegimeFK { get; set; }
-
         public bool Ativo { get; set; } = true;
 
         [DataType(DataType.Date)]
@@ -38,8 +37,17 @@ namespace UnivManagement.Models
         [StringLength(100, ErrorMessage = "O campo {0} não pode exceder {1} carateres.")]
         public required string Morada { get; set; }
 
-    
-        public long DepartamentoFk { get; set; }
-        
+        // Função Docente (FK) (Opcional)
+        public int? FuncaoDocenteId { get; set; }
+        public DocenteFuncao? FuncaoDocente { get; set; } // Navigation property
+
+        // Regime (FK) (Opcional)
+        public int? RegimeId { get; set; }
+        public Regime? Regime { get; set; } // Navigation property
+
+        // Departamento (FK) (Opcional)
+        public int? DepartamentoId { get; set; }
+        public Departamento? Departamento { get; set; } // Navigation property
+
     }
 }
