@@ -11,6 +11,10 @@ namespace UnivManagement.Data {
             PopulateSemesters(db);
         }
 
+        /// <summary>
+        /// Manually populates academic year table.
+        /// </summary>
+        /// <param name="db">database context object reference</param>
         internal static void PopulateAcademicYears(UniversityDbContext? db) {
             if (db == null || db.AcademicYear.Any()) return;
 
@@ -40,6 +44,10 @@ namespace UnivManagement.Data {
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Manually populates school calendar table.
+        /// </summary>
+        /// <param name="db">database context object reference</param>
         internal static void PopulateSchoolCalendars(UniversityDbContext? db) {
             if (db == null || db.SchoolCalendar.Any()) return;
 
@@ -65,40 +73,43 @@ namespace UnivManagement.Data {
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Procedurally populates semester table.
+        /// </summary>
+        /// <param name="db">database context object reference</param>
         internal static void PopulateSemesters(UniversityDbContext? db) {
             if (db == null || db.Semester.Any()) return;
 
-            // Pre-condition: PopulateSchoolCalendars must have run first.
             var calendars = db.SchoolCalendar
                 .Include(c => c.AcademicYear)
                 .OrderBy(c => c.SchoolCalendarId)
                 .ToList();
-            if (calendars.Count == 0) return;
+            if (calendars.Count <= 0) return;
 
             var semesters = new List<Semester>();
 
             foreach (var calendar in calendars) {
-                // One semester per declared position, matching TotalSemesters.
+                // One semester per declared position, matching TotalSemesters:
                 for (int pos = 1; pos <= calendar.TotalSemesters; ++pos) {
                     // First semester starts in September,
-                    // each subsequent one 5 months later (with AddMonths to handle
-                    // year rollover cleanly).
-                    var start = new DateTime(2025, 9, 1).AddMonths((pos - 1) * 5);
-                    var end = start.AddMonths(5);
-                    var freqStart = end.AddMonths(-1);
-                    var freqEnd = end.AddMonths(-1).AddDays(14);
-                    var resitStart = end.AddMonths(1);
-                    var resitEnd = end.AddMonths(1).AddDays(14);
+                    // each subsequent one 5 months later
+                    // (with AddMonths to handle year rollover cleanly):
+                    var start       = new DateTime(2025, 9, 1).AddMonths((pos - 1) * 5);
+                    var end         = start.AddMonths(5);
+                    var freqStart   = end.AddMonths(-1);
+                    var freqEnd     = end.AddMonths(-1).AddDays(14);
+                    var resitStart  = end.AddMonths(1);
+                    var resitEnd    = end.AddMonths(1).AddDays(14);
 
                     semesters.Add(new Semester {
-                        PosNum = pos,
-                        StartSemester = start,
-                        EndSemester = end,
-                        StartFreqExam = freqStart,
-                        EndFreqExam = freqEnd,
-                        StartResitExam = resitStart,
-                        EndResitExam = resitEnd,
-                        SchoolCalendarId = calendar.SchoolCalendarId
+                        PosNum              = pos,
+                        StartSemester       = start,
+                        EndSemester         = end,
+                        StartFreqExam       = freqStart,
+                        EndFreqExam         = freqEnd,
+                        StartResitExam      = resitStart,
+                        EndResitExam        = resitEnd,
+                        SchoolCalendarId    = calendar.SchoolCalendarId
                     });
                 }
             }
