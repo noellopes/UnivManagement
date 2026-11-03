@@ -1,9 +1,9 @@
 
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models;
 using UnivManagement.Data;
+using UnivManagement.Models;
 
 public class CatalogoController : Controller
 {
@@ -14,22 +14,28 @@ public class CatalogoController : Controller
         _context = context;
     }
 
-    // GET: CATALOGOS
-    public async Task<IActionResult> Index()    
+    // GET: Catalogo
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Catalogos.ToListAsync());
+        var catalogos = await _context.Catalogos
+            .Include(c => c.Autor)
+            .ToListAsync();
+
+        return View(catalogos);
     }
 
-    // GET: CATALOGOS/Details/5
-    public async Task<IActionResult> Details(int? idcatalogo)
+    // GET: Catalogo/Details/5
+    public async Task<IActionResult> Details(int? id)
     {
-        if (idcatalogo == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var catalogo = await _context.Catalogos
-            .FirstOrDefaultAsync(m => m.CatalogoId == idcatalogo);
+            .Include(c => c.Autor)
+            .FirstOrDefaultAsync(c => c.CatalogoId == id);
+
         if (catalogo == null)
         {
             return NotFound();
@@ -38,30 +44,39 @@ public class CatalogoController : Controller
         return View(catalogo);
     }
 
-    // GET: CATALOGOS/Create
-    public IActionResult Create()
+    // GET: Catalogo/Create
+    public async Task<IActionResult> Create()
     {
+        await CarregarAutores();
         return View();
     }
 
-    // POST: CATALOGOS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: Catalogo/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ISBN,Titulo,Autor")] Catalogo catalogo)
+    public async Task<IActionResult> Create(
+        [Bind("ISBN,Titulo,AutorId")] Catalogo catalogo)
     {
+        if (!await _context.Autores
+            .AnyAsync(a => a.AutorId == catalogo.AutorId))
+        {
+            ModelState.AddModelError(
+                "AutorId", "Selecione um autor válido.");
+        }
+
         if (ModelState.IsValid)
         {
-            _context.Add(catalogo);
+            _context.Catalogos.Add(catalogo);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
+        await CarregarAutores(catalogo.AutorId);
         return View(catalogo);
     }
 
-    // GET: CATALOGOS/Edit/5
-
+    // GET: Catalogo/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -76,42 +91,34 @@ public class CatalogoController : Controller
             return NotFound();
         }
 
-        ViewBag.AutorId = new SelectList(
-            await _context.Autores.ToListAsync(),
-            "AutorId",
-            "Nome",
-            catalogo.AutorId
-        );
-
+        await CarregarAutores(catalogo.AutorId);
         return View(catalogo);
     }
 
-
-    // POST: CATALOGOS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
+    // POST: Catalogo/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
         int? id,
         [Bind("CatalogoId,ISBN,Titulo,AutorId")] Catalogo catalogo)
     {
-        if (id != catalogo.CatalogoId)
+        if (id == null || id != catalogo.CatalogoId)
         {
             return NotFound();
         }
 
-        if (!await _context.Autores.AnyAsync(a => a.AutorId == catalogo.AutorId))
+        if (!await _context.Autores
+            .AnyAsync(a => a.AutorId == catalogo.AutorId))
         {
-            ModelState.AddModelError("AutorId", "Selecione um autor válido.");
+            ModelState.AddModelError(
+                "AutorId", "Selecione um autor válido.");
         }
 
         if (ModelState.IsValid)
         {
             try
             {
-                _context.Update(catalogo);
+                _context.Catalogos.Update(catalogo);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -127,27 +134,22 @@ public class CatalogoController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewBag.AutorId = new SelectList(
-            await _context.Autores.ToListAsync(),
-            "AutorId",
-            "Nome",
-            catalogo.AutorId
-        );
-
+        await CarregarAutores(catalogo.AutorId);
         return View(catalogo);
     }
 
-
-    // GET: CATALOGOS/Delete/5
-    public async Task<IActionResult> Delete(int? idcatalogo)
+    // GET: Catalogo/Delete/5
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (idcatalogo == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var catalogo = await _context.Catalogos
-            .FirstOrDefaultAsync(m => m.CatalogoId == idcatalogo);
+            .Include(c => c.Autor)
+            .FirstOrDefaultAsync(c => c.CatalogoId == id);
+
         if (catalogo == null)
         {
             return NotFound();
@@ -156,23 +158,46 @@ public class CatalogoController : Controller
         return View(catalogo);
     }
 
-    // POST: CATALOGOS/Delete/5
+    // POST: Catalogo/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? idcatalogo)
+    public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var catalogo = await _context.Catalogos.FindAsync(idcatalogo);
-        if (catalogo != null)
+        if (id == null)
         {
-            _context.Catalogos.Remove(catalogo);
+            return NotFound();
         }
 
+        var catalogo = await _context.Catalogos.FindAsync(id);
+
+        if (catalogo == null)
+        {
+            return NotFound();
+        }
+
+        _context.Catalogos.Remove(catalogo);
         await _context.SaveChangesAsync();
+
         return RedirectToAction(nameof(Index));
     }
 
-    private bool CatalogoExists(int? idcatalogo)
+    private async Task CarregarAutores(int? autorSelecionado = null)
     {
-        return _context.Catalogos.Any(e => e.CatalogoId == idcatalogo);
+        var autores = await _context.Autores
+            .OrderBy(a => a.Nome)
+            .ToListAsync();
+
+        ViewBag.AutorId = new SelectList(
+            autores,
+            "AutorId",
+            "Nome",
+            autorSelecionado
+        );
+    }
+
+    private bool CatalogoExists(int id)
+    {
+        return _context.Catalogos
+            .Any(c => c.CatalogoId == id);
     }
 }
