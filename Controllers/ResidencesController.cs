@@ -14,13 +14,11 @@ public class ResidencesController : Controller
         _context = context;
     }
 
-    // GET: RESIDENCES
     public async Task<IActionResult> Index()
     {
         return View(await _context.Residence.ToListAsync());
     }
 
-    // GET: RESIDENCES/Details/5
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
@@ -38,16 +36,14 @@ public class ResidencesController : Controller
         return View(residence);
     }
 
-    // GET: RESIDENCES/Create
     public IActionResult Create()
     {
         return View();
     }
 
-    // POST: RESIDENCES/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ResidenceId,Name,Address,IsActive")] Residence residence)
+    public async Task<IActionResult> Create([Bind("ResidenceId,Name,Address,Capacity,IsActive")] Residence residence)
     {
         if (ModelState.IsValid)
         {
@@ -58,7 +54,6 @@ public class ResidencesController : Controller
         return View(residence);
     }
 
-    // GET: RESIDENCES/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -74,10 +69,9 @@ public class ResidencesController : Controller
         return View(residence);
     }
 
-    // POST: RESIDENCES/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("ResidenceId,Name,Address,IsActive")] Residence residence)
+    public async Task<IActionResult> Edit(int? id, [Bind("ResidenceId,Name,Address,Capacity,IsActive")] Residence residence)
     {
         if (id != residence.ResidenceId)
         {
@@ -107,7 +101,6 @@ public class ResidencesController : Controller
         return View(residence);
     }
 
-    // GET: RESIDENCES/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -125,7 +118,6 @@ public class ResidencesController : Controller
         return View(residence);
     }
 
-    // POST: RESIDENCES/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
