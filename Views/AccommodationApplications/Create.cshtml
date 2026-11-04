@@ -27,9 +27,10 @@
             <div class="form-group mb-3">
                 <label asp-for="Status" class="control-label"></label>
                 <select asp-for="Status" class="form-select">
-                    <option value="0">Em processo</option>
-                    <option value="1">Aceite</option>
-                    <option value="2">Recusada</option>
+                        <option value="0">Submetida</option>
+                        <option value="1">Em processo</option>
+                        <option value="2">Aceite</option>
+                        <option value="3">Recusada</option>
                 </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
