@@ -16,7 +16,7 @@ public class Residence
     public required string Address { get; set; }
 
     [Required(ErrorMessage = "The {0} is required.")]
-    [Range(1, 5000, ErrorMessage = "The {0} must be between {1} and {2}.")]
+    [Range(1, 300, ErrorMessage = "The {0} must be between {1} and {2}.")]
     [Display(Name = "Capacity (Beds)")]
     public int Capacity { get; set; }
 
