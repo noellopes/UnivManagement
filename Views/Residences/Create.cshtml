@@ -5,7 +5,6 @@
 }
 
 <h1>Create</h1>
-
 <h4>Residence</h4>
 <hr />
 <div class="row">
@@ -23,6 +22,12 @@
                 <label asp-for="Address" class="control-label fw-bold"></label>
                 <input asp-for="Address" class="form-control" placeholder="Enter the full address" />
                 <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Capacity" class="control-label fw-bold"></label>
+                <input asp-for="Capacity" class="form-control" type="number" placeholder="Enter number of beds" />
+                <span asp-validation-for="Capacity" class="text-danger"></span>
             </div>
 
             <div class="form-group form-check mb-4">
