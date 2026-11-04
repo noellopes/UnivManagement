@@ -14,13 +14,13 @@
 
             <div class="form-group mb-3">
                 <label asp-for="StudentId" class="control-label"></label>
-                <input asp-for="StudentId" class="form-control" />
+                <input asp-for="StudentId" class="form-control" type="number" min="1" />
                 <span asp-validation-for="StudentId" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">
                 <label asp-for="AcademicYearId" class="control-label"></label>
-                <input asp-for="AcademicYearId" class="form-control" />
+                <input asp-for="AcademicYearId" class="form-control" type="number" min="1" />
                 <span asp-validation-for="AcademicYearId" class="text-danger"></span>
             </div>
 
