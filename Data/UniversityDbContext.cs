@@ -6,6 +6,27 @@ namespace UnivManagement.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
+            // ServiceRequestType: two request types cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestType>()
+                .HasIndex(t => t.Name)
+                .IsUnique();
+
+            // ServiceRequestStatus: two statuses cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestStatus>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            // ServiceRequest: a type or status that is used by a request cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequest>()
+                .HasOne(r => r.Type)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.ServiceRequest>()
+                .HasOne(r => r.Status)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.NumStudent)
@@ -42,6 +63,10 @@ namespace UnivManagement.Data {
                 .IsUnique();
         }
       
+        public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
