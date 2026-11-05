@@ -1,0 +1,68 @@
+@model ServiceRequest
+
+@{
+    ViewData["Title"] = "New request";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to list
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">New request</h1>
+        <p class="text-body-secondary">
+            Fill in the details below to submit a new administrative request.
+        </p>
+    </header>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Short summary of the request" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="5"
+                              placeholder="Describe what you need (optional)"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ServiceRequestTypeId" class="form-label"></label>
+                    <select asp-for="ServiceRequestTypeId" class="form-select" asp-items="ViewBag.Types">
+                        <option value="">Choose a type</option>
+                    </select>
+                    <span asp-validation-for="ServiceRequestTypeId" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RequesterName" class="form-label"></label>
+                    <input asp-for="RequesterName" class="form-control" placeholder="Your full name" />
+                    <span asp-validation-for="RequesterName" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RequesterEmail" class="form-label"></label>
+                    <input asp-for="RequesterEmail" class="form-control" placeholder="name@example.com" />
+                    <span asp-validation-for="RequesterEmail" class="text-danger small"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

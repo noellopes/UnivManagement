@@ -1,0 +1,83 @@
+@model ServiceRequest
+
+@{
+    ViewData["Title"] = "Edit request";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to list
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">Edit request</h1>
+        @if (Model.CreatedAt > DateTime.MinValue) {
+            <p class="text-body-secondary">
+                @Html.DisplayNameFor(m => m.CreatedAt): @Model.CreatedAt.ToString("g")
+            </p>
+        }
+    </header>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="ServiceRequestId" />
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ServiceRequestTypeId" class="form-label"></label>
+                        <select asp-for="ServiceRequestTypeId" class="form-select" asp-items="ViewBag.Types"></select>
+                        <span asp-validation-for="ServiceRequestTypeId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ServiceRequestStatusId" class="form-label"></label>
+                        <select asp-for="ServiceRequestStatusId" class="form-select" asp-items="ViewBag.Statuses"></select>
+                        <span asp-validation-for="ServiceRequestStatusId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RequesterName" class="form-label"></label>
+                    <input asp-for="RequesterName" class="form-control" />
+                    <span asp-validation-for="RequesterName" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RequesterEmail" class="form-label"></label>
+                    <input asp-for="RequesterEmail" class="form-control" />
+                    <span asp-validation-for="RequesterEmail" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="AssignedTo" class="form-label"></label>
+                    <input asp-for="AssignedTo" class="form-control" placeholder="Person or department in charge" />
+                    <span asp-validation-for="AssignedTo" class="text-danger small"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
