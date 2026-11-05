@@ -1,0 +1,4 @@
+@model ServiceRequestStatus
+
+@* Used in every page that shows a request status, with the colour chosen in the list of statuses *@
+<span class="badge text-bg-@Model.Color" title="@Model.Description">@Model.Name</span>

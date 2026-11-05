@@ -26,7 +26,7 @@
                 <dd class="col-sm-9">@Model.Type?.Name</dd>
 
                 <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Status)</dt>
-                <dd class="col-sm-9">@Model.Status?.Name</dd>
+                <dd class="col-sm-9"><partial name="_ServiceRequestStatusBadge" model="Model.Status" /></dd>
 
                 <dt class="col-sm-3">@Html.DisplayNameFor(m => m.RequesterName)</dt>
                 <dd class="col-sm-9">@Model.RequesterName</dd>
