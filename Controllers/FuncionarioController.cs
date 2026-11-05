@@ -16,7 +16,6 @@ public class FuncionarioController : Controller
     // GET: FUNCIONARIOS
     public async Task<IActionResult> Index()
     {
-        // O .Include(f => f.Servico) garante que os dados do ServicoFuncionario vêm preenchidos da BD
         var funcionarios = await _context.Funcionario
             .Include(f => f.Servico)
             .ToListAsync();
@@ -30,16 +29,16 @@ public class FuncionarioController : Controller
     {
         if (funcionarioid == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var funcionario = await _context.Funcionario
-            .Include(f => f.Servico) // Carrega os dados do serviço
+            .Include(f => f.Servico)
             .FirstOrDefaultAsync(m => m.FuncionarioId == funcionarioid);
 
         if (funcionario == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         return View(funcionario);
@@ -48,7 +47,6 @@ public class FuncionarioController : Controller
     // GET: Funcionarios/Create
     public IActionResult Create()
     {
-        // Carrega todos os serviços disponíveis sem filtrar por 'Ativo' para evitar a dropdown vazia
         var servicos = _context.ServicoFuncionario.ToList();
         ViewData["ServicoFuncionarioId"] = new SelectList(servicos, "ServicoFuncionarioId", "Nome");
 
@@ -67,7 +65,6 @@ public class FuncionarioController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        // Se o formulário tiver erros, recarrega a lista para a dropdown não ficar vazia
         var servicos = _context.ServicoFuncionario.ToList();
         ViewData["ServicoFuncionarioId"] = new SelectList(servicos, "ServicoFuncionarioId", "Nome", funcionario.ServicoFuncionarioId);
 
@@ -79,16 +76,15 @@ public class FuncionarioController : Controller
     {
         if (id == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var funcionario = await _context.Funcionario.FindAsync(id);
         if (funcionario == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
-        // Preenche o SelectList e pré-seleciona o serviço atual do funcionário
         var servicos = _context.ServicoFuncionario.ToList();
         ViewData["ServicoFuncionarioId"] = new SelectList(servicos, "ServicoFuncionarioId", "Nome", funcionario.ServicoFuncionarioId);
 
@@ -102,7 +98,7 @@ public class FuncionarioController : Controller
     {
         if (id != funcionario.FuncionarioId)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         if (ModelState.IsValid)
@@ -116,7 +112,7 @@ public class FuncionarioController : Controller
             {
                 if (!FuncionarioExists(funcionario.FuncionarioId))
                 {
-                    return NotFound();
+                    return View("NotFound");
                 }
                 else
                 {
@@ -126,7 +122,6 @@ public class FuncionarioController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        // Se falhar a validação, recarrega a dropdown mantendo o valor selecionado
         var servicos = _context.ServicoFuncionario.ToList();
         ViewData["ServicoFuncionarioId"] = new SelectList(servicos, "ServicoFuncionarioId", "Nome", funcionario.ServicoFuncionarioId);
 
@@ -139,32 +134,43 @@ public class FuncionarioController : Controller
     {
         if (funcionarioid == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var funcionario = await _context.Funcionario
-            .Include(f => f.Servico) // Carrega os dados do serviço
+            .Include(f => f.Servico)
             .FirstOrDefaultAsync(m => m.FuncionarioId == funcionarioid);
 
         if (funcionario == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         return View(funcionario);
     }
 
     // POST: FUNCIONARIOS/Delete/5
-    [HttpPost, ActionName("Delete")]
+    [HttpPost("/Funcionario/Delete/{funcionarioid}"), ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? funcionarioid)
     {
-        var funcionario = await _context.Funcionario.FindAsync(funcionarioid);
-        if (funcionario != null)
+        if (funcionarioid == null)
         {
-            _context.Funcionario.Remove(funcionario);
-            await _context.SaveChangesAsync();
+            return View("NotFound");
         }
+
+        // Procura na BD o funcionário com o ID que está no URL (ex: 274)
+        var funcionario = await _context.Funcionario.FindAsync(funcionarioid);
+
+        // Se o ID da URL não existir na BD, abre a página NotFound
+        if (funcionario == null)
+        {
+            return View("NotFound");
+        }
+
+        // Só apaga se o registo com esse ID realmente existir
+        _context.Funcionario.Remove(funcionario);
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
     }
