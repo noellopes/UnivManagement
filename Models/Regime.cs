@@ -10,7 +10,7 @@ namespace UnivManagement.Models
         [StringLength(50, ErrorMessage = "O campo {0} não pode exceder {1} carateres.")]
         public required string Nome { get; set; }
 
-        public Datatime DataCriacao { get; set; } = DateTime.Now;
+        public DateTime DataCriacao { get; set; } = DateTime.Now;
 
         public bool Ativo { get; set; } = true; 
     }

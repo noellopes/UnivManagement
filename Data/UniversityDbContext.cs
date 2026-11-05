@@ -3,6 +3,7 @@ using UnivManagement.Models;
 
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+        public DbSet<UnivManagement.Models.Departamento> Departamento { get; set; } = default!;
         public DbSet<Refeicao> Refeicoes { get; set; }
     }
 }
