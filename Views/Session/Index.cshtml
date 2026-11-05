@@ -1,0 +1,77 @@
+@model IEnumerable<UnivManagement.Models.Session>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DiaSemana)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraFim)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoAula)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdSala)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdTurma)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassGroup)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.DiaSemana)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.HoraInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.HoraFim)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.TipoAula)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Ativo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IdSala)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IdTurma)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ClassGroup)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ClassSessionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ClassSessionId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ClassSessionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
