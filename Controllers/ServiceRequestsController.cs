@@ -50,11 +50,21 @@ namespace UnivManagement.Controllers {
             var serviceRequest = await _context.ServiceRequests
                 .Include(r => r.Type)
                 .Include(r => r.Status)
+                .Include(r => r.History
+                    .OrderByDescending(h => h.ChangedAt)
+                    .ThenByDescending(h => h.ServiceRequestHistoryId))
+                    .ThenInclude(h => h.OldStatus)
+                .Include(r => r.History)
+                    .ThenInclude(h => h.NewStatus)
+                .Include(r => r.Comments.OrderBy(c => c.CreatedAt))
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(r => r.ServiceRequestId == id);
             if (serviceRequest == null) {
                 return NotFound();
             }
 
+            // The statuses for the process form of the details page
+            await PopulateListsAsync(selectedStatusId: serviceRequest.ServiceRequestStatusId);
             return View(serviceRequest);
         }
 
@@ -84,6 +94,10 @@ namespace UnivManagement.Controllers {
             // Status and dates are always set by the server, never by the form
             serviceRequest.ServiceRequestStatusId = firstStatus!.ServiceRequestStatusId;
             serviceRequest.CreatedAt = DateTime.Now;
+            serviceRequest.History.Add(new ServiceRequestHistory {
+                Action = "Request submitted",
+                NewStatusId = firstStatus.ServiceRequestStatusId
+            });
 
             _context.Add(serviceRequest);
             await _context.SaveChangesAsync();
@@ -132,6 +146,18 @@ namespace UnivManagement.Controllers {
                 return NotFound();
             }
 
+            var assignedTo = string.IsNullOrWhiteSpace(posted.AssignedTo) ? null : posted.AssignedTo.Trim();
+
+            bool detailsChanged = serviceRequest.Title != posted.Title
+                || serviceRequest.Description != posted.Description
+                || serviceRequest.ServiceRequestTypeId != posted.ServiceRequestTypeId
+                || serviceRequest.RequesterName != posted.RequesterName
+                || serviceRequest.RequesterEmail != posted.RequesterEmail;
+            if (detailsChanged) {
+                serviceRequest.History.Add(new ServiceRequestHistory { Action = "Request details updated" });
+            }
+            RecordChanges(serviceRequest, status!, assignedTo, null);
+
             // Copy only the editable fields; CreatedAt is kept from the database
             serviceRequest.Title = posted.Title;
             serviceRequest.Description = posted.Description;
@@ -139,16 +165,58 @@ namespace UnivManagement.Controllers {
             serviceRequest.ServiceRequestStatusId = posted.ServiceRequestStatusId;
             serviceRequest.RequesterName = posted.RequesterName;
             serviceRequest.RequesterEmail = posted.RequesterEmail;
-            serviceRequest.AssignedTo = string.IsNullOrWhiteSpace(posted.AssignedTo) ? null : posted.AssignedTo.Trim();
-            serviceRequest.UpdatedAt = DateTime.Now;
-
-            // A status that closes the request sets the closing date; any other status clears it
-            serviceRequest.ClosedAt = status!.IsFinal ? serviceRequest.ClosedAt ?? DateTime.Now : null;
+            serviceRequest.AssignedTo = assignedTo;
+            UpdateDates(serviceRequest, status!);
 
             await _context.SaveChangesAsync();
 
             TempData["Message"] = "The request was updated.";
             return RedirectToAction(nameof(Index));
+        }
+
+        // POST: ServiceRequests/Process/5
+        // Quick update from the details page: change the status, the assignment and/or add a note
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Process(int id, int serviceRequestStatusId, string? assignedTo, string? note) {
+            var serviceRequest = await _context.ServiceRequests.FindAsync(id);
+            if (serviceRequest == null) {
+                return NotFound();
+            }
+
+            var status = await _context.ServiceRequestStatuses.FindAsync(serviceRequestStatusId);
+            assignedTo = string.IsNullOrWhiteSpace(assignedTo) ? null : assignedTo.Trim();
+            note = string.IsNullOrWhiteSpace(note) ? null : note.Trim();
+            bool statusChanged = serviceRequestStatusId != serviceRequest.ServiceRequestStatusId;
+
+            string? error = null;
+            if (status == null) {
+                error = "Please choose a status from the list.";
+            } else if (note?.Length > 500) {
+                error = "The note cannot exceed 500 characters.";
+            } else if (assignedTo?.Length > 200) {
+                error = "The assigned to field cannot exceed 200 characters.";
+            } else if (note == null && statusChanged && status.RequiresNote) {
+                // The requester must know why the request was rejected or what is missing
+                error = $"Please add a note explaining the reason for the status \"{status.Name}\".";
+            } else if (!statusChanged && assignedTo == serviceRequest.AssignedTo && note == null) {
+                error = "There is nothing to update.";
+            }
+
+            if (error != null) {
+                TempData["Error"] = error;
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            RecordChanges(serviceRequest, status!, assignedTo, note);
+            serviceRequest.ServiceRequestStatusId = status!.ServiceRequestStatusId;
+            serviceRequest.AssignedTo = assignedTo;
+            UpdateDates(serviceRequest, status);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = "The request was updated.";
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         // GET: ServiceRequests/Delete/5
@@ -180,6 +248,38 @@ namespace UnivManagement.Controllers {
 
             TempData["Message"] = "The request was deleted.";
             return RedirectToAction(nameof(Index));
+        }
+
+        // Adds one history entry for each change of status or assignment.
+        // If there is a note but nothing else changed, the note is saved on its own.
+        private static void RecordChanges(ServiceRequest request, ServiceRequestStatus newStatus, string? newAssignedTo, string? note) {
+            if (request.ServiceRequestStatusId != newStatus.ServiceRequestStatusId) {
+                request.History.Add(new ServiceRequestHistory {
+                    Action = "Status changed",
+                    OldStatusId = request.ServiceRequestStatusId,
+                    NewStatusId = newStatus.ServiceRequestStatusId,
+                    Note = note
+                });
+                note = null;
+            }
+
+            if (request.AssignedTo != newAssignedTo) {
+                request.History.Add(new ServiceRequestHistory {
+                    Action = newAssignedTo == null ? "Assignment removed" : $"Assigned to {newAssignedTo}",
+                    Note = note
+                });
+                note = null;
+            }
+
+            if (note != null) {
+                request.History.Add(new ServiceRequestHistory { Action = "Note added", Note = note });
+            }
+        }
+
+        // A status that closes the request sets the closing date; any other status clears it
+        private static void UpdateDates(ServiceRequest request, ServiceRequestStatus status) {
+            request.UpdatedAt = DateTime.Now;
+            request.ClosedAt = status.IsFinal ? request.ClosedAt ?? DateTime.Now : null;
         }
 
         // New requests start with the first status of the list that does not close the request

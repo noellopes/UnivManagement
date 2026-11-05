@@ -1,0 +1,38 @@
+@model IEnumerable<ServiceRequestHistory>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <i class="bi bi-clock-history"></i> History
+    </div>
+
+    @if (!Model.Any()) {
+        <div class="card-body text-body-secondary">No actions recorded yet.</div>
+    } else {
+        <ul class="list-group list-group-flush">
+            @foreach (var entry in Model) {
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-semibold">@entry.Action</span>
+                        <small class="text-body-secondary text-nowrap ms-2">@entry.ChangedAt.ToString("yyyy-MM-dd HH:mm")</small>
+                    </div>
+
+                    @if (entry.OldStatus != null || entry.NewStatus != null) {
+                        <div class="mt-1">
+                            @if (entry.OldStatus != null) {
+                                <partial name="_ServiceRequestStatusBadge" model="entry.OldStatus" />
+                                <i class="bi bi-arrow-right"></i>
+                            }
+                            @if (entry.NewStatus != null) {
+                                <partial name="_ServiceRequestStatusBadge" model="entry.NewStatus" />
+                            }
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(entry.Note)) {
+                        <p class="small mb-0 mt-1">@entry.Note</p>
+                    }
+                </li>
+            }
+        </ul>
+    }
+</div>

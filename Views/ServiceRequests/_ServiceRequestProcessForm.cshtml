@@ -1,0 +1,28 @@
+@model ServiceRequest
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <i class="bi bi-gear"></i> Process request
+    </div>
+    <div class="card-body">
+        <form asp-action="Process" asp-route-id="@Model.ServiceRequestId" method="post">
+            <div class="mb-3">
+                <label asp-for="ServiceRequestStatusId" class="form-label"></label>
+                <select asp-for="ServiceRequestStatusId" class="form-select" asp-items="ViewBag.Statuses"></select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AssignedTo" class="form-label"></label>
+                <input asp-for="AssignedTo" class="form-control" placeholder="Person or department in charge" />
+            </div>
+
+            <div class="mb-3">
+                <label for="note" class="form-label">Note</label>
+                <textarea id="note" name="note" class="form-control" rows="3" maxlength="500"></textarea>
+                <div class="form-text">Required for the statuses that ask for a reason, such as rejected or waiting for information.</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Update request</button>
+        </form>
+    </div>
+</div>
