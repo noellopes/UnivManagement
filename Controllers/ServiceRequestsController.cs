@@ -6,14 +6,17 @@ using UnivManagement.Models;
 
 namespace UnivManagement.Controllers {
     public class ServiceRequestsController : Controller {
+        private const int PageSize = 10;
+
         private readonly UniversityDbContext _context;
 
         public ServiceRequestsController(UniversityDbContext context) {
             _context = context;
         }
 
-        // GET: ServiceRequests?search=...&status=2&type=1&priority=3&overdue=true
-        public async Task<IActionResult> Index(string? search, int? status, int? type, int? priority, bool overdue = false) {
+        // GET: ServiceRequests?search=...&status=2&type=1&priority=3&overdue=true&page=2
+        public async Task<IActionResult> Index(string? search, int? status, int? type, int? priority,
+            bool overdue = false, int page = 1) {
             var requests = _context.ServiceRequests
                 .Include(r => r.Type)
                 .Include(r => r.Status)
@@ -49,7 +52,22 @@ namespace UnivManagement.Controllers {
             ViewData["Overdue"] = overdue;
             await PopulateListsAsync(type, status, priority);
 
-            return View(await requests.OrderByDescending(r => r.CreatedAt).ToListAsync());
+            var paging = new ServiceRequestPagingInfo {
+                PageSize = PageSize,
+                TotalItems = await requests.CountAsync()
+            };
+            // A page out of range shows the closest valid one
+            paging.CurrentPage = Math.Clamp(page, 1, paging.TotalPages);
+            ViewData["Paging"] = paging;
+
+            var pageItems = await requests
+                .OrderByDescending(r => r.CreatedAt)
+                .ThenByDescending(r => r.ServiceRequestId)
+                .Skip((paging.CurrentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            return View(pageItems);
         }
 
         // GET: ServiceRequests/Details/5
