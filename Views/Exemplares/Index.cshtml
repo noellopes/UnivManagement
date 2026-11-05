@@ -1,0 +1,53 @@
+@model IEnumerable<UnivManagement.Models.Exemplar>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Codigo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCatalogoFK)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Catalogo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Codigo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Estado)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IdCatalogoFK)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Catalogo)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ExemplarId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ExemplarId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ExemplarId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
