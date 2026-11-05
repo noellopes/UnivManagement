@@ -21,6 +21,30 @@ namespace UnivManagement.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("UnivManagement.Models.CriterioElegibilidade", b =>
+                {
+                    b.Property<int>("CriterioElegibilidadeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CriterioElegibilidadeId"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("EctsMinimos")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RendimentoMaximo")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("CriterioElegibilidadeId");
+
+                    b.ToTable("CriterioElegibilidade");
+                });
+
             modelBuilder.Entity("UnivManagement.Models.TipoBolsa", b =>
                 {
                     b.Property<int>("TipoBolsaId")
