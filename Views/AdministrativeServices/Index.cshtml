@@ -1,5 +1,10 @@
+@model ServiceRequestDashboardViewModel
+
 @{
     ViewData["Title"] = "Requests and Administrative Services";
+
+    // New requests start with the first status that does not close them
+    var firstStatus = Model.RequestsByStatus.Select(p => p.Key).FirstOrDefault(s => !s.IsFinal);
 }
 
 <div class="container py-4">
@@ -14,17 +19,48 @@
         </p>
     </header>
 
+    <div class="row row-cols-2 row-cols-md-4 g-3 mb-5 text-center">
+        <div class="col">
+            <div class="border rounded p-3 h-100">
+                <div class="fs-2 fw-semibold">@Model.TotalRequests</div>
+                <div class="text-body-secondary"><i class="bi bi-inbox"></i> Total requests</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border rounded p-3 h-100">
+                <div class="fs-2 fw-semibold text-primary">@Model.OpenRequests</div>
+                <div class="text-body-secondary"><i class="bi bi-hourglass-split"></i> Open</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border rounded p-3 h-100">
+                <div class="fs-2 fw-semibold text-warning">@Model.UnassignedRequests</div>
+                <div class="text-body-secondary"><i class="bi bi-person-dash"></i> Not assigned</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border rounded p-3 h-100">
+                <div class="fs-2 fw-semibold text-success">@Model.ClosedRequests</div>
+                <div class="text-body-secondary"><i class="bi bi-check2-circle"></i> Closed</div>
+            </div>
+        </div>
+    </div>
+
     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
         <div class="col">
             <div class="card h-100 shadow-sm">
                 <div class="card-body d-flex flex-column">
-                    <h2 class="card-title h5"><i class="bi bi-inbox"></i> Requests</h2>
+                    <h2 class="card-title h5">
+                        <i class="bi bi-inbox"></i> Requests
+                        <span class="badge text-bg-light border float-end">@Model.TotalRequests</span>
+                    </h2>
                     <p class="card-text text-body-secondary flex-grow-1">
                         Submit new administrative requests and manage existing ones.
                     </p>
-                    <button type="button" class="btn btn-outline-primary w-100" disabled>
-                        Coming soon
-                    </button>
+                    <div class="d-flex gap-2">
+                        <a asp-controller="ServiceRequests" asp-action="Index" class="btn btn-outline-primary w-100">Open</a>
+                        <a asp-controller="ServiceRequests" asp-action="Create" class="btn btn-primary w-100">New request</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,41 +68,23 @@
         <div class="col">
             <div class="card h-100 shadow-sm">
                 <div class="card-body d-flex flex-column">
-                    <h2 class="card-title h5"><i class="bi bi-file-earmark-text"></i> Certificates and Documents</h2>
-                    <p class="card-text text-body-secondary flex-grow-1">
-                        Request certificates and other official documents.
+                    <h2 class="card-title h5"><i class="bi bi-tags"></i> Requests by type</h2>
+                    <p class="card-text text-body-secondary">
+                        Certificates, official documents, student support, maintenance and other requests.
                     </p>
-                    <button type="button" class="btn btn-outline-primary w-100" disabled>
-                        Coming soon
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <h2 class="card-title h5"><i class="bi bi-life-preserver"></i> Student Support</h2>
-                    <p class="card-text text-body-secondary flex-grow-1">
-                        Submit and follow up on student support requests.
-                    </p>
-                    <button type="button" class="btn btn-outline-primary w-100" disabled>
-                        Coming soon
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body d-flex flex-column">
-                    <h2 class="card-title h5"><i class="bi bi-tools"></i> Maintenance</h2>
-                    <p class="card-text text-body-secondary flex-grow-1">
-                        Report maintenance issues in campus buildings, rooms, and equipment.
-                    </p>
-                    <button type="button" class="btn btn-outline-primary w-100" disabled>
-                        Coming soon
-                    </button>
+                    @if (!Model.RequestsByType.Any()) {
+                        <p class="text-body-secondary flex-grow-1">No request types yet.</p>
+                    } else {
+                        <ul class="list-unstyled flex-grow-1">
+                            @foreach (var (type, count) in Model.RequestsByType) {
+                                <li class="d-flex justify-content-between align-items-center mb-1">
+                                    <a asp-controller="ServiceRequests" asp-action="Index" asp-route-type="@type.ServiceRequestTypeId"
+                                       class="text-decoration-none">@type.Name</a>
+                                    <span>@count</span>
+                                </li>
+                            }
+                        </ul>
+                    }
                 </div>
             </div>
         </div>
@@ -77,10 +95,11 @@
                     <h2 class="card-title h5"><i class="bi bi-person-check"></i> Assignments</h2>
                     <p class="card-text text-body-secondary flex-grow-1">
                         Assign each request to the appropriate department or staff member.
+                        <br />
+                        <strong>@Model.UnassignedRequests</strong> open request(s) have nobody assigned.
                     </p>
-                    <button type="button" class="btn btn-outline-primary w-100" disabled>
-                        Coming soon
-                    </button>
+                    <a asp-controller="ServiceRequests" asp-action="Index" asp-route-status="@firstStatus?.ServiceRequestStatusId"
+                       class="btn btn-outline-primary w-100">Review new requests</a>
                 </div>
             </div>
         </div>
@@ -89,14 +108,63 @@
             <div class="card h-100 shadow-sm">
                 <div class="card-body d-flex flex-column">
                     <h2 class="card-title h5"><i class="bi bi-clock-history"></i> Tracking and History</h2>
-                    <p class="card-text text-body-secondary flex-grow-1">
+                    <p class="card-text text-body-secondary">
                         Track request status, comments, attachments, and the actions taken on each request.
                     </p>
-                    <button type="button" class="btn btn-outline-primary w-100" disabled>
-                        Coming soon
-                    </button>
+                    <ul class="list-unstyled flex-grow-1">
+                        @foreach (var (status, count) in Model.RequestsByStatus) {
+                            <li class="d-flex justify-content-between align-items-center mb-1">
+                                <a asp-controller="ServiceRequests" asp-action="Index" asp-route-status="@status.ServiceRequestStatusId"
+                                   class="text-decoration-none">
+                                    <partial name="~/Views/ServiceRequests/_ServiceRequestStatusBadge.cshtml" model="status" />
+                                </a>
+                                <span>@count</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5"><i class="bi bi-sliders"></i> Settings</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Define the request types and the statuses a request goes through, with their rules.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <a asp-controller="ServiceRequestTypes" asp-action="Index" class="btn btn-outline-primary w-100">Types</a>
+                        <a asp-controller="ServiceRequestStatuses" asp-action="Index" class="btn btn-outline-primary w-100">Statuses</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <section class="mt-5">
+        <h2 class="h4 mb-3">Latest requests</h2>
+
+        @if (!Model.LatestRequests.Any()) {
+            <div class="alert alert-info" role="alert">
+                There are no requests yet.
+                <a asp-controller="ServiceRequests" asp-action="Create" class="alert-link">Submit the first one</a>.
+            </div>
+        } else {
+            <div class="list-group shadow-sm">
+                @foreach (var request in Model.LatestRequests) {
+                    <a asp-controller="ServiceRequests" asp-action="Details" asp-route-id="@request.ServiceRequestId"
+                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <span>
+                            <span class="fw-semibold">@request.Title</span>
+                            <small class="text-body-secondary d-block">
+                                @request.RequesterName &middot; @request.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+                            </small>
+                        </span>
+                        <partial name="~/Views/ServiceRequests/_ServiceRequestStatusBadge.cshtml" model="request.Status" />
+                    </a>
+                }
+            </div>
+        }
+    </section>
 </div>
