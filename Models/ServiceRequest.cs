@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace UnivManagement.Models
 {
@@ -26,6 +26,16 @@ namespace UnivManagement.Models
         public int ServiceRequestStatusId { get; set; }
 
         public ServiceRequestStatus? Status { get; set; }
+
+        [Display(Name = "Priority")]
+        [Required(ErrorMessage = "The {0} is required.")]
+        public int ServiceRequestPriorityId { get; set; }
+
+        public ServiceRequestPriority? Priority { get; set; }
+
+        [Display(Name = "Due date")]
+        [DataType(DataType.Date)]
+        public DateTime? DueDate { get; set; }
 
         [Display(Name = "Requester name")]
         [Required(ErrorMessage = "The {0} is required.")]
@@ -57,5 +67,8 @@ namespace UnivManagement.Models
 
         // ClosedAt is set when the request gets a status that closes it (resolved, rejected...)
         public bool IsClosed => ClosedAt.HasValue;
+
+        // An open request is overdue when its due date has already passed
+        public bool IsOverdue => !IsClosed && DueDate.HasValue && DueDate.Value.Date < DateTime.Today;
     }
 }
