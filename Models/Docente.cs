@@ -39,11 +39,7 @@ namespace UnivManagement.Models
 
         // Função Docente (FK) (Opcional)
         public int? FuncaoDocenteId { get; set; }
-        public DocenteFuncao? FuncaoDocente { get; set; } // Navigation property
-
-        // Regime (FK) (Opcional)
-        public int? RegimeId { get; set; }
-        public Regime? Regime { get; set; } // Navigation property
+        //public DocenteFuncao? FuncaoDocente { get; set; } // Navigation property
 
         // Departamento (FK) (Opcional)
         public int? DepartamentoId { get; set; }

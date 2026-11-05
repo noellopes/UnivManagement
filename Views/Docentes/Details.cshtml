@@ -1,87 +1,99 @@
 @model UnivManagement.Models.Docente
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Docente";
 }
 
-<h1>Details</h1>
+<div class="card shadow-sm border-0 my-4">
+    <div class="card-header bg-secondary text-white py-3">
+        <h4 class="mb-0 text-center"><i class="bi bi-info-circle me-2"></i>Detalhes do Docente</h4>
+    </div>
+    <div class="card-body p-4">
+        <dl class="row mb-4">
+            <!-- NumDocente -->
+            <dt class="col-sm-3 fw-bold text-muted mb-3">
+                <i class="bi bi-hash me-1"></i> @Html.DisplayNameFor(model => model.NumDocente)
+            </dt>
+            <dd class="col-sm-9 fs-6">
+                @Html.DisplayFor(model => model.NumDocente)
+            </dd>
 
-<div>
-    <h4>Docente</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nif)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nif)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Telefone)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FuncaoDocenteFK)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FuncaoDocenteFK)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RegimeFK)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RegimeFK)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ativo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ativo)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataAdmissao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataAdmissao)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Morada)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Morada)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DepartamentoFk)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DepartamentoFk)
-        </dd>
-    </dl>
-</div>
-<div class="mt-4 d-flex align-items-center gap-2">
-    <a asp-action="Details" asp-route-id="@Model?.DocenteId" class="btn btn-primary">Details</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            <!-- Nome -->
+            <dt class="col-sm-3 fw-bold text-muted mb-3">
+                <i class="bi bi-person me-1"></i> @Html.DisplayNameFor(model => model.Nome)
+            </dt>
+            <dd class="col-sm-9 fs-6">
+                @Html.DisplayFor(model => model.Nome)
+            </dd>
+
+            <!-- Nif -->
+            <dt class="col-sm-3 fw-bold text-muted mb-3">
+                <i class="bi bi-card-text me-1"></i> @Html.DisplayNameFor(model => model.Nif)
+            </dt>
+            <dd class="col-sm-9 fs-6">
+                @Html.DisplayFor(model => model.Nif)
+            </dd>
+
+            <!-- Morada -->
+            <dt class="col-sm-3 fw-bold text-muted mb-3">
+                <i class="bi bi-geo-alt me-1"></i> @Html.DisplayNameFor(model => model.Morada)
+            </dt>
+            <dd class="col-sm-9 fs-6">
+                @Html.DisplayFor(model => model.Morada)
+            </dd>
+
+            <!-- Telefone -->
+            <dt class="col-sm-3 fw-bold text-muted mb-3">
+                <i class="bi bi-telephone me-1"></i> @Html.DisplayNameFor(model => model.Telefone)
+            </dt>
+            <dd class="col-sm-9 fs-6">
+                @Html.DisplayFor(model => model.Telefone)
+            </dd>
+
+            <!-- Email -->
+            <dt class="col-sm-3 fw-bold text-muted mb-3">
+                <i class="bi bi-envelope me-1"></i> @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-9 fs-6">
+                <a href="mailto:@Model.Email" class="text-decoration-none">@Html.DisplayFor(model => model.Email)</a>
+            </dd>
+
+            <!-- Departamento -->
+            <dt class="col-sm-3 fw-bold text-muted mb-3">
+                <i class="bi bi-building me-1"></i> Departamento
+            </dt>
+            <dd class="col-sm-9 fs-6">
+                @Html.DisplayFor(model => model.Departamento.Nome)
+            </dd>
+
+            <!-- Ativo -->
+            <dt class="col-sm-3 fw-bold text-muted mb-3">
+                <i class="bi bi-toggle-on me-1"></i> @Html.DisplayNameFor(model => model.Ativo)
+            </dt>
+            <dd class="col-sm-9 fs-6">
+                @if (Model.Ativo)
+                {
+                    <span class="badge bg-success px-2 py-1">
+                        <i class="bi bi-check-circle-fill me-1"></i> Ativo
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary px-2 py-1">
+                        <i class="bi bi-x-circle-fill me-1"></i> Inativo
+                    </span>
+                }
+            </dd>
+        </dl>
+
+        <!-- Botões de Ação -->
+        <div class="d-flex justify-content-between align-items-center border-top pt-3">
+            <a asp-action="Edit" asp-route-id="@Model?.DocenteId" class="btn btn-primary px-4">
+                <i class="bi bi-pencil-square me-1"></i> Editar
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i> Voltar à Lista
+            </a>
+        </div>
+    </div>
 </div>
