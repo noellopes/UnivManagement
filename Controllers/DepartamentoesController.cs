@@ -15,7 +15,14 @@ public class DepartamentoesController : Controller
     // GET: DEPARTAMENTOS
     public async Task<IActionResult> Index()
     {
-        return View(await _context.Departamento.ToListAsync());
+        var lista = await _context.Departamento.ToListAsync();
+        if (!lista.Any())
+        {
+            _context.Departamento.Add(new Departamento { Nome = "Informática", Ativo = true, DataCriacao = DateTime.Now });
+            await _context.SaveChangesAsync();
+            lista = await _context.Departamento.ToListAsync();
+        }
+        return View(lista);
     }
 
     // GET: DEPARTAMENTOS/Details/5
