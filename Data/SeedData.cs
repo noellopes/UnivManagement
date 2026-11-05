@@ -41,17 +41,17 @@ namespace UnivManagement.Data
                 new Funcionario {
                     Nome = "Ana Maria Silva",
                     Nif = "234567890",
-                    Email = "ana.silva@univ.pt",
+                    Email = "ana.silva@upg.pt",
                     Telefone = "912345678",
                     Ativo = true,
                     DataAdmissao = new DateTime(2020, 3, 15),
-                    Morada = "Av. da Liberdade, 12, Lisboa",
+                    Morada = "Av. são bento, 12, Guarda",
                     ServicoFuncionarioId = servicoRH?.ServicoFuncionarioId ?? 1
                 },
                 new Funcionario {
                     Nome = "Carlos Alberto Santos",
                     Nif = "245678901",
-                    Email = "carlos.santos@univ.pt",
+                    Email = "carlos.santos@upg.pt",
                     Telefone = "934567890",
                     Ativo = true,
                     DataAdmissao = new DateTime(2018, 9, 1),
@@ -61,21 +61,21 @@ namespace UnivManagement.Data
                 new Funcionario {
                     Nome = "Beatriz Rocha",
                     Nif = "256789012",
-                    Email = "beatriz.rocha@univ.pt",
+                    Email = "beatriz.rocha@upg.pt",
                     Telefone = "965432109",
                     Ativo = true,
                     DataAdmissao = new DateTime(2021, 1, 10),
-                    Morada = "Praça Central, 8, Coimbra",
+                    Morada = "Rua Duque de bragança, 8, Guarda",
                     ServicoFuncionarioId = servicoAcad?.ServicoFuncionarioId ?? 1
                 },
                 new Funcionario {
                     Nome = "João Pedro Ferreira",
                     Nif = "267890123",
-                    Email = "joao.ferreira@univ.pt",
+                    Email = "joao.ferreira@upg.pt",
                     Telefone = "921122334",
                     Ativo = false,
                     DataAdmissao = new DateTime(2019, 6, 20),
-                    Morada = "Rua do Olival, 102, Porto",
+                    Morada = "Paiva couceiro, 102, Guarda",
                     ServicoFuncionarioId = servicoFin?.ServicoFuncionarioId ?? 1
                 }
             };
