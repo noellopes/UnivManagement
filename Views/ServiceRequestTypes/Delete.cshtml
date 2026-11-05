@@ -1,0 +1,59 @@
+@model ServiceRequestType
+
+@{
+    ViewData["Title"] = "Delete request type";
+
+    int requestCount = ViewData["RequestCount"] as int? ?? 0;
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to request types
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">Delete request type</h1>
+    </header>
+
+    @if (TempData["Error"] != null) {
+        <div class="alert alert-danger" role="alert">@TempData["Error"]</div>
+    }
+
+    @if (requestCount > 0) {
+        <div class="alert alert-warning" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            This type is used by @requestCount request(s), so it cannot be deleted.
+            You can rename it instead.
+        </div>
+    } else {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            Are you sure you want to delete this request type? This action cannot be undone.
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Name)</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Description)</dt>
+                <dd class="col-sm-9">@(Model.Description ?? "—")</dd>
+
+                <dt class="col-sm-3">Requests</dt>
+                <dd class="col-sm-9">@requestCount</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.ServiceRequestTypeId" method="post" class="mt-4">
+        <input type="hidden" asp-for="ServiceRequestTypeId" />
+        @if (requestCount == 0) {
+            <button type="submit" class="btn btn-danger">Delete</button>
+        } else {
+            <a asp-action="Edit" asp-route-id="@Model.ServiceRequestTypeId" class="btn btn-primary">Edit</a>
+        }
+        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+    </form>
+</div>
