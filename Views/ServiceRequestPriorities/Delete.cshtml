@@ -1,0 +1,58 @@
+@model ServiceRequestPriority
+
+@{
+    ViewData["Title"] = "Delete priority";
+
+    int requestCount = ViewData["RequestCount"] as int? ?? 0;
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to priorities
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">Delete priority</h1>
+    </header>
+
+    @if (TempData["Error"] != null) {
+        <div class="alert alert-danger" role="alert">@TempData["Error"]</div>
+    }
+
+    @if (requestCount > 0) {
+        <div class="alert alert-warning" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            @requestCount request(s) have this priority, so it cannot be deleted.
+        </div>
+    } else {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            Are you sure you want to delete this priority? This action cannot be undone.
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Name)</dt>
+                <dd class="col-sm-9"><span class="badge border text-bg-@Model.Color">@Model.Name</span></dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Level)</dt>
+                <dd class="col-sm-9">@Model.Level</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.ResponseDays)</dt>
+                <dd class="col-sm-9">@Model.ResponseDays</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.ServiceRequestPriorityId" method="post" class="mt-4">
+        <input type="hidden" asp-for="ServiceRequestPriorityId" />
+        @if (requestCount == 0) {
+            <button type="submit" class="btn btn-danger">Delete</button>
+        } else {
+            <a asp-action="Edit" asp-route-id="@Model.ServiceRequestPriorityId" class="btn btn-primary">Edit</a>
+        }
+        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+    </form>
+</div>
