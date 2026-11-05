@@ -3,6 +3,12 @@ using UnivManagement.Models;
 
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+        FirstCommit
+        public DbSet<Catalogo> Catalogos { get; set; }
+        public DbSet<Exemplar> Exemplares { get; set; }
+        public DbSet<Autor> Autores { get; set; }
+        public DbSet<Emprestimo> Emprestimos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
@@ -66,5 +72,6 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+        master
     }
 }

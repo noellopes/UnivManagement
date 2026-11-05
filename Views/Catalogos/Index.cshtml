@@ -1,0 +1,59 @@
+@model IEnumerable<UnivManagement.Models.Catalogo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ISBN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AutorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Autor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exemplares)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.ISBN)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AutorId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Autor)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Exemplares)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CatalogoId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CatalogoId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CatalogoId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

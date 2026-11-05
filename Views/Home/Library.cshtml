@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Library Management";
+}
+
+<div class="container py-4">
+    <header class="mb-4">
+        <h1 class="display-6 text-primary">Library Management</h1>
+        <p class="text-body-secondary">Escolha a opção que pretende gerir:</p>
+    </header>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <!-- Catálogos -->
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Catálogos</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">Gerir livros, títulos, ISBNs e associação a autores.</p>
+                    <a asp-controller="Catalogos" asp-action="Index" class="btn btn-primary mt-3">Aceder a Catálogos</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplares -->
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Exemplares</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">Gerir códigos físicos e o estado dos exemplares.</p>
+                    <a asp-controller="Exemplares" asp-action="Index" class="btn btn-primary mt-3">Aceder a Exemplares</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empréstimos -->
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Empréstimos</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">Gerir datas de empréstimo, devoluções e estados.</p>
+                    <a asp-controller="Emprestimos" asp-action="Index" class="btn btn-primary mt-3">Aceder a Empréstimos</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Autores -->
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5">Autores</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">Gerir o registo de autores da biblioteca.</p>
+                    <a asp-controller="Autores" asp-action="Index" class="btn btn-primary mt-3">Aceder a Autores</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">&larr; Voltar à página principal</a>
+    </div>
+</div>
