@@ -25,7 +25,7 @@ public class FuncionarioController : Controller
 
     // GET: FUNCIONARIOS/Details/5
     [HttpGet("/Funcionario/Details/{funcionarioid}")]
-    public async Task<IActionResult> Details(int? funcionarioid)
+    public async Task<IActionResult> Details(int? funcionarioid, string? successMessage = null)
     {
         if (funcionarioid == null)
         {
@@ -41,10 +41,15 @@ public class FuncionarioController : Controller
             return View("NotFound");
         }
 
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
+
         return View(funcionario);
     }
 
-    // GET: Funcionarios/Create
+    // GET: Funcionarios/Create  <-- ESTAVA EM FALTA!
     public IActionResult Create()
     {
         var servicos = _context.ServicoFuncionario.ToList();
@@ -62,7 +67,11 @@ public class FuncionarioController : Controller
         {
             _context.Add(funcionario);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), new { funcionarioid = funcionario.FuncionarioId });
+
+            return RedirectToAction(
+                nameof(Details),
+                new { funcionarioid = funcionario.FuncionarioId, successMessage = "Funcionário criado com sucesso." }
+            );
         }
 
         var servicos = _context.ServicoFuncionario.ToList();
@@ -159,16 +168,13 @@ public class FuncionarioController : Controller
             return View("NotFound");
         }
 
-        // Procura na BD o funcionário com o ID que está no URL (ex: 274)
         var funcionario = await _context.Funcionario.FindAsync(funcionarioid);
 
-        // Se o ID da URL não existir na BD, abre a página NotFound
         if (funcionario == null)
         {
             return View("NotFound");
         }
 
-        // Só apaga se o registo com esse ID realmente existir
         _context.Funcionario.Remove(funcionario);
         await _context.SaveChangesAsync();
 
