@@ -81,7 +81,19 @@
                             <p class="small text-body-secondary">
                                 <i class="bi bi-inbox"></i> @item.Requests.Count request(s)
                             </p>
+                            @if (!string.IsNullOrWhiteSpace(item.RequiredDocuments)) {
+                                <p class="small text-body-secondary">
+                                    <i class="bi bi-paperclip"></i> Documents needed: @item.RequiredDocuments
+                                </p>
+                            }
                             <div class="d-flex gap-2">
+                                @if (item.IsActive) {
+                                    <a asp-controller="ServiceRequests" asp-action="Create"
+                                       asp-route-serviceRequestCatalogItemId="@item.ServiceRequestCatalogItemId"
+                                       class="btn btn-sm btn-primary me-auto">
+                                        <i class="bi bi-send"></i> Request this service
+                                    </a>
+                                }
                                 <a asp-action="Details" asp-route-id="@item.ServiceRequestCatalogItemId"
                                    class="btn btn-sm btn-outline-secondary" title="Details">
                                     <i class="bi bi-eye"></i>
