@@ -1,4 +1,5 @@
 ﻿
+Agendar_Aula
 namespace UnivManagement.Models.Scheduling
 {
     public class RoomReservation
@@ -14,4 +15,5 @@ namespace UnivManagement.Models.Scheduling
         public string Purpose { get; set; } = "";
     }
 }
+
 
