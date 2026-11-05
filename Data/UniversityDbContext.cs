@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 
-namespace UnivManagement.Data {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+namespace UnivManagement.Data
+{
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
+    {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             base.OnModelCreating(modelBuilder);
 
             // ServiceRequestType: two request types cannot have the same name
@@ -30,7 +33,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.Telephone)
                 .IsUnique();
-          
+
             // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
@@ -46,7 +49,7 @@ namespace UnivManagement.Data {
                 .HasIndex(c => c.Code)
                 .IsUnique();
         }
-      
+
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
 
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
@@ -66,5 +69,16 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+
+        // --- Módulo de Alumni, Carreiras e Estágios ---
+        public DbSet<UnivManagement.Models.Estudante> Estudantes { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Carreira> Carreiras { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Empresa> Empresas { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Area> Areas { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Oferta> Ofertas { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Candidatura> Candidaturas { get; set; } = default!;
+        public DbSet<UnivManagement.Models.OrientadorEstagio> OrientadoresEstagio { get; set; } = default!;
+        public DbSet<UnivManagement.Models.GestorEstagio> GestoresEstagio { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Estagio> Estagios { get; set; } = default!;
     }
 }
