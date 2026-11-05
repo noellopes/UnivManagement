@@ -117,6 +117,9 @@
                         <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-3">
                             <i class="bi bi-arrow-left me-1"></i> Voltar à Lista
                         </a>
+                        <a asp-action="Delete" asp-route-funcionarioid="@Model?.FuncionarioId" class="btn btn-danger rounded-pill px-4 shadow-sm fw-bold">
+                             <i class="bi bi-trash me-1"></i> Eliminar
+                        </a>
                         <a asp-action="Edit" asp-route-id="@Model?.FuncionarioId" class="btn btn-warning rounded-pill px-4 shadow-sm text-dark fw-bold">
                             <i class="bi bi-pencil-square me-1"></i> Editar
                         </a>
