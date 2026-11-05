@@ -1,0 +1,52 @@
+@model ServiceRequest
+
+<section id="comments" class="card shadow-sm mt-4">
+    <div class="card-header">
+        <i class="bi bi-chat-left-text"></i> Comments
+        <span class="badge text-bg-light border">@Model.Comments.Count</span>
+    </div>
+
+    @if (Model.Comments.Any()) {
+        <ul class="list-group list-group-flush">
+            @foreach (var comment in Model.Comments) {
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="fw-semibold">@comment.Author</span>
+                            <small class="text-body-secondary ms-2">@comment.CreatedAt.ToString("yyyy-MM-dd HH:mm")</small>
+                        </div>
+                        <form asp-controller="ServiceRequestComments" asp-action="Delete"
+                              asp-route-id="@comment.ServiceRequestCommentId" method="post">
+                            <button type="submit" class="btn btn-sm btn-link link-danger p-0" title="Delete comment">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <p class="mb-0 mt-1" style="white-space: pre-line">@comment.Text</p>
+                </li>
+            }
+        </ul>
+    } else {
+        <div class="card-body text-body-secondary">There are no comments yet.</div>
+    }
+
+    <div class="card-body border-top">
+        <form asp-controller="ServiceRequestComments" asp-action="Create" method="post">
+            <input type="hidden" name="ServiceRequestId" value="@Model.ServiceRequestId" />
+
+            <div class="mb-2">
+                <label for="Author" class="form-label">Your name</label>
+                <input id="Author" name="Author" class="form-control" maxlength="200" required />
+            </div>
+
+            <div class="mb-2">
+                <label for="Text" class="form-label">Comment</label>
+                <textarea id="Text" name="Text" class="form-control" rows="3" maxlength="1000" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-outline-primary">
+                <i class="bi bi-send"></i> Add comment
+            </button>
+        </form>
+    </div>
+</section>
