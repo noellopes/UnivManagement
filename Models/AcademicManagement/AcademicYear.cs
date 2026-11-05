@@ -4,9 +4,9 @@ namespace UnivManagement.Models.AcademicManagement;
 
 /*
 AcademicYear:
-* IdAcademicYear    int
-* StartYear         decimal     (valor de 2000 a 9999)
-* EndYear           decimal     (valor de 2000 a 9999)
+* AcademicYearId    int
+* StartYear         int     (value between 2000 and 9999)
+* EndYear           int     (value between 2000 and 9999)
 */
 
 /// <summary>
@@ -14,17 +14,17 @@ AcademicYear:
 /// </summary>
 public class AcademicYear {
     /* ID: */
-    public required int AcademicYearId { get; set; }
+    public int AcademicYearId { get; set; }
 
     /* START YEAR: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [Range(2000, 9999, ErrorMessage = "Ano de início deve ter o máximo de 4 dígitos | Start year must have the maximum of 9 digits.")]
-    [Display(Name = "Início")]
-    public required int StartYear { get; set; }
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [Range(2000, 9999, ErrorMessage = "O {0} deve estar entre {1} e {2}.")]
+    [Display(Name = "Ano de Início")]
+    public int StartYear { get; set; }
 
     /* END YEAR: */
     [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [Range(2000, 9999, ErrorMessage = "Ano de fim deve ter o máximo de 4 dígitos | End year must have the maximum of 9 digits.")]
-    [Display(Name = "Fim")]
-    public required int EndYear { get; set; }
+    [Range(2000, 9999, ErrorMessage = "O {0} deve estar entre {1} e {2}.")]
+    [Display(Name = "Ano de Fim")]
+    public int EndYear { get; set; }
 }
