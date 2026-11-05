@@ -37,6 +37,18 @@
                     <span asp-validation-for="Description" class="text-danger small"></span>
                 </div>
 
+                <div class="mb-3">
+                    <label asp-for="ServiceRequestCatalogItemId" class="form-label"></label>
+                    <select asp-for="ServiceRequestCatalogItemId" class="form-select" asp-items="ViewBag.CatalogItems">
+                        <option value="">Not in the catalog</option>
+                    </select>
+                    <span asp-validation-for="ServiceRequestCatalogItemId" class="text-danger small"></span>
+                    <div class="form-text">
+                        If you choose a service of the <a asp-controller="ServiceRequestCatalogItems" asp-action="Index">catalog</a>,
+                        its request type and processing time are used.
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label asp-for="ServiceRequestTypeId" class="form-label"></label>
@@ -87,4 +99,12 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        // The type of a catalog service is set by the server, so the type list is only used without a service
+        const service = document.getElementById("ServiceRequestCatalogItemId");
+        const type = document.getElementById("ServiceRequestTypeId");
+        const toggleType = () => type.disabled = service.value !== "";
+        service.addEventListener("change", toggleType);
+        toggleType();
+    </script>
 }
