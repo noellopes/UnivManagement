@@ -1,0 +1,78 @@
+@model ServiceRequestCatalogItem
+
+@{
+    ViewData["Title"] = "Service details";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to catalog
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">
+            @Model.Name
+            @if (!Model.IsActive) {
+                <span class="badge text-bg-secondary fs-6 align-middle">Unavailable</span>
+            }
+        </h1>
+    </header>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5">@Html.DisplayNameFor(m => m.Description)</dt>
+                        <dd class="col-sm-7" style="white-space: pre-line">@(Model.Description ?? "—")</dd>
+
+                        <dt class="col-sm-5">@Html.DisplayNameFor(m => m.Type)</dt>
+                        <dd class="col-sm-7">@Model.Type?.Name</dd>
+
+                        <dt class="col-sm-5">@Html.DisplayNameFor(m => m.ProcessingDays)</dt>
+                        <dd class="col-sm-7">@Model.ProcessingDays day(s)</dd>
+
+                        <dt class="col-sm-5">@Html.DisplayNameFor(m => m.RequiredDocuments)</dt>
+                        <dd class="col-sm-7" style="white-space: pre-line">@(Model.RequiredDocuments ?? "—")</dd>
+
+                        <dt class="col-sm-5">@Html.DisplayNameFor(m => m.IsActive)</dt>
+                        <dd class="col-sm-7">@(Model.IsActive ? "Yes" : "No")</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.ServiceRequestCatalogItemId" class="btn btn-primary">Edit</a>
+                <a asp-action="Index" class="btn btn-secondary">Back to catalog</a>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <i class="bi bi-inbox"></i> Requests for this service
+                    <span class="badge text-bg-light border">@Model.Requests.Count</span>
+                </div>
+
+                @if (!Model.Requests.Any()) {
+                    <div class="card-body text-body-secondary">Nobody has requested this service yet.</div>
+                } else {
+                    <div class="list-group list-group-flush">
+                        @foreach (var request in Model.Requests) {
+                            <a asp-controller="ServiceRequests" asp-action="Details" asp-route-id="@request.ServiceRequestId"
+                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <span>
+                                    @request.Title
+                                    <small class="text-body-secondary d-block">
+                                        @request.RequesterName &middot; @request.CreatedAt.ToString("yyyy-MM-dd")
+                                    </small>
+                                </span>
+                                <partial name="~/Views/ServiceRequests/_ServiceRequestStatusBadge.cshtml" model="request.Status" />
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
