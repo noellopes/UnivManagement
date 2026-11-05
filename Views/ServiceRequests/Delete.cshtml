@@ -1,0 +1,47 @@
+@model ServiceRequest
+
+@{
+    ViewData["Title"] = "Delete request";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to list
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">Delete request</h1>
+    </header>
+
+    <div class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle"></i>
+        Are you sure you want to delete this request? This action cannot be undone.
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Title)</dt>
+                <dd class="col-sm-9">@Model.Title</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Type)</dt>
+                <dd class="col-sm-9">@Model.Type?.Name</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Status)</dt>
+                <dd class="col-sm-9">@Model.Status?.Name</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.RequesterName)</dt>
+                <dd class="col-sm-9">@Model.RequesterName</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CreatedAt)</dt>
+                <dd class="col-sm-9">@Model.CreatedAt.ToString("g")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.ServiceRequestId" method="post" class="mt-4">
+        <input type="hidden" asp-for="ServiceRequestId" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+    </form>
+</div>
