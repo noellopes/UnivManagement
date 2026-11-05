@@ -23,31 +23,17 @@ InscrCourse:
 public class InscrCourse {
     /* ID: */
     [Display(Name = "ID")]
-    public required int InscrCourseId { get; set; }
+    public int InscrCourseId { get; set; }
 
-    /* REF ID COURSE PLAN YEAR: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [Display(Name = "ID Curso Plano Ano")]
-    public required int CoursePlanYearId { get; set; }
-
-    /* REF ID STUDENT: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [Display(Name = "ID Aluno")]
-    public required int StudentId { get; set; }
-
-    /* REF ID ACADEMIC YEAR (CURRENT YEAR OF THE INSCRIPTION): */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [Display(Name = "ID Ano Letivo")]
-    public required int AcademicYearId { get; set; }
 
     /* INSCRIPTION STATE: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [RegularExpression("^(UNPAID|ONGOING|CANCELED|CONCLUDED)$", ErrorMessage = "O {0} deve ser UNPAID, ONGOING, CANCELED ou CONCLUDED. | The {0} must be UNPAID, ONGOING, CANCELED or CONCLUDED.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [RegularExpression("^(UNPAID|ONGOING|CANCELED|CONCLUDED)$", ErrorMessage = "O {0} deve ser UNPAID, ONGOING, CANCELED ou CONCLUDED.")]
     [Display(Name = "Estado da Inscrição")]
     public required string StateInscr { get; set; }
 
     /* INSCRIPTION DATE: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
     [DataType(DataType.Date)]
     [Display(Name = "Data de Inscrição")]
     public required DateOnly DateInscr { get; set; }
@@ -58,13 +44,33 @@ public class InscrCourse {
     public DateOnly? DateGrad { get; set; }
 
     /* FINAL COURSE GRADE, also COURSE AVERAGE: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [Range(typeof(decimal), "0", "20", ErrorMessage = "O {0} deve estar entre {1} e {2} | The {0} should be between {1} and {2}.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [Range(typeof(decimal), "0", "20", ErrorMessage = "O {0} deve estar entre {1} e {2}.")]
     [Display(Name = "Nota Média Final")]
     public required decimal FinalAvgGrade { get; set; }
 
     /* COURSE FEE PAYMENT STATE: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
     [Display(Name = "Propina Paga")]
     public required bool CourseFeePaid { get; set; }
+
+    /* Foreign Key Relationships: */
+
+    /* REF FK_ID COURSE PLAN YEAR: */
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [Display(Name = "ID Curso Plano Ano")]
+    public int CoursePlanYearId { get; set; }
+    //public CoursePlanYear? CoursePlanYear { get; set; }
+
+    /* REF FK_ID STUDENT: */
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [Display(Name = "ID Aluno")]
+    public int StudentId { get; set; }
+    public Student? Student { get; set; }
+
+    /* REF FK_ID ACADEMIC YEAR (CURRENT YEAR OF THE INSCRIPTION): */
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [Display(Name = "ID Ano Letivo")]
+    public required int AcademicYearId { get; set; }
+    public AcademicYear? AcademicYear { get; set; }
 }
