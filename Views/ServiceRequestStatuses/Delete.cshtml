@@ -1,0 +1,63 @@
+@model ServiceRequestStatus
+
+@{
+    ViewData["Title"] = "Delete status";
+
+    int requestCount = ViewData["RequestCount"] as int? ?? 0;
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to statuses
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">Delete status</h1>
+    </header>
+
+    @if (TempData["Error"] != null) {
+        <div class="alert alert-danger" role="alert">@TempData["Error"]</div>
+    }
+
+    @if (requestCount > 0) {
+        <div class="alert alert-warning" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            @requestCount request(s) have this status, so it cannot be deleted.
+        </div>
+    } else {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            Are you sure you want to delete this status? This action cannot be undone.
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Name)</dt>
+                <dd class="col-sm-9"><span class="badge text-bg-@Model.Color">@Model.Name</span></dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Description)</dt>
+                <dd class="col-sm-9">@(Model.Description ?? "—")</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DisplayOrder)</dt>
+                <dd class="col-sm-9">@Model.DisplayOrder</dd>
+
+                <dt class="col-sm-3">Rules</dt>
+                <dd class="col-sm-9">
+                    @(Model.IsFinal ? "Closes the request" : "Keeps the request open")@(Model.RequiresNote ? ", note required" : null)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.ServiceRequestStatusId" method="post" class="mt-4">
+        <input type="hidden" asp-for="ServiceRequestStatusId" />
+        @if (requestCount == 0) {
+            <button type="submit" class="btn btn-danger">Delete</button>
+        } else {
+            <a asp-action="Edit" asp-route-id="@Model.ServiceRequestStatusId" class="btn btn-primary">Edit</a>
+        }
+        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+    </form>
+</div>
