@@ -14,8 +14,13 @@ public class FuncionarioController : Controller
     }
 
     // GET: FUNCIONARIOS
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? successMessage = null)
     {
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
+
         var funcionarios = await _context.Funcionario
             .Include(f => f.Servico)
             .ToListAsync();
@@ -156,7 +161,9 @@ public class FuncionarioController : Controller
 
         if (funcionario == null)
         {
-            return View("NotFound");
+            // Redireciona para o Index com mensagem de aviso em vez de mostrar erro
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "Sucesso: O funcionário já tinha sido eliminado por outro utilizador." });
         }
 
         return View(funcionario);
@@ -182,6 +189,7 @@ public class FuncionarioController : Controller
         _context.Funcionario.Remove(funcionario);
         await _context.SaveChangesAsync();
 
+        return RedirectToAction(nameof(Index), new { successMessage = "Funcionário eliminado com sucesso." });
         return RedirectToAction(nameof(Index));
     }
 
