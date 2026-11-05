@@ -1,0 +1,77 @@
+@model ServiceRequestCatalogItem
+
+@{
+    ViewData["Title"] = "New service";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to catalog
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">New service</h1>
+        <p class="text-body-secondary">
+            Add a service that students and staff can request, for example a certificate or an official document.
+        </p>
+    </header>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="e.g. Enrolment certificate" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"
+                              placeholder="What the service is and who can request it"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ServiceRequestTypeId" class="form-label"></label>
+                        <select asp-for="ServiceRequestTypeId" class="form-select" asp-items="ViewBag.Types">
+                            <option value="">Choose a type</option>
+                        </select>
+                        <span asp-validation-for="ServiceRequestTypeId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ProcessingDays" class="form-label"></label>
+                        <input asp-for="ProcessingDays" class="form-control" min="1" max="60" />
+                        <span asp-validation-for="ProcessingDays" class="text-danger small"></span>
+                        <div class="form-text">Used as the due date of the requests for this service.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RequiredDocuments" class="form-label"></label>
+                    <textarea asp-for="RequiredDocuments" class="form-control" rows="2"
+                              placeholder="e.g. Copy of the identity card"></textarea>
+                    <span asp-validation-for="RequiredDocuments" class="text-danger small"></span>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label">Available to be requested</label>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to catalog</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
