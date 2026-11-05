@@ -37,6 +37,19 @@
                         <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Status)</dt>
                         <dd class="col-sm-9"><partial name="_ServiceRequestStatusBadge" model="Model.Status" /></dd>
 
+                        <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Priority)</dt>
+                        <dd class="col-sm-9"><partial name="_ServiceRequestPriorityBadge" model="Model.Priority" /></dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DueDate)</dt>
+                        <dd class="col-sm-9">
+                            @(Model.DueDate?.ToString("d") ?? "—")
+                            @if (Model.IsOverdue) {
+                                <span class="badge text-bg-danger ms-1">
+                                    Overdue by @((DateTime.Today - Model.DueDate!.Value.Date).Days) day(s)
+                                </span>
+                            }
+                        </dd>
+
                         <dt class="col-sm-3">@Html.DisplayNameFor(m => m.RequesterName)</dt>
                         <dd class="col-sm-9">@Model.RequesterName</dd>
 

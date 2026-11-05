@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "New request";
+
+    // The priorities of the select list, to show their response times below it
+    var priorities = (ViewData["Priorities"] as SelectList)?.Items.Cast<ServiceRequestPriority>() ?? [];
 }
 
 <div class="container py-4">
@@ -34,13 +37,32 @@
                     <span asp-validation-for="Description" class="text-danger small"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="ServiceRequestTypeId" class="form-label"></label>
-                    <select asp-for="ServiceRequestTypeId" class="form-select" asp-items="ViewBag.Types">
-                        <option value="">Choose a type</option>
-                    </select>
-                    <span asp-validation-for="ServiceRequestTypeId" class="text-danger small"></span>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ServiceRequestTypeId" class="form-label"></label>
+                        <select asp-for="ServiceRequestTypeId" class="form-select" asp-items="ViewBag.Types">
+                            <option value="">Choose a type</option>
+                        </select>
+                        <span asp-validation-for="ServiceRequestTypeId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ServiceRequestPriorityId" class="form-label"></label>
+                        <select asp-for="ServiceRequestPriorityId" class="form-select" asp-items="ViewBag.Priorities">
+                            <option value="">Choose a priority</option>
+                        </select>
+                        <span asp-validation-for="ServiceRequestPriorityId" class="text-danger small"></span>
+                    </div>
                 </div>
+
+                @if (priorities.Any()) {
+                    <p class="form-text mt-0">
+                        Expected response time:
+                        @foreach (var priority in priorities) {
+                            <span class="me-2">@priority.Name: @priority.ResponseDays day(s)</span>
+                        }
+                    </p>
+                }
 
                 <div class="mb-3">
                     <label asp-for="RequesterName" class="form-label"></label>

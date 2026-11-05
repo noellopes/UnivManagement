@@ -51,6 +51,21 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ServiceRequestPriorityId" class="form-label"></label>
+                        <select asp-for="ServiceRequestPriorityId" class="form-select" asp-items="ViewBag.Priorities"></select>
+                        <span asp-validation-for="ServiceRequestPriorityId" class="text-danger small"></span>
+                        <div class="form-text">Changing the priority recalculates the due date.</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DueDate" class="form-label"></label>
+                        <input id="DueDate" value="@(Model.DueDate?.ToString("yyyy-MM-dd") ?? "Not set")"
+                               class="form-control" readonly />
+                    </div>
+                </div>
+
                 <div class="mb-3">
                     <label asp-for="RequesterName" class="form-label"></label>
                     <input asp-for="RequesterName" class="form-control" />
