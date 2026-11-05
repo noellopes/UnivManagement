@@ -18,6 +18,7 @@ namespace UnivManagement.Controllers {
                 .Include(r => r.Type)
                 .Include(r => r.Status)
                 .Include(r => r.Priority)
+                .Include(r => r.CatalogItem)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search)) {
@@ -61,6 +62,7 @@ namespace UnivManagement.Controllers {
                 .Include(r => r.Type)
                 .Include(r => r.Status)
                 .Include(r => r.Priority)
+                .Include(r => r.CatalogItem)
                 .Include(r => r.History
                     .OrderByDescending(h => h.ChangedAt)
                     .ThenByDescending(h => h.ServiceRequestHistoryId))
@@ -79,9 +81,10 @@ namespace UnivManagement.Controllers {
             return View(serviceRequest);
         }
 
-        // GET: ServiceRequests/Create
-        public async Task<IActionResult> Create() {
+        // GET: ServiceRequests/Create?serviceRequestCatalogItemId=3
+        public async Task<IActionResult> Create(int? serviceRequestCatalogItemId) {
             await PopulateListsAsync();
+            await PopulateCatalogItemsAsync(serviceRequestCatalogItemId);
             return View();
         }
 
@@ -89,7 +92,13 @@ namespace UnivManagement.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Title,Description,ServiceRequestTypeId,ServiceRequestPriorityId,RequesterName,RequesterEmail")] ServiceRequest serviceRequest) {
+            [Bind("Title,Description,ServiceRequestTypeId,ServiceRequestPriorityId,ServiceRequestCatalogItemId,RequesterName,RequesterEmail")] ServiceRequest serviceRequest) {
+            var catalogItem = await FindCatalogItemAsync(serviceRequest.ServiceRequestCatalogItemId);
+            if (serviceRequest.ServiceRequestCatalogItemId != null && catalogItem?.IsActive != true) {
+                ModelState.AddModelError(nameof(ServiceRequest.ServiceRequestCatalogItemId), "This service is not available.");
+            }
+            UseTypeOfService(serviceRequest, catalogItem);
+
             await ValidateTypeAsync(serviceRequest.ServiceRequestTypeId);
             var priority = await FindPriorityAsync(serviceRequest.ServiceRequestPriorityId);
 
@@ -100,13 +109,14 @@ namespace UnivManagement.Controllers {
 
             if (!ModelState.IsValid) {
                 await PopulateListsAsync(serviceRequest.ServiceRequestTypeId, selectedPriorityId: serviceRequest.ServiceRequestPriorityId);
+                await PopulateCatalogItemsAsync(serviceRequest.ServiceRequestCatalogItemId);
                 return View(serviceRequest);
             }
 
             // Status and dates are always set by the server, never by the form
             serviceRequest.ServiceRequestStatusId = firstStatus!.ServiceRequestStatusId;
             serviceRequest.CreatedAt = DateTime.Now;
-            serviceRequest.DueDate = serviceRequest.CreatedAt.Date.AddDays(priority!.ResponseDays);
+            serviceRequest.DueDate = CalculateDueDate(serviceRequest.CreatedAt, priority!, catalogItem);
             serviceRequest.History.Add(new ServiceRequestHistory {
                 Action = "Request submitted",
                 NewStatusId = firstStatus.ServiceRequestStatusId
@@ -115,7 +125,7 @@ namespace UnivManagement.Controllers {
             _context.Add(serviceRequest);
             await _context.SaveChangesAsync();
 
-            TempData["Message"] = "The request was created.";
+            TempData["Message"] = $"Request #{serviceRequest.ServiceRequestId} was created. Keep this number to track it.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -131,6 +141,7 @@ namespace UnivManagement.Controllers {
             }
 
             await PopulateListsAsync(serviceRequest.ServiceRequestTypeId, serviceRequest.ServiceRequestStatusId, serviceRequest.ServiceRequestPriorityId);
+            await PopulateCatalogItemsAsync(serviceRequest.ServiceRequestCatalogItemId);
             return View(serviceRequest);
         }
 
@@ -138,10 +149,25 @@ namespace UnivManagement.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
-            [Bind("ServiceRequestId,Title,Description,ServiceRequestTypeId,ServiceRequestStatusId,ServiceRequestPriorityId,RequesterName,RequesterEmail,AssignedTo")] ServiceRequest posted) {
+            [Bind("ServiceRequestId,Title,Description,ServiceRequestTypeId,ServiceRequestStatusId,ServiceRequestPriorityId,ServiceRequestCatalogItemId,RequesterName,RequesterEmail,AssignedTo")] ServiceRequest posted) {
             if (id != posted.ServiceRequestId) {
                 return NotFound();
             }
+
+            var serviceRequest = await _context.ServiceRequests
+                .Include(r => r.Priority)
+                .FirstOrDefaultAsync(r => r.ServiceRequestId == id);
+            if (serviceRequest == null) {
+                return NotFound();
+            }
+
+            // A request can keep a service that is no longer available, but cannot change to one
+            bool serviceChanged = serviceRequest.ServiceRequestCatalogItemId != posted.ServiceRequestCatalogItemId;
+            var catalogItem = await FindCatalogItemAsync(posted.ServiceRequestCatalogItemId);
+            if (posted.ServiceRequestCatalogItemId != null && (catalogItem == null || (serviceChanged && !catalogItem.IsActive))) {
+                ModelState.AddModelError(nameof(ServiceRequest.ServiceRequestCatalogItemId), "This service is not available.");
+            }
+            UseTypeOfService(posted, catalogItem);
 
             await ValidateTypeAsync(posted.ServiceRequestTypeId);
             var status = await _context.ServiceRequestStatuses.FindAsync(posted.ServiceRequestStatusId);
@@ -151,15 +177,12 @@ namespace UnivManagement.Controllers {
             var priority = await FindPriorityAsync(posted.ServiceRequestPriorityId);
 
             if (!ModelState.IsValid) {
+                // Values that are not in the form, shown again as information
+                posted.CreatedAt = serviceRequest.CreatedAt;
+                posted.DueDate = serviceRequest.DueDate;
                 await PopulateListsAsync(posted.ServiceRequestTypeId, posted.ServiceRequestStatusId, posted.ServiceRequestPriorityId);
+                await PopulateCatalogItemsAsync(posted.ServiceRequestCatalogItemId);
                 return View(posted);
-            }
-
-            var serviceRequest = await _context.ServiceRequests
-                .Include(r => r.Priority)
-                .FirstOrDefaultAsync(r => r.ServiceRequestId == id);
-            if (serviceRequest == null) {
-                return NotFound();
             }
 
             var assignedTo = string.IsNullOrWhiteSpace(posted.AssignedTo) ? null : posted.AssignedTo.Trim();
@@ -174,13 +197,23 @@ namespace UnivManagement.Controllers {
             }
             RecordChanges(serviceRequest, status!, assignedTo, null);
 
-            // A new priority means a new deadline, counted from the day the request was created
-            if (serviceRequest.ServiceRequestPriorityId != priority!.ServiceRequestPriorityId) {
+            bool priorityChanged = serviceRequest.ServiceRequestPriorityId != priority!.ServiceRequestPriorityId;
+            if (priorityChanged) {
                 serviceRequest.History.Add(new ServiceRequestHistory {
                     Action = $"Priority changed from {serviceRequest.Priority?.Name} to {priority.Name}"
                 });
                 serviceRequest.Priority = priority;
-                serviceRequest.DueDate = serviceRequest.CreatedAt.Date.AddDays(priority.ResponseDays);
+            }
+            if (serviceChanged) {
+                serviceRequest.History.Add(new ServiceRequestHistory {
+                    Action = catalogItem == null ? "Service removed" : $"Service changed to {catalogItem.Name}"
+                });
+                serviceRequest.ServiceRequestCatalogItemId = posted.ServiceRequestCatalogItemId;
+            }
+
+            // A new priority or service means a new deadline, counted from the day the request was created
+            if (priorityChanged || serviceChanged) {
+                serviceRequest.DueDate = CalculateDueDate(serviceRequest.CreatedAt, priority, catalogItem);
             }
 
             // Copy only the editable fields; CreatedAt is kept from the database
@@ -319,6 +352,37 @@ namespace UnivManagement.Controllers {
             if (!await _context.ServiceRequestTypes.AnyAsync(t => t.ServiceRequestTypeId == typeId)) {
                 ModelState.AddModelError(nameof(ServiceRequest.ServiceRequestTypeId), "Please choose a request type from the list.");
             }
+        }
+
+        // Services of the catalog have their own processing time; other requests use the response time of the priority
+        private static DateTime CalculateDueDate(DateTime createdAt, ServiceRequestPriority priority, ServiceRequestCatalogItem? catalogItem) {
+            int days = catalogItem?.ProcessingDays ?? priority.ResponseDays;
+            return createdAt.Date.AddDays(days);
+        }
+
+        // A request for a service of the catalog always has the type of that service, whatever the form sent
+        private void UseTypeOfService(ServiceRequest request, ServiceRequestCatalogItem? catalogItem) {
+            if (catalogItem != null) {
+                request.ServiceRequestTypeId = catalogItem.ServiceRequestTypeId;
+                ModelState.Remove(nameof(ServiceRequest.ServiceRequestTypeId));
+            }
+        }
+
+        private async Task<ServiceRequestCatalogItem?> FindCatalogItemAsync(int? id) {
+            return id == null ? null : await _context.ServiceRequestCatalogItems.FindAsync(id);
+        }
+
+        // Only available services can be chosen; the current one is kept even if it is no longer available
+        private async Task PopulateCatalogItemsAsync(int? selectedId) {
+            var items = await _context.ServiceRequestCatalogItems
+                .Where(i => i.IsActive || i.ServiceRequestCatalogItemId == selectedId)
+                .OrderBy(i => i.Name)
+                .ToListAsync();
+
+            ViewData["CatalogItems"] = new SelectList(items,
+                nameof(ServiceRequestCatalogItem.ServiceRequestCatalogItemId),
+                nameof(ServiceRequestCatalogItem.Name),
+                selectedId);
         }
 
         private async Task<ServiceRequestPriority?> FindPriorityAsync(int priorityId) {
