@@ -10,6 +10,11 @@ namespace UnivManagement.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // ServiceRequestType: nomes únicos
+            modelBuilder.Entity<Models.ServiceRequestType>()
+                .HasIndex(t => t.Name)
+                .IsUnique();
+
             // Student: atributos únicos
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.NumStudent)
@@ -47,6 +52,9 @@ namespace UnivManagement.Data
         public DbSet<Catalogo> Catalogos { get; set; }
         public DbSet<Exemplar> Exemplares { get; set; }
         public DbSet<Autor> Autores { get; set; }
+
+        // Pedidos de serviço
+        public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
 
         // Gestão académica
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
