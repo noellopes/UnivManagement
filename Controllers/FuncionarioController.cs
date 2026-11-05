@@ -62,7 +62,7 @@ public class FuncionarioController : Controller
         {
             _context.Add(funcionario);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { funcionarioid = funcionario.FuncionarioId });
         }
 
         var servicos = _context.ServicoFuncionario.ToList();
