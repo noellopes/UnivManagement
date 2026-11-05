@@ -1,0 +1,55 @@
+@model IEnumerable<UnivManagement.Models.Catalogo>
+
+@{
+    ViewData["Title"] = "Catálogo da Biblioteca";
+}
+
+<h1>Catálogo da Biblioteca</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Adicionar Livro
+    </a>
+</p>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>ISBN</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ISBN</td>
+                <td>@item.Titulo</td>
+                <td>
+                    @(item.Autor?.Nome ?? "Autor não disponível")
+                </td>
+                <td>
+                    <a asp-action="Edit"
+                       asp-route-id="@item.CatalogoId"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a asp-action="Details"
+                       asp-route-id="@item.CatalogoId"
+                       class="btn btn-info btn-sm">
+                        Detalhes
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.CatalogoId"
+                       class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
