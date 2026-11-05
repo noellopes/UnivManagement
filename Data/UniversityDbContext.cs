@@ -10,10 +10,33 @@ namespace UnivManagement.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Biblioteca: impedir associações duplicadas
+            // entre livros e autores
+            modelBuilder.Entity<LivroAutor>()
+                .HasIndex(la => new { la.LivroId, la.AutorId })
+                .IsUnique();
+
             // ServiceRequestType: nomes únicos
             modelBuilder.Entity<Models.ServiceRequestType>()
                 .HasIndex(t => t.Name)
                 .IsUnique();
+
+            // ServiceRequestStatus: nomes únicos
+            modelBuilder.Entity<Models.ServiceRequestStatus>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            // ServiceRequest: impedir eliminação de tipos
+            // ou estados utilizados por pedidos
+            modelBuilder.Entity<Models.ServiceRequest>()
+                .HasOne(r => r.Type)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.ServiceRequest>()
+                .HasOne(r => r.Status)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Student: atributos únicos
             modelBuilder.Entity<Models.AcademicManagement.Student>()
@@ -49,12 +72,15 @@ namespace UnivManagement.Data
         }
 
         // Biblioteca
-        public DbSet<Catalogo> Catalogos { get; set; }
+        public DbSet<Livro> Livros { get; set; }
         public DbSet<Exemplar> Exemplares { get; set; }
         public DbSet<Autor> Autores { get; set; }
+        public DbSet<LivroAutor> LivrosAutores { get; set; }
 
         // Pedidos de serviço
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
 
         // Gestão académica
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
