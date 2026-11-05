@@ -128,7 +128,11 @@ public class FuncionarioController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction(
+                nameof(Details),
+                new { funcionarioid = funcionario.FuncionarioId, successMessage = "Os detalhes do funcionário foram atualizados com sucesso." }
+            );
         }
 
         var servicos = _context.ServicoFuncionario.ToList();
