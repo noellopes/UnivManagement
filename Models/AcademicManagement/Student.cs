@@ -9,7 +9,7 @@ Student:
  * Name         string      (60 characters max)
  * Gender       string      (1 character, 'M' / 'F')
  * Nationality  string      (20 characters max)
- * BirthDate    DateTime    (Date type without Time)
+ * BirthDate    DateOnly    (Date type without Time)
  * Address      string      (60 characters max)
  * NIF          string      (9 digits max)
  * Email        string      (45 characters max)
@@ -53,8 +53,7 @@ public class Student {
     [Required(ErrorMessage = "A {0} é obrigatória.")]
     [DataType(DataType.Date)]
     [Display(Name = "Data de Nascimento")]
-    [Range(typeof(DateTime), "1900-01-01", "2026-12-31", ErrorMessage = "A {0} deve estar entre {1} e {2}.")]
-    public required DateTime BirthDate { get; set; }
+    public DateOnly? BirthDate { get; set; }
 
     /* ADDRESS: */
     [Required(ErrorMessage = "A {0} é obrigatória.")]
