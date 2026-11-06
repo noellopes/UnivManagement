@@ -163,7 +163,7 @@ public class FuncionarioController : Controller
         {
             // Redireciona para o Index com mensagem de aviso em vez de mostrar erro
             return RedirectToAction(nameof(Index),
-                new { successMessage = "Sucesso: O funcionário já tinha sido eliminado por outro utilizador." });
+                new { successMessage = "O funcionário já tinha sido eliminado por outro utilizador." });
         }
 
         return View(funcionario);
@@ -190,7 +190,7 @@ public class FuncionarioController : Controller
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index), new { successMessage = "Funcionário eliminado com sucesso." });
-        return RedirectToAction(nameof(Index));
+        
     }
 
     private bool FuncionarioExists(int? funcionarioid)
