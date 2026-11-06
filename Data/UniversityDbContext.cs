@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
+using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
@@ -61,6 +62,24 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Course>()
                 .HasIndex(c => c.Code)
                 .IsUnique();
+
+            // StateInscCourse: cada estado tem unico nome
+            modelBuilder.Entity<StateInscCourse>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            // StateInscrUc: cada estado de uma inscrição de UC é unico
+            modelBuilder.Entity<StateInscrUc>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<InscrCourse>()
+                .Property(i => i.FinalAvgGrade)
+                .HasPrecision(4, 2);
+
+            modelBuilder.Entity<InscrUC>()
+                .Property(i => i.Grade)
+                .HasPrecision(4, 2);
         }
       
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
@@ -84,7 +103,9 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-        
+        public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;
+
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
