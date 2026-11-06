@@ -2,19 +2,6 @@
 
 namespace UnivManagement.Models.AccommodationManagement
 {
-    /*
-    AccommodationPayment:
-     * AccommodationPaymentId     int
-     * AccommodationContractId    int
-     * DueDate                    DateOnly
-     * Amount                     decimal
-     * PaidAmount                 decimal
-     * PaidAt                     DateTime?
-     * Status                     PaymentStatus
-    */
-
-    /// AccommodationPayment model class from Accommodation Management domain.
-
     public class AccommodationPayment
     {
         /* ID: */
