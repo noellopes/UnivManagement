@@ -18,12 +18,24 @@ namespace UnivManagement.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descricao = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     RendimentoMaximo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    EctsMinimos = table.Column<int>(type: "int", nullable: false)
+                    EctsMinimos = table.Column<int>(type: "int", nullable: false),
+                    TipoBolsaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CriterioElegibilidade", x => x.CriterioElegibilidadeId);
+                    table.ForeignKey(
+                        name: "FK_CriterioElegibilidade_TipoBolsa_TipoBolsaId",
+                        column: x => x.TipoBolsaId,
+                        principalTable: "TipoBolsa",
+                        principalColumn: "TipoBolsaId",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CriterioElegibilidade_TipoBolsaId",
+                table: "CriterioElegibilidade",
+                column: "TipoBolsaId");
         }
 
         /// <inheritdoc />

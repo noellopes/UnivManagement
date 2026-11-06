@@ -13,5 +13,7 @@ namespace UnivManagement.Models
         [Required(ErrorMessage = "Descrição é obrigatória.")]
         [StringLength(200, MinimumLength = 10, ErrorMessage = "A descrição deve conter no min 10 caracteres e 200 no max.")]
         public required string Descricao { get; set; }
+
+        public ICollection<CriterioElegibilidade> CriteriosElegibilidade { get; set; } = new List<CriterioElegibilidade>();
     }
 }

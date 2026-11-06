@@ -1,45 +1,57 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
 using UnivManagement.Models;
-using System.Linq;
-namespace UnivManagement.Data {
-    public class SeedData {
-        internal static void Populate(UniversityDbContext? db) {
-            if (db == null) throw new ArgumentNullException(nameof(db));
-            PopulateCriterios(db);
 
-        }
-        private static void PopulateCriterios(UniversityDbContext db)
+namespace UnivManagement.Data
+{
+    public class SeedData
+    {
+        public static void Populate(UniversityDbContext? dbContext)
         {
-            if (db.CriterioElegibilidade.Any()) return;
+            if (dbContext == null) throw new ArgumentNullException(nameof(dbContext));
+
+            PopulateTipoBolsas(dbContext);
+            PopulateCriterios(dbContext);
+        }
+
+        private static void PopulateTipoBolsas(UniversityDbContext dbContext)
+        {
+            if (dbContext.TipoBolsa.Any()) return;
+
+            var tiposBolsa = new List<TipoBolsa>
+            {
+                new TipoBolsa { Nome = "Merit Scholarship", Descricao = "Financial support for students with excellent academic performance." },
+                new TipoBolsa { Nome = "Social Scholarship", Descricao = "Financial support for students from low-income families." },
+                new TipoBolsa { Nome = "Erasmus Scholarship", Descricao = "Financial support for students participating in an Erasmus+ exchange programme." }
+            };
+
+            dbContext.TipoBolsa.AddRange(tiposBolsa);
+            dbContext.SaveChanges();
+        }
+
+        private static void PopulateCriterios(UniversityDbContext dbContext)
+        {
+            if (dbContext.CriterioElegibilidade.Any()) return;
+
+            PopulateTipoBolsas(dbContext);
+
+            var tiposBolsa = dbContext.TipoBolsa.ToDictionary(t => t.Nome, t => t.TipoBolsaId);
+
+            if (tiposBolsa.Count == 0) return;
 
             var criterios = new List<CriterioElegibilidade>
             {
-                new CriterioElegibilidade
-                {
-                    Descricao = "Students with low annual family income",
-                    RendimentoMaximo = 12000m,
-                    EctsMinimos = 30
-                },
+                // Merit Scholarship
+                new CriterioElegibilidade { Descricao = "Students must have a minimum academic average of 16 out of 20.", RendimentoMaximo = 30000m, EctsMinimos = 45, TipoBolsaId = tiposBolsa["Merit Scholarship"] },
 
-                new CriterioElegibilidade
-                {
-                    Descricao = "Students with excellent academic performance",
-                    RendimentoMaximo = 25000m,
-                    EctsMinimos = 45
-                },
+                // Social Scholarship
+                new CriterioElegibilidade { Descricao = "Students must belong to a low-income family and demonstrate financial need.", RendimentoMaximo = 12000m, EctsMinimos = 30, TipoBolsaId = tiposBolsa["Social Scholarship"] },
 
-                new CriterioElegibilidade
-                {
-                    Descricao = "Students with disabilities",
-                    RendimentoMaximo = 20000m,
-                    EctsMinimos = 30
-                }
+                // Erasmus Scholarship
+                new CriterioElegibilidade { Descricao = "Students must be officially selected for an Erasmus+ exchange programme.", RendimentoMaximo = 30000m, EctsMinimos = 30, TipoBolsaId = tiposBolsa["Erasmus Scholarship"] }
             };
 
-            db.CriterioElegibilidade.AddRange(criterios);
-            db.SaveChanges();
+            dbContext.CriterioElegibilidade.AddRange(criterios);
+            dbContext.SaveChanges();
         }
     }
-
 }
-
