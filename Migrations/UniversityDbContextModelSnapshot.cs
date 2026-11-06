@@ -40,7 +40,12 @@ namespace UnivManagement.Migrations
                     b.Property<decimal>("RendimentoMaximo")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("TipoBolsaId")
+                        .HasColumnType("int");
+
                     b.HasKey("CriterioElegibilidadeId");
+
+                    b.HasIndex("TipoBolsaId");
 
                     b.ToTable("CriterioElegibilidade");
                 });
@@ -66,6 +71,22 @@ namespace UnivManagement.Migrations
                     b.HasKey("TipoBolsaId");
 
                     b.ToTable("TipoBolsa");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.CriterioElegibilidade", b =>
+                {
+                    b.HasOne("UnivManagement.Models.TipoBolsa", "TipoBolsa")
+                        .WithMany("CriteriosElegibilidade")
+                        .HasForeignKey("TipoBolsaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TipoBolsa");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.TipoBolsa", b =>
+                {
+                    b.Navigation("CriteriosElegibilidade");
                 });
 #pragma warning restore 612, 618
         }

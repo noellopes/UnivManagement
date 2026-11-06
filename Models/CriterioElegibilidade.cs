@@ -25,5 +25,8 @@ namespace UnivManagement.Models
         [Range(1, int.MaxValue,
             ErrorMessage = "ECTS must be a positive number.")]
         public int EctsMinimos { get; set; }
+
+        public int TipoBolsaId { get; set; }
+        public TipoBolsa? TipoBolsa { get; set; }
     }
 }
