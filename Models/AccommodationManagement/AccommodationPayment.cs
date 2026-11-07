@@ -2,7 +2,7 @@
 
 namespace UnivManagement.Models.AccommodationManagement
 {
-    public class AccommodationPayment
+    public class AccommodationPayment : IValidatableObject
     {
         /* ID: */
         public int AccommodationPaymentId { get; set; }
@@ -31,6 +31,17 @@ namespace UnivManagement.Models.AccommodationManagement
         /* STATUS: */
         [Required(ErrorMessage = "The {0} is required.")]
         public PaymentStatus Status { get; set; }
+
+        /* RULE: the paid amount cannot be greater than the amount due */
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (PaidAmount > Amount)
+            {
+                yield return new ValidationResult(
+                    "The paid amount cannot be greater than the amount due.",
+                    new[] { nameof(PaidAmount) });
+            }
+        }
     }
 
     public enum PaymentStatus
