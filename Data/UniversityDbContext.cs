@@ -61,11 +61,17 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Course>()
                 .HasIndex(c => c.Code)
                 .IsUnique();
+
+            // ServiceRequestPriority: two priorities cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
         }
       
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestPriority> ServiceRequestPriorities { get; set; } = default!;
 
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
