@@ -1,0 +1,43 @@
+@model ServiceRequestPriority
+
+@{
+    ViewData["Title"] = "Priority details";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to priorities</a>
+
+    <header class="my-4">
+        <h1 class="display-6">Priority details</h1>
+    </header>
+
+    @if (Model == null)
+    {
+        <div class="alert alert-warning" role="alert">This priority does not exist.</div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Level)</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Level)</dd>
+
+                    <dt class="col-sm-3">Response days</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.ResponseDays)</dd>
+
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Color)</dt>
+                    <dd class="col-sm-9"><span class="badge text-bg-@Model.Color">@Model.Color</span></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.ServiceRequestPriorityId" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+        </div>
+    }
+</div>
