@@ -39,6 +39,12 @@ namespace UnivManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ServiceRequestPriorityId,Name,Level,ResponseDays,Color")] ServiceRequestPriority serviceRequestPriority)
         {
+            // Two priorities cannot have the same name
+            if (_context.ServiceRequestPriorities.Any(p => p.Name == serviceRequestPriority.Name))
+            {
+                ModelState.AddModelError("Name", "There is already a priority with this name.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(serviceRequestPriority);
@@ -61,6 +67,13 @@ namespace UnivManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([Bind("ServiceRequestPriorityId,Name,Level,ResponseDays,Color")] ServiceRequestPriority serviceRequestPriority)
         {
+            // Two priorities cannot have the same name (the one being edited does not count)
+            if (_context.ServiceRequestPriorities.Any(p => p.Name == serviceRequestPriority.Name
+                && p.ServiceRequestPriorityId != serviceRequestPriority.ServiceRequestPriorityId))
+            {
+                ModelState.AddModelError("Name", "There is already a priority with this name.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Update(serviceRequestPriority);
