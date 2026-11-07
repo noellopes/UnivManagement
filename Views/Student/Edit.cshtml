@@ -1,0 +1,113 @@
+@model UnivManagement.Models.AcademicManagement.Student
+
+@{
+    ViewData["Title"] = "Editar Aluno";
+}
+
+<div class="mb-4">
+    <h1 class="h2 mb-1">Editar Aluno</h1>
+    <p class="text-muted mb-0">Atualize os dados do aluno selecionado.</p>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-person-gear me-2" aria-hidden="true"></i>
+            Dados do Aluno
+        </h2>
+    </div>
+
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <input type="hidden" asp-for="StudentId" />
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="NumStudent" class="form-label"></label>
+                    <input asp-for="NumStudent" class="form-control" placeholder="1000001" />
+                    <span asp-validation-for="NumStudent" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Nome completo do aluno" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Gender" class="form-label"></label>
+                    <select asp-for="Gender" class="form-select">
+                        <option value="">-- Selecione --</option>
+                        <option value="M">Masculino (M)</option>
+                        <option value="F">Feminino (F)</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Nationality" class="form-label"></label>
+                    <input asp-for="Nationality" class="form-control" placeholder="Portuguesa" />
+                    <span asp-validation-for="Nationality" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="BirthDate" class="form-label"></label>
+                    <input asp-for="BirthDate" type="date" class="form-control" />
+                    <span asp-validation-for="BirthDate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="nome.apelido@uni.pt" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="NIF" class="form-label"></label>
+                    <input asp-for="NIF" class="form-control" placeholder="123456789" />
+                    <span asp-validation-for="NIF" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="CountryPhoneCode" class="form-label"></label>
+                    <input asp-for="CountryPhoneCode" class="form-control" placeholder="+351" />
+                    <span asp-validation-for="CountryPhoneCode" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Telephone" class="form-label"></label>
+                    <input asp-for="Telephone" class="form-control" placeholder="912345678" />
+                    <span asp-validation-for="Telephone" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Address" class="form-label"></label>
+                    <input asp-for="Address" class="form-control" placeholder="Rua, número, código postal, cidade" />
+                    <span asp-validation-for="Address" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex justify-content-end flex-wrap gap-2">
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                    Voltar à Lista
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                    Guardar Alterações
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

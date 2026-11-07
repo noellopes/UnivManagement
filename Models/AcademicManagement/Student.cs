@@ -4,7 +4,7 @@ namespace UnivManagement.Models.AcademicManagement;
 
 /*
 Student:
- * IdStudent    int
+ * StudentId    int
  * NumStudent   string      (1000000–2000000)
  * Name         string      (60 characters max)
  * Gender       string      (1 character, 'M' / 'F')

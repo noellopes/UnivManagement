@@ -1,0 +1,139 @@
+@model UnivManagement.Models.AcademicManagement.Student
+
+@{
+    ViewData["Title"] = "Criar Aluno";
+}
+
+<div class="mb-4">
+    <h1 class="h2 mb-1">Criar Aluno</h1>
+    <p class="text-body-secondary mb-0">
+        Adicionar novo aluno à universidade.
+    </p>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-body-tertiary py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-person-plus me-2" aria-hidden="true"></i>
+            Informação do novo Aluno
+        </h2>
+    </div>
+
+    <div class="card-body p-4">
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger"
+                 role="alert"></div>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="NumStudent" class="form-label fw-semibold"></label>
+                    <input asp-for="NumStudent"
+                           class="form-control"
+                           placeholder="1000001"
+                           autofocus />
+                    <span asp-validation-for="NumStudent" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Name" class="form-label fw-semibold"></label>
+                    <input asp-for="Name"
+                           class="form-control"
+                           placeholder="Nome completo do aluno" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Gender" class="form-label fw-semibold"></label>
+                    <select asp-for="Gender" class="form-select">
+                        <option value="">-- Selecione --</option>
+                        <option value="M">Masculino (M)</option>
+                        <option value="F">Feminino (F)</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Nationality" class="form-label fw-semibold"></label>
+                    <input asp-for="Nationality"
+                           class="form-control"
+                           placeholder="Portuguesa" />
+                    <span asp-validation-for="Nationality" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="BirthDate" class="form-label fw-semibold"></label>
+                    <input asp-for="BirthDate"
+                           type="date"
+                           class="form-control" />
+                    <span asp-validation-for="BirthDate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Email" class="form-label fw-semibold"></label>
+                    <input asp-for="Email"
+                           type="email"
+                           class="form-control"
+                           placeholder="nome.apelido@uni.pt" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="NIF" class="form-label fw-semibold"></label>
+                    <input asp-for="NIF"
+                           class="form-control"
+                           placeholder="123456789" />
+                    <span asp-validation-for="NIF" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="CountryPhoneCode" class="form-label fw-semibold"></label>
+                    <input asp-for="CountryPhoneCode"
+                           class="form-control"
+                           placeholder="+351" />
+                    <span asp-validation-for="CountryPhoneCode" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Telephone" class="form-label fw-semibold"></label>
+                    <input asp-for="Telephone"
+                           class="form-control"
+                           placeholder="912345678" />
+                    <span asp-validation-for="Telephone" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Address" class="form-label fw-semibold"></label>
+                    <input asp-for="Address"
+                           class="form-control"
+                           placeholder="Rua, número, código postal, cidade" />
+                    <span asp-validation-for="Address" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex flex-wrap gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
+                    Criar Aluno
+                </button>
+
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>
+                    Voltar à Lista
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
