@@ -1,0 +1,85 @@
+
+@model UnivManagement.Models.Livro
+
+@{
+    ViewData["Title"] = "Eliminar Livro";
+}
+
+<h1>Eliminar Livro</h1>
+
+<div class="alert alert-warning mt-3">
+    Tens a certeza de que pretendes eliminar este livro?
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h4 class="card-title">@Model.Titulo</h4>
+
+        <dl class="row mt-4">
+
+            <dt class="col-sm-3">
+                ISBN
+            </dt>
+            <dd class="col-sm-9">
+                @Model.ISBN
+            </dd>
+
+            <dt class="col-sm-3">
+                Título
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Titulo
+            </dd>
+
+            <dt class="col-sm-3">
+                Tipo
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Tipo
+            </dd>
+
+            <dt class="col-sm-3">
+                Valor da Multa
+            </dt>
+            <dd class="col-sm-9">
+                @Model.ValorMulta.ToString("F2") €
+            </dd>
+
+            <dt class="col-sm-3">
+                Autores
+            </dt>
+            <dd class="col-sm-9">
+                @if (Model.LivrosAutores.Any())
+                {
+                    @string.Join(", ",
+                        Model.LivrosAutores.Select(la => la.Autor.Nome))
+                }
+                else
+                {
+                    <span>Sem autores associados</span>
+                }
+            </dd>
+
+        </dl>
+
+        <form asp-action="Delete"
+              asp-route-id="@Model.LivroId"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="LivroId" />
+
+            <button type="submit" class="btn btn-danger">
+                Eliminar Livro
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Cancelar
+            </a>
+
+        </form>
+
+    </div>
+</div>
