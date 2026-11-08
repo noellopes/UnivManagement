@@ -1,0 +1,139 @@
+@model IEnumerable<UnivManagement.Models.CriterioElegibilidade>
+
+@{
+    ViewData["Title"] = "Eligibility Criteria";
+}
+
+<div class="container mt-4 mb-5">
+
+    @if (ViewBag.SuccessMessage != null)
+    {
+        var alertType = ViewBag.SuccessType as string ?? "success";
+        var iconClass = alertType == "danger"
+            ? "bi bi-trash"
+            : alertType == "warning"
+                ? "bi bi-pencil-square"
+                : "bi bi-check-circle";
+
+        <div class="alert alert-@alertType alert-dismissible fade show border-0 shadow-sm"
+             role="alert">
+            <i class="@iconClass me-2"></i>
+            @ViewBag.SuccessMessage
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 pb-3 border-bottom">
+        <div>
+            <h1 class="h2 fw-bold mb-1" style="color: #2F506F;">
+                Eligibility Criteria
+            </h1>
+
+            <p class="small mb-0 text-muted">
+                Manage scholarship eligibility criteria and scholarship types.
+            </p>
+        </div>
+
+        <div class="mt-3 mt-sm-0">
+            <a asp-action="Create"
+               class="btn d-inline-flex align-items-center gap-2 shadow-sm text-white"
+               style="background-color: #2F506F; border-color: #2F506F;">
+                <i class="bi bi-plus-lg"></i>
+                Create New
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3"
+         style="border-top: 4px solid #F0A52B !important;">
+
+        <div class="table-responsive rounded-3">
+            <table class="table table-hover align-middle mb-0">
+
+                <thead style="background-color: #f4f6f8;">
+                    <tr>
+                        <th class="py-3 px-4 fw-semibold" style="color: #2F506F;">
+                            Criterion Description
+                        </th>
+
+                        <th class="py-3 px-4 fw-semibold" style="color: #2F506F;">
+                            Scholarship Type
+                        </th>
+
+                        <th class="py-3 pe-4 text-end fw-semibold"
+                            style="color: #2F506F; width: 180px;">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model == null || !Model.Any())
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center py-5 text-muted">
+                                <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                No eligibility criteria found.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="px-4 fw-medium text-secondary">
+                                    @Html.DisplayFor(model => item.Descricao)
+                                </td>
+
+                                <td class="px-4">
+                                    <span class="badge rounded-pill px-3 py-2"
+                                          style="background-color: #e8eef3; color: #2F506F;">
+                                        @Html.DisplayFor(model => item.TipoBolsa.Nome)
+                                    </span>
+                                </td>
+
+                                <td class="pe-4 py-3 text-end">
+                                    <div class="btn-group btn-group-sm"
+                                         role="group"
+                                         aria-label="Eligibility Criteria Actions">
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.CriterioElegibilidadeId"
+                                           class="btn btn-outline-primary"
+                                           title="Edit"
+                                           aria-label="Edit criterion">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.CriterioElegibilidadeId"
+                                           class="btn btn-outline-secondary"
+                                           title="Details"
+                                           aria-label="View criterion details">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.CriterioElegibilidadeId"
+                                           class="btn btn-outline-danger"
+                                           title="Delete"
+                                           aria-label="Delete criterion">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</div>

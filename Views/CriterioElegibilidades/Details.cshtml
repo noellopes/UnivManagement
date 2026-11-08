@@ -1,0 +1,131 @@
+
+@model UnivManagement.Models.CriterioElegibilidade
+
+@{
+    ViewData["Title"] = "Eligibility Criteria Details";
+}
+
+<div class="container py-5">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-2" style="color: #1d4e6b;">
+                Eligibility Criteria
+            </h1>
+            <p class="text-muted mb-0">
+                View the complete information about this eligibility criterion.
+            </p>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            Back to List
+        </a>
+    </div>
+
+    <!-- Details Card -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+
+        <div style="height: 5px; background-color: #e8a33d;"></div>
+
+        <div class="card-body p-4 p-md-5">
+
+            <!-- Description -->
+            <div class="mb-4">
+                <h6 class="text-uppercase fw-bold text-muted mb-3">
+                    Criterion Description
+                </h6>
+
+                <p class="fs-5 mb-0" style="color: #1c2b36;">
+                    @Model.Descricao
+                </p>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Financial and Academic Information -->
+            <h6 class="text-uppercase fw-bold text-muted mb-3">
+                Requirements
+            </h6>
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="p-4 rounded-3 h-100"
+                         style="background-color: #f6f8fa;">
+
+                        <p class="text-muted mb-2">
+                            Maximum Family Income
+                        </p>
+
+                        <h4 class="fw-bold mb-0"
+                            style="color: #1d4e6b;">
+                            @Model.RendimentoMaximo.ToString("N2") €
+                        </h4>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="p-4 rounded-3 h-100"
+                         style="background-color: #f6f8fa;">
+
+                        <p class="text-muted mb-2">
+                            Minimum ECTS
+                        </p>
+
+                        <h4 class="fw-bold mb-0"
+                            style="color: #1d4e6b;">
+                            @Model.EctsMinimos
+                        </h4>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Scholarship Information -->
+            <h6 class="text-uppercase fw-bold text-muted mb-3">
+                Scholarship Information
+            </h6>
+
+            <div class="p-4 rounded-3"
+                 style="background-color: #f6f8fa;">
+
+                <span class="badge rounded-pill px-3 py-2 mb-3"
+                      style="background-color: #1d4e6b; font-size: 0.9rem;">
+                    @(Model.TipoBolsa?.Nome ?? "Not assigned")
+                </span>
+
+                <p class="text-muted mb-0">
+                    @(Model.TipoBolsa?.Descricao ?? "No description available.")
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- Card Footer -->
+        <div class="card-footer bg-white border-top p-4">
+            <div class="d-flex flex-wrap gap-2">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.CriterioElegibilidadeId"
+                   class="btn px-4 text-white"
+                   style="background-color: #1d4e6b;">
+                    Edit Criterion
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary px-4">
+                    Back to List
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
