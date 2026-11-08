@@ -21,6 +21,35 @@ namespace UnivManagement.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("UnivManagement.Models.CriterioElegibilidade", b =>
+                {
+                    b.Property<int>("CriterioElegibilidadeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CriterioElegibilidadeId"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("EctsMinimos")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RendimentoMaximo")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TipoBolsaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CriterioElegibilidadeId");
+
+                    b.HasIndex("TipoBolsaId");
+
+                    b.ToTable("CriterioElegibilidade");
+                });
+
             modelBuilder.Entity("UnivManagement.Models.TipoBolsa", b =>
                 {
                     b.Property<int>("TipoBolsaId")
@@ -42,6 +71,43 @@ namespace UnivManagement.Migrations
                     b.HasKey("TipoBolsaId");
 
                     b.ToTable("TipoBolsa");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.TipoDocumento", b =>
+                {
+                    b.Property<int>("TipoDocumentoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TipoDocumentoId"));
+
+                    b.Property<string>("NomeTipo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("Obrigatorio")
+                        .HasColumnType("bit");
+
+                    b.HasKey("TipoDocumentoId");
+
+                    b.ToTable("TipoDocumento");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.CriterioElegibilidade", b =>
+                {
+                    b.HasOne("UnivManagement.Models.TipoBolsa", "TipoBolsa")
+                        .WithMany("CriteriosElegibilidade")
+                        .HasForeignKey("TipoBolsaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TipoBolsa");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.TipoBolsa", b =>
+                {
+                    b.Navigation("CriteriosElegibilidade");
                 });
 #pragma warning restore 612, 618
         }
