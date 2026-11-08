@@ -1,0 +1,59 @@
+@model IEnumerable<UnivManagement.Models.AccommodationManagement.StayRecord>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomAllocationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OccurredAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConditionNotes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordedBy)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.RoomAllocationId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.OccurredAt)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ConditionNotes)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.RecordedBy)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.StayRecordId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.StayRecordId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.StayRecordId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
