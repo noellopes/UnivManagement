@@ -1,0 +1,71 @@
+@model IEnumerable<ServiceRequestAssignment>
+
+@{
+    ViewData["Title"] = "Assignments";
+}
+
+<div class="container py-4">
+    <a asp-controller="AdministrativeServices" asp-action="Index" class="link-secondary text-decoration-none">
+        Back to Requests and Administrative Services
+    </a>
+
+    <header class="d-flex flex-wrap justify-content-between align-items-center my-4">
+        <div>
+            <h1 class="display-6 mb-0">Assignments</h1>
+            <p class="text-body-secondary mb-0">Who is in charge of each request.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">New assignment</a>
+    </header>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.ServiceRequest)</th>
+                        <th>@Html.DisplayNameFor(model => model.FuncionarioId)</th>
+                        <th>@Html.DisplayNameFor(model => model.DepartamentoId)</th>
+                        <th>@Html.DisplayNameFor(model => model.AssignedAt)</th>
+                        <th>@Html.DisplayNameFor(model => model.EndedAt)</th>
+                        <th>Current</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@Html.DisplayFor(modelItem => item.ServiceRequest!.Title)</td>
+                            <td>@Html.DisplayFor(modelItem => item.FuncionarioId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.DepartamentoId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.AssignedAt)</td>
+                            <td>@Html.DisplayFor(modelItem => item.EndedAt)</td>
+                            <td>
+                                @if (item.IsCurrent())
+                                {
+                                    <span class="badge text-bg-success">Yes</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-secondary">No</span>
+                                }
+                            </td>
+                            <td class="text-end text-nowrap">
+                                <a asp-action="Details" asp-route-id="@item.ServiceRequestAssignmentId" class="btn btn-sm btn-outline-secondary">Details</a>
+                                <a asp-action="Edit" asp-route-id="@item.ServiceRequestAssignmentId" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.ServiceRequestAssignmentId" class="btn btn-sm btn-outline-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            There are no assignments yet. Create the first one.
+        </div>
+    }
+</div>
