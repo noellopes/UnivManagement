@@ -94,6 +94,13 @@ namespace UnivManagement.Controllers
             var serviceRequestStatus = await _context.ServiceRequestStatuses.FindAsync(id);
             if (serviceRequestStatus != null)
             {
+                // A status that some requests have cannot be deleted
+                if (_context.ServiceRequests.Any(r => r.ServiceRequestStatusId == id))
+                {
+                    ModelState.AddModelError(string.Empty, "Some requests have this status, so it cannot be deleted.");
+                    return View(serviceRequestStatus);
+                }
+
                 _context.ServiceRequestStatuses.Remove(serviceRequestStatus);
             }
 
