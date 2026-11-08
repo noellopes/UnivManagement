@@ -9,20 +9,23 @@ namespace UnivManagement.Models
 
         [Display(Name = "Request")]
         [Required(ErrorMessage = "The {0} is required.")]
-        public int ServiceRequestId { get; set; }
+        public int? ServiceRequestId { get; set; }
 
         [Display(Name = "Request")]
         public ServiceRequest? ServiceRequest { get; set; }
 
         // Funcionario and Departamento are not in this DbContext yet, so for now only their number is kept
         [Display(Name = "Employee number")]
+        [Range(1, int.MaxValue, ErrorMessage = "The {0} must be a positive number.")]
         public int? FuncionarioId { get; set; }
 
         [Display(Name = "Department number")]
+        [Range(1, int.MaxValue, ErrorMessage = "The {0} must be a positive number.")]
         public int? DepartamentoId { get; set; }
 
         [Display(Name = "Assigned at")]
-        public DateTime AssignedAt { get; set; } = DateTime.Now;
+        [Required(ErrorMessage = "The {0} is required.")]
+        public DateTime? AssignedAt { get; set; } = DateTime.Now;
 
         [Display(Name = "Ended at")]
         public DateTime? EndedAt { get; set; }
