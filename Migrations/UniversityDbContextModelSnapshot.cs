@@ -73,6 +73,27 @@ namespace UnivManagement.Migrations
                     b.ToTable("TipoBolsa");
                 });
 
+            modelBuilder.Entity("UnivManagement.Models.TipoDocumento", b =>
+                {
+                    b.Property<int>("TipoDocumentoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TipoDocumentoId"));
+
+                    b.Property<string>("NomeTipo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("Obrigatorio")
+                        .HasColumnType("bit");
+
+                    b.HasKey("TipoDocumentoId");
+
+                    b.ToTable("TipoDocumento");
+                });
+
             modelBuilder.Entity("UnivManagement.Models.CriterioElegibilidade", b =>
                 {
                     b.HasOne("UnivManagement.Models.TipoBolsa", "TipoBolsa")

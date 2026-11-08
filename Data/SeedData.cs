@@ -10,6 +10,7 @@ namespace UnivManagement.Data
 
             PopulateTipoBolsa(dbContext);
             PopulateCriterios(dbContext);
+            PopulateTipoDocumento(dbContext);
         }
 
         private static void PopulateTipoBolsa(UniversityDbContext dbContext)
@@ -95,6 +96,28 @@ namespace UnivManagement.Data
             };
 
             dbContext.CriterioElegibilidade.AddRange(criterios);
+            dbContext.SaveChanges();
+        }
+
+        private static void PopulateTipoDocumento(UniversityDbContext dbContext)
+        {
+
+            if (dbContext.TipoDocumento.Any()) return;
+
+            var tiposDocumento = new List<TipoDocumento>
+            {
+                new TipoDocumento { NomeTipo = "Cartão de Cidadão",                Obrigatorio = true  },
+                new TipoDocumento { NomeTipo = "Comprovativo de Matrícula",        Obrigatorio = true  },
+                new TipoDocumento { NomeTipo = "Comprovativo de ECTS Realizados",  Obrigatorio = true  },
+                new TipoDocumento { NomeTipo = "Declaração de IRS",                Obrigatorio = true  },
+                new TipoDocumento { NomeTipo = "Nota de Liquidação de IRS",        Obrigatorio = true  },
+                new TipoDocumento { NomeTipo = "Composição do Agregado Familiar",  Obrigatorio = true  },
+                new TipoDocumento { NomeTipo = "Comprovativo de IBAN",             Obrigatorio = true  },
+                new TipoDocumento { NomeTipo = "Comprovativo de Morada",           Obrigatorio = false },
+                new TipoDocumento { NomeTipo = "Certificado de Habilitações",      Obrigatorio = false }
+            };
+
+            dbContext.TipoDocumento.AddRange(tiposDocumento);
             dbContext.SaveChanges();
         }
     }

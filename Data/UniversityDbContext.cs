@@ -6,7 +6,6 @@ namespace UnivManagement.Data {
 
         public DbSet<TipoBolsa> TipoBolsa { get; set; } = default!;
         public DbSet<CriterioElegibilidade> CriterioElegibilidade { get; set; } = default!;
-
-    public DbSet<UnivManagement.Models.TipoDocumento> TipoDocumento { get; set; } = default!;
+        public DbSet<TipoDocumento> TipoDocumento { get; set; } = default!;
     }
 }
