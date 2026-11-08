@@ -43,6 +43,12 @@ namespace UnivManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ServiceRequestAssignmentId,ServiceRequestId,FuncionarioId,DepartamentoId,AssignedAt,EndedAt,Note")] ServiceRequestAssignment serviceRequestAssignment)
         {
+            // An assignment cannot end before it starts
+            if (serviceRequestAssignment.EndedAt < serviceRequestAssignment.AssignedAt)
+            {
+                ModelState.AddModelError("EndedAt", "The end date cannot be before the assignment date.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(serviceRequestAssignment);
@@ -67,6 +73,12 @@ namespace UnivManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([Bind("ServiceRequestAssignmentId,ServiceRequestId,FuncionarioId,DepartamentoId,AssignedAt,EndedAt,Note")] ServiceRequestAssignment serviceRequestAssignment)
         {
+            // An assignment cannot end before it starts
+            if (serviceRequestAssignment.EndedAt < serviceRequestAssignment.AssignedAt)
+            {
+                ModelState.AddModelError("EndedAt", "The end date cannot be before the assignment date.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Update(serviceRequestAssignment);
