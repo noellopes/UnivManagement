@@ -9,7 +9,7 @@ namespace UnivManagement.Models
 
         [Display(Name = "Request")]
         [Required(ErrorMessage = "The {0} is required.")]
-        public int ServiceRequestId { get; set; }
+        public int? ServiceRequestId { get; set; }
 
         [Display(Name = "Request")]
         public ServiceRequest? ServiceRequest { get; set; }
