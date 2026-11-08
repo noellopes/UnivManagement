@@ -61,5 +61,64 @@ namespace UnivManagement.Controllers
 
             return View(serviceRequestType);
         }
+
+        // GET: ServiceRequestTypes/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var serviceRequestType = await _context.ServiceRequestTypes.FindAsync(id);
+            if (serviceRequestType == null)
+            {
+                return NotFound();
+            }
+            return View(serviceRequestType);
+        }
+
+        // POST: ServiceRequestTypes/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ServiceRequestTypeId,Name,Description")] ServiceRequestType serviceRequestType)
+        {
+            if (id != serviceRequestType.ServiceRequestTypeId)
+            {
+                return NotFound();
+            }
+
+            if (await _context.ServiceRequestTypes.AnyAsync(t => t.Name == serviceRequestType.Name && t.ServiceRequestTypeId != serviceRequestType.ServiceRequestTypeId))
+            {
+                ModelState.AddModelError(nameof(ServiceRequestType.Name), "There is already a request type with this name.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(serviceRequestType);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ServiceRequestTypeExists(serviceRequestType.ServiceRequestTypeId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(serviceRequestType);
+        }
+
+        private bool ServiceRequestTypeExists(int id)
+        {
+            return _context.ServiceRequestTypes.Any(e => e.ServiceRequestTypeId == id);
+        }
     }
 }
