@@ -1,0 +1,60 @@
+@model ServiceRequestComment
+
+@{
+    ViewData["Title"] = "Edit comment";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to comments</a>
+
+    <header class="my-4">
+        <h1 class="display-6">Edit comment</h1>
+    </header>
+
+    @if (Model == null)
+    {
+        <div class="alert alert-warning" role="alert">This comment does not exist.</div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                <form asp-action="Edit" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="ServiceRequestCommentId" />
+                    <input type="hidden" asp-for="CreatedAt" />
+
+                    <div class="mb-3">
+                        <label asp-for="ServiceRequestId" class="form-label"></label>
+                        <select asp-for="ServiceRequestId" class="form-select" asp-items="ViewBag.ServiceRequestId">
+                            <option value="">Choose a request</option>
+                        </select>
+                        <span asp-validation-for="ServiceRequestId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Author" class="form-label"></label>
+                        <input asp-for="Author" class="form-control" />
+                        <span asp-validation-for="Author" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Text" class="form-label"></label>
+                        <textarea asp-for="Text" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Text" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
