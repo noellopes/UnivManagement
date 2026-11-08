@@ -19,8 +19,9 @@ namespace UnivManagement.Models
 
         // Statuses are listed in this order; new requests start with the first one that does not close the request
         [Display(Name = "Order")]
+        [Required(ErrorMessage = "The {0} is required.")]
         [Range(1, 99, ErrorMessage = "The {0} must be between {1} and {2}.")]
-        public int DisplayOrder { get; set; } = 1;
+        public int? DisplayOrder { get; set; } = 1;
 
         // For example resolved, rejected or cancelled
         [Display(Name = "Closes the request")]
