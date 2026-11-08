@@ -27,13 +27,13 @@
 
                 <div class="mb-3">
                     <label asp-for="FuncionarioId" class="form-label"></label>
-                    <input asp-for="FuncionarioId" class="form-control" />
+                    <input asp-for="FuncionarioId" class="form-control" min="1" />
                     <span asp-validation-for="FuncionarioId" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="DepartamentoId" class="form-label"></label>
-                    <input asp-for="DepartamentoId" class="form-control" />
+                    <input asp-for="DepartamentoId" class="form-control" min="1" />
                     <span asp-validation-for="DepartamentoId" class="text-danger small"></span>
                 </div>
 
