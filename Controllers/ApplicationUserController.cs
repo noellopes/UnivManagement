@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Data;
 
+
 public class ApplicationUserController : Controller
 {
     private readonly UniversityDbContext _context;
