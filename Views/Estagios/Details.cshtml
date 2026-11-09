@@ -15,66 +15,109 @@
             Estágio nº @Model.IdEstagio
         </h5>
 
-        <p>
-            <strong>Aluno:</strong>
-            @ViewBag.NomeAluno
-        </p>
+        <hr />
 
-        <p>
-            <strong>Empresa:</strong>
-            @ViewBag.NomeEmpresa
-        </p>
+        <div class="row">
 
-        <p>
-            <strong>Orientador de Estágio:</strong>
-            @ViewBag.NomeOrientador
-        </p>
+            <div class="col-md-6">
+
+                <p>
+                    <strong>Data de Início:</strong>
+                    @Model.DataInicio.ToString("dd/MM/yyyy")
+                </p>
+
+                <p>
+                    <strong>Data de Fim:</strong>
+                    @Model.DataFim.ToString("dd/MM/yyyy")
+                </p>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <p>
+                    <strong>Duração:</strong>
+                    @Model.Duracao dias
+                </p>
+
+                <p>
+                    <strong>Estado:</strong>
+                    @Model.Estado
+                </p>
+
+            </div>
+
+        </div>
 
         <hr />
 
         <p>
-            <strong>Data de Início:</strong>
-            @Model.DataInicio.ToString("dd/MM/yyyy")
-        </p>
-
-        <p>
-            <strong>Data de Fim:</strong>
-            @Model.DataFim.ToString("dd/MM/yyyy")
-        </p>
-
-        <p>
-            <strong>Duração:</strong>
-            @Model.Duracao dias
-        </p>
-
-        <p>
-            <strong>Estado:</strong>
-            @Model.Estado
-        </p>
-
-        <p>
             <strong>Plano de Trabalhos:</strong>
+        </p>
+
+        <p>
             @Model.PlanoTrabalhos
         </p>
 
-        <div class="mt-4">
-            <a asp-action="Edit"
-               asp-route-idestagio="@Model.IdEstagio"
-               class="btn btn-primary">
-                Editar
-            </a>
+    </div>
+</div>
 
-            <a asp-action="Delete"
-               asp-route-idestagio="@Model.IdEstagio"
-               class="btn btn-danger">
-                Eliminar
-            </a>
+<div class="card mt-4">
+    <div class="card-body">
 
-            <a asp-action="Index"
-               class="btn btn-secondary">
-                Voltar
-            </a>
+        <h5 class="card-title">
+            Entidades Associadas
+        </h5>
+
+        <hr />
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <p>
+                    <strong>Aluno:</strong>
+                    @ViewBag.NomeAluno
+                </p>
+
+                <p>
+                    <strong>Empresa:</strong>
+                    @ViewBag.NomeEmpresa
+                </p>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <p>
+                    <strong>Orientador de Estágio:</strong>
+                    @ViewBag.NomeOrientador
+                </p>
+
+            </div>
+
         </div>
 
     </div>
+</div>
+
+<div class="mt-4">
+
+    <a asp-action="Edit"
+       asp-route-idestagio="@Model.IdEstagio"
+       class="btn btn-primary">
+        Editar
+    </a>
+
+    <a asp-action="Delete"
+       asp-route-idestagio="@Model.IdEstagio"
+       class="btn btn-danger">
+        Eliminar
+    </a>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Voltar
+    </a>
+
 </div>
