@@ -32,4 +32,4 @@ namespace UnivManagement.Data {
             db.SaveChanges();
         }
     }
-}
+} 
