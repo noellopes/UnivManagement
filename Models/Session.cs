@@ -7,7 +7,6 @@ namespace UnivManagement.Models
     [Table("ClassSession")]
     public class Session
     {
-        [Key]
         public int ClassSessionId { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique o {0}.")]
