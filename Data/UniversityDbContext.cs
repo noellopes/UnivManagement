@@ -62,6 +62,9 @@ namespace UnivManagement.Data {
                 .HasIndex(c => c.Code)
                 .IsUnique();
 
+            // Docente: atributo NumDocente é único:
+            modelBuilder.Entity<Models.Docente>()
+                .HasIndex(d => d.NumDocente)
             // Evita duplicações na tabela CourseStudyPlanYear:
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })

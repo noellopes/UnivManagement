@@ -1,0 +1,172 @@
+@model UnivManagement.Models.Docente
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Docente</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <!-- NumDocente e Nome -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label asp-for="NumDocente" class="form-label fw-bold"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                        <input asp-for="NumDocente" class="form-control" />
+                    </div>
+                    <span asp-validation-for="NumDocente" class="text-danger"></span>
+                </div>
+                <div class="col-md-8">
+                    <label asp-for="Nome" class="form-label fw-bold"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input asp-for="Nome" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Nif" class="control-label"></label>
+                <input asp-for="Nif" class="form-control" />
+                <span asp-validation-for="Nif" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <!-- Nif e Email -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label asp-for="Nif" class="form-label fw-bold"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                        <input asp-for="Nif" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Nif" class="text-danger"></span>
+                </div>
+                <div class="col-md-8">
+                    <label asp-for="Email" class="form-label fw-bold"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input asp-for="Email" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Telefone" class="control-label"></label>
+                <input asp-for="Telefone" class="form-control" />
+                <span asp-validation-for="Telefone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FuncaoDocenteFK" class="control-label"></label>
+                <input asp-for="FuncaoDocenteFK" class="form-control" />
+                <span asp-validation-for="FuncaoDocenteFK" class="text-danger"></span>
+            <!-- Telefone e Morada -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label asp-for="Telefone" class="form-label fw-bold"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                        <input asp-for="Telefone" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Telefone" class="text-danger"></span>
+                </div>
+                <div class="col-md-8">
+                    <label asp-for="Morada" class="form-label fw-bold"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                        <input asp-for="Morada" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Morada" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RegimeFK" class="control-label"></label>
+                <input asp-for="RegimeFK" class="form-control" />
+                <span asp-validation-for="RegimeFK" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Ativo" class="control-label"></label>
+                <input asp-for="Ativo" class="form-check-input" />
+                <span asp-validation-for="Ativo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DataAdmissao" class="control-label"></label>
+                <input asp-for="DataAdmissao" class="form-control" />
+                <span asp-validation-for="DataAdmissao" class="text-danger"></span>
+            </div>
+            <!-- FuncaoDocenteId, DataAdmissao e Departamento -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label asp-for="FuncaoDocenteId" class="form-label fw-bold"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
+                        <input asp-for="FuncaoDocenteId" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FuncaoDocenteId" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="DataAdmissao" class="form-label fw-bold"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                        <input asp-for="DataAdmissao" class="form-control" />
+                    </div>
+                    <span asp-validation-for="DataAdmissao" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="DepartamentoId" class="form-label fw-bold">Departamento</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-building"></i></span>
+                        <select asp-for="DepartamentoId" class="form-control" asp-items="ViewBag.DepartamentoId"></select>
+                    </div>
+                    <span asp-validation-for="DepartamentoId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Morada" class="control-label"></label>
+                <input asp-for="Morada" class="form-control" />
+                <span asp-validation-for="Morada" class="text-danger"></span>
+                        <!-- Ativo (Checkbox Estilizado) -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input bg-success border-success" type="checkbox" role="switch" asp-for="Ativo" style="cursor: pointer; width: 2.5em; height: 1.25em;" />
+                        <label class="form-check-label fw-bold ms-2" asp-for="Ativo">@Html.DisplayNameFor(model => model.Ativo)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DepartamentoFk" class="control-label"></label>
+                <input asp-for="DepartamentoFk" class="form-control" />
+                <span asp-validation-for="DepartamentoFk" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3 d-flex align-items-center gap-2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>

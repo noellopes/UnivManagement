@@ -1,0 +1,54 @@
+@model IEnumerable<UnivManagement.Models.Docente>
+
+@{
+    ViewData["Title"] = "Lista de Docentes";
+}
+
+<!-- Cabeçalho idêntico ao modelo -->
+<div class="card bg-light border-0 mb-4 p-4 shadow-sm">
+    <h2 class="fw-bold text-dark mb-0">Index</h2>
+</div>
+
+<!-- Botão Adicionar -->
+<div class="mb-4">
+    <a asp-action="Create" class="btn btn-success px-2 py-2">
+        Create
+    </a>
+</div>
+
+
+
+<!-- Tabela com as colunas reais da tua classe Docente -->
+<div class="table-responsive">
+    <table class="table align-middle">
+        <thead>
+            <tr class="border-bottom">
+                <th class="fw-bold">Id</th>
+                <th class="fw-bold">Nome</th>
+                <th class="fw-bold">Endereço</th>
+                <th class="fw-bold">Telefone</th>
+                <th class="fw-bold">Email</th>
+                <th class="fw-bold text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="fw-bold">@item.DocenteId</td>
+                    <td>@item.Nome</td>
+                    <td>@item.Morada</td>
+                    <td>@item.Telefone</td>
+                    <td>@item.Email</td>
+                    <td class="text-center">
+                        <div class="d-inline-flex gap-1">
+                            <a asp-action="Edit" asp-route-id="@item.DocenteId" class="btn btn-primary btn-sm px-3">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.DocenteId" class="btn btn-info btn-sm px-3">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.DocenteId" class="btn btn-danger btn-sm px-3">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
