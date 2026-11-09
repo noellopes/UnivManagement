@@ -61,6 +61,11 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Course>()
                 .HasIndex(c => c.Code)
                 .IsUnique();
+
+            // Docente: atributo NumDocente é único:
+            modelBuilder.Entity<Models.Docente>()
+                .HasIndex(d => d.NumDocente)
+                .IsUnique();
         }
       
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
