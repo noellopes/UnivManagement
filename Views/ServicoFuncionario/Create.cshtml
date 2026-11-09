@@ -32,12 +32,12 @@
                             <span asp-validation-for="Nome" class="text-danger small"></span>
                         </div>
 
-                        <!-- Campo Ativo (Checkbox Estilizado)  -->  
+                        <!-- Campo Ativo (Checkbox Estilizado) -->
                         <div class="mb-4">
                             <div class="form-check form-switch">
                                 <input asp-for="Ativo" class="form-check-input" type="checkbox" role="switch" id="switchAtivo" />
                                 <label class="form-check-label fw-bold" for="switchAtivo">
-                                    <i class="bi bi-check-circle-fill me-1 text-success"></i> Serviço Ativo
+                                    <i id="iconAtivo" class="bi bi-check-circle-fill me-1 text-success"></i> Serviço Ativo
                                 </label>
                             </div>
                             <span asp-validation-for="Ativo" class="text-danger small"></span>
@@ -66,4 +66,22 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const switchAtivo = document.getElementById("switchAtivo");
+            const iconAtivo = document.getElementById("iconAtivo");
+
+            function atualizarIcone() {
+                if (switchAtivo.checked) {
+                    iconAtivo.className = "bi bi-check-circle-fill me-1 text-success";
+                } else {
+                    iconAtivo.className = "bi bi-x-circle-fill me-1 text-danger";
+                }
+            }
+
+            atualizarIcone();
+            switchAtivo.addEventListener("change", atualizarIcone);
+        });
+    </script>
 }
