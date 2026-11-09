@@ -4,8 +4,8 @@ namespace UnivManagement.Models
 {
     public class Refeicao
     {
-        [Key]
-        public int Id { get; set; }
+        
+        public int RefeicaoId { get; set; }
 
         [Required(ErrorMessage = "Por favor, insira o nome da refeição.")]
         [StringLength(100, ErrorMessage = "O nome não pode exceder 100 caracteres.")]

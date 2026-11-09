@@ -26,7 +26,7 @@ namespace UnivManagement.Controllers
             if (id == null) return NotFound();
 
             var refeicao = await _context.Refeicoes
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.RefeicaoId == id);
             if (refeicao == null) return NotFound();
 
             return View(refeicao);
@@ -41,7 +41,7 @@ namespace UnivManagement.Controllers
         // POST: Refeicoes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Tipo,Preco")] Refeicao refeicao)
+        public async Task<IActionResult> Create([Bind("RefeicaoId,Nome,Tipo,Preco")] Refeicao refeicao)
         {
             if (ModelState.IsValid)
             {
@@ -65,9 +65,9 @@ namespace UnivManagement.Controllers
         // POST: Refeicoes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Tipo,Preco")] Refeicao refeicao)
+        public async Task<IActionResult> Edit(int id, [Bind("RefeicaoId,Nome,Tipo,Preco")] Refeicao refeicao)
         {
-            if (id != refeicao.Id) return NotFound();
+            if (id != refeicao.RefeicaoId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace UnivManagement.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RefeicaoExists(refeicao.Id)) return NotFound();
+                    if (!RefeicaoExists(refeicao.RefeicaoId)) return NotFound();
                     else throw;
                 }
                 return RedirectToAction(nameof(Index));
@@ -92,7 +92,7 @@ namespace UnivManagement.Controllers
             if (id == null) return NotFound();
 
             var refeicao = await _context.Refeicoes
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.RefeicaoId == id);
             if (refeicao == null) return NotFound();
 
             return View(refeicao);
@@ -115,7 +115,7 @@ namespace UnivManagement.Controllers
 
         private bool RefeicaoExists(int id)
         {
-            return _context.Refeicoes.Any(e => e.Id == id);
+            return _context.Refeicoes.Any(e => e.RefeicaoId == id);
         }
     }
 }
