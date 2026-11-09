@@ -31,9 +31,18 @@ public class AccommodationApplication
 
 public enum ApplicationStatus
 {
+    [Display(Name = "Submetida")]
     Submitted,
+
+    [Display(Name = "Em processo")]
     UnderReview,
+
+    [Display(Name = "Aceite")]
     Approved,
+
+    [Display(Name = "Recusada")]
     Rejected,
+
+    [Display(Name = "Retirada")]
     Withdrawn
 }
