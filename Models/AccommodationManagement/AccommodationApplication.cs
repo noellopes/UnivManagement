@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Models.AccommodationManagement;
 
@@ -8,9 +9,11 @@ public class AccommodationApplication
 
     [Display(Name = "Estudante")]
     public int StudentId { get; set; }
+    public Student? Student { get; set; }
 
     [Display(Name = "Ano Letivo")]
     public int AcademicYearId { get; set; }
+    public AcademicYear? AcademicYear { get; set; }
 
     [Display(Name = "Estado")]
     public ApplicationStatus Status { get; set; } = ApplicationStatus.Submitted;
