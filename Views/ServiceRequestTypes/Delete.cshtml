@@ -8,7 +8,6 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>UnivManagement.Models.ServiceRequestType</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -30,5 +29,8 @@
         <input type="hidden" asp-for="ServiceRequestTypeId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
+        <div 
+            asp-validation-summary="ModelOnly" class="text-danger">
+        </div>
     </form>
 </div>

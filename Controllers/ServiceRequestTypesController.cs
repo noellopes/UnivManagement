@@ -140,6 +140,11 @@ namespace UnivManagement.Controllers
             var serviceRequestType = await _context.ServiceRequestTypes.FindAsync(id);
             if (serviceRequestType != null)
             {
+                if (await _context.ServiceRequests.AnyAsync(r => r.ServiceRequestTypeId == id))
+                {
+                    ModelState.AddModelError(string.Empty, "This type is used by some requests, so it cannot be deleted.");
+                    return View("Delete", serviceRequestType);
+                }
                 _context.ServiceRequestTypes.Remove(serviceRequestType);
             }
 
