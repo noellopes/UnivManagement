@@ -8,129 +8,187 @@
 
 <hr />
 
-<div class="row">
-    <div class="col-md-4">
+<form asp-action="Create" method="post">
 
-        <form asp-action="Create" method="post">
+    <div asp-validation-summary="All"
+         class="text-danger"></div>
 
-            <div asp-validation-summary="All"
-                 class="text-danger"></div>
+    @if (ViewBag.ErroDatas != null)
+    {
+        <p class="text-danger">
+            @ViewBag.ErroDatas
+        </p>
+    }
 
-            @if (ViewBag.ErroDatas != null)
-            {
-                <p class="text-danger">
-                    @ViewBag.ErroDatas
-                </p>
-            }
+    @if (ViewBag.ErroFormulario != null)
+    {
+        <p class="text-danger">
+            @ViewBag.ErroFormulario
+        </p>
+    }
 
-            @if (ViewBag.ErroFormulario != null)
-            {
-                <p class="text-danger">
-                    @ViewBag.ErroFormulario
-                </p>
-            }
+    <div class="card">
+        <div class="card-body">
 
-            <div class="mb-3">
-                <label asp-for="DataInicio" class="form-label">
-                    Data de Início
-                </label>
-                <input asp-for="DataInicio"
-                       class="form-control"
-                       required />
+            <h5 class="card-title">
+                Informações do Estágio
+            </h5>
+
+            <hr />
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="DataInicio"
+                               class="form-label">
+                            Data de Início
+                        </label>
+
+                        <input asp-for="DataInicio"
+                               class="form-control"
+                               required />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="DataFim"
+                               class="form-label">
+                            Data de Fim
+                        </label>
+
+                        <input asp-for="DataFim"
+                               class="form-control"
+                               required />
+                    </div>
+                </div>
+
             </div>
 
             <div class="mb-3">
-                <label asp-for="DataFim" class="form-label">
-                    Data de Fim
-                </label>
-                <input asp-for="DataFim"
-                       class="form-control"
-                       required />
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="PlanoTrabalhos" class="form-label">
+                <label asp-for="PlanoTrabalhos"
+                       class="form-label">
                     Plano de Trabalhos
                 </label>
+
                 <input asp-for="PlanoTrabalhos"
                        class="form-control"
                        required />
             </div>
 
-            <div class="mb-3">
-                <label asp-for="StudentId" class="form-label">
-                    Aluno
-                </label>
+        </div>
+    </div>
 
-                <select asp-for="StudentId"
-                        class="form-select"
-                        required>
+    <div class="card mt-4">
+        <div class="card-body">
 
-                    <option value="">Selecione um aluno</option>
+            <h5 class="card-title">
+                Entidades Associadas
+            </h5>
 
-                    @foreach (UnivManagement.Models.TestesEstagios.Student aluno in ViewBag.Alunos)
-                    {
-                        <option value="@aluno.StudentId">
-                            @aluno.Name
-                        </option>
-                    }
+            <hr />
 
-                </select>
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="StudentId"
+                               class="form-label">
+                            Aluno
+                        </label>
+
+                        <select asp-for="StudentId"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Selecione um aluno
+                            </option>
+
+                            @foreach (UnivManagement.Models.TestesEstagios.Student aluno in ViewBag.Alunos)
+                            {
+                                <option value="@aluno.StudentId">
+                                    @aluno.Name
+                                </option>
+                            }
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="IdEmpresa"
+                               class="form-label">
+                            Empresa
+                        </label>
+
+                        <select asp-for="IdEmpresa"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Selecione uma empresa
+                            </option>
+
+                            @foreach (UnivManagement.Models.TestesEstagios.Empresa empresa in ViewBag.Empresas)
+                            {
+                                <option value="@empresa.IdEmpresa">
+                                    @empresa.Nome
+                                </option>
+                            }
+
+                        </select>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="mb-3">
-                <label asp-for="IdEmpresa" class="form-label">
-                    Empresa
-                </label>
+            <div class="row">
 
-                <select asp-for="IdEmpresa"
-                        class="form-select"
-                        required>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="IdOrientador"
+                               class="form-label">
+                            Orientador de Estágio
+                        </label>
 
-                    <option value="">Selecione uma empresa</option>
+                        <select asp-for="IdOrientador"
+                                class="form-select">
 
-                    @foreach (UnivManagement.Models.TestesEstagios.Empresa empresa in ViewBag.Empresas)
-                    {
-                        <option value="@empresa.IdEmpresa">
-                            @empresa.Nome
-                        </option>
-                    }
+                            <option value="">
+                                Sem orientador
+                            </option>
 
-                </select>
+                            @foreach (UnivManagement.Models.TestesEstagios.OrientadorEstagio orientador in ViewBag.Orientadores)
+                            {
+                                <option value="@orientador.IdOrientador">
+                                    @orientador.Nome
+                                </option>
+                            }
+
+                        </select>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="mb-3">
-                <label asp-for="IdOrientador" class="form-label">
-                    Orientador de Estágio
-                </label>
+        </div>
+    </div>
 
-                <select asp-for="IdOrientador"
-                        class="form-select">
+    <div class="mt-4">
 
-                    <option value="">Sem orientador</option>
+        <button type="submit"
+                class="btn btn-primary">
+            Criar
+        </button>
 
-                    @foreach (UnivManagement.Models.TestesEstagios.OrientadorEstagio orientador in ViewBag.Orientadores)
-                    {
-                        <option value="@orientador.IdOrientador">
-                            @orientador.Nome
-                        </option>
-                    }
-
-                </select>
-            </div>
-
-            <div class="mt-4">
-                <button type="submit" class="btn btn-primary">
-                    Criar
-                </button>
-
-                <a asp-action="Index"
-                   class="btn btn-secondary">
-                    Cancelar
-                </a>
-            </div>
-
-        </form>
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
 
     </div>
-</div>
+
+</form>
