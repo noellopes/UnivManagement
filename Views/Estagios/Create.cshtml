@@ -1,4 +1,4 @@
-@model UnivManagement.Models.Estagio
+@model UnivManagement.Models.TestesEstagios.Estagio
 
 @{
     ViewData["Title"] = "Criar Estágio";
@@ -13,61 +13,102 @@
 
         <form asp-action="Create" method="post">
 
-            <div asp-validation-summary="ModelOnly"
+            <div asp-validation-summary="All"
                  class="text-danger"></div>
 
+            @if (ViewBag.ErroDatas != null)
+            {
+                <p class="text-danger">
+                    @ViewBag.ErroDatas
+                </p>
+            }
+
             <div class="mb-3">
-                <label asp-for="DataInicio" class="form-label"></label>
-                <input asp-for="DataInicio" class="form-control" />
-                <span asp-validation-for="DataInicio" class="text-danger"></span>
+                <label asp-for="DataInicio" class="form-label">
+                    Data de Início
+                </label>
+                <input asp-for="DataInicio"
+                       class="form-control"
+                       required />
             </div>
 
             <div class="mb-3">
-                <label asp-for="DataFim" class="form-label"></label>
-                <input asp-for="DataFim" class="form-control" />
-                <span asp-validation-for="DataFim" class="text-danger"></span>
+                <label asp-for="DataFim" class="form-label">
+                    Data de Fim
+                </label>
+                <input asp-for="DataFim"
+                       class="form-control"
+                       required />
             </div>
 
             <div class="mb-3">
-                <label asp-for="Duracao" class="form-label"></label>
-                <input asp-for="Duracao" class="form-control" />
-                <span asp-validation-for="Duracao" class="text-danger"></span>
+                <label asp-for="PlanoTrabalhos" class="form-label">
+                    Plano de Trabalhos
+                </label>
+                <input asp-for="PlanoTrabalhos"
+                       class="form-control"
+                       required />
             </div>
 
             <div class="mb-3">
-                <label asp-for="Estado" class="form-label"></label>
-                <input asp-for="Estado" class="form-control" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
+                <label asp-for="StudentId" class="form-label">
+                    Aluno
+                </label>
+
+                <select asp-for="StudentId"
+                        class="form-select"
+                        required>
+
+                    <option value="">Selecione um aluno</option>
+
+                    @foreach (UnivManagement.Models.TestesEstagios.Student aluno in ViewBag.Alunos)
+                    {
+                        <option value="@aluno.StudentId">
+                            @aluno.Name
+                        </option>
+                    }
+
+                </select>
             </div>
 
             <div class="mb-3">
-                <label asp-for="PlanoTrabalhos" class="form-label"></label>
-                <input asp-for="PlanoTrabalhos" class="form-control" />
-                <span asp-validation-for="PlanoTrabalhos" class="text-danger"></span>
+                <label asp-for="IdEmpresa" class="form-label">
+                    Empresa
+                </label>
+
+                <select asp-for="IdEmpresa"
+                        class="form-select"
+                        required>
+
+                    <option value="">Selecione uma empresa</option>
+
+                    @foreach (UnivManagement.Models.TestesEstagios.Empresa empresa in ViewBag.Empresas)
+                    {
+                        <option value="@empresa.IdEmpresa">
+                            @empresa.Nome
+                        </option>
+                    }
+
+                </select>
             </div>
 
             <div class="mb-3">
-                <label asp-for="IdAluno" class="form-label"></label>
-                <input asp-for="IdAluno" class="form-control" />
-                <span asp-validation-for="IdAluno" class="text-danger"></span>
-            </div>
+                <label asp-for="IdOrientador" class="form-label">
+                    Orientador de Estágio
+                </label>
 
-            <div class="mb-3">
-                <label asp-for="IdEmpregador" class="form-label"></label>
-                <input asp-for="IdEmpregador" class="form-control" />
-                <span asp-validation-for="IdEmpregador" class="text-danger"></span>
-            </div>
+                <select asp-for="IdOrientador" class="form-select">
 
-            <div class="mb-3">
-                <label asp-for="IdGestor" class="form-label"></label>
-                <input asp-for="IdGestor" class="form-control" />
-                <span asp-validation-for="IdGestor" class="text-danger"></span>
-            </div>
+                    <option value="">Sem orientador</option>
 
-            <div class="mb-3">
-                <label asp-for="IdOrientador" class="form-label"></label>
-                <input asp-for="IdOrientador" class="form-control" />
-                <span asp-validation-for="IdOrientador" class="text-danger"></span>
+                    @foreach (UnivManagement.Models.TestesEstagios.OrientadorEstagio orientador in ViewBag.Orientadores)
+                    {
+                        <option value="@orientador.IdOrientador">
+                            @orientador.Nome
+                        </option>
+                    }
+
+                </select>
             </div>
 
             <div class="mt-4">

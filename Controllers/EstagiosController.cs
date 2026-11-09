@@ -1,25 +1,61 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models;
 using UnivManagement.Data;
+using UnivManagement.Models.TestesEstagios;
 
 public class EstagiosController : Controller
 {
-    private readonly UniversityDbContext _context;
+    private readonly EstagiosTesteDbContext _context;
 
-    public EstagiosController(UniversityDbContext context)
+    public EstagiosController(EstagiosTesteDbContext context)
     {
         _context = context;
     }
 
-    // GET: ESTAGIOS
-    public async Task<IActionResult> Index()    
+    private async Task CarregarListas()
     {
-        return View(await _context.Estagios.ToListAsync());
+        ViewBag.Alunos = await _context.Student.ToListAsync();
+        ViewBag.Empresas = await _context.Empresas.ToListAsync();
+        ViewBag.Orientadores = await _context.OrientadoresEstagio.ToListAsync();
     }
 
-    // GET: ESTAGIOS/Details/5
+    private string CalcularEstado(DateTime dataInicio, DateTime dataFim)
+    {
+        DateTime hoje = DateTime.Today;
+
+        if (dataFim.Date < hoje)
+        {
+            return "Concluído";
+        }
+
+        if (dataInicio.Date > hoje)
+        {
+            return "Pendente";
+        }
+
+        return "Em Curso";
+    }
+
+    private int CalcularDuracao(DateTime dataInicio, DateTime dataFim)
+    {
+        return (dataFim.Date - dataInicio.Date).Days;
+    }
+
+    // GET: Estagios
+    public async Task<IActionResult> Index()
+    {
+        var estagios = await _context.Estagios.ToListAsync();
+
+        foreach (var estagio in estagios)
+        {
+            estagio.Estado = CalcularEstado(
+                estagio.DataInicio, estagio.DataFim);
+        }
+
+        return View(estagios);
+    }
+
+    // GET: Estagios/Details
     public async Task<IActionResult> Details(int? idestagio)
     {
         if (idestagio == null)
@@ -28,38 +64,71 @@ public class EstagiosController : Controller
         }
 
         var estagio = await _context.Estagios
-            .FirstOrDefaultAsync(m => m.IdEstagio == idestagio);
+            .FirstOrDefaultAsync(e => e.IdEstagio == idestagio);
+
         if (estagio == null)
         {
             return NotFound();
         }
 
+        estagio.Estado = CalcularEstado(
+            estagio.DataInicio, estagio.DataFim);
+
         return View(estagio);
     }
 
-    // GET: ESTAGIOS/Create
-    public IActionResult Create()
+    // GET: Estagios/Create
+    public async Task<IActionResult> Create()
     {
+        await CarregarListas();
         return View();
     }
 
-    // POST: ESTAGIOS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: Estagios/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("IdEstagio,DataInicio,DataFim,Duracao,Estado,PlanoTrabalhos,IdAluno,AntigoAluno,IdEmpregador,Empregador,IdGestor,GestorEstagio,IdOrientador,OrientadorEstagio,Avaliacoes,Relatorios")] Estagio estagio)
+    public async Task<IActionResult> Create(
+        DateTime DataInicio,
+        DateTime DataFim,
+        string PlanoTrabalhos,
+        int StudentId,
+        int IdEmpresa,
+        int? IdOrientador)
     {
-        if (ModelState.IsValid)
+        var estagio = new Estagio
         {
-            _context.Add(estagio);
+            DataInicio = DataInicio,
+            DataFim = DataFim,
+            PlanoTrabalhos = PlanoTrabalhos,
+            StudentId = StudentId,
+            IdEmpresa = IdEmpresa,
+            IdOrientador = IdOrientador
+        };
+
+        if (DataFim.Date < DataInicio.Date)
+        {
+            ViewBag.ErroDatas =
+                "A data de fim não pode ser anterior à data de início.";
+        }
+        else if (ModelState.IsValid)
+        {
+            estagio.Duracao = CalcularDuracao(
+                DataInicio, DataFim);
+
+            estagio.Estado = CalcularEstado(
+                DataInicio, DataFim);
+
+            _context.Estagios.Add(estagio);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
+        await CarregarListas();
         return View(estagio);
     }
 
-    // GET: ESTAGIOS/Edit/5
+    // GET: Estagios/Edit
     public async Task<IActionResult> Edit(int? idestagio)
     {
         if (idestagio == null)
@@ -68,27 +137,46 @@ public class EstagiosController : Controller
         }
 
         var estagio = await _context.Estagios.FindAsync(idestagio);
+
         if (estagio == null)
         {
             return NotFound();
         }
+
+        await CarregarListas();
         return View(estagio);
     }
 
-    // POST: ESTAGIOS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: Estagios/Edit
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? idestagio, [Bind("IdEstagio,DataInicio,DataFim,Duracao,Estado,PlanoTrabalhos,IdAluno,AntigoAluno,IdEmpregador,Empregador,IdGestor,GestorEstagio,IdOrientador,OrientadorEstagio,Avaliacoes,Relatorios")] Estagio estagio)
+    public async Task<IActionResult> Edit(
+        int? idestagio,
+        [Bind("IdEstagio,DataInicio,DataFim,Duracao,Estado,PlanoTrabalhos,StudentId,IdEmpresa,IdOrientador")]
+        Estagio estagio)
     {
         if (idestagio != estagio.IdEstagio)
         {
             return NotFound();
         }
 
+        if (DataFimAnterior(estagio.DataInicio, estagio.DataFim))
+        {
+            ViewBag.ErroDatas =
+                "A data de fim não pode ser anterior à data de início.";
+
+            await CarregarListas();
+            return View(estagio);
+        }
+
         if (ModelState.IsValid)
         {
+            estagio.Duracao = CalcularDuracao(
+                estagio.DataInicio, estagio.DataFim);
+
+            estagio.Estado = CalcularEstado(
+                estagio.DataInicio, estagio.DataFim);
+
             try
             {
                 _context.Update(estagio);
@@ -105,12 +193,20 @@ public class EstagiosController : Controller
                     throw;
                 }
             }
+
             return RedirectToAction(nameof(Index));
         }
+
+        await CarregarListas();
         return View(estagio);
     }
 
-    // GET: ESTAGIOS/Delete/5
+    private bool DataFimAnterior(DateTime dataInicio, DateTime dataFim)
+    {
+        return dataFim.Date < dataInicio.Date;
+    }
+
+    // GET: Estagios/Delete
     public async Task<IActionResult> Delete(int? idestagio)
     {
         if (idestagio == null)
@@ -119,7 +215,8 @@ public class EstagiosController : Controller
         }
 
         var estagio = await _context.Estagios
-            .FirstOrDefaultAsync(m => m.IdEstagio == idestagio);
+            .FirstOrDefaultAsync(e => e.IdEstagio == idestagio);
+
         if (estagio == null)
         {
             return NotFound();
@@ -128,18 +225,19 @@ public class EstagiosController : Controller
         return View(estagio);
     }
 
-    // POST: ESTAGIOS/Delete/5
+    // POST: Estagios/Delete
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? idestagio)
     {
         var estagio = await _context.Estagios.FindAsync(idestagio);
+
         if (estagio != null)
         {
             _context.Estagios.Remove(estagio);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 

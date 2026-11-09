@@ -1,119 +1,43 @@
-@model IEnumerable<UnivManagement.Models.Estagio>
+@model IEnumerable<UnivManagement.Models.TestesEstagios.Estagio>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Estágios";
 }
 
-<h1>Index</h1>
+<h2>Estágios</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">
+        Criar
+    </a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DataInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataFim)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duracao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlanoTrabalhos)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdAluno)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AntigoAluno)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdEmpregador)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Empregador)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdGestor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GestorEstagio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdOrientador)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrientadorEstagio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Avaliacoes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Relatorios)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.DataInicio)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DataFim)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Duracao)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PlanoTrabalhos)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdAluno)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.AntigoAluno)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdEmpregador)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Empregador)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdGestor)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.GestorEstagio)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdOrientador)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.OrientadorEstagio)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Avaliacoes)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Relatorios)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdEstagio">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdEstagio">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdEstagio">Delete</a>
-            </td>
-        </tr>
+
+@if (Model.Count() == 0)
+{
+    <p>Ainda não existem estágios registados.</p>
 }
-    </tbody>
-</table>
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Estágio</th>
+                <th>Data de Início</th>
+                <th>Data de Fim</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var estagio in Model)
+            {
+                <tr>
+                    <td>@estagio.IdEstagio</td>
+                    <td>@estagio.DataInicio.ToString("dd/MM/yyyy")</td>
+                    <td>@estagio.DataFim.ToString("dd/MM/yyyy")</td>
+                    <td>@estagio.Estado</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
