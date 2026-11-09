@@ -5,6 +5,8 @@ namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
 
         public DbSet<TipoBolsa> TipoBolsa { get; set; } = default!;
+        public DbSet<CriterioElegibilidade> CriterioElegibilidade { get; set; } = default!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 

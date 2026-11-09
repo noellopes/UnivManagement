@@ -79,45 +79,25 @@ namespace UnivManagement.Data
         {
             if (dbContext.CriterioElegibilidade.Any()) return;
 
+            PopulateTipoBolsas(dbContext);
+
             var tiposBolsa = dbContext.TipoBolsa.ToDictionary(t => t.Nome, t => t.TipoBolsaId);
 
             if (tiposBolsa.Count == 0) return;
 
             var criterios = new List<CriterioElegibilidade>
             {
-                // Bolsa de Mérito (Merit)
-                new CriterioElegibilidade { Descricao = "Students must have a minimum academic average of 16 out of 20.", RendimentoMaximo = 30000m, EctsMinimos = 45, TipoBolsaId = tiposBolsa["Bolsa de Mérito"] },
+                // Merit Scholarship
+                new CriterioElegibilidade { Descricao = "Students must have a minimum academic average of 16 out of 20.", RendimentoMaximo = 30000m, EctsMinimos = 45, TipoBolsaId = tiposBolsa["Merit Scholarship"] },
 
-                // Bolsa Social de Emergência / Social
-                new CriterioElegibilidade { Descricao = "Students must belong to a low-income family and demonstrate financial need.", RendimentoMaximo = 12000m, EctsMinimos = 30, TipoBolsaId = tiposBolsa["Bolsa Social de Emergência"] },
+                // Social Scholarship
+                new CriterioElegibilidade { Descricao = "Students must belong to a low-income family and demonstrate financial need.", RendimentoMaximo = 12000m, EctsMinimos = 30, TipoBolsaId = tiposBolsa["Social Scholarship"] },
 
-                // Bolsa de Mobilidade Internacional (Erasmus)
-                new CriterioElegibilidade { Descricao = "Students must be officially selected for an Erasmus+ exchange programme.", RendimentoMaximo = 30000m, EctsMinimos = 30, TipoBolsaId = tiposBolsa["Bolsa de Mobilidade Internacional"] }
+                // Erasmus Scholarship
+                new CriterioElegibilidade { Descricao = "Students must be officially selected for an Erasmus+ exchange programme.", RendimentoMaximo = 30000m, EctsMinimos = 30, TipoBolsaId = tiposBolsa["Erasmus Scholarship"] }
             };
 
             dbContext.CriterioElegibilidade.AddRange(criterios);
-            dbContext.SaveChanges();
-        }
-
-        private static void PopulateTipoDocumento(UniversityDbContext dbContext)
-        {
-
-            if (dbContext.TipoDocumento.Any()) return;
-
-            var tiposDocumento = new List<TipoDocumento>
-            {
-                new TipoDocumento { NomeTipo = "Cartão de Cidadão",                Obrigatorio = true  },
-                new TipoDocumento { NomeTipo = "Comprovativo de Matrícula",        Obrigatorio = true  },
-                new TipoDocumento { NomeTipo = "Comprovativo de ECTS Realizados",  Obrigatorio = true  },
-                new TipoDocumento { NomeTipo = "Declaração de IRS",                Obrigatorio = true  },
-                new TipoDocumento { NomeTipo = "Nota de Liquidação de IRS",        Obrigatorio = true  },
-                new TipoDocumento { NomeTipo = "Composição do Agregado Familiar",  Obrigatorio = true  },
-                new TipoDocumento { NomeTipo = "Comprovativo de IBAN",             Obrigatorio = true  },
-                new TipoDocumento { NomeTipo = "Comprovativo de Morada",           Obrigatorio = false },
-                new TipoDocumento { NomeTipo = "Certificado de Habilitações",      Obrigatorio = false }
-            };
-
-            dbContext.TipoDocumento.AddRange(tiposDocumento);
             dbContext.SaveChanges();
         }
     }
