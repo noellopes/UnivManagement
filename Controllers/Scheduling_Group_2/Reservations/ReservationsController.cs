@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace UnivManagement.Controllers
+namespace UnivManagement.Controllers.Scheduling_Group_2.Reservations
 {
     public class ReservationsController : Controller
     {
