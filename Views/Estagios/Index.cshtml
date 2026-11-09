@@ -25,6 +25,7 @@ else
                 <th>Data de Início</th>
                 <th>Data de Fim</th>
                 <th>Estado</th>
+                <th></th>
             </tr>
         </thead>
 
@@ -36,6 +37,12 @@ else
                     <td>@estagio.DataInicio.ToString("dd/MM/yyyy")</td>
                     <td>@estagio.DataFim.ToString("dd/MM/yyyy")</td>
                     <td>@estagio.Estado</td>
+                    <td>
+                        <a asp-action="Details"
+                           asp-route-idestagio="@estagio.IdEstagio">
+                            Ver detalhes
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
