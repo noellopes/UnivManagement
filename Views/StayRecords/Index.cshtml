@@ -1,13 +1,13 @@
 @model IEnumerable<UnivManagement.Models.AccommodationManagement.StayRecord>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Registos de Estadia";
 }
 
-<h1>Index</h1>
+<h1>Registos de Estadia</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(model => item.RecordedBy)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.StayRecordId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.StayRecordId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.StayRecordId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.StayRecordId" class="btn btn-sm btn-outline-success">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.StayRecordId" class="btn btn-sm btn-secondary">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.StayRecordId" class="btn btn-sm btn-danger">Delete</a>
             </td>
         </tr>
 }
