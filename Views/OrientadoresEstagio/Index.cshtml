@@ -4,15 +4,21 @@
     ViewData["Title"] = "Orientadores de Estágio";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Orientadores de Estágio</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Orientadores de Estágio</h2>
 
-    <a asp-action="Create" class="btn btn-primary">Criar</a>
+    <a asp-action="Create" class="btn btn-primary">
+        Criar Orientador
+    </a>
 </div>
 
 @if (Model.Count() == 0)
 {
-    <p>Ainda não existem orientadores de estágio registados.</p>
+    <div class="border rounded p-4 text-center">
+        <p class="text-muted mb-0">
+            Ainda não existem orientadores de estágio registados.
+        </p>
+    </div>
 }
 else
 {
@@ -20,8 +26,19 @@ else
     {
         <a asp-action="Details"
            asp-route-idorientador="@orientador.IdOrientador"
-           class="d-block border rounded p-3 mb-3 text-decoration-none">
-            @orientador.Nome
+           class="d-block text-decoration-none border rounded-3 shadow-sm p-3 mb-3">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <span class="fw-semibold text-dark">
+                    @orientador.Nome
+                </span>
+
+                <span class="text-primary">
+                    Ver detalhes &rsaquo;
+                </span>
+
+            </div>
         </a>
     }
 }
