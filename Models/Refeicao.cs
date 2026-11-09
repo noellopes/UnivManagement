@@ -10,6 +10,7 @@ namespace UnivManagement.Models
         [StringLength(100, ErrorMessage = "O nome não pode exceder 100 caracteres.")]
         public required string Nome { get; set; }
 
+        [Display(Name = "Preço")]
         [Required(ErrorMessage = "Por favor, indique o preço.")]
         [Range(0.01, 50.00, ErrorMessage = "O preço deve ser um valor positivo entre 0.01€ e 50.00€.")]
         public decimal Preco { get; set; }
