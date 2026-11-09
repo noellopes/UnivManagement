@@ -1,73 +1,105 @@
 @model UnivManagement.Models.Session
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes da Aula";
 }
 
-<h1>Details</h1>
+<div class="container mt-4" style="max-width: 720px;">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h1 class="h2 fw-bold text-dark mb-1">Detalhes da Aula</h1>
+            <p class="text-muted small mb-0">Consulte as informações completas da sessão de aula selecionada.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
+            <i class="bi bi-arrow-left"></i> Voltar à Lista
+        </a>
+    </div>
 
-<div>
-    <h4>Session</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DiaSemana)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DiaSemana)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HoraInicio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HoraInicio)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HoraFim)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HoraFim)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TipoAula)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TipoAula)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ativo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ativo)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdSala)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdSala)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdTurma)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdTurma)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ClassGroup)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ClassGroup)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ClassSessionId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+            <dl class="row mb-0 gy-3">
+                <dt class="col-sm-4 text-muted fw-semibold">
+                    @Html.DisplayNameFor(model => model.DiaSemana)
+                </dt>
+                <dd class="col-sm-8 fw-bold text-dark mb-0">
+                    <i class="bi bi-calendar3 me-1 text-primary"></i>
+                    @Html.DisplayFor(model => model.DiaSemana)
+                </dd>
+
+                <hr class="my-2 text-light-emphasis" />
+
+                <dt class="col-sm-4 text-muted fw-semibold">Horário</dt>
+                <dd class="col-sm-8 text-dark mb-0">
+                    <span class="badge bg-light text-dark border">
+                        <i class="bi bi-clock me-1 text-muted"></i>
+                        @Html.DisplayFor(model => model.HoraInicio) - @Html.DisplayFor(model => model.HoraFim)
+                    </span>
+                </dd>
+
+                <hr class="my-2 text-light-emphasis" />
+
+                <dt class="col-sm-4 text-muted fw-semibold">
+                    @Html.DisplayNameFor(model => model.TipoAula)
+                </dt>
+                <dd class="col-sm-8 text-dark mb-0">
+                    <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle rounded-pill px-3 py-1">
+                        @Html.DisplayFor(model => model.TipoAula)
+                    </span>
+                </dd>
+
+                <hr class="my-2 text-light-emphasis" />
+
+                <dt class="col-sm-4 text-muted fw-semibold">
+                    @Html.DisplayNameFor(model => model.Group)
+                </dt>
+                <dd class="col-sm-8 fw-semibold text-dark mb-0">
+                    @Html.DisplayFor(model => model.Group)
+                </dd>
+
+                <hr class="my-2 text-light-emphasis" />
+
+                <dt class="col-sm-4 text-muted fw-semibold">
+                    @Html.DisplayNameFor(model => model.IdSala)
+                </dt>
+                <dd class="col-sm-8 text-muted mb-0">
+                    @Html.DisplayFor(model => model.IdSala)
+                </dd>
+
+                <hr class="my-2 text-light-emphasis" />
+
+                <dt class="col-sm-4 text-muted fw-semibold">
+                    @Html.DisplayNameFor(model => model.IdTurma)
+                </dt>
+                <dd class="col-sm-8 text-muted mb-0">
+                    @Html.DisplayFor(model => model.IdTurma)
+                </dd>
+
+                <hr class="my-2 text-light-emphasis" />
+
+                <dt class="col-sm-4 text-muted fw-semibold">
+                    @Html.DisplayNameFor(model => model.Ativo)
+                </dt>
+                <dd class="col-sm-8 text-dark mb-0">
+                    @if (Model != null && Model.Ativo) {
+                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1">
+                            Ativo
+                        </span>
+                    } else {
+                        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3 py-1">
+                            Inativo
+                        </span>
+                    }
+                </dd>
+            </dl>
+
+            <div class="d-flex align-items-center gap-2 mt-4 pt-3 border-top">
+                <a asp-action="Edit" asp-route-id="@Model?.ClassSessionId" class="btn btn-primary px-4 shadow-sm">
+                    <i class="bi bi-pencil me-1"></i> Editar Aula
+                </a>
+                <a asp-action="Index" class="btn btn-light border px-4">Voltar</a>
+            </div>
+        </div>
+    </div>
 </div>

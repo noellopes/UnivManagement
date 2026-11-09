@@ -49,7 +49,7 @@ public class SessionController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ClassSessionId,DiaSemana,HoraInicio,HoraFim,TipoAula,Ativo,IdSala,IdTurma,ClassGroup")] Session session)
+    public async Task<IActionResult> Create([Bind("ClassSessionId,DiaSemana,HoraInicio,HoraFim,TipoAula,Ativo,IdSala,IdTurma")] Session session)
     {
         if (ModelState.IsValid)
         {
