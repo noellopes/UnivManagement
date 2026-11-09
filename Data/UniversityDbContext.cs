@@ -61,6 +61,11 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Course>()
                 .HasIndex(c => c.Code)
                 .IsUnique();
+
+            // Evita duplicações na tabela CourseStudyPlanYear:
+            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
+                .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
+                .IsUnique();
         }
       
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
@@ -84,6 +89,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
         
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
