@@ -14,8 +14,13 @@ public class ServicoFuncionarioController : Controller
     }
 
     // GET: SERVICOFUNCIONARIOS  
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index(string? successMessage = null)
     {
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
+
         return View(await _context.ServicoFuncionario.ToListAsync());
     }
 
@@ -136,9 +141,11 @@ public class ServicoFuncionarioController : Controller
 
         var servicofuncionario = await _context.ServicoFuncionario
             .FirstOrDefaultAsync(m => m.ServicoFuncionarioId == servicofuncionarioid);
+
         if (servicofuncionario == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "Sucesso: O serviço de funcionário já tinha sido eliminado por outro utilizador." });
         }
 
         return View(servicofuncionario);
@@ -161,7 +168,7 @@ public class ServicoFuncionarioController : Controller
             await _context.SaveChangesAsync();
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { successMessage = "Serviço de funcionário eliminado com sucesso." });
     }
 
     private bool ServicoFuncionarioExists(int? servicofuncionarioid)
