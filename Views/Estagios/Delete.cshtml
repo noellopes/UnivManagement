@@ -8,8 +8,6 @@
 
 <hr />
 
-<p>Tem a certeza de que pretende eliminar este estágio?</p>
-
 <div class="card">
     <div class="card-body">
 
@@ -17,40 +15,66 @@
             Estágio nº @Model.IdEstagio
         </h5>
 
-        <p>
-            <strong>Data de Início:</strong>
-            @Model.DataInicio.ToString("dd/MM/yyyy")
-        </p>
+        <hr />
 
         <p>
-            <strong>Data de Fim:</strong>
-            @Model.DataFim.ToString("dd/MM/yyyy")
+            Tem a certeza de que pretende eliminar este estágio?
         </p>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <p>
+                    <strong>Data de Início:</strong>
+                    @Model.DataInicio.ToString("dd/MM/yyyy")
+                </p>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <p>
+                    <strong>Data de Fim:</strong>
+                    @Model.DataFim.ToString("dd/MM/yyyy")
+                </p>
+
+            </div>
+
+        </div>
+
+        <hr />
 
         <p>
             <strong>Plano de Trabalhos:</strong>
+        </p>
+
+        <p>
             @Model.PlanoTrabalhos
         </p>
 
-        <form asp-action="Delete" method="post">
-
-            <input type="hidden"
-                   name="idestagio"
-                   value="@Model.IdEstagio" />
-
-            <div class="mt-4">
-                <button type="submit" class="btn btn-danger">
-                    Eliminar
-                </button>
-
-                <a asp-action="Details"
-                   asp-route-idestagio="@Model.IdEstagio"
-                   class="btn btn-secondary">
-                    Cancelar
-                </a>
-            </div>
-
-        </form>
-
     </div>
 </div>
+
+<form asp-action="Delete" method="post">
+
+    <input type="hidden"
+           name="idestagio"
+           value="@Model.IdEstagio" />
+
+    <div class="mt-4">
+
+        <button type="submit"
+                class="btn btn-danger">
+            Eliminar
+        </button>
+
+        <a asp-action="Details"
+           asp-route-idestagio="@Model.IdEstagio"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+
+    </div>
+
+</form>
