@@ -1,36 +1,89 @@
 @model UnivManagement.Models.AcademicManagement.AcademicYear
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar Ano Letivo";
 }
 
-<h1>Create</h1>
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
 
-<h4>AcademicYear</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-4">
+            <h1 class="h2 mb-1">Criar Ano Letivo</h1>
+            <p class="text-body-secondary mb-0">
+                Adicionar um novo ano letivo à universidade.
+            </p>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="StartYear" class="control-label"></label>
-                <input asp-for="StartYear" class="form-control" />
-                <span asp-validation-for="StartYear" class="text-danger"></span>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-body-tertiary py-3">
+                <h2 class="h5 mb-0">
+                    <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
+                    Informação do Ano Letivo
+                </h2>
             </div>
 
-            <div class="form-group">
-                <label asp-for="EndYear" class="control-label"></label>
-                <input asp-for="EndYear" class="form-control" />
-                <span asp-validation-for="EndYear" class="text-danger"></span>
+            <div class="card-body p-4">
+                <form asp-action="Create" method="post">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger"
+                         role="alert"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="StartYear"
+                               class="form-label fw-semibold"></label>
+
+                        <input asp-for="StartYear"
+                               class="form-control"
+                               type="number"
+                               min="2000"
+                               max="9999"
+                               placeholder="Ex: 2025"
+                               autofocus />
+
+                        <span asp-validation-for="StartYear"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="EndYear"
+                               class="form-label fw-semibold"></label>
+
+                        <input asp-for="EndYear"
+                               class="form-control"
+                               type="number"
+                               min="2000"
+                               max="9999"
+                               placeholder="Ex: 2026" />
+
+                        <span asp-validation-for="EndYear"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus-lg me-1"
+                               aria-hidden="true"></i>
+                            Criar Ano Letivo
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"
+                               aria-hidden="true"></i>
+                            Voltar à Lista
+                        </a>
+                    </div>
+
+                </form>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
