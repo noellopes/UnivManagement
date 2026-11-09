@@ -60,5 +60,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.Docente> Docente { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Departamento> Departamento { get; set; } = default!;
+        
     }
 }
