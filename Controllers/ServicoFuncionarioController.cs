@@ -132,17 +132,22 @@ public class ServicoFuncionarioController : Controller
     }
 
     // POST: SERVICOFUNCIONARIOS/Delete/5
-    [HttpPost, ActionName("Delete")]
+    [HttpPost("/ServicoFuncionario/Delete/{servicofuncionarioid}"), ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? servicofuncionarioid)
     {
+        if (servicofuncionarioid == null)
+        {
+            return NotFound();
+        }
+
         var servicofuncionario = await _context.ServicoFuncionario.FindAsync(servicofuncionarioid);
         if (servicofuncionario != null)
         {
             _context.ServicoFuncionario.Remove(servicofuncionario);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
