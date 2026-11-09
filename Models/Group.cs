@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using UnivManagement.Models;
 
 namespace UnivManagement.Models
 {
+    [Table("ClassGroup")]
     public class Group
     {
         public int GroupId { get; set; }

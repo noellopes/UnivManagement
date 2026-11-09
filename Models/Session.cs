@@ -4,15 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UnivManagement.Models
 {
+    [Table("ClassSession")]
     public class Session
     {
         [Key]
         public int ClassSessionId { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique o {0}.")]
-        [Range(1, 7, ErrorMessage = "O {0} deve estar entre {1} (Domingo) e {2} (Sábado).")]
+        [StringLength(20, ErrorMessage = "O {0} não pode exceder {1} caracteres.")]
         [Display(Name = "Dia da Semana")]
-        public int DiaSemana { get; set; }
+        public string DiaSemana { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique a {0}.")]
         [DataType(DataType.Time)]
@@ -44,6 +45,6 @@ namespace UnivManagement.Models
         public int IdTurma { get; set; }
 
         [ForeignKey("IdTurma")]
-        public Group? ClassGroup { get; set; }
+        public Group? Group { get; set; }
     }
 }
