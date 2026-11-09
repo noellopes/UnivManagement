@@ -4,86 +4,100 @@
     ViewData["Title"] = "Estágios";
 }
 
-<h2>Estágios</h2>
+<h2>Gestão de Estágios</h2>
+
+<hr />
 
 <p>
     <a asp-action="Create" class="btn btn-primary">
-        Criar
+        Criar Estágio
     </a>
 </p>
 
-@if (Model.Count() == 0)
-{
-    <p>Ainda não existem estágios registados.</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Estágio</th>
-                <th>Aluno</th>
-                <th>Empresa</th>
-                <th>Data de Início</th>
-                <th>Data de Fim</th>
-                <th>Duração</th>
-                <th>Estado</th>
-                <th></th>
-            </tr>
-        </thead>
+<div class="card">
+    <div class="card-body">
 
-        <tbody>
-            @foreach (var estagio in Model)
-            {
-                <tr>
-                    <td>@estagio.IdEstagio</td>
+        <h5 class="card-title">
+            Lista de Estágios
+        </h5>
 
-                    <td>
-                        @if (estagio.Student != null)
-                        {
-                            @estagio.Student.Name
-                        }
-                        else
-                        {
-                            <span>Aluno não encontrado</span>
-                        }
-                    </td>
+        <hr />
 
-                    <td>
-                        @if (estagio.Empresa != null)
-                        {
-                            @estagio.Empresa.Nome
-                        }
-                        else
-                        {
-                            <span>Empresa não encontrada</span>
-                        }
-                    </td>
+        @if (Model.Count() == 0)
+        {
+            <p>Ainda não existem estágios registados.</p>
+        }
+        else
+        {
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Estágio</th>
+                        <th scope="col">Aluno</th>
+                        <th scope="col">Empresa</th>
+                        <th scope="col">Data de Início</th>
+                        <th scope="col">Data de Fim</th>
+                        <th scope="col">Duração</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
 
-                    <td>
-                        @estagio.DataInicio.ToString("dd/MM/yyyy")
-                    </td>
+                <tbody>
+                    @foreach (var estagio in Model)
+                    {
+                        <tr>
+                            <td>@estagio.IdEstagio</td>
 
-                    <td>
-                        @estagio.DataFim.ToString("dd/MM/yyyy")
-                    </td>
+                            <td>
+                                @if (estagio.Student != null)
+                                {
+                                    @estagio.Student.Name
+                                }
+                                else
+                                {
+                                    <span>Aluno não encontrado</span>
+                                }
+                            </td>
 
-                    <td>
-                        @estagio.Duracao dias
-                    </td>
+                            <td>
+                                @if (estagio.Empresa != null)
+                                {
+                                    @estagio.Empresa.Nome
+                                }
+                                else
+                                {
+                                    <span>Empresa não encontrada</span>
+                                }
+                            </td>
 
-                    <td>
-                        @estagio.Estado
-                    </td>
+                            <td>
+                                @estagio.DataInicio.ToString("dd/MM/yyyy")
+                            </td>
 
-                    <td>
-                        <a asp-action="Details"
-                           asp-route-idestagio="@estagio.IdEstagio">
-                            Ver detalhes
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+                            <td>
+                                @estagio.DataFim.ToString("dd/MM/yyyy")
+                            </td>
+
+                            <td>
+                                @estagio.Duracao dias
+                            </td>
+
+                            <td>
+                                @estagio.Estado
+                            </td>
+
+                            <td>
+                                <a asp-action="Details"
+                                   asp-route-idestagio="@estagio.IdEstagio"
+                                   class="btn btn-secondary">
+                                    Ver detalhes
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
