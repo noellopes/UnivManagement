@@ -1,5 +1,4 @@
-﻿
-namespace UnivManagement.Models.Scheduling
+﻿namespace UnivManagement.Models
 {
     public class RoomReservation
     {
