@@ -1,0 +1,86 @@
+@model UnivManagement.Models.Estagio
+
+@{
+    ViewData["Title"] = "Criar Estágio";
+}
+
+<h2>Criar Estágio</h2>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="DataInicio" class="form-label"></label>
+                <input asp-for="DataInicio" class="form-control" />
+                <span asp-validation-for="DataInicio" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DataFim" class="form-label"></label>
+                <input asp-for="DataFim" class="form-control" />
+                <span asp-validation-for="DataFim" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Duracao" class="form-label"></label>
+                <input asp-for="Duracao" class="form-control" />
+                <span asp-validation-for="Duracao" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Estado" class="form-label"></label>
+                <input asp-for="Estado" class="form-control" />
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PlanoTrabalhos" class="form-label"></label>
+                <input asp-for="PlanoTrabalhos" class="form-control" />
+                <span asp-validation-for="PlanoTrabalhos" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="IdAluno" class="form-label"></label>
+                <input asp-for="IdAluno" class="form-control" />
+                <span asp-validation-for="IdAluno" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="IdEmpregador" class="form-label"></label>
+                <input asp-for="IdEmpregador" class="form-control" />
+                <span asp-validation-for="IdEmpregador" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="IdGestor" class="form-label"></label>
+                <input asp-for="IdGestor" class="form-control" />
+                <span asp-validation-for="IdGestor" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="IdOrientador" class="form-label"></label>
+                <input asp-for="IdOrientador" class="form-control" />
+                <span asp-validation-for="IdOrientador" class="text-danger"></span>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    Criar
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
