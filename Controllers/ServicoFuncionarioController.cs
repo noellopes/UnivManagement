@@ -21,7 +21,7 @@ public class ServicoFuncionarioController : Controller
 
     // GET: SERVICOFUNCIONARIOS/Details/5
     [HttpGet("/ServicoFuncionario/Details/{servicofuncionarioid}")]
-    public async Task<IActionResult> Details(int? servicofuncionarioid)
+    public async Task<IActionResult> Details(int? servicofuncionarioid, string? successMessage = null)
     {
         if (servicofuncionarioid == null)
         {
@@ -30,9 +30,15 @@ public class ServicoFuncionarioController : Controller
 
         var servicofuncionario = await _context.ServicoFuncionario
             .FirstOrDefaultAsync(m => m.ServicoFuncionarioId == servicofuncionarioid);
+
         if (servicofuncionario == null)
         {
             return View("NotFound");
+        }
+
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
         }
 
         return View(servicofuncionario);
@@ -56,7 +62,10 @@ public class ServicoFuncionarioController : Controller
             _context.Add(servicofuncionario);
             await _context.SaveChangesAsync();
             // Redireciona diretamente para os detalhes do serviço recém-criado
-             return RedirectToAction(nameof(Details), new { servicofuncionarioid = servicofuncionario.ServicoFuncionarioId });
+            return RedirectToAction(
+                  nameof(Details),
+                  new { servicofuncionarioid = servicofuncionario.ServicoFuncionarioId, successMessage = "Serviço criado com sucesso." }
+);
         }
         return View(servicofuncionario);
     }
