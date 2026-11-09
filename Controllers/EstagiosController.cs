@@ -74,6 +74,33 @@ public class EstagiosController : Controller
         estagio.Estado = CalcularEstado(
             estagio.DataInicio, estagio.DataFim);
 
+        var aluno = await _context.Student
+            .FirstOrDefaultAsync(a => a.StudentId == estagio.StudentId);
+
+        var empresa = await _context.Empresas
+            .FirstOrDefaultAsync(e => e.IdEmpresa == estagio.IdEmpresa);
+
+        ViewBag.NomeAluno = aluno != null
+            ? aluno.Name
+            : "Aluno não encontrado";
+
+        ViewBag.NomeEmpresa = empresa != null
+            ? empresa.Nome
+            : "Empresa não encontrada";
+
+        ViewBag.NomeOrientador = "Sem orientador";
+
+        if (estagio.IdOrientador != null)
+        {
+            var orientador = await _context.OrientadoresEstagio
+                .FirstOrDefaultAsync(o =>
+                    o.IdOrientador == estagio.IdOrientador);
+
+            ViewBag.NomeOrientador = orientador != null
+                ? orientador.Nome
+                : "Orientador não encontrado";
+        }
+
         return View(estagio);
     }
 

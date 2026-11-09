@@ -16,6 +16,23 @@
         </h5>
 
         <p>
+            <strong>Aluno:</strong>
+            @ViewBag.NomeAluno
+        </p>
+
+        <p>
+            <strong>Empresa:</strong>
+            @ViewBag.NomeEmpresa
+        </p>
+
+        <p>
+            <strong>Orientador de Estágio:</strong>
+            @ViewBag.NomeOrientador
+        </p>
+
+        <hr />
+
+        <p>
             <strong>Data de Início:</strong>
             @Model.DataInicio.ToString("dd/MM/yyyy")
         </p>
@@ -41,8 +58,7 @@
         </p>
 
         <div class="mt-4">
-            <a asp-action="Index"
-               class="btn btn-secondary">
+            <a asp-action="Index" class="btn btn-secondary">
                 Voltar
             </a>
         </div>
