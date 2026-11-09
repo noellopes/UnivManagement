@@ -1,41 +1,130 @@
 @model IEnumerable<UnivManagement.Models.Area>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Áreas de Oferta";
 }
 
-<h1>Index</h1>
+<div class="container py-4">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Descricao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AreaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AreaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AreaId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Áreas de Oferta</h2>
+            <p class="text-muted mb-0">
+                Gerencie as áreas de oferta da instituição.
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary px-4 py-2 shadow-sm">
+            <i class="bi bi-plus-lg me-2"></i>
+            Nova Área
+        </a>
+    </div>
+
+    <!-- Table Card -->
+    <div class="card border-0 shadow-sm rounded-4">
+
+        <div class="card-header bg-white border-0 px-4 pt-4 pb-2">
+            <h5 class="fw-semibold mb-0">Lista de Áreas</h5>
+            <small class="text-muted">
+                @if (Model.Count() == 1)
+                {
+                    <span>@Model.Count() área registada</span>
+                }
+                else
+                {
+                    <span>@Model.Count() áreas registadas</span>
+                }
+            </small>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4 py-3 text-muted small text-uppercase">
+                                Nome
+                            </th>
+                            <th class="py-3 text-muted small text-uppercase">
+                                Descrição
+                            </th>
+                            <th class="text-end pe-4 py-3 text-muted small text-uppercase">
+                                Ações
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 py-3">
+                                    <span class="fw-semibold text-dark">
+                                        @item.Nome
+                                    </span>
+                                </td>
+
+                                <td class="py-3 text-muted">
+                                    @item.Descricao
+                                </td>
+
+                                <td class="text-end pe-4 py-3">
+                                    <div class="d-inline-flex gap-2">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.AreaId"
+                                           class="btn btn-sm btn-outline-info"
+                                           title="Detalhes">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.AreaId"
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.AreaId"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="Eliminar">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center py-5">
+                                    <i class="bi bi-inbox display-5 text-muted"></i>
+                                    <p class="fw-semibold mt-3 mb-1">
+                                        Nenhuma área encontrada
+                                    </p>
+                                    <p class="text-muted small mb-3">
+                                        Ainda não existem áreas de oferta registadas.
+                                    </p>
+                                    <a asp-action="Create" class="btn btn-primary btn-sm">
+                                        Criar primeira área
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer bg-white border-0 px-4 py-3">
+            <small class="text-muted">
+                Total de registos: <strong>@Model.Count()</strong>
+            </small>
+        </div>
+
+    </div>
+</div>
