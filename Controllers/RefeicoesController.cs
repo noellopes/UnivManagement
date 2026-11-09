@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
 using UnivManagement.Models;
@@ -17,7 +18,8 @@ namespace UnivManagement.Controllers
         // GET: Refeicoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Refeicoes.ToListAsync());
+            var refeicoes = _context.Refeicoes.Include(r => r.TipoRefeicao);
+            return View(await refeicoes.ToListAsync());
         }
 
         // GET: Refeicoes/Details/5
@@ -26,6 +28,7 @@ namespace UnivManagement.Controllers
             if (id == null) return NotFound();
 
             var refeicao = await _context.Refeicoes
+                .Include(r => r.TipoRefeicao)
                 .FirstOrDefaultAsync(m => m.RefeicaoId == id);
             if (refeicao == null) return NotFound();
 
@@ -35,13 +38,14 @@ namespace UnivManagement.Controllers
         // GET: Refeicoes/Create
         public IActionResult Create()
         {
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TiposRefeicao, "TipoRefeicaoId", "Nome");
             return View();
         }
 
         // POST: Refeicoes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RefeicaoId,Nome,Tipo,Preco")] Refeicao refeicao)
+        public async Task<IActionResult> Create([Bind("RefeicaoId,Nome,Preco,TipoRefeicaoId")] Refeicao refeicao)
         {
             if (ModelState.IsValid)
             {
@@ -49,6 +53,7 @@ namespace UnivManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TiposRefeicao, "TipoRefeicaoId", "Nome", refeicao.TipoRefeicaoId);
             return View(refeicao);
         }
 
@@ -59,13 +64,15 @@ namespace UnivManagement.Controllers
 
             var refeicao = await _context.Refeicoes.FindAsync(id);
             if (refeicao == null) return NotFound();
+
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TiposRefeicao, "TipoRefeicaoId", "Nome", refeicao.TipoRefeicaoId);
             return View(refeicao);
         }
 
         // POST: Refeicoes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RefeicaoId,Nome,Tipo,Preco")] Refeicao refeicao)
+        public async Task<IActionResult> Edit(int id, [Bind("RefeicaoId,Nome,Preco,TipoRefeicaoId")] Refeicao refeicao)
         {
             if (id != refeicao.RefeicaoId) return NotFound();
 
@@ -83,6 +90,7 @@ namespace UnivManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TipoRefeicaoId"] = new SelectList(_context.TiposRefeicao, "TipoRefeicaoId", "Nome", refeicao.TipoRefeicaoId);
             return View(refeicao);
         }
 
@@ -92,6 +100,7 @@ namespace UnivManagement.Controllers
             if (id == null) return NotFound();
 
             var refeicao = await _context.Refeicoes
+                .Include(r => r.TipoRefeicao)
                 .FirstOrDefaultAsync(m => m.RefeicaoId == id);
             if (refeicao == null) return NotFound();
 
