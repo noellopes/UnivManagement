@@ -1,8 +1,8 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models;
 using UnivManagement.Data;
+using UnivManagement.Models;
 
 public class OrientadoresEstagioController : Controller
 {
@@ -13,13 +13,13 @@ public class OrientadoresEstagioController : Controller
         _context = context;
     }
 
-    // GET: ORIENTADORESTAGIOS
-    public async Task<IActionResult> Index()    
+    // GET: OrientadoresEstagio
+    public async Task<IActionResult> Index()
     {
         return View(await _context.OrientadoresEstagio.ToListAsync());
     }
 
-    // GET: ORIENTADORESTAGIOS/Details/5
+    // GET: OrientadoresEstagio/Details
     public async Task<IActionResult> Details(int? idorientador)
     {
         if (idorientador == null)
@@ -29,6 +29,7 @@ public class OrientadoresEstagioController : Controller
 
         var orientadorestagio = await _context.OrientadoresEstagio
             .FirstOrDefaultAsync(m => m.IdOrientador == idorientador);
+
         if (orientadorestagio == null)
         {
             return NotFound();
@@ -37,29 +38,30 @@ public class OrientadoresEstagioController : Controller
         return View(orientadorestagio);
     }
 
-    // GET: ORIENTADORESTAGIOS/Create
+    // GET: OrientadoresEstagio/Create
     public IActionResult Create()
     {
         return View();
     }
 
-    // POST: ORIENTADORESTAGIOS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: OrientadoresEstagio/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("IdOrientador,Nome,Email,Password,Estagios,Avaliacoes")] OrientadorEstagio orientadorestagio)
+    public async Task<IActionResult> Create(
+        [Bind("Nome,Email,Password")] OrientadorEstagio orientadorestagio)
     {
         if (ModelState.IsValid)
         {
             _context.Add(orientadorestagio);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
         return View(orientadorestagio);
     }
 
-    // GET: ORIENTADORESTAGIOS/Edit/5
+    // GET: OrientadoresEstagio/Edit
     public async Task<IActionResult> Edit(int? idorientador)
     {
         if (idorientador == null)
@@ -67,20 +69,23 @@ public class OrientadoresEstagioController : Controller
             return NotFound();
         }
 
-        var orientadorestagio = await _context.OrientadoresEstagio.FindAsync(idorientador);
+        var orientadorestagio = await _context.OrientadoresEstagio
+            .FindAsync(idorientador);
+
         if (orientadorestagio == null)
         {
             return NotFound();
         }
+
         return View(orientadorestagio);
     }
 
-    // POST: ORIENTADORESTAGIOS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: OrientadoresEstagio/Edit
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? idorientador, [Bind("IdOrientador,Nome,Email,Password,Estagios,Avaliacoes")] OrientadorEstagio orientadorestagio)
+    public async Task<IActionResult> Edit(
+        int? idorientador,
+        [Bind("IdOrientador,Nome,Email,Password")] OrientadorEstagio orientadorestagio)
     {
         if (idorientador != orientadorestagio.IdOrientador)
         {
@@ -105,12 +110,14 @@ public class OrientadoresEstagioController : Controller
                     throw;
                 }
             }
+
             return RedirectToAction(nameof(Index));
         }
+
         return View(orientadorestagio);
     }
 
-    // GET: ORIENTADORESTAGIOS/Delete/5
+    // GET: OrientadoresEstagio/Delete
     public async Task<IActionResult> Delete(int? idorientador)
     {
         if (idorientador == null)
@@ -120,6 +127,7 @@ public class OrientadoresEstagioController : Controller
 
         var orientadorestagio = await _context.OrientadoresEstagio
             .FirstOrDefaultAsync(m => m.IdOrientador == idorientador);
+
         if (orientadorestagio == null)
         {
             return NotFound();
@@ -128,23 +136,31 @@ public class OrientadoresEstagioController : Controller
         return View(orientadorestagio);
     }
 
-    // POST: ORIENTADORESTAGIOS/Delete/5
+    // POST: OrientadoresEstagio/Delete
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? idorientador)
     {
-        var orientadorestagio = await _context.OrientadoresEstagio.FindAsync(idorientador);
+        if (idorientador == null)
+        {
+            return NotFound();
+        }
+
+        var orientadorestagio = await _context.OrientadoresEstagio
+            .FindAsync(idorientador);
+
         if (orientadorestagio != null)
         {
             _context.OrientadoresEstagio.Remove(orientadorestagio);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool OrientadorEstagioExists(int? idorientador)
     {
-        return _context.OrientadoresEstagio.Any(e => e.IdOrientador == idorientador);
+        return _context.OrientadoresEstagio
+            .Any(e => e.IdOrientador == idorientador);
     }
 }

@@ -1,52 +1,42 @@
 @model UnivManagement.Models.OrientadorEstagio
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Orientador";
 }
 
-<h1>Details</h1>
+<h2>Orientador de Estágio</h2>
 
-<div>
-    <h4>OrientadorEstagio</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estagios)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estagios)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Avaliacoes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Avaliacoes)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdOrientador">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="border rounded p-3 mt-4">
+
+    <p>
+        <strong>Nome:</strong>
+        @Model.Nome
+    </p>
+
+    <p>
+        <strong>Email:</strong>
+        @Model.Email
+    </p>
+
+    <div class="mt-4">
+
+        <a asp-action="Edit"
+           asp-route-idorientador="@Model.IdOrientador"
+           class="btn btn-primary">
+            Editar
+        </a>
+
+        <a asp-action="Delete"
+           asp-route-idorientador="@Model.IdOrientador"
+           class="btn btn-danger">
+            Eliminar
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Voltar
+        </a>
+
+    </div>
+
 </div>

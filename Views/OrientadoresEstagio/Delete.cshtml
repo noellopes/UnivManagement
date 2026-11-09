@@ -1,58 +1,40 @@
 @model UnivManagement.Models.OrientadorEstagio
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Orientador";
 }
 
-<h1>Delete</h1>
+<h2>Eliminar Orientador de Estágio</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>UnivManagement.Models.OrientadorEstagio</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estagios)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estagios)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Avaliacoes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Avaliacoes)
-        </dd>
-    </dl>
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="IdOrientador" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+<p>Tem a certeza de que pretende eliminar este orientador?</p>
+
+<div class="border rounded p-3 mt-4">
+
+    <p>
+        <strong>Nome:</strong>
+        @Model.Nome
+    </p>
+
+    <p>
+        <strong>Email:</strong>
+        @Model.Email
+    </p>
+
+    <form asp-action="Delete" method="post">
+
+        <input type="hidden" name="idorientador"
+               value="@Model.IdOrientador" />
+
+        <button type="submit" class="btn btn-danger">
+            Eliminar
+        </button>
+
+        <a asp-action="Details"
+           asp-route-idorientador="@Model.IdOrientador"
+           class="btn btn-secondary">
+            Cancelar
+        </a>
+
     </form>
+
 </div>
