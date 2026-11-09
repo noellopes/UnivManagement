@@ -8,7 +8,7 @@ namespace UnivManagement.Data {
         public DbSet<CriterioElegibilidade> CriterioElegibilidade { get; set; } = default!;
 
     public DbSet<UnivManagement.Models.TipoDocumento> TipoDocumento { get; set; } = default!;
-
+         
         public DbSet<EstadoCandidatura> EstadoCandidatura { get; set; }
     }
 }
