@@ -58,7 +58,14 @@
         </p>
 
         <div class="mt-4">
-            <a asp-action="Index" class="btn btn-secondary">
+            <a asp-action="Edit"
+               asp-route-idestagio="@Model.IdEstagio"
+               class="btn btn-primary">
+                Editar
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
                 Voltar
             </a>
         </div>

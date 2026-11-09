@@ -41,6 +41,11 @@ public class EstagiosController : Controller
         return (dataFim.Date - dataInicio.Date).Days;
     }
 
+    private bool DataFimAnterior(DateTime dataInicio, DateTime dataFim)
+    {
+        return dataFim.Date < dataInicio.Date;
+    }
+
     // GET: Estagios
     public async Task<IActionResult> Index()
     {
@@ -132,7 +137,7 @@ public class EstagiosController : Controller
             IdOrientador = IdOrientador
         };
 
-        if (DataFim.Date < DataInicio.Date)
+        if (DataFimAnterior(DataInicio, DataFim))
         {
             ViewBag.ErroDatas =
                 "A data de fim não pode ser anterior à data de início.";
@@ -179,15 +184,26 @@ public class EstagiosController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
         int? idestagio,
-        [Bind("IdEstagio,DataInicio,DataFim,Duracao,Estado,PlanoTrabalhos,StudentId,IdEmpresa,IdOrientador")]
-        Estagio estagio)
+        DateTime DataInicio,
+        DateTime DataFim,
+        string PlanoTrabalhos,
+        int StudentId,
+        int IdEmpresa,
+        int? IdOrientador)
     {
-        if (idestagio != estagio.IdEstagio)
+        if (idestagio == null)
         {
             return NotFound();
         }
 
-        if (DataFimAnterior(estagio.DataInicio, estagio.DataFim))
+        var estagio = await _context.Estagios.FindAsync(idestagio);
+
+        if (estagio == null)
+        {
+            return NotFound();
+        }
+
+        if (DataFimAnterior(DataInicio, DataFim))
         {
             ViewBag.ErroDatas =
                 "A data de fim não pode ser anterior à data de início.";
@@ -198,15 +214,21 @@ public class EstagiosController : Controller
 
         if (ModelState.IsValid)
         {
+            estagio.DataInicio = DataInicio;
+            estagio.DataFim = DataFim;
+            estagio.PlanoTrabalhos = PlanoTrabalhos;
+            estagio.StudentId = StudentId;
+            estagio.IdEmpresa = IdEmpresa;
+            estagio.IdOrientador = IdOrientador;
+
             estagio.Duracao = CalcularDuracao(
-                estagio.DataInicio, estagio.DataFim);
+                DataInicio, DataFim);
 
             estagio.Estado = CalcularEstado(
-                estagio.DataInicio, estagio.DataFim);
+                DataInicio, DataFim);
 
             try
             {
-                _context.Update(estagio);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -221,16 +243,12 @@ public class EstagiosController : Controller
                 }
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details),
+                new { idestagio = estagio.IdEstagio });
         }
 
         await CarregarListas();
         return View(estagio);
-    }
-
-    private bool DataFimAnterior(DateTime dataInicio, DateTime dataFim)
-    {
-        return dataFim.Date < dataInicio.Date;
     }
 
     // GET: Estagios/Delete
