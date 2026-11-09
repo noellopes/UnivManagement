@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Data;
 
-public class AreaController : Controller
+public class AreasController : Controller
 {
     private readonly UniversityDbContext _context;
 
-    public AreaController(UniversityDbContext context)
+    public AreasController(UniversityDbContext context)
     {
         _context = context;
     }
@@ -20,15 +20,14 @@ public class AreaController : Controller
     }
 
     // GET: AREA/Details/5
-    public async Task<IActionResult> Details(int? areaid)
+    public async Task<IActionResult> Details(int? id)
     {
-        if (areaid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var area = await _context.Area
-            .FirstOrDefaultAsync(m => m.AreaId == areaid);
+        var area = await _context.Area.FirstOrDefaultAsync(m => m.AreaId == id);
         if (area == null)
         {
             return NotFound();
@@ -60,14 +59,14 @@ public class AreaController : Controller
     }
 
     // GET: AREA/Edit/5
-    public async Task<IActionResult> Edit(int? areaid)
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (areaid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var area = await _context.Area.FindAsync(areaid);
+        var area = await _context.Area.FindAsync(id);
         if (area == null)
         {
             return NotFound();
@@ -80,9 +79,9 @@ public class AreaController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? areaid, [Bind("AreaId,Nome,Descricao")] Area area)
+    public async Task<IActionResult> Edit(int? id, [Bind("AreaId,Nome,Descricao")] Area area)
     {
-        if (areaid != area.AreaId)
+        if (id != area.AreaId)
         {
             return NotFound();
         }
@@ -111,15 +110,15 @@ public class AreaController : Controller
     }
 
     // GET: AREA/Delete/5
-    public async Task<IActionResult> Delete(int? areaid)
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (areaid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var area = await _context.Area
-            .FirstOrDefaultAsync(m => m.AreaId == areaid);
+            .FirstOrDefaultAsync(m => m.AreaId == id);
         if (area == null)
         {
             return NotFound();
@@ -131,9 +130,9 @@ public class AreaController : Controller
     // POST: AREA/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? areaid)
+    public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var area = await _context.Area.FindAsync(areaid);
+        var area = await _context.Area.FindAsync(id);
         if (area != null)
         {
             _context.Area.Remove(area);
@@ -143,8 +142,8 @@ public class AreaController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool AreaExists(int? areaid)
+    private bool AreaExists(int? id)
     {
-        return _context.Area.Any(e => e.AreaId == areaid);
+        return _context.Area.Any(e => e.AreaId == id);
     }
 }

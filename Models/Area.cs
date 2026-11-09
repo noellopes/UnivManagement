@@ -2,7 +2,7 @@
 
 namespace UnivManagement.Models
 {
-    // àrea na qual se insere uma candidatura
+    // àrea na qual se insere uma oferta
     public class Area
     {
         public int AreaId { get; set; }
