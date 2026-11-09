@@ -23,6 +23,13 @@
                 </p>
             }
 
+            @if (ViewBag.ErroFormulario != null)
+            {
+                <p class="text-danger">
+                    @ViewBag.ErroFormulario
+                </p>
+            }
+
             <div class="mb-3">
                 <label asp-for="DataInicio" class="form-label">
                     Data de Início
@@ -97,7 +104,8 @@
                     Orientador de Estágio
                 </label>
 
-                <select asp-for="IdOrientador" class="form-select">
+                <select asp-for="IdOrientador"
+                        class="form-select">
 
                     <option value="">Sem orientador</option>
 
@@ -116,7 +124,8 @@
                     Criar
                 </button>
 
-                <a asp-action="Index" class="btn btn-secondary">
+                <a asp-action="Index"
+                   class="btn btn-secondary">
                     Cancelar
                 </a>
             </div>

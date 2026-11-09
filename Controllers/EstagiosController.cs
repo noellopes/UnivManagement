@@ -142,6 +142,23 @@ public class EstagiosController : Controller
             ViewBag.ErroDatas =
                 "A data de fim não pode ser anterior à data de início.";
         }
+        else if (!_context.Student.Any(a => a.StudentId == StudentId))
+        {
+            ViewBag.ErroFormulario =
+                "Selecione um aluno válido.";
+        }
+        else if (!_context.Empresas.Any(e => e.IdEmpresa == IdEmpresa))
+        {
+            ViewBag.ErroFormulario =
+                "Selecione uma empresa válida.";
+        }
+        else if (IdOrientador != null &&
+                 !_context.OrientadoresEstagio.Any(
+                     o => o.IdOrientador == IdOrientador))
+        {
+            ViewBag.ErroFormulario =
+                "Selecione um orientador válido.";
+        }
         else if (ModelState.IsValid)
         {
             estagio.Duracao = CalcularDuracao(
@@ -207,12 +224,25 @@ public class EstagiosController : Controller
         {
             ViewBag.ErroDatas =
                 "A data de fim não pode ser anterior à data de início.";
-
-            await CarregarListas();
-            return View(estagio);
         }
-
-        if (ModelState.IsValid)
+        else if (!_context.Student.Any(a => a.StudentId == StudentId))
+        {
+            ViewBag.ErroFormulario =
+                "Selecione um aluno válido.";
+        }
+        else if (!_context.Empresas.Any(e => e.IdEmpresa == IdEmpresa))
+        {
+            ViewBag.ErroFormulario =
+                "Selecione uma empresa válida.";
+        }
+        else if (IdOrientador != null &&
+                 !_context.OrientadoresEstagio.Any(
+                     o => o.IdOrientador == IdOrientador))
+        {
+            ViewBag.ErroFormulario =
+                "Selecione um orientador válido.";
+        }
+        else if (ModelState.IsValid)
         {
             estagio.DataInicio = DataInicio;
             estagio.DataFim = DataFim;
