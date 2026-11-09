@@ -14,14 +14,19 @@ public class ServicoFuncionarioController : Controller
     }
 
     // GET: SERVICOFUNCIONARIOS  
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index(string? successMessage = null)
     {
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
+
         return View(await _context.ServicoFuncionario.ToListAsync());
     }
 
     // GET: SERVICOFUNCIONARIOS/Details/5
     [HttpGet("/ServicoFuncionario/Details/{servicofuncionarioid}")]
-    public async Task<IActionResult> Details(int? servicofuncionarioid)
+    public async Task<IActionResult> Details(int? servicofuncionarioid, string? successMessage = null)
     {
         if (servicofuncionarioid == null)
         {
@@ -30,9 +35,15 @@ public class ServicoFuncionarioController : Controller
 
         var servicofuncionario = await _context.ServicoFuncionario
             .FirstOrDefaultAsync(m => m.ServicoFuncionarioId == servicofuncionarioid);
+
         if (servicofuncionario == null)
         {
-            return NotFound();
+            return View("NotFound");
+        }
+
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
         }
 
         return View(servicofuncionario);
@@ -55,7 +66,11 @@ public class ServicoFuncionarioController : Controller
         {
             _context.Add(servicofuncionario);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            // Redireciona diretamente para os detalhes do serviço recém-criado
+            return RedirectToAction(
+                  nameof(Details),
+                  new { servicofuncionarioid = servicofuncionario.ServicoFuncionarioId, successMessage = "Serviço criado com sucesso." }
+            );
         }
         return View(servicofuncionario);
     }
@@ -66,13 +81,13 @@ public class ServicoFuncionarioController : Controller
     {
         if (servicofuncionarioid == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var servicofuncionario = await _context.ServicoFuncionario.FindAsync(servicofuncionarioid);
         if (servicofuncionario == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
         return View(servicofuncionario);
     }
@@ -107,10 +122,14 @@ public class ServicoFuncionarioController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+               nameof(Details),
+               new { servicofuncionarioid = servicofuncionario.ServicoFuncionarioId, successMessage = "Serviço de funcionário atualizado com sucesso." }
+            );
         }
         return View(servicofuncionario);
     }
+
 
     // GET: SERVICOFUNCIONARIOS/Delete/5
     [HttpGet("/ServicoFuncionario/Delete/{servicofuncionarioid}")]
@@ -123,31 +142,38 @@ public class ServicoFuncionarioController : Controller
 
         var servicofuncionario = await _context.ServicoFuncionario
             .FirstOrDefaultAsync(m => m.ServicoFuncionarioId == servicofuncionarioid);
+
         if (servicofuncionario == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "Sucesso: O serviço de funcionário já tinha sido eliminado por outro utilizador." });
         }
 
         return View(servicofuncionario);
     }
 
     // POST: SERVICOFUNCIONARIOS/Delete/5
-    [HttpPost, ActionName("Delete")]
+    [HttpPost("/ServicoFuncionario/Delete/{servicofuncionarioid}"), ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? servicofuncionarioid)
     {
+        if (servicofuncionarioid == null)
+        {
+            return NotFound();
+        }
+
         var servicofuncionario = await _context.ServicoFuncionario.FindAsync(servicofuncionarioid);
         if (servicofuncionario != null)
         {
             _context.ServicoFuncionario.Remove(servicofuncionario);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { successMessage = "Serviço de funcionário eliminado com sucesso." });
     }
 
     private bool ServicoFuncionarioExists(int? servicofuncionarioid)
     {
         return _context.ServicoFuncionario.Any(e => e.ServicoFuncionarioId == servicofuncionarioid);
-    }
+    } 
 }
