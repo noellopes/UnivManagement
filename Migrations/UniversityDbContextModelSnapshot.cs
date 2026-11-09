@@ -50,6 +50,29 @@ namespace UnivManagement.Migrations
                     b.ToTable("CriterioElegibilidade");
                 });
 
+            modelBuilder.Entity("UnivManagement.Models.EstadoCandidatura", b =>
+                {
+                    b.Property<int>("EstadoCandidaturaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EstadoCandidaturaId"));
+
+                    b.Property<string>("descricao")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("nome_estado")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("EstadoCandidaturaId");
+
+                    b.ToTable("EstadoCandidatura");
+                });
+
             modelBuilder.Entity("UnivManagement.Models.TipoBolsa", b =>
                 {
                     b.Property<int>("TipoBolsaId")
@@ -71,6 +94,27 @@ namespace UnivManagement.Migrations
                     b.HasKey("TipoBolsaId");
 
                     b.ToTable("TipoBolsa");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.TipoDocumento", b =>
+                {
+                    b.Property<int>("TipoDocumentoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TipoDocumentoId"));
+
+                    b.Property<string>("NomeTipo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("Obrigatorio")
+                        .HasColumnType("bit");
+
+                    b.HasKey("TipoDocumentoId");
+
+                    b.ToTable("TipoDocumento");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.CriterioElegibilidade", b =>
