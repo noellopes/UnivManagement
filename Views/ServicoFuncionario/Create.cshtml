@@ -6,7 +6,7 @@
 
 
 
-<div class="container py-4">
+
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
 
@@ -28,11 +28,11 @@
                             <label asp-for="Nome" class="form-label fw-bold">
                                 <i class="bi bi-tag-fill me-1 text-primary"></i> Nome do Serviço
                             </label>
-                            <input asp-for="Nome" class="form-control" placeholder="Ex: Atendimento ao Cliente" />
+                            <input asp-for="Nome" class="form-control" placeholder="Ex: Secretaria " />
                             <span asp-validation-for="Nome" class="text-danger small"></span>
                         </div>
 
-                        <!-- Campo Ativo (Checkbox Estilizado) -->
+                        <!-- Campo Ativo (Checkbox ) -->
                         <div class="mb-4">
                             <div class="form-check form-switch">
                                 <input asp-for="Ativo" class="form-check-input" type="checkbox" role="switch" id="switchAtivo" />
@@ -60,7 +60,7 @@
 
         </div>
     </div>
-</div>
+
 
 @section Scripts {
     @{
