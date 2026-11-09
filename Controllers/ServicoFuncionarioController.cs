@@ -56,7 +56,7 @@ public class ServicoFuncionarioController : Controller
             _context.Add(servicofuncionario);
             await _context.SaveChangesAsync();
             // Redireciona diretamente para os detalhes do serviço recém-criado
-            return RedirectToAction(nameof(Details), new { servicofuncionarioid = servicofuncionario.ServicoFuncionarioId });
+             return RedirectToAction(nameof(Details), new { servicofuncionarioid = servicofuncionario.ServicoFuncionarioId });
         }
         return View(servicofuncionario);
     }
