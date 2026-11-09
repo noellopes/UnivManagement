@@ -38,6 +38,18 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+// Seed the database with test data for EstagiosTesteDbContext
+if (app.Environment.IsDevelopment())
+{
+    using (var servicesScope = app.Services.CreateScope())
+    {
+        var db = servicesScope.ServiceProvider
+            .GetService<EstagiosTesteDbContext>();
+
+        EstagiosTesteSeedData.Populate(db);
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
