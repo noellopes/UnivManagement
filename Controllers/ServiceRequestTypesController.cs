@@ -116,6 +116,37 @@ namespace UnivManagement.Controllers
             return View(serviceRequestType);
         }
 
+        // GET: ServiceRequestTypes/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var serviceRequestType = await _context.ServiceRequestTypes.FindAsync(id);
+            if (serviceRequestType == null)
+            {
+                return NotFound();
+            }
+            return View(serviceRequestType);
+        }
+
+        // POST: ServiceRequestTypes/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var serviceRequestType = await _context.ServiceRequestTypes.FindAsync(id);
+            if (serviceRequestType != null)
+            {
+                _context.ServiceRequestTypes.Remove(serviceRequestType);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         private bool ServiceRequestTypeExists(int id)
         {
             return _context.ServiceRequestTypes.Any(e => e.ServiceRequestTypeId == id);
