@@ -65,7 +65,7 @@ public class ServicoFuncionarioController : Controller
             return RedirectToAction(
                   nameof(Details),
                   new { servicofuncionarioid = servicofuncionario.ServicoFuncionarioId, successMessage = "Serviço criado com sucesso." }
-);
+            );
         }
         return View(servicofuncionario);
     }
@@ -117,7 +117,10 @@ public class ServicoFuncionarioController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+               nameof(Details),
+               new { servicofuncionarioid = servicofuncionario.ServicoFuncionarioId, successMessage = "Serviço de funcionário atualizado com sucesso." }
+            );
         }
         return View(servicofuncionario);
     }
