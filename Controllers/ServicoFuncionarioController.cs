@@ -32,7 +32,7 @@ public class ServicoFuncionarioController : Controller
             .FirstOrDefaultAsync(m => m.ServicoFuncionarioId == servicofuncionarioid);
         if (servicofuncionario == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         return View(servicofuncionario);

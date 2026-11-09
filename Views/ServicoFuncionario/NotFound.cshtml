@@ -1,0 +1,22 @@
+﻿@page
+@model UnivManagement.Views.ServicoFuncionario.NofFoundModel
+@{
+}
+
+
+
+<div class="alert alert-danger d-flex align-items-start gap-4" role="alert">
+
+    <i class="bi bi-exclamation-triangle-fill display-3 flex-shrink-0"
+       aria-hidden="true"></i>
+
+    <div>
+        <h4 class="alert-heading">Servço Funcionário não encontrado</h4>
+        <p>O serviço funcionário selecionado já não existe.</p>
+        <hr>
+        <p class="mb-0">Pode ter sido eliminado.</p>
+        <a asp-action="Index" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Voltar à Lista
+        </a>
+    </div>
+</div>
