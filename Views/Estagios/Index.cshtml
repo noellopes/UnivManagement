@@ -22,8 +22,11 @@ else
         <thead>
             <tr>
                 <th>Estágio</th>
+                <th>Aluno</th>
+                <th>Empresa</th>
                 <th>Data de Início</th>
                 <th>Data de Fim</th>
+                <th>Duração</th>
                 <th>Estado</th>
                 <th></th>
             </tr>
@@ -34,9 +37,45 @@ else
             {
                 <tr>
                     <td>@estagio.IdEstagio</td>
-                    <td>@estagio.DataInicio.ToString("dd/MM/yyyy")</td>
-                    <td>@estagio.DataFim.ToString("dd/MM/yyyy")</td>
-                    <td>@estagio.Estado</td>
+
+                    <td>
+                        @if (estagio.Student != null)
+                        {
+                            @estagio.Student.Name
+                        }
+                        else
+                        {
+                            <span>Aluno não encontrado</span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (estagio.Empresa != null)
+                        {
+                            @estagio.Empresa.Nome
+                        }
+                        else
+                        {
+                            <span>Empresa não encontrada</span>
+                        }
+                    </td>
+
+                    <td>
+                        @estagio.DataInicio.ToString("dd/MM/yyyy")
+                    </td>
+
+                    <td>
+                        @estagio.DataFim.ToString("dd/MM/yyyy")
+                    </td>
+
+                    <td>
+                        @estagio.Duracao dias
+                    </td>
+
+                    <td>
+                        @estagio.Estado
+                    </td>
+
                     <td>
                         <a asp-action="Details"
                            asp-route-idestagio="@estagio.IdEstagio">

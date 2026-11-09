@@ -55,6 +55,12 @@ public class EstagiosController : Controller
         {
             estagio.Estado = CalcularEstado(
                 estagio.DataInicio, estagio.DataFim);
+
+            estagio.Student = await _context.Student
+                .FindAsync(estagio.StudentId);
+
+            estagio.Empresa = await _context.Empresas
+                .FindAsync(estagio.IdEmpresa);
         }
 
         return View(estagios);
