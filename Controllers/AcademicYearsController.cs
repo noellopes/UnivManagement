@@ -116,18 +116,12 @@ public class AcademicYearsController : Controller
     // Displays the academic year before deletion
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
         var academicYear = await _context.AcademicYear
             .FirstOrDefaultAsync(m => m.AcademicYearId == id);
 
-        if (academicYear == null)
-        {
-            return NotFound();
-        }
+        if (academicYear == null) return NotFound();
 
         return View(academicYear);
     }
