@@ -1,0 +1,24 @@
+﻿@model IEnumerable<UnivManagement.Models.OrientadorEstagio>
+
+@{
+    ViewData["Title"] = "Orientadores de Estágio";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Orientadores de Estágio</h2>
+    <button type="button" class="btn btn-primary" disabled>Criar</button>
+</div>
+
+@if (Model.Count() == 0)
+{
+    <p>Ainda não existem orientadores de estágio registados.</p>
+}
+else
+{
+    @foreach (var orientador in Model)
+    {
+        <div class="border rounded p-3 mb-3">
+            @orientador.Nome
+        </div>
+    }
+}
