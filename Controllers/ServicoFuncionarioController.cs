@@ -66,13 +66,13 @@ public class ServicoFuncionarioController : Controller
     {
         if (servicofuncionarioid == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var servicofuncionario = await _context.ServicoFuncionario.FindAsync(servicofuncionarioid);
         if (servicofuncionario == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
         return View(servicofuncionario);
     }
