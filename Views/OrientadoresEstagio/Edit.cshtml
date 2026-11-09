@@ -21,7 +21,8 @@
             <input type="text"
                    name="Nome"
                    value="@Model.Nome"
-                   class="form-control" />
+                   class="form-control"
+                   required />
         </div>
 
         <div class="mb-3">
@@ -29,14 +30,16 @@
             <input type="email"
                    name="Email"
                    value="@Model.Email"
-                   class="form-control" />
+                   class="form-control"
+                   required />
         </div>
 
         <div class="mb-3">
             <label class="form-label">Password</label>
             <input type="password"
                    name="Password"
-                   class="form-control" />
+                   class="form-control"
+                   placeholder="Deixar vazio para manter a atual" />
         </div>
 
         <div class="mt-4">

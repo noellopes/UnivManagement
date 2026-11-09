@@ -84,19 +84,33 @@ public class OrientadoresEstagioController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
-        int? idorientador,
-        [Bind("IdOrientador,Nome,Email,Password")] OrientadorEstagio orientadorestagio)
+    int? idorientador, string Nome, string Email, string? Password)
     {
-        if (idorientador != orientadorestagio.IdOrientador)
+        if (idorientador == null)
+        {
+            return NotFound();
+        }
+
+        var orientadorestagio = await _context.OrientadoresEstagio
+            .FindAsync(idorientador);
+
+        if (orientadorestagio == null)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
+            orientadorestagio.Nome = Nome;
+            orientadorestagio.Email = Email;
+
+            if (!string.IsNullOrEmpty(Password))
+            {
+                orientadorestagio.Password = Password;
+            }
+
             try
             {
-                _context.Update(orientadorestagio);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
