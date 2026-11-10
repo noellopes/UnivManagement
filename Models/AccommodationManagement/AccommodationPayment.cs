@@ -2,20 +2,7 @@
 
 namespace UnivManagement.Models.AccommodationManagement
 {
-    /*
-    AccommodationPayment:
-     * AccommodationPaymentId     int
-     * AccommodationContractId    int
-     * DueDate                    DateOnly
-     * Amount                     decimal
-     * PaidAmount                 decimal
-     * PaidAt                     DateTime?
-     * Status                     PaymentStatus
-    */
-
-    /// AccommodationPayment model class from Accommodation Management domain.
-
-    public class AccommodationPayment
+    public class AccommodationPayment : IValidatableObject
     {
         /* ID: */
         public int AccommodationPaymentId { get; set; }
@@ -44,6 +31,17 @@ namespace UnivManagement.Models.AccommodationManagement
         /* STATUS: */
         [Required(ErrorMessage = "The {0} is required.")]
         public PaymentStatus Status { get; set; }
+
+        /* RULE: the paid amount cannot be greater than the amount due */
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (PaidAmount > Amount)
+            {
+                yield return new ValidationResult(
+                    "The paid amount cannot be greater than the amount due.",
+                    new[] { nameof(PaidAmount) });
+            }
+        }
     }
 
     public enum PaymentStatus
