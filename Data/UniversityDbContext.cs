@@ -72,6 +72,7 @@ namespace UnivManagement.Data {
             // ACADEMIC YEAR: UNIQUE COMBINATION OF "StartYear" AND "EndYear":
             modelBuilder.Entity<Models.AcademicManagement.AcademicYear>()
                 .HasIndex(s => new { s.StartYear, s.EndYear })
+                .IsUnique();
 
             // Evita duplicações na tabela CourseStudyPlanYear:
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
