@@ -1,0 +1,61 @@
+@model IEnumerable<UnivManagement.Models.Convidado>
+
+@{
+    ViewData["Title"] = "Convidados";
+}
+
+<h1>Convidados</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Criar novo convidado</a>
+</p>
+
+<table class="table table-hover align-middle">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Nome)</th>
+            <th>NIF</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Telefone)</th>
+            <th>@Html.DisplayNameFor(model => model.Ativo)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Nif)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Telefone)</td>
+                    <td>
+                        @if (item.Ativo)
+                        {
+                            <span class="badge bg-success">Sim</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Não</span>
+                        }
+                    </td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@item.ConvidadoId" class="btn btn-sm btn-outline-warning">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.ConvidadoId" class="btn btn-sm btn-outline-info">Detalhes</a>
+                        <a asp-action="Delete" asp-route-id="@item.ConvidadoId" class="btn btn-sm btn-outline-danger">Apagar</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center text-muted py-4">
+                    Ainda não há convidados registados.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
