@@ -47,7 +47,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.Telephone)
                 .IsUnique();
-          
+
             // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
@@ -61,6 +61,17 @@ namespace UnivManagement.Data {
             // indica que o atributo Code é único na tabela Course:
             modelBuilder.Entity<Models.AcademicManagement.Course>()
                 .HasIndex(c => c.Code)
+                .IsUnique();
+
+            // SEMESTER: UNIQUE COMBINATION OF "SchoolCalendarId" AND "PosNum",
+            // Repeated position numbers for one school calendar are prohibited:
+            modelBuilder.Entity<Models.AcademicManagement.Semester>()
+                .HasIndex(s => new { s.SchoolCalendarId, s.PosNum })
+                .IsUnique();
+
+            // ACADEMIC YEAR: UNIQUE COMBINATION OF "StartYear" AND "EndYear":
+            modelBuilder.Entity<Models.AcademicManagement.AcademicYear>()
+                .HasIndex(s => new { s.StartYear, s.EndYear })
                 .IsUnique();
 
             // Evita duplicações na tabela CourseStudyPlanYear:
@@ -91,6 +102,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.Semester> Semester { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
         
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
