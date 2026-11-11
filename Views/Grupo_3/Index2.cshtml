@@ -26,9 +26,11 @@
                     <p class="card-text text-body-secondary flex-grow-1">
                         Estudante
                     </p>
-                        <button type="button" class="btn btn-outline-primary w-100" disabled>
-                            Trabalho e Grupos
-                        </button>
+                        <a asp-controller="Grupo_3"
+                           asp-action="Interface_Estudante"
+                           class="btn btn-outline-primary w-100">
+                            Trabalhos e Grupos
+                        </a>
                         <button type="button" class="btn btn-outline-primary w-100" disabled>
                             Submições e Avaliações
                         </button>
@@ -37,6 +39,10 @@
                         </button>
                     <p class="card-text text-body-secondary flex-grow-1">
                         Administração
+                    </p>
+                    <button type="button" class="btn btn-outline-primary w-100" disabled>
+                        Marcar Exames
+                    </button>      
                 </div>
             </div>
         </div>
