@@ -4,7 +4,7 @@ using UnivManagement.Models;
 
 namespace UnivManagement.Controllers
 {
-    public class Grupo_3Controller : Controller
+    public class TrabalhoController : Controller
     {
         public IActionResult Interface_Docente()
         {
