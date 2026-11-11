@@ -1,0 +1,64 @@
+@model IEnumerable<UnivManagement.Models.AccommodationManagement.Residence>
+
+@{
+    ViewData["Title"] = "Residences";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6">Residences</h1>
+        <a asp-action="Create" class="btn btn-primary shadow-sm">
+            Add New Residence
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">@Html.DisplayNameFor(model => model.Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.Address)</th>
+                        <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                        <th class="text-end pe-4">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center py-5 text-muted">
+                                No residences registered in the system. Click the button above to add the first one.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 align-middle">@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td class="align-middle">@Html.DisplayFor(modelItem => item.Address)</td>
+                                <td class="align-middle">
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success">Yes</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">No</span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4 align-middle">
+                                    <a asp-action="Edit" asp-route-id="@item.ResidenceId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.ResidenceId" class="btn btn-sm btn-outline-info">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@item.ResidenceId" class="btn btn-sm btn-outline-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
