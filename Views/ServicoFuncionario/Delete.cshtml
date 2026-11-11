@@ -1,0 +1,139 @@
+    @model UnivManagement.Models.ServicoFuncionario
+
+@{
+    ViewData["Title"] = "Eliminar Serviço de Funcionário";
+}
+
+
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <!-- Cartão com Tema de Eliminação (Danger) -->
+            <div class="card shadow border-0 rounded-4 overflow-hidden">
+
+                <!-- Cabeçalho em Tom Vermelho com Gradiente -->
+                <div class="card-header bg-danger bg-gradient text-white py-3 px-4 border-0 d-flex align-items-center justify-content-between">
+                    <h5 class="card-title mb-0 fw-bold d-flex align-items-center">
+                        <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i> Confirmar Eliminação
+                    </h5>
+                    <span class="badge bg-white text-danger rounded-pill px-3 py-2 fw-bold">ID: #@Model?.ServicoFuncionarioId</span>
+                </div>
+
+                <!-- Corpo dos Detalhes -->
+                <div class="card-body p-4 p-md-5">
+
+                    <!-- Caixa de Alerta -->
+                    <div class="alert alert-warning border-warning d-flex align-items-center rounded-3 mb-4" role="alert">
+                        <i class="bi bi-shield-exclamation fs-3 me-3 text-warning"></i>
+                        <div>
+                            <strong>Atenção!</strong> Analise os dados abaixo antes de prosseguir com a eliminação.
+                        </div>
+                    </div>
+
+                    <!-- Resumo dos Dados do Registo -->
+                    <div class="bg-light p-3 rounded-3 border mb-4">
+                        <dl class="row mb-0">
+
+                            <!-- Nome -->
+                            <dt class="col-sm-4 text-muted fw-semibold small text-uppercase">
+                                <i class="bi bi-tag-fill me-1 text-danger"></i> @Html.DisplayNameFor(model => model.Nome)
+                            </dt>
+                            <dd class="col-sm-8 fw-bold text-dark fs-5">
+                                @Html.DisplayFor(model => model.Nome)
+                            </dd>
+
+                            <hr class="my-3 text-muted opacity-25" />
+
+                            <!-- Estado (Ativo/Inativo) -->
+                            <dt class="col-sm-4 text-muted fw-semibold small text-uppercase">
+                                <i class="bi bi-power me-1 text-danger"></i> Estado
+                            </dt>
+                            <dd class="col-sm-8">
+                                @if (Model != null && Model.Ativo)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">
+                                        <i class="bi bi-check-circle-fill me-1"></i> Ativo
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3 py-2">
+                                        <i class="bi bi-x-circle-fill me-1"></i> Inativo
+                                    </span>
+                                }
+                            </dd>
+
+                            <hr class="my-3 text-muted opacity-25" />
+
+                            <!-- Data de Criação -->
+                            <dt class="col-sm-4 text-muted fw-semibold small text-uppercase">
+                                <i class="bi bi-calendar-event me-1 text-danger"></i> @Html.DisplayNameFor(model => model.DataCriacao)
+                            </dt>
+                            <dd class="col-sm-8 text-dark fw-semibold mb-0">
+                                @(Model?.DataCriacao.ToString("dd/MM/yyyy HH:mm") ?? "-")
+                            </dd>
+
+                        </dl>
+                    </div>
+
+                    <!-- Botões de Ação na Página -->
+                    <div class="d-flex justify-content-between align-items-center gap-2">
+                        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
+                            <i class="bi bi-arrow-left me-1"></i> Cancelar
+                        </a>
+                        <!-- Botão que abre a Janela Modal -->
+                        <button type="button" class="btn btn-danger bg-gradient rounded-pill px-4 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#modalConfirmacaoDelete">
+                            <i class="bi bi-trash-fill me-1"></i> Eliminar Serviço
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- JANELA MODAL DE CONFIRMAÇÃO -->
+<div class="modal fade" id="modalConfirmacaoDelete" tabindex="-1" aria-labelledby="modalConfirmacaoDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
+
+            <!-- Cabeçalho da Modal -->
+            <div class="modal-header bg-danger text-white py-3">
+                <h5 class="modal-title fw-bold" id="modalConfirmacaoDeleteLabel">
+                    <i class="bi bi-exclamation-octagon-fill me-2"></i> Confirmar Ação Irreversível
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <!-- Corpo da Modal -->
+            <div class="modal-body p-4 text-center">
+                <div class="text-danger mb-3">
+                    <i class="bi bi-trash3-fill display-1"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-2">Tem a certeza?</h4>
+                <p class="text-muted mb-0">
+                    Está prestes a apagar permanentemente o serviço <strong>"@Model?.Nome"</strong>. Esta ação não poderá ser anulada.
+                </p>
+            </div>
+
+            <!-- Rodapé da Modal com o Formulário -->
+            <div class="modal-footer bg-light border-0 justify-content-center p-3 gap-2">
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i> Cancelar
+                </button>
+
+                <form asp-action="Delete" class="m-0">
+                    <input type="hidden" asp-for="ServicoFuncionarioId" />
+                    <button type="submit" class="btn btn-danger bg-gradient rounded-pill px-4 fw-bold shadow-sm">
+                        <i class="bi bi-check-circle-fill me-1"></i> Sim, Eliminar
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
