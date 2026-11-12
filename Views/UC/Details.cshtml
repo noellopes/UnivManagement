@@ -1,0 +1,81 @@
+@model UnivManagement.Models.AcademicManagement.UC
+
+@{
+    ViewData["Title"] = "Detalhes da Unidade Curricular";
+}
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+        @ViewBag.SuccessMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="mb-4">
+    <h1 class="h2 mb-1">Detalhes da Unidade Curricular</h1>
+    <p class="text-muted mb-0">Consulte a informação da unidade curricular selecionada.</p>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-journal-bookmark me-2" aria-hidden="true"></i>
+            Dados da Unidade Curricular
+        </h2>
+    </div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Code)
+            </dt>
+            <dd class="col-sm-9 fw-semibold">
+                @Html.DisplayFor(model => model.Code)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Acronym)
+            </dt>
+            <dd class="col-sm-9">
+                <span class="badge text-bg-secondary">
+                    @Html.DisplayFor(model => model.Acronym)
+                </span>
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="card-footer bg-body">
+        <div class="d-flex justify-content-end flex-wrap gap-2">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                Voltar à Lista
+            </a>
+
+            <a asp-action="Edit" asp-route-id="@Model?.UcId" class="btn btn-primary">
+                <i class="bi bi-pencil me-2" aria-hidden="true"></i>
+                Editar
+            </a>
+
+            <a asp-action="Delete" asp-route-id="@Model?.UcId" class="btn btn-danger">
+                <i class="bi bi-trash me-2" aria-hidden="true"></i>
+                Eliminar
+            </a>
+        </div>
+    </div>
+</div>
