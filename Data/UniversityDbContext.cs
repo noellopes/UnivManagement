@@ -3,6 +3,10 @@ using UnivManagement.Models;
 
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+
+        public DbSet<TipoBolsa> TipoBolsa { get; set; } = default!;
+        public DbSet<CriterioElegibilidade> CriterioElegibilidade { get; set; } = default!;
+
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
@@ -104,5 +108,10 @@ namespace UnivManagement.Data {
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
+        
+
+    public DbSet<UnivManagement.Models.TipoDocumento> TipoDocumento { get; set; } = default!;
+         
+        public DbSet<EstadoCandidatura> EstadoCandidatura { get; set; }
     }
 }
