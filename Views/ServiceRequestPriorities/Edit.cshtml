@@ -32,13 +32,13 @@
 
                     <div class="mb-3">
                         <label asp-for="Level" class="form-label"></label>
-                        <input asp-for="Level" class="form-control" placeholder="From 1 (lowest) to 10 (highest)" />
+                        <input asp-for="Level" class="form-control" min="1" max="10" placeholder="From 1 (lowest) to 10 (highest)" />
                         <span asp-validation-for="Level" class="text-danger small"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="ResponseDays" class="form-label">Response days</label>
-                        <input asp-for="ResponseDays" class="form-control" placeholder="Days to answer a request (1 to 60)" />
+                        <input asp-for="ResponseDays" class="form-control" min="1" max="365" placeholder="Days to answer a request (1 to 365)" />
                         <span asp-validation-for="ResponseDays" class="text-danger small"></span>
                     </div>
 

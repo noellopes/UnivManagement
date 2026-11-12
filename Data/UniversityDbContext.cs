@@ -32,6 +32,7 @@ namespace UnivManagement.Data {
                 .HasIndex(p => p.Name)
                 .IsUnique();
 
+            // ServiceRequestPriority: two priorities cannot have the same level
             modelBuilder.Entity<Models.ServiceRequestPriority>()
                 .HasIndex(p => p.Level)
                 .IsUnique();

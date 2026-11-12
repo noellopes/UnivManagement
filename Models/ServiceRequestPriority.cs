@@ -14,7 +14,7 @@ namespace UnivManagement.Models
         [Range(1, 10, ErrorMessage = "The level must be between 1 and 10.")]
         public int Level { get; set; }
 
-        [Range(1, 60, ErrorMessage = "The response days must be between 1 and 60.")]
+        [Range(1, 365, ErrorMessage = "The response days must be between 1 and 365.")]
         public int ResponseDays { get; set; }
 
         [Required(ErrorMessage = "The {0} is required.")]

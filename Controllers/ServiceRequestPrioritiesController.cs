@@ -45,7 +45,7 @@ namespace UnivManagement.Controllers
                 ModelState.AddModelError("Name", "There is already a priority with this name.");
             }
 
-            if(_context.ServiceRequestPriorities.Any(p => p.Level == serviceRequestPriority.Level))
+            if (_context.ServiceRequestPriorities.Any(p => p.Level == serviceRequestPriority.Level))
             {
                 ModelState.AddModelError("Level", "There is already a priority with this level.");
             }
