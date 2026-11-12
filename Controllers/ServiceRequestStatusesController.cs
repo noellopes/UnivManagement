@@ -24,7 +24,18 @@ namespace UnivManagement.Controllers
         // GET: ServiceRequestStatuses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            return View(await _context.ServiceRequestStatuses.FindAsync(id));
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var serviceRequestStatus = await _context.ServiceRequestStatuses.FindAsync(id);
+            if (serviceRequestStatus == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(serviceRequestStatus);
         }
 
         // GET: ServiceRequestStatuses/Create
@@ -56,14 +67,30 @@ namespace UnivManagement.Controllers
         // GET: ServiceRequestStatuses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            return View(await _context.ServiceRequestStatuses.FindAsync(id));
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var serviceRequestStatus = await _context.ServiceRequestStatuses.FindAsync(id);
+            if (serviceRequestStatus == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(serviceRequestStatus);
         }
 
         // POST: ServiceRequestStatuses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("ServiceRequestStatusId,Name,Description,DisplayOrder,IsFinal,RequiresNote,Color")] ServiceRequestStatus serviceRequestStatus)
+        public async Task<IActionResult> Edit(int? id, [Bind("ServiceRequestStatusId,Name,Description,DisplayOrder,IsFinal,RequiresNote,Color")] ServiceRequestStatus serviceRequestStatus)
         {
+            if (id != serviceRequestStatus.ServiceRequestStatusId)
+            {
+                return NotFound();
+            }
+
             // Two statuses cannot have the same name (the one being edited does not count)
             if (_context.ServiceRequestStatuses.Any(s => s.Name == serviceRequestStatus.Name
                 && s.ServiceRequestStatusId != serviceRequestStatus.ServiceRequestStatusId))
@@ -73,8 +100,22 @@ namespace UnivManagement.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Update(serviceRequestStatus);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Update(serviceRequestStatus);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ServiceRequestStatusExists(serviceRequestStatus.ServiceRequestStatusId))
+                    {
+                        return View("NotFound");
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(serviceRequestStatus);
@@ -83,7 +124,18 @@ namespace UnivManagement.Controllers
         // GET: ServiceRequestStatuses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            return View(await _context.ServiceRequestStatuses.FindAsync(id));
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var serviceRequestStatus = await _context.ServiceRequestStatuses.FindAsync(id);
+            if (serviceRequestStatus == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(serviceRequestStatus);
         }
 
         // POST: ServiceRequestStatuses/Delete/5
@@ -106,6 +158,11 @@ namespace UnivManagement.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool ServiceRequestStatusExists(int id)
+        {
+            return _context.ServiceRequestStatuses.Any(e => e.ServiceRequestStatusId == id);
         }
     }
 }
