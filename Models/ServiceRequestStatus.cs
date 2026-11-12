@@ -5,9 +5,6 @@ namespace UnivManagement.Models
     // A step in the life of a request (submitted, in progress, resolved...), managed by the administrative services
     public class ServiceRequestStatus
     {
-        // Bootstrap colours that can be used for the badge of a status
-        public static readonly string[] BadgeColors = { "primary", "secondary", "success", "danger", "warning", "info", "dark" };
-
         public int ServiceRequestStatusId { get; set; }
 
         [Required(ErrorMessage = "The {0} is required.")]
