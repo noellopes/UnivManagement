@@ -9,6 +9,15 @@
         Back to Requests and Administrative Services
     </a>
 
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+            @ViewBag.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <header class="d-flex flex-wrap justify-content-between align-items-center my-4">
         <div>
             <h1 class="display-6 mb-0">Priorities</h1>
@@ -39,9 +48,15 @@
                             <td>@Html.DisplayFor(modelItem => item.ResponseDays)</td>
                             <td><span class="badge text-bg-@item.Color">@item.Color</span></td>
                             <td class="text-end text-nowrap">
-                                <a asp-action="Details" asp-route-id="@item.ServiceRequestPriorityId" class="btn btn-sm btn-outline-secondary">Details</a>
-                                <a asp-action="Edit" asp-route-id="@item.ServiceRequestPriorityId" class="btn btn-sm btn-outline-primary">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@item.ServiceRequestPriorityId" class="btn btn-sm btn-outline-danger">Delete</a>
+                                <a asp-action="Details" asp-route-id="@item.ServiceRequestPriorityId" class="btn btn-sm btn-outline-secondary" title="Details" aria-label="Details">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.ServiceRequestPriorityId" class="btn btn-sm btn-outline-primary" title="Edit" aria-label="Edit">
+                                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.ServiceRequestPriorityId" class="btn btn-sm btn-outline-danger" title="Delete" aria-label="Delete">
+                                    <i class="bi bi-trash" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                     }
