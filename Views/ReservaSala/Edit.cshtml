@@ -1,59 +1,137 @@
 @model UnivManagement.Models.ReservaSala
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Reserva de Sala";
 }
 
-<h1>Edit</h1>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
 
-<h4>ReservaSala</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ReservaSalaId" />
-            <div class="form-group">
-                <label asp-for="Responsavel" class="control-label"></label>
-                <input asp-for="Responsavel" class="form-control" />
-                <span asp-validation-for="Responsavel" class="text-danger"></span>
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h3 class="mb-1">✏️ Editar Reserva de Sala</h3>
+                    <p class="mb-0 opacity-75">
+                        Atualize os dados da reserva.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form asp-action="Edit" method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3"></div>
+
+                        <input type="hidden" asp-for="ReservaSalaId" />
+
+                        <div class="row g-3">
+
+                            <!-- Responsável -->
+                            <div class="col-md-6">
+                                <label asp-for="Responsavel"
+                                       class="form-label fw-semibold">
+                                </label>
+                                <input asp-for="Responsavel"
+                                       class="form-control"
+                                       placeholder="Nome do responsável" />
+                                <span asp-validation-for="Responsavel"
+                                      class="text-danger small"></span>
+                            </div>
+
+                            <!-- Sala -->
+                            <div class="col-md-6">
+                                <label asp-for="SalaFk"
+                                       class="form-label fw-semibold">
+                                </label>
+                                <input asp-for="SalaFk"
+                                       class="form-control"
+                                       placeholder="ID da sala" />
+                                <span asp-validation-for="SalaFk"
+                                      class="text-danger small"></span>
+                            </div>
+
+                            <!-- Motivo -->
+                            <div class="col-12">
+                                <label asp-for="Motivo"
+                                       class="form-label fw-semibold">
+                                </label>
+                                <textarea asp-for="Motivo"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Indique o motivo da reserva..."></textarea>
+                                <span asp-validation-for="Motivo"
+                                      class="text-danger small"></span>
+                            </div>
+
+                            <!-- Data de início -->
+                            <div class="col-md-6">
+                                <label asp-for="DataInicio"
+                                       class="form-label fw-semibold">
+                                </label>
+                                <input asp-for="DataInicio"
+                                       type="datetime-local"
+                                       class="form-control" />
+                                <span asp-validation-for="DataInicio"
+                                      class="text-danger small"></span>
+                            </div>
+
+                            <!-- Data de fim -->
+                            <div class="col-md-6">
+                                <label asp-for="DataFim"
+                                       class="form-label fw-semibold">
+                                </label>
+                                <input asp-for="DataFim"
+                                       type="datetime-local"
+                                       class="form-control" />
+                                <span asp-validation-for="DataFim"
+                                      class="text-danger small"></span>
+                            </div>
+
+                            <!-- Estado -->
+                            <div class="col-md-6">
+                                <label asp-for="Estado"
+                                       class="form-label fw-semibold">
+                                </label>
+                                <input asp-for="Estado"
+                                       class="form-control"
+                                       placeholder="Estado da reserva" />
+                                <span asp-validation-for="Estado"
+                                      class="text-danger small"></span>
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Botões -->
+                        <div class="d-flex justify-content-between gap-2">
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary px-4">
+                                ← Cancelar
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+                                💾 Guardar Alterações
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Motivo" class="control-label"></label>
-                <input asp-for="Motivo" class="form-control" />
-                <span asp-validation-for="Motivo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataInicio" class="control-label"></label>
-                <input asp-for="DataInicio" class="form-control" />
-                <span asp-validation-for="DataInicio" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataFim" class="control-label"></label>
-                <input asp-for="DataFim" class="form-control" />
-                <span asp-validation-for="DataFim" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-control" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SalaFk" class="control-label"></label>
-                <input asp-for="SalaFk" class="form-control" />
-                <span asp-validation-for="SalaFk" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

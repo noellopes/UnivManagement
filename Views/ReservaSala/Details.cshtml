@@ -1,59 +1,118 @@
 @model UnivManagement.Models.ReservaSala
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes da Reserva";
 }
 
-<h1>Details</h1>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
 
-<div>
-    <h4>ReservaSala</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Responsavel)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Responsavel)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Motivo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Motivo)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataInicio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataInicio)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataFim)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataFim)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SalaFk)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SalaFk)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ReservaSalaId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h3 class="mb-1">📋 Detalhes da Reserva de Sala</h3>
+                    <p class="mb-0 opacity-75">
+                        Consulte as informações da reserva.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Título da secção -->
+                    <h5 class="fw-semibold mb-4">
+                        Informações da Reserva
+                    </h5>
+
+                    <div class="row g-3">
+
+                        <!-- Responsável -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted">
+                                @Html.DisplayNameFor(model => model.Responsavel)
+                            </label>
+                            <div class="form-control bg-light">
+                                @Html.DisplayFor(model => model.Responsavel)
+                            </div>
+                        </div>
+
+                        <!-- Sala -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted">
+                                @Html.DisplayNameFor(model => model.SalaFk)
+                            </label>
+                            <div class="form-control bg-light">
+                                @Html.DisplayFor(model => model.SalaFk)
+                            </div>
+                        </div>
+
+                        <!-- Motivo -->
+                        <div class="col-12">
+                            <label class="form-label fw-semibold text-muted">
+                                @Html.DisplayNameFor(model => model.Motivo)
+                            </label>
+                            <div class="form-control bg-light"
+                                 style="min-height: 70px; white-space: pre-wrap;">
+                                @Html.DisplayFor(model => model.Motivo)
+                            </div>
+                        </div>
+
+                        <!-- Data de início -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted">
+                                @Html.DisplayNameFor(model => model.DataInicio)
+                            </label>
+                            <div class="form-control bg-light">
+                                @Html.DisplayFor(model => model.DataInicio)
+                            </div>
+                        </div>
+
+                        <!-- Data de fim -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted">
+                                @Html.DisplayNameFor(model => model.DataFim)
+                            </label>
+                            <div class="form-control bg-light">
+                                @Html.DisplayFor(model => model.DataFim)
+                            </div>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted">
+                                @Html.DisplayNameFor(model => model.Estado)
+                            </label>
+                            <div>
+                                <span class="badge bg-secondary fs-6 px-3 py-2">
+                                    @Html.DisplayFor(model => model.Estado)
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Botões -->
+                    <div class="d-flex justify-content-between gap-2">
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary px-4">
+                            ← Voltar
+                        </a>
+
+                        <a asp-action="Edit"
+                           asp-route-id="@Model?.ReservaSalaId"
+                           class="btn btn-primary px-4">
+                            ✏️ Editar Reserva
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
