@@ -17,14 +17,19 @@ namespace UnivManagement.Controllers
         }
 
         // GET: ServiceRequestAssignments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? successMessage = null)
         {
+            if (successMessage != null)
+            {
+                ViewBag.SuccessMessage = successMessage;
+            }
+
             var assignments = _context.ServiceRequestAssignments.Include(a => a.ServiceRequest);
             return View(await assignments.ToListAsync());
         }
 
         // GET: ServiceRequestAssignments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string? successMessage = null)
         {
             if (id == null)
             {
@@ -37,6 +42,11 @@ namespace UnivManagement.Controllers
             if (serviceRequestAssignment == null)
             {
                 return View("NotFound");
+            }
+
+            if (successMessage != null)
+            {
+                ViewBag.SuccessMessage = successMessage;
             }
 
             return View(serviceRequestAssignment);
@@ -64,7 +74,8 @@ namespace UnivManagement.Controllers
             {
                 _context.Add(serviceRequestAssignment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details),
+                    new { id = serviceRequestAssignment.ServiceRequestAssignmentId, successMessage = "Assignment created successfully." });
             }
             // if the form has errors, the list has to be filled again
             ViewData["ServiceRequestId"] = new SelectList(_context.ServiceRequests, "ServiceRequestId", "Title", serviceRequestAssignment.ServiceRequestId);
@@ -123,7 +134,8 @@ namespace UnivManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details),
+                    new { id = serviceRequestAssignment.ServiceRequestAssignmentId, successMessage = "Assignment updated successfully." });
             }
             ViewData["ServiceRequestId"] = new SelectList(_context.ServiceRequests, "ServiceRequestId", "Title", serviceRequestAssignment.ServiceRequestId);
             return View(serviceRequestAssignment);
@@ -142,7 +154,8 @@ namespace UnivManagement.Controllers
                 .FirstOrDefaultAsync(m => m.ServiceRequestAssignmentId == id);
             if (serviceRequestAssignment == null)
             {
-                return View("NotFound");
+                return RedirectToAction(nameof(Index),
+                    new { successMessage = "The assignment was already deleted by another user." });
             }
 
             return View(serviceRequestAssignment);
@@ -160,7 +173,7 @@ namespace UnivManagement.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { successMessage = "Assignment deleted successfully." });
         }
 
         private bool ServiceRequestAssignmentExists(int id)
