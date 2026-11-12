@@ -27,6 +27,15 @@ namespace UnivManagement.Data {
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // ServiceRequestPriority: two priorities cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Level)
+                .IsUnique();
+
             // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.NumStudent)
@@ -62,10 +71,6 @@ namespace UnivManagement.Data {
                 .HasIndex(c => c.Code)
                 .IsUnique();
 
-            // ServiceRequestPriority: two priorities cannot have the same name
-            modelBuilder.Entity<Models.ServiceRequestPriority>()
-                .HasIndex(p => p.Name)
-                .IsUnique();
         }
       
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
