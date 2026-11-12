@@ -23,7 +23,7 @@
             <h1 class="display-6 mb-0">Request statuses</h1>
             <p class="text-body-secondary mb-0">The steps a request goes through.</p>
         </div>
-        <a asp-action="Create" class="btn btn-primary">New status</a>
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>New status</a>
     </header>
 
     @if (Model != null && Model.Any())
@@ -50,9 +50,11 @@
                             <td>@Html.DisplayFor(modelItem => item.IsFinal)</td>
                             <td>@Html.DisplayFor(modelItem => item.RequiresNote)</td>
                             <td class="text-end text-nowrap">
-                                <a asp-action="Details" asp-route-id="@item.ServiceRequestStatusId" class="btn btn-sm btn-outline-secondary">Details</a>
-                                <a asp-action="Edit" asp-route-id="@item.ServiceRequestStatusId" class="btn btn-sm btn-outline-primary">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@item.ServiceRequestStatusId" class="btn btn-sm btn-outline-danger">Delete</a>
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Status actions">
+                                    <a asp-action="Details" asp-route-id="@item.ServiceRequestStatusId" class="btn btn-outline-secondary" title="Details"><i class="bi bi-eye-fill"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.ServiceRequestStatusId" class="btn btn-outline-secondary" title="Edit"><i class="bi bi-pencil-fill"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.ServiceRequestStatusId" class="btn btn-outline-danger" title="Delete"><i class="bi bi-trash-fill"></i></a>
+                                </div>
                             </td>
                         </tr>
                     }
