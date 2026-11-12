@@ -17,7 +17,7 @@ namespace UnivManagement.Controllers
         // GET: ServiceRequestTypes
         public async Task<IActionResult> Index(string? msg = null)
         {
-            if(msg != null)
+            if (msg != null)
             {
                 ViewBag.SuccessMessage = msg;
             }
@@ -67,7 +67,7 @@ namespace UnivManagement.Controllers
             }
 
             if (msg != null)
-{
+            {
                 ViewBag.SuccessMessage = msg;
             }
 
@@ -168,7 +168,7 @@ namespace UnivManagement.Controllers
             }
 
             return RedirectToAction(
-                nameof(Index), 
+                nameof(Index),
                 new { msg = "Request type deleted successfully." }
             );
         }
