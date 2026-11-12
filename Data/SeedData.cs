@@ -10,7 +10,7 @@ namespace UnivManagement.Data
 
             PopulateTipoBolsa(dbContext);
             PopulateCriterios(dbContext);
-            PopulateTipoDocumento(dbContext);
+           // PopulateTipoDocumento(dbContext);
         }
 
         private static void PopulateTipoBolsa(UniversityDbContext dbContext)
@@ -79,7 +79,7 @@ namespace UnivManagement.Data
         {
             if (dbContext.CriterioElegibilidade.Any()) return;
 
-            PopulateTipoBolsas(dbContext);
+            PopulateTipoBolsa(dbContext);
 
             var tiposBolsa = dbContext.TipoBolsa.ToDictionary(t => t.Nome, t => t.TipoBolsaId);
 
