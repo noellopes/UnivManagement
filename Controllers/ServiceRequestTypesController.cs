@@ -39,13 +39,16 @@ namespace UnivManagement.Controllers
             {
                 _context.Add(serviceRequestType);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id = serviceRequestType.ServiceRequestTypeId, msg = "Request type created successfully." }
+                );
             }
             return View(serviceRequestType);
         }
 
         // GET: ServiceRequestTypes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string? msg = null)
         {
             if (id == null)
             {
@@ -57,6 +60,11 @@ namespace UnivManagement.Controllers
             if (serviceRequestType == null)
             {
                 return View("NotFound");
+            }
+
+            if (msg != null)
+{
+                ViewBag.SuccessMessage = msg;
             }
 
             return View(serviceRequestType);
