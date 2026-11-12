@@ -1,0 +1,45 @@
+@model UnivManagement.Models.Feedback
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Feedback</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SubmissaoID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SubmissaoID)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DocenteID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DocenteID)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Docente)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Docente)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Data_Feedback)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Data_Feedback)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.FeedbackID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
