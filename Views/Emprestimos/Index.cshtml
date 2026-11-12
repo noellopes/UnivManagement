@@ -31,29 +31,42 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.dataEmprestimo)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.dataDevolucao)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.estado)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.ExemplarId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Exemplar)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.EmprestimoId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.EmprestimoId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.EmprestimoId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.dataEmprestimo)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.dataDevolucao)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.dataDevolucao)
+                    @Html.DisplayFor(model => item.estado)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ExemplarId)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Exemplar)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.EmprestimoId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.EmprestimoId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.EmprestimoId">Delete</a>
+
+                    @* BOTÃO DE DEVOLUÇÃO ADICIONADO AQUI *@
+                    @if (item.estado == "Ativo")
+                    {
+                        <text> | </text>
+                        <form asp-action="ReturnBook" asp-route-id="@item.EmprestimoId" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Confirma a devolução deste exemplar?');">
+                                Devolver
+                            </button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
