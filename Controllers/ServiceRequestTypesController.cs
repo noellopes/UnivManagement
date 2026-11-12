@@ -56,7 +56,7 @@ namespace UnivManagement.Controllers
 
             if (serviceRequestType == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(serviceRequestType);
@@ -73,7 +73,7 @@ namespace UnivManagement.Controllers
             var serviceRequestType = await _context.ServiceRequestTypes.FindAsync(id);
             if (serviceRequestType == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             return View(serviceRequestType);
         }
