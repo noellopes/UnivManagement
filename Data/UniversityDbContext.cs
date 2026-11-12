@@ -7,6 +7,7 @@ namespace UnivManagement.Data {
         public DbSet<TipoBolsa> TipoBolsa { get; set; } = default!;
         public DbSet<CriterioElegibilidade> CriterioElegibilidade { get; set; } = default!;
 
+        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
