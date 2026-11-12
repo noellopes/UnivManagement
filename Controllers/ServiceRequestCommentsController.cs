@@ -26,9 +26,20 @@ namespace UnivManagement.Controllers
         // GET: ServiceRequestComments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            return View(await _context.ServiceRequestComments
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var serviceRequestComment = await _context.ServiceRequestComments
                 .Include(c => c.ServiceRequest)
-                .FirstOrDefaultAsync(m => m.ServiceRequestCommentId == id));
+                .FirstOrDefaultAsync(m => m.ServiceRequestCommentId == id);
+            if (serviceRequestComment == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(serviceRequestComment);
         }
 
         // GET: ServiceRequestComments/Create
@@ -57,20 +68,49 @@ namespace UnivManagement.Controllers
         // GET: ServiceRequestComments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var serviceRequestComment = await _context.ServiceRequestComments.FindAsync(id);
-            ViewData["ServiceRequestId"] = new SelectList(_context.ServiceRequests, "ServiceRequestId", "Title", serviceRequestComment?.ServiceRequestId);
+            if (serviceRequestComment == null)
+            {
+                return View("NotFound");
+            }
+
+            ViewData["ServiceRequestId"] = new SelectList(_context.ServiceRequests, "ServiceRequestId", "Title", serviceRequestComment.ServiceRequestId);
             return View(serviceRequestComment);
         }
 
         // POST: ServiceRequestComments/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("ServiceRequestCommentId,ServiceRequestId,Author,Text,CreatedAt")] ServiceRequestComment serviceRequestComment)
+        public async Task<IActionResult> Edit(int? id, [Bind("ServiceRequestCommentId,ServiceRequestId,Author,Text,CreatedAt")] ServiceRequestComment serviceRequestComment)
         {
+            if (id != serviceRequestComment.ServiceRequestCommentId)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Update(serviceRequestComment);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Update(serviceRequestComment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ServiceRequestCommentExists(serviceRequestComment.ServiceRequestCommentId))
+                    {
+                        return View("NotFound");
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ServiceRequestId"] = new SelectList(_context.ServiceRequests, "ServiceRequestId", "Title", serviceRequestComment.ServiceRequestId);
@@ -80,9 +120,20 @@ namespace UnivManagement.Controllers
         // GET: ServiceRequestComments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            return View(await _context.ServiceRequestComments
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var serviceRequestComment = await _context.ServiceRequestComments
                 .Include(c => c.ServiceRequest)
-                .FirstOrDefaultAsync(m => m.ServiceRequestCommentId == id));
+                .FirstOrDefaultAsync(m => m.ServiceRequestCommentId == id);
+            if (serviceRequestComment == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(serviceRequestComment);
         }
 
         // POST: ServiceRequestComments/Delete/5
@@ -98,6 +149,11 @@ namespace UnivManagement.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool ServiceRequestCommentExists(int id)
+        {
+            return _context.ServiceRequestComments.Any(e => e.ServiceRequestCommentId == id);
         }
     }
 }

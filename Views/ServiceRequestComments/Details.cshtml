@@ -11,33 +11,26 @@
         <h1 class="display-6">Comment details</h1>
     </header>
 
-    @if (Model == null)
-    {
-        <div class="alert alert-warning" role="alert">This comment does not exist.</div>
-    }
-    else
-    {
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <dl class="row mb-0">
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ServiceRequest)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.ServiceRequest!.Title)</dd>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ServiceRequest)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ServiceRequest!.Title)</dd>
 
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Author)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Author)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Author)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Author)</dd>
 
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Text)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Text)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Text)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Text)</dd>
 
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedAt)</dd>
-                </dl>
-            </div>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedAt)</dd>
+            </dl>
         </div>
+    </div>
 
-        <div class="mt-4">
-            <a asp-action="Edit" asp-route-id="@Model.ServiceRequestCommentId" class="btn btn-primary">Edit</a>
-            <a asp-action="Index" class="btn btn-secondary">Back to list</a>
-        </div>
-    }
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.ServiceRequestCommentId" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+    </div>
 </div>
