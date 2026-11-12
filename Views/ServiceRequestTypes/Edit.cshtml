@@ -1,39 +1,65 @@
 @model UnivManagement.Models.ServiceRequestType
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit request type";
 }
 
-<h1>Edit</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
 
-<h4>ServiceRequestType</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ServiceRequestTypeId" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="mb-4">
+                <h1 class="h2 mb-1">Edit request type</h1>
+                <p class="text-body-secondary mb-0">Update the request type's information below.</p>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary py-3">
+                    <h2 class="h5 mb-0">
+                        <i class="bi bi-pencil-square me-2" aria-hidden="true"></i>
+                        Request type information
+                    </h2>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <input type="hidden" asp-for="ServiceRequestTypeId" />
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label fw-semibold"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Enter request type name" autofocus />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-semibold"></label>
+                            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Optional description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-1" aria-hidden="true"></i>
+                                Save Changes
+                            </button>
+
+                            <a asp-action="Index" asp-route-id="" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left-square me-1" aria-hidden="true"></i>
+                                Back to List
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
