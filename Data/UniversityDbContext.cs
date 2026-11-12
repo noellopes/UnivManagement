@@ -76,5 +76,8 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
+
+        // Grupo 3
+        public DbSet<UnivManagement.Models.AvContinua> AvContinua { get; set; } = default!;
     }
 }

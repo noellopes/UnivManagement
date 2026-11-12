@@ -1,0 +1,72 @@
+﻿@model UnivManagement.Models.AvContinua
+
+@{
+    ViewData["Title"] = "Criar Avaliação Contínua";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+
+        <div class="mb-4">
+            <h1 class="h2 mb-1">Criar Avaliação Contínua</h1>
+            <p class="text-body-secondary mb-0">
+                Adicionar uma nova avaliação contínua ao sistema.
+            </p>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-body-tertiary py-3">
+                <h2 class="h5 mb-0">
+                    <i class="bi bi-clipboard-check me-2"></i>
+                    Informação da Avaliação Contínua
+                </h2>
+            </div>
+
+            <div class="card-body p-4">
+                <form asp-controller="AvContinua"
+                      asp-action="Create"
+                      method="post">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="Data_Registo"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="Data_Registo"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="Data_Registo"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            <i class="bi bi-plus-lg me-1"></i>
+                            Criar Avaliação
+                        </button>
+
+                        <a asp-controller="AvContinua"
+                           asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Voltar à Lista
+                        </a>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
