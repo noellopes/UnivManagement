@@ -7,6 +7,7 @@ namespace UnivManagement.Models
     [Table("ClassGroup")]
     public class Group
     {
+
         public int GroupId { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique o {0}.")]
