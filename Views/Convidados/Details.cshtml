@@ -1,0 +1,30 @@
+@model UnivManagement.Models.Convidado
+
+@{
+    ViewData["Title"] = "Detalhes do convidado";
+}
+
+<h1>Detalhes do convidado</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nome)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Nome)</dd>
+
+    <dt class="col-sm-3">NIF</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Nif)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Email)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Telefone)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Telefone)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Ativo)</dt>
+    <dd class="col-sm-9">@(Model.Ativo ? "Sim" : "Não")</dd>
+</dl>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ConvidadoId" class="btn btn-warning">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
+</div>
