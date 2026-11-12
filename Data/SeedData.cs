@@ -13,7 +13,7 @@ namespace UnivManagement.Data
 
         private static void PopulateFuncionarios(UniversityDbContext db)
         {
-            // 1. Garantir que existem Serviços na BD para associar aos Funcionários
+            // 1. Garantir que existem Serviços na BD
             if (!db.ServicoFuncionario.Any())
             {
                 var servicos = new List<ServicoFuncionario> {
@@ -30,11 +30,13 @@ namespace UnivManagement.Data
             // 2. Se a tabela Funcionario já tiver registos, não faz nada
             if (db.Funcionario.Any()) return;
 
-            // Obter os serviços criados/existentes na base de dados
-            var servicoRH = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Recursos Humanos");
-            var servicoAcad = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Serviços Académicos");
-            var servicoTI = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Tecnologias de Informação");
-            var servicoFin = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Gestão Financeira");
+            // Obter os serviços da BD (ou o primeiro disponível como fallback seguro)
+            var servicoPadrao = db.ServicoFuncionario.First();
+
+            var servicoRH = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Recursos Humanos") ?? servicoPadrao;
+            var servicoAcad = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Serviços Académicos") ?? servicoPadrao;
+            var servicoTI = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Tecnologias de Informação") ?? servicoPadrao;
+            var servicoFin = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Gestão Financeira") ?? servicoPadrao;
 
             // 3. Adicionar lista de Funcionários iniciais
             var funcionarios = new List<Funcionario> {
@@ -46,7 +48,7 @@ namespace UnivManagement.Data
                     Ativo = true,
                     DataAdmissao = new DateTime(2020, 3, 15),
                     Morada = "Av. são bento, 12, Guarda",
-                    ServicoFuncionarioId = servicoRH?.ServicoFuncionarioId ?? 1
+                    ServicoFuncionarioId = servicoRH.ServicoFuncionarioId
                 },
                 new Funcionario {
                     Nome = "Carlos Alberto Santos",
@@ -56,7 +58,7 @@ namespace UnivManagement.Data
                     Ativo = true,
                     DataAdmissao = new DateTime(2018, 9, 1),
                     Morada = "Rua Direita, 45, Guarda",
-                    ServicoFuncionarioId = servicoTI?.ServicoFuncionarioId ?? 1
+                    ServicoFuncionarioId = servicoTI.ServicoFuncionarioId
                 },
                 new Funcionario {
                     Nome = "Beatriz Rocha",
@@ -66,7 +68,7 @@ namespace UnivManagement.Data
                     Ativo = true,
                     DataAdmissao = new DateTime(2021, 1, 10),
                     Morada = "Rua Duque de bragança, 8, Guarda",
-                    ServicoFuncionarioId = servicoAcad?.ServicoFuncionarioId ?? 1
+                    ServicoFuncionarioId = servicoAcad.ServicoFuncionarioId
                 },
                 new Funcionario {
                     Nome = "João Pedro Ferreira",
@@ -76,7 +78,7 @@ namespace UnivManagement.Data
                     Ativo = false,
                     DataAdmissao = new DateTime(2019, 6, 20),
                     Morada = "Paiva couceiro, 102, Guarda",
-                    ServicoFuncionarioId = servicoFin?.ServicoFuncionarioId ?? 1
+                    ServicoFuncionarioId = servicoFin.ServicoFuncionarioId
                 }
             };
 
