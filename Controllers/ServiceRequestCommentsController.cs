@@ -17,14 +17,19 @@ namespace UnivManagement.Controllers
         }
 
         // GET: ServiceRequestComments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? successMessage = null)
         {
+            if (successMessage != null)
+            {
+                ViewBag.SuccessMessage = successMessage;
+            }
+
             var comments = _context.ServiceRequestComments.Include(c => c.ServiceRequest);
             return View(await comments.ToListAsync());
         }
 
         // GET: ServiceRequestComments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string? successMessage = null)
         {
             if (id == null)
             {
@@ -37,6 +42,11 @@ namespace UnivManagement.Controllers
             if (serviceRequestComment == null)
             {
                 return View("NotFound");
+            }
+
+            if (successMessage != null)
+            {
+                ViewBag.SuccessMessage = successMessage;
             }
 
             return View(serviceRequestComment);
@@ -58,7 +68,8 @@ namespace UnivManagement.Controllers
             {
                 _context.Add(serviceRequestComment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details),
+                    new { id = serviceRequestComment.ServiceRequestCommentId, successMessage = "Comment created successfully." });
             }
             // if the form has errors, the list has to be filled again
             ViewData["ServiceRequestId"] = new SelectList(_context.ServiceRequests, "ServiceRequestId", "Title", serviceRequestComment.ServiceRequestId);
@@ -111,7 +122,8 @@ namespace UnivManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details),
+                    new { id = serviceRequestComment.ServiceRequestCommentId, successMessage = "Comment updated successfully." });
             }
             ViewData["ServiceRequestId"] = new SelectList(_context.ServiceRequests, "ServiceRequestId", "Title", serviceRequestComment.ServiceRequestId);
             return View(serviceRequestComment);
@@ -130,7 +142,8 @@ namespace UnivManagement.Controllers
                 .FirstOrDefaultAsync(m => m.ServiceRequestCommentId == id);
             if (serviceRequestComment == null)
             {
-                return View("NotFound");
+                return RedirectToAction(nameof(Index),
+                    new { successMessage = "The comment was already deleted by another user." });
             }
 
             return View(serviceRequestComment);
@@ -148,7 +161,7 @@ namespace UnivManagement.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { successMessage = "Comment deleted successfully." });
         }
 
         private bool ServiceRequestCommentExists(int id)
