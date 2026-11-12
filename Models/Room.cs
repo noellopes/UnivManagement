@@ -38,6 +38,5 @@ namespace UnivManagement.Models
 
         [ForeignKey("IdTipoSala")]
         public RoomType? TipoSala { get; set; }
-    
     }
 }

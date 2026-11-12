@@ -14,5 +14,6 @@ namespace UnivManagement.Models
         [Display(Name = "Localização")]
         [StringLength(150, ErrorMessage = "A {0} não pode exceder {1} caracteres.")]
         public required string Localizacao { get; set; }
+
     }
 }

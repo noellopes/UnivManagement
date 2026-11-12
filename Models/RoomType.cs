@@ -12,6 +12,5 @@ namespace UnivManagement.Models
 
         [Display(Name = "Requer Computadores")]
         public bool RequerComputadores { get; set; } = false;
-    
     }
 }
