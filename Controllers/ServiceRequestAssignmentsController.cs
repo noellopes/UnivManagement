@@ -67,10 +67,9 @@ namespace UnivManagement.Controllers
             // An assignment cannot end before it starts
             if (serviceRequestAssignment.EndedAt < serviceRequestAssignment.AssignedAt)
             {
-                ModelState.AddModelError("EndedAt", "The end date cannot be before the assignment date.");
+                ViewBag.ErrorMessage = "The end date cannot be before the assignment date.";
             }
-
-            if (ModelState.IsValid)
+            else if (ModelState.IsValid)
             {
                 _context.Add(serviceRequestAssignment);
                 await _context.SaveChangesAsync();
@@ -113,10 +112,9 @@ namespace UnivManagement.Controllers
             // An assignment cannot end before it starts
             if (serviceRequestAssignment.EndedAt < serviceRequestAssignment.AssignedAt)
             {
-                ModelState.AddModelError("EndedAt", "The end date cannot be before the assignment date.");
+                ViewBag.ErrorMessage = "The end date cannot be before the assignment date.";
             }
-
-            if (ModelState.IsValid)
+            else if (ModelState.IsValid)
             {
                 try
                 {
