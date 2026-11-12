@@ -11,65 +11,58 @@
         <h1 class="display-6">Edit assignment</h1>
     </header>
 
-    @if (Model == null)
-    {
-        <div class="alert alert-warning" role="alert">This assignment does not exist.</div>
-    }
-    else
-    {
-        <div class="row">
-            <div class="col-lg-8">
-                <form asp-action="Edit" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-lg-8">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <input type="hidden" asp-for="ServiceRequestAssignmentId" />
+                <input type="hidden" asp-for="ServiceRequestAssignmentId" />
 
-                    <div class="mb-3">
-                        <label asp-for="ServiceRequestId" class="form-label"></label>
-                        <select asp-for="ServiceRequestId" class="form-select" asp-items="ViewBag.ServiceRequestId">
-                            <option value="">Choose a request</option>
-                        </select>
-                        <span asp-validation-for="ServiceRequestId" class="text-danger small"></span>
-                    </div>
+                <div class="mb-3">
+                    <label asp-for="ServiceRequestId" class="form-label"></label>
+                    <select asp-for="ServiceRequestId" class="form-select" asp-items="ViewBag.ServiceRequestId">
+                        <option value="">Choose a request</option>
+                    </select>
+                    <span asp-validation-for="ServiceRequestId" class="text-danger small"></span>
+                </div>
 
-                    <div class="mb-3">
-                        <label asp-for="FuncionarioId" class="form-label"></label>
-                        <input asp-for="FuncionarioId" class="form-control" min="1" />
-                        <span asp-validation-for="FuncionarioId" class="text-danger small"></span>
-                    </div>
+                <div class="mb-3">
+                    <label asp-for="FuncionarioId" class="form-label"></label>
+                    <input asp-for="FuncionarioId" class="form-control" min="1" />
+                    <span asp-validation-for="FuncionarioId" class="text-danger small"></span>
+                </div>
 
-                    <div class="mb-3">
-                        <label asp-for="DepartamentoId" class="form-label"></label>
-                        <input asp-for="DepartamentoId" class="form-control" min="1" />
-                        <span asp-validation-for="DepartamentoId" class="text-danger small"></span>
-                    </div>
+                <div class="mb-3">
+                    <label asp-for="DepartamentoId" class="form-label"></label>
+                    <input asp-for="DepartamentoId" class="form-control" min="1" />
+                    <span asp-validation-for="DepartamentoId" class="text-danger small"></span>
+                </div>
 
-                    <div class="mb-3">
-                        <label asp-for="AssignedAt" class="form-label"></label>
-                        <input asp-for="AssignedAt" class="form-control" />
-                        <span asp-validation-for="AssignedAt" class="text-danger small"></span>
-                    </div>
+                <div class="mb-3">
+                    <label asp-for="AssignedAt" class="form-label"></label>
+                    <input asp-for="AssignedAt" class="form-control" />
+                    <span asp-validation-for="AssignedAt" class="text-danger small"></span>
+                </div>
 
-                    <div class="mb-3">
-                        <label asp-for="EndedAt" class="form-label"></label>
-                        <input asp-for="EndedAt" class="form-control" />
-                        <span asp-validation-for="EndedAt" class="text-danger small"></span>
-                    </div>
+                <div class="mb-3">
+                    <label asp-for="EndedAt" class="form-label"></label>
+                    <input asp-for="EndedAt" class="form-control" />
+                    <span asp-validation-for="EndedAt" class="text-danger small"></span>
+                </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Note" class="form-label"></label>
-                        <textarea asp-for="Note" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="Note" class="text-danger small"></span>
-                    </div>
+                <div class="mb-3">
+                    <label asp-for="Note" class="form-label"></label>
+                    <textarea asp-for="Note" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Note" class="text-danger small"></span>
+                </div>
 
-                    <div class="mt-4">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
-                    </div>
-                </form>
-            </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+                </div>
+            </form>
         </div>
-    }
+    </div>
 </div>
 
 @section Scripts {

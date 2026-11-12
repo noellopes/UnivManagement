@@ -11,40 +11,33 @@
         <h1 class="display-6">Delete assignment</h1>
     </header>
 
-    @if (Model == null)
-    {
-        <div class="alert alert-warning" role="alert">This assignment does not exist.</div>
-    }
-    else
-    {
-        <div class="alert alert-danger" role="alert">
-            Are you sure you want to delete this assignment? This action cannot be undone.
+    <div class="alert alert-danger" role="alert">
+        Are you sure you want to delete this assignment? This action cannot be undone.
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ServiceRequest)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ServiceRequest!.Title)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FuncionarioId)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.FuncionarioId)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DepartamentoId)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.DepartamentoId)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AssignedAt)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.AssignedAt)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EndedAt)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.EndedAt)</dd>
+            </dl>
         </div>
+    </div>
 
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <dl class="row mb-0">
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ServiceRequest)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.ServiceRequest!.Title)</dd>
-
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FuncionarioId)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.FuncionarioId)</dd>
-
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DepartamentoId)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.DepartamentoId)</dd>
-
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AssignedAt)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.AssignedAt)</dd>
-
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EndedAt)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.EndedAt)</dd>
-                </dl>
-            </div>
-        </div>
-
-        <form asp-action="Delete" asp-route-id="@Model.ServiceRequestAssignmentId" method="post" class="mt-4">
-            <button type="submit" class="btn btn-danger">Delete</button>
-            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-        </form>
-    }
+    <form asp-action="Delete" asp-route-id="@Model.ServiceRequestAssignmentId" method="post" class="mt-4">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
 </div>

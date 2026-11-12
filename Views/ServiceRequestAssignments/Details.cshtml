@@ -11,42 +11,35 @@
         <h1 class="display-6">Assignment details</h1>
     </header>
 
-    @if (Model == null)
-    {
-        <div class="alert alert-warning" role="alert">This assignment does not exist.</div>
-    }
-    else
-    {
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <dl class="row mb-0">
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ServiceRequest)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.ServiceRequest!.Title)</dd>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ServiceRequest)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ServiceRequest!.Title)</dd>
 
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FuncionarioId)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.FuncionarioId)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FuncionarioId)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.FuncionarioId)</dd>
 
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DepartamentoId)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.DepartamentoId)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DepartamentoId)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.DepartamentoId)</dd>
 
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AssignedAt)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.AssignedAt)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AssignedAt)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.AssignedAt)</dd>
 
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EndedAt)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.EndedAt)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EndedAt)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.EndedAt)</dd>
 
-                    <dt class="col-sm-3">Current</dt>
-                    <dd class="col-sm-9">@(Model.IsCurrent() ? "Yes" : "No")</dd>
+                <dt class="col-sm-3">Current</dt>
+                <dd class="col-sm-9">@(Model.IsCurrent() ? "Yes" : "No")</dd>
 
-                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Note)</dt>
-                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Note)</dd>
-                </dl>
-            </div>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Note)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Note)</dd>
+            </dl>
         </div>
+    </div>
 
-        <div class="mt-4">
-            <a asp-action="Edit" asp-route-id="@Model.ServiceRequestAssignmentId" class="btn btn-primary">Edit</a>
-            <a asp-action="Index" class="btn btn-secondary">Back to list</a>
-        </div>
-    }
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.ServiceRequestAssignmentId" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+    </div>
 </div>

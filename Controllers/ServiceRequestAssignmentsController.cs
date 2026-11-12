@@ -26,9 +26,20 @@ namespace UnivManagement.Controllers
         // GET: ServiceRequestAssignments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            return View(await _context.ServiceRequestAssignments
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var serviceRequestAssignment = await _context.ServiceRequestAssignments
                 .Include(a => a.ServiceRequest)
-                .FirstOrDefaultAsync(m => m.ServiceRequestAssignmentId == id));
+                .FirstOrDefaultAsync(m => m.ServiceRequestAssignmentId == id);
+            if (serviceRequestAssignment == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(serviceRequestAssignment);
         }
 
         // GET: ServiceRequestAssignments/Create
@@ -63,16 +74,31 @@ namespace UnivManagement.Controllers
         // GET: ServiceRequestAssignments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var serviceRequestAssignment = await _context.ServiceRequestAssignments.FindAsync(id);
-            ViewData["ServiceRequestId"] = new SelectList(_context.ServiceRequests, "ServiceRequestId", "Title", serviceRequestAssignment?.ServiceRequestId);
+            if (serviceRequestAssignment == null)
+            {
+                return View("NotFound");
+            }
+
+            ViewData["ServiceRequestId"] = new SelectList(_context.ServiceRequests, "ServiceRequestId", "Title", serviceRequestAssignment.ServiceRequestId);
             return View(serviceRequestAssignment);
         }
 
         // POST: ServiceRequestAssignments/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("ServiceRequestAssignmentId,ServiceRequestId,FuncionarioId,DepartamentoId,AssignedAt,EndedAt,Note")] ServiceRequestAssignment serviceRequestAssignment)
+        public async Task<IActionResult> Edit(int? id, [Bind("ServiceRequestAssignmentId,ServiceRequestId,FuncionarioId,DepartamentoId,AssignedAt,EndedAt,Note")] ServiceRequestAssignment serviceRequestAssignment)
         {
+            if (id != serviceRequestAssignment.ServiceRequestAssignmentId)
+            {
+                return NotFound();
+            }
+
             // An assignment cannot end before it starts
             if (serviceRequestAssignment.EndedAt < serviceRequestAssignment.AssignedAt)
             {
@@ -81,8 +107,22 @@ namespace UnivManagement.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Update(serviceRequestAssignment);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Update(serviceRequestAssignment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ServiceRequestAssignmentExists(serviceRequestAssignment.ServiceRequestAssignmentId))
+                    {
+                        return View("NotFound");
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ServiceRequestId"] = new SelectList(_context.ServiceRequests, "ServiceRequestId", "Title", serviceRequestAssignment.ServiceRequestId);
@@ -92,9 +132,20 @@ namespace UnivManagement.Controllers
         // GET: ServiceRequestAssignments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            return View(await _context.ServiceRequestAssignments
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var serviceRequestAssignment = await _context.ServiceRequestAssignments
                 .Include(a => a.ServiceRequest)
-                .FirstOrDefaultAsync(m => m.ServiceRequestAssignmentId == id));
+                .FirstOrDefaultAsync(m => m.ServiceRequestAssignmentId == id);
+            if (serviceRequestAssignment == null)
+            {
+                return View("NotFound");
+            }
+
+            return View(serviceRequestAssignment);
         }
 
         // POST: ServiceRequestAssignments/Delete/5
@@ -110,6 +161,11 @@ namespace UnivManagement.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool ServiceRequestAssignmentExists(int id)
+        {
+            return _context.ServiceRequestAssignments.Any(e => e.ServiceRequestAssignmentId == id);
         }
     }
 }
