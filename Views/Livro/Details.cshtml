@@ -1,0 +1,76 @@
+
+@model UnivManagement.Models.Livro
+
+@{
+    ViewData["Title"] = "Detalhes do Livro";
+}
+
+<h1>Detalhes do Livro</h1>
+
+<hr />
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h4 class="card-title">@Model.Titulo</h4>
+
+        <dl class="row mt-4">
+
+            <dt class="col-sm-3">
+                ISBN
+            </dt>
+            <dd class="col-sm-9">
+                @Model.ISBN
+            </dd>
+
+            <dt class="col-sm-3">
+                Título
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Titulo
+            </dd>
+
+            <dt class="col-sm-3">
+                Tipo
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Tipo
+            </dd>
+
+            <dt class="col-sm-3">
+                Valor da Multa
+            </dt>
+            <dd class="col-sm-9">
+                @Model.ValorMulta.ToString("F2") €
+            </dd>
+
+            <dt class="col-sm-3">
+                Autores
+            </dt>
+            <dd class="col-sm-9">
+                @if (Model.LivrosAutores.Any())
+                {
+                    @string.Join(", ",
+                        Model.LivrosAutores.Select(la => la.Autor.Nome))
+                }
+                else
+                {
+                    <span>Sem autores associados</span>
+                }
+            </dd>
+
+        </dl>
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.LivroId"
+           class="btn btn-warning">
+            Editar
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Voltar à Lista
+        </a>
+
+    </div>
+</div>

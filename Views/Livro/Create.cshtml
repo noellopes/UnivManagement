@@ -1,0 +1,87 @@
+
+@model UnivManagement.Models.Livro
+
+@{
+    ViewData["Title"] = "Adicionar Livro";
+}
+
+<h1>Adicionar Livro</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="All"
+                 class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="ISBN" class="form-label"></label>
+                <input asp-for="ISBN" class="form-control" />
+                <span asp-validation-for="ISBN"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Titulo" class="form-label"></label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Tipo" class="form-label"></label>
+                <input asp-for="Tipo" class="form-control" />
+                <span asp-validation-for="Tipo"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ValorMulta" class="form-label">
+                    Valor da Multa
+                </label>
+                <input asp-for="ValorMulta" class="form-control" />
+                <span asp-validation-for="ValorMulta"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="autoresSelecionados" class="form-label">
+                    Autores
+                </label>
+
+                <select id="autoresSelecionados"
+                        name="autoresSelecionados"
+                        asp-items="ViewBag.Autores"
+                        multiple
+                        class="form-select"
+                        size="5">
+                </select>
+
+                <small class="form-text text-muted">
+                    Pode selecionar vários autores
+                    mantendo a tecla Ctrl pressionada.
+                </small>
+
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                Adicionar Livro
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Voltar à Lista
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -7,6 +7,11 @@ namespace UnivManagement.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
+            // Biblioteca: impedir associações duplicadas entre livros e autores
+            modelBuilder.Entity<LivroAutor>()
+                .HasIndex(la => new { la.LivroId, la.AutorId })
+                .IsUnique();
+
             // ServiceRequestType: two request types cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestType>()
                 .HasIndex(t => t.Name)
@@ -68,7 +73,11 @@ namespace UnivManagement.Data {
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
         }
-      
+
+        public DbSet<Livro> Livros { get; set; } = default!;
+        public DbSet<Exemplar> Exemplares { get; set; } = default!;
+        public DbSet<Autor> Autores { get; set; } = default!;
+        public DbSet<LivroAutor> LivrosAutores { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;

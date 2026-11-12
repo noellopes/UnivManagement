@@ -1,0 +1,161 @@
+﻿@model IEnumerable<UnivManagement.Models.Livro>
+
+@{
+    ViewData["Title"] = "Catálogo da Biblioteca";
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h1 class="fw-bold mb-2">
+                📚 Catálogo da Biblioteca
+            </h1>
+            <p class="text-muted mb-0">
+                Consulta e gere os livros disponíveis na biblioteca.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-outline-secondary">
+                🏠 Voltar ao Início
+            </a>
+
+            <a asp-action="Create"
+               class="btn btn-success">
+                ➕ Adicionar Livro
+            </a>
+        </div>
+    </div>
+
+    <!-- Cartão da lista de livros -->
+    <div class="card border-0 shadow-sm rounded-3">
+
+        <div class="card-header bg-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-semibold">
+                    📖 Lista de Livros
+                </h5>
+
+                <span class="badge bg-primary rounded-pill">
+                    @Model.Count() livros
+                </span>
+            </div>
+        </div>
+
+        <div class="card-body p-0">
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle mb-0">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">ISBN</th>
+                                <th>Título</th>
+                                <th>Tipo</th>
+                                <th>Valor da Multa</th>
+                                <th>Autores</th>
+                                <th class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4">
+                                        <span class="text-muted">
+                                            @item.ISBN
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="fw-semibold">
+                                            @item.Titulo
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-info text-dark">
+                                            @item.Tipo
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @item.ValorMulta.ToString("F2") €
+                                    </td>
+
+                                    <td>
+                                        @if (item.LivrosAutores.Any())
+                                        {
+                                            @string.Join(", ",
+                                                item.LivrosAutores.Select(la => la.Autor.Nome))
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted fst-italic">
+                                                Sem autores associados
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                            <a asp-action="Details"
+                                               asp-route-id="@item.LivroId"
+                                               class="btn btn-outline-info btn-sm"
+                                               title="Ver detalhes">
+                                                👁️ Detalhes
+                                            </a>
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.LivroId"
+                                               class="btn btn-outline-warning btn-sm"
+                                               title="Editar livro">
+                                                ✏️ Editar
+                                            </a>
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@item.LivroId"
+                                               class="btn btn-outline-danger btn-sm"
+                                               title="Eliminar livro">
+                                                🗑️ Eliminar
+                                            </a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <div class="fs-1 mb-3">📚</div>
+
+                    <h5 class="fw-semibold">
+                        Ainda não existem livros registados.
+                    </h5>
+
+                    <p class="text-muted">
+                        Começa por adicionar o primeiro livro à biblioteca.
+                    </p>
+
+                    <a asp-action="Create"
+                       class="btn btn-success mt-2">
+                        ➕ Adicionar Primeiro Livro
+                    </a>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
