@@ -15,8 +15,12 @@ namespace UnivManagement.Controllers
         }
 
         // GET: ServiceRequestTypes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? msg = null)
         {
+            if(msg != null)
+            {
+                ViewBag.SuccessMessage = msg;
+            }
             return View(await _context.ServiceRequestTypes.ToListAsync());
         }
 
@@ -138,7 +142,10 @@ namespace UnivManagement.Controllers
             var serviceRequestType = await _context.ServiceRequestTypes.FindAsync(id);
             if (serviceRequestType == null)
             {
-                return NotFound();
+                return RedirectToAction(
+                    nameof(Index),
+                    new { msg = "The request type was already deleted." }
+                );
             }
             return View(serviceRequestType);
         }
@@ -157,10 +164,13 @@ namespace UnivManagement.Controllers
                     return View("Delete", serviceRequestType);
                 }
                 _context.ServiceRequestTypes.Remove(serviceRequestType);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+                nameof(Index), 
+                new { msg = "Request type deleted successfully." }
+            );
         }
 
         private bool ServiceRequestTypeExists(int id)
