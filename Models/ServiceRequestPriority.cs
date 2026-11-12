@@ -20,11 +20,5 @@ namespace UnivManagement.Models
         [Required(ErrorMessage = "The {0} is required.")]
         [StringLength(20, ErrorMessage = "The {0} cannot exceed {1} characters.")]
         public required string Color { get; set; }
-
-        // From the class diagram: the date by which a request created on startDate must be answered
-        public DateTime CalculateDueDate(DateTime startDate)
-        {
-            return startDate.AddDays(ResponseDays);
-        }
     }
 }
