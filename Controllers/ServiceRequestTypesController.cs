@@ -119,7 +119,10 @@ namespace UnivManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id = serviceRequestType.ServiceRequestTypeId, msg = "Request type edited successfully." }
+                );
             }
             return View(serviceRequestType);
         }
