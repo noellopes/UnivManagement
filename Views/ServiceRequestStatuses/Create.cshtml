@@ -12,6 +12,14 @@
         <p class="text-body-secondary">A status is one of the steps a request goes through.</p>
     </header>
 
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
     <div class="row">
         <div class="col-lg-8">
             <form asp-action="Create" method="post">

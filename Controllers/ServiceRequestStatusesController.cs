@@ -62,10 +62,9 @@ namespace UnivManagement.Controllers
             // Two statuses cannot have the same name
             if (_context.ServiceRequestStatuses.Any(s => s.Name == serviceRequestStatus.Name))
             {
-                ModelState.AddModelError("Name", "There is already a status with this name.");
+                ViewBag.ErrorMessage = "There is already a status with this name.";
             }
-
-            if (ModelState.IsValid)
+            else if (ModelState.IsValid)
             {
                 _context.Add(serviceRequestStatus);
                 await _context.SaveChangesAsync();
@@ -106,10 +105,9 @@ namespace UnivManagement.Controllers
             if (_context.ServiceRequestStatuses.Any(s => s.Name == serviceRequestStatus.Name
                 && s.ServiceRequestStatusId != serviceRequestStatus.ServiceRequestStatusId))
             {
-                ModelState.AddModelError("Name", "There is already a status with this name.");
+                ViewBag.ErrorMessage = "There is already a status with this name.";
             }
-
-            if (ModelState.IsValid)
+            else if (ModelState.IsValid)
             {
                 try
                 {
@@ -162,7 +160,7 @@ namespace UnivManagement.Controllers
                 // A status that some requests have cannot be deleted
                 if (_context.ServiceRequests.Any(r => r.ServiceRequestStatusId == id))
                 {
-                    ModelState.AddModelError(string.Empty, "Some requests have this status, so it cannot be deleted.");
+                    ViewBag.ErrorMessage = "Some requests have this status, so it cannot be deleted.";
                     return View(serviceRequestStatus);
                 }
 

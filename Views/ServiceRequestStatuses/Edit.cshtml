@@ -11,6 +11,14 @@
         <h1 class="display-6">Edit status</h1>
     </header>
 
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
     <div class="row">
         <div class="col-lg-8">
             <form asp-action="Edit" method="post">
