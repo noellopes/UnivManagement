@@ -44,7 +44,7 @@ namespace UnivManagement.Models
         [Display(Name = "Turma")]
         public int IdTurma { get; set; }
 
-        [ForeignKey("IdTurma")]
-        public Group? Group { get; set; }
+        //[ForeignKey("IdTurma")]
+        //public Group? Group { get; set; }
     }
 }
