@@ -1,0 +1,45 @@
+@model IEnumerable<UnivManagement.Models.TipoDocumento>
+
+@{
+    ViewData["Title"] = "Gerir tipos de documento";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Gerir tipos de documento</h1>
+    <a asp-action="Create" class="btn btn-warning">+ Adicionar tipo de documento</a>
+</div>
+
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeTipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Obrigatorio)
+            </th>
+            <th 
+                class="text-end">Ações
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.NomeTipo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Obrigatorio)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TipoDocumentoId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TipoDocumentoId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TipoDocumentoId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

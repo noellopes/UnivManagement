@@ -104,5 +104,9 @@ namespace UnivManagement.Data {
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
+
+        public DbSet<TipoBolsa> TipoBolsa { get; set; } = default!;
+        public DbSet<CriterioElegibilidade> CriterioElegibilidade { get; set; } = default!;
+        public DbSet<TipoDocumento> TipoDocumento { get; set; } = default!;
     }
 }
