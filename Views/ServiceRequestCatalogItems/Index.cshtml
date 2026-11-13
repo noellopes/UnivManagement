@@ -1,0 +1,71 @@
+@model IEnumerable<UnivManagement.Models.ServiceRequestCatalogItem>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ServiceRequestTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProcessingDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequiredDocuments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ServiceRequestTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ProcessingDays)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.RequiredDocuments)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsActive)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ServiceRequestCatalogItemId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ServiceRequestCatalogItemId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ServiceRequestCatalogItemId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
