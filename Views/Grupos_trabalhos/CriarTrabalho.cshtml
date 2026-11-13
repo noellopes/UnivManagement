@@ -1,0 +1,35 @@
+﻿@model UnivManagement.Models.CriarTrabalhoViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Criar trabalho";
+}
+
+<div class="container py-4">
+    <h1 class="mb-4">Criar trabalho</h1>
+
+    <form>
+        <div class="mb-3">
+            <label asp-for="Titulo" class="form-label"></label>
+            <input asp-for="Titulo" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Enunciado" class="form-label"></label>
+            <textarea asp-for="Enunciado" class="form-control" rows="5"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DataLimite" class="form-label"></label>
+            <input asp-for="DataLimite" type="datetime-local" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="EmGrupo" class="form-label"></label>
+            <select asp-for="EmGrupo" class="form-select">
+                <option value="false">Individual</option>
+                <option value="true">De grupo</option>
+            </select>
+        </div>
+    </form>
+</div>
