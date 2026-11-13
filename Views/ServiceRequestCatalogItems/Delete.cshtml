@@ -27,19 +27,11 @@
         </dd>
     </dl>
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ServiceRequestTypeId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ServiceRequestTypeId)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Type)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
+        <dd class="col-sm-10">
+            @Model.Type?.Name
         </dd>
     </dl>
     <dl class="row">
@@ -66,7 +58,7 @@
             @Html.DisplayFor(model => model.IsActive)
         </dd>
     </dl>
-    <form asp-action="Delete">
+    <form asp-action="Delete" asp-route-id="@Model.ServiceRequestCatalogItemId" method="post">
         <input type="hidden" asp-for="ServiceRequestCatalogItemId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>

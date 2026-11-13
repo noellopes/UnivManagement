@@ -19,9 +19,6 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ServiceRequestTypeId)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Type)
             </th>
             <th>
@@ -46,10 +43,7 @@
                 @Html.DisplayFor(model => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(model => item.ServiceRequestTypeId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Type)
+                @item.Type?.Name
             </td>
             <td>
                 @Html.DisplayFor(model => item.ProcessingDays)

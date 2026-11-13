@@ -17,7 +17,7 @@ public class ServiceRequestCatalogItemsController : Controller
     // GET: SERVICEREQUESTCATALOGITEMS
     public async Task<IActionResult> Index()    
     {
-        return View(await _context.ServiceRequestCatalogItems.ToListAsync());
+        return View(await _context.ServiceRequestCatalogItems.Include(c => c.Type).ToListAsync());
     }
 
     // GET: SERVICEREQUESTCATALOGITEMS/Details/5
@@ -29,6 +29,7 @@ public class ServiceRequestCatalogItemsController : Controller
         }
 
         var servicerequestcatalogitem = await _context.ServiceRequestCatalogItems
+            .Include(c => c.Type)
             .FirstOrDefaultAsync(m => m.ServiceRequestCatalogItemId == id);
         if (servicerequestcatalogitem == null)
         {
@@ -125,6 +126,7 @@ public class ServiceRequestCatalogItemsController : Controller
         }
 
         var servicerequestcatalogitem = await _context.ServiceRequestCatalogItems
+            .Include(m => m.Type)
             .FirstOrDefaultAsync(m => m.ServiceRequestCatalogItemId == id);
         if (servicerequestcatalogitem == null)
         {
