@@ -1,0 +1,130 @@
+@model IEnumerable<UnivManagement.Models.AcademicManagement.UC>
+
+@{
+    ViewData["Title"] = "Unidades Curriculares";
+}
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+        @ViewBag.SuccessMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Unidades Curriculares</h1>
+        <p class="text-muted mb-0">Gestão das unidades curriculares</p>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
+        Nova Unidade Curricular
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-journal-bookmark me-2" aria-hidden="true"></i>
+            Lista de Unidades Curriculares
+        </h2>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Code)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Acronym)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th scope="col" class="text-end">
+                            Ações
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">
+                                    @Html.DisplayFor(modelItem => item.Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    <span class="badge text-bg-secondary">
+                                        @Html.DisplayFor(modelItem => item.Acronym)
+                                    </span>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                
+                                <td class="text-end text-nowrap">
+                                <div class="btn-group" role="group" aria-label="Ações para @item.Name">
+
+                                    <a asp-action="Edit" asp-route-id="@item.UcId"
+                                       class="btn btn-sm btn-outline-primary"
+                                       title="Editar" aria-label="Editar @item.Name">
+                                        <i class="bi bi-pencil" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a asp-action="Details" asp-route-id="@item.UcId"
+                                       class="btn btn-sm btn-outline-secondary"
+                                       title="Detalhes" aria-label="Detalhes de @item.Name">
+                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a asp-action="Delete" asp-route-id="@item.UcId"
+                                       class="btn btn-sm btn-outline-danger"
+                                       title="Eliminar" aria-label="Eliminar @item.Name">
+                                        <i class="bi bi-trash" aria-hidden="true"></i>
+                                    </a>
+
+                                </div>
+                            </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <i class="bi bi-inbox fs-2 text-muted d-block mb-2" aria-hidden="true"></i>
+                                <p class="text-muted mb-0">Não existem unidades curriculares registadas.</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="card-footer bg-body text-muted">
+            <small>
+                <i class="bi bi-list-ul me-1" aria-hidden="true"></i>
+                Total de unidades curriculares: @Model.Count()
+            </small>
+        </div>
+    }
+</div>
