@@ -107,5 +107,6 @@ namespace UnivManagement.Data {
 
         // Grupo 3
         public DbSet<AvaliacaoUC> AvaliacoesUC { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Feedback> Feedback { get; set; }
     }
 }

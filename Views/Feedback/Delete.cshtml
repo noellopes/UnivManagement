@@ -1,0 +1,55 @@
+@model UnivManagement.Models.Feedback
+
+@{
+    ViewData["Title"] = "Eliminar Feedback";
+}
+
+<h1>Eliminar Feedback</h1>
+
+<h3>Tem a certeza de que pretende eliminar este registo?</h3>
+<div>
+    <h4>Feedback</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SubmissaoID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SubmissaoID)
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DocenteID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DocenteID)
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Data_Feedback)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Data_Feedback)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nota)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nota)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="FeedbackID" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
+    </form>
+</div>
