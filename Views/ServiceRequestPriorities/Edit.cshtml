@@ -1,0 +1,63 @@
+@model ServiceRequestPriority
+
+@{
+    ViewData["Title"] = "Edit priority";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to priorities</a>
+
+    <header class="my-4">
+        <h1 class="display-6">Edit priority</h1>
+    </header>
+    <div class="row">
+        <div class="col-lg-8">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="ServiceRequestPriorityId" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Level" class="form-label"></label>
+                    <input asp-for="Level" class="form-control" min="1" max="10" placeholder="From 1 (lowest) to 10 (highest)" />
+                    <span asp-validation-for="Level" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ResponseDays" class="form-label">Response days</label>
+                    <input asp-for="ResponseDays" class="form-control" min="1" max="365" placeholder="Days to answer a request (1 to 365)" />
+                    <span asp-validation-for="ResponseDays" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Color" class="form-label"></label>
+                    <select asp-for="Color" class="form-select">
+                        <option value="">Choose a color</option>
+                        <option value="primary">Primary (blue)</option>
+                        <option value="secondary">Secondary (grey)</option>
+                        <option value="success">Success (green)</option>
+                        <option value="danger">Danger (red)</option>
+                        <option value="warning">Warning (yellow)</option>
+                        <option value="info">Info (light blue)</option>
+                    </select>
+                    <span asp-validation-for="Color" class="text-danger small"></span>
+                </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
