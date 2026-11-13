@@ -1,10 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 
-namespace UnivManagement.Data {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+namespace UnivManagement.Data
+{
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
+    {
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             base.OnModelCreating(modelBuilder);
 
             // ServiceRequestType: two request types cannot have the same name
@@ -47,7 +51,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.Telephone)
                 .IsUnique();
-          
+
             // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
@@ -67,8 +71,15 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
+
+            // --- FIX FOR TEAM MEMBER'S CASCADE DELETE ERROR ---
+            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
+                .HasOne<Models.AcademicManagement.Course>()
+                .WithMany()
+                .HasForeignKey(c => c.CourseId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
-      
+
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
@@ -92,17 +103,21 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
-        
+
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
         public DbSet<Empregador> Empregadores { get; set; }
         public DbSet<Oferta> Ofertas { get; set; }
+
+        // Internship Module (Other Team's Models)
         public DbSet<Candidatura> Candidaturas { get; set; }
         public DbSet<Estagio> Estagios { get; set; }
         public DbSet<GestorEstagio> GestoresEstagio { get; set; }
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
+
+        public DbSet<Tecnico> Tecnicos { get; set; }
     }
 }
