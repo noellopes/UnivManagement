@@ -21,11 +21,19 @@ namespace UnivManagement.Models
         public int DocenteID { get; set; }
 
         [ForeignKey("DocenteID")]
-        public virtual Docente Docente { get; set; }
+        public virtual Docente? Docente { get; set; }
 
         [Required(ErrorMessage = "A data de feedback é obrigatória.")]
         [DataType(DataType.Date)]
         [Display(Name = "Data de Feedback")]
         public DateTime Data_Feedback { get; set; }
+
+        [Required(ErrorMessage = "A descrição é obrigatória.")]
+        [Display(Name = "Descrição")]
+        public string Descricao { get; set; }
+
+        [Required(ErrorMessage = "A nota é obrigatória.")]
+        [Display(Name = "Nota")]
+        public float Nota { get; set; }
     }
 }
