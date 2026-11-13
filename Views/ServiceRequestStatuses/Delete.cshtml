@@ -1,0 +1,51 @@
+@model ServiceRequestStatus
+
+@{
+    ViewData["Title"] = "Delete status";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to statuses</a>
+
+    <header class="my-4">
+        <h1 class="display-6">Delete status</h1>
+    </header>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <div class="alert alert-danger" role="alert">
+        Are you sure you want to delete this status? This action cannot be undone.
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+                <dd class="col-sm-9"><span class="badge text-bg-@Model.Color">@Model.Name</span></dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DisplayOrder)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.DisplayOrder)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsFinal)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.IsFinal)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.RequiresNote)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.RequiresNote)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.ServiceRequestStatusId" method="post" class="mt-4">
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1" aria-hidden="true"></i>Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

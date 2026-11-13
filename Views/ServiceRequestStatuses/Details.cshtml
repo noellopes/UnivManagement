@@ -1,0 +1,52 @@
+@model ServiceRequestStatus
+
+@{
+    ViewData["Title"] = "Status details";
+}
+
+<div class="container py-4">
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+            @ViewBag.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to statuses</a>
+
+    <header class="my-4">
+        <h1 class="display-6">Status details</h1>
+    </header>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+                <dd class="col-sm-9"><span class="badge text-bg-@Model.Color">@Model.Name</span></dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DisplayOrder)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.DisplayOrder)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsFinal)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.IsFinal)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.RequiresNote)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.RequiresNote)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Color)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Color)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.ServiceRequestStatusId" class="btn btn-primary"><i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.ServiceRequestStatusId" class="btn btn-danger"><i class="bi bi-trash me-1" aria-hidden="true"></i>Delete</a>
+        <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Back to list</a>
+    </div>
+</div>
