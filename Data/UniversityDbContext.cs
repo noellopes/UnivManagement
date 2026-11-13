@@ -118,8 +118,9 @@ namespace UnivManagement.Data
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
 
-        // Scholarship Module (Your Isolated Models)
+      
         public DbSet<CandidaturaBolsa> CandidaturasBolsa { get; set; }
         public DbSet<AvaliacaoBolsa> AvaliacoesBolsa { get; set; }
+        public DbSet<Tecnico> Tecnicos { get; set; }
     }
 }
