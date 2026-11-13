@@ -121,5 +121,6 @@ namespace UnivManagement.Data
         // Scholarship Module (Your Isolated Models)
         public DbSet<CandidaturaBolsa> CandidaturasBolsa { get; set; }
         public DbSet<AvaliacaoBolsa> AvaliacoesBolsa { get; set; }
+        public DbSet<Tecnico> Tecnicos { get; set; }
     }
 }
