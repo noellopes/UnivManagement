@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using UnivManagement.Models;
 using UnivManagement.Data;
 
@@ -40,6 +41,7 @@ public class ServiceRequestCatalogItemsController : Controller
     // GET: SERVICEREQUESTCATALOGITEMS/Create
     public IActionResult Create()
     {
+        ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes, "ServiceRequestTypeId", "Name");
         return View();
     }
 
@@ -48,7 +50,7 @@ public class ServiceRequestCatalogItemsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ServiceRequestCatalogItemId,Name,Description,ServiceRequestTypeId,Type,ProcessingDays,RequiredDocuments,IsActive")] ServiceRequestCatalogItem servicerequestcatalogitem)
+    public async Task<IActionResult> Create([Bind("ServiceRequestCatalogItemId,Name,Description,ServiceRequestTypeId,ProcessingDays,RequiredDocuments,IsActive")] ServiceRequestCatalogItem servicerequestcatalogitem)
     {
         if (ModelState.IsValid)
         {
@@ -56,6 +58,7 @@ public class ServiceRequestCatalogItemsController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes, "ServiceRequestTypeId", "Name", servicerequestcatalogitem.ServiceRequestTypeId);
         return View(servicerequestcatalogitem);
     }
 
@@ -72,6 +75,8 @@ public class ServiceRequestCatalogItemsController : Controller
         {
             return NotFound();
         }
+
+        ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes, "ServiceRequestTypeId", "Name", servicerequestcatalogitem.ServiceRequestTypeId);
         return View(servicerequestcatalogitem);
     }
 
@@ -80,7 +85,7 @@ public class ServiceRequestCatalogItemsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("ServiceRequestCatalogItemId,Name,Description,ServiceRequestTypeId,Type,ProcessingDays,RequiredDocuments,IsActive")] ServiceRequestCatalogItem servicerequestcatalogitem)
+    public async Task<IActionResult> Edit(int? id, [Bind("ServiceRequestCatalogItemId,Name,Description,ServiceRequestTypeId,ProcessingDays,RequiredDocuments,IsActive")] ServiceRequestCatalogItem servicerequestcatalogitem)
     {
         if (id != servicerequestcatalogitem.ServiceRequestCatalogItemId)
         {
@@ -107,6 +112,7 @@ public class ServiceRequestCatalogItemsController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+        ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes, "ServiceRequestTypeId", "Name", servicerequestcatalogitem.ServiceRequestTypeId);
         return View(servicerequestcatalogitem);
     }
 
