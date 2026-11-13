@@ -9,8 +9,9 @@
     <a asp-action="Create" class="btn btn-warning">+ Adicionar tipo de documento</a>
 </div>
 
-<table class="table">
-    <thead>
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.NomeTipo)
@@ -18,7 +19,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Obrigatorio)
             </th>
-            <th></th>
+            <th 
+                class="text-end">Ações
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -39,3 +42,4 @@
 }
     </tbody>
 </table>
+</div>
