@@ -16,7 +16,12 @@ namespace UnivManagement.Controllers {
         // GET: ServiceRequestHistories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ServiceRequestHistories.ToListAsync());
+            var histories = _context.ServiceRequestHistories
+                .Include(h => h.ServiceRequest)
+                .Include(h => h.OldStatus)
+                .Include(h => h.NewStatus);
+
+            return View(await histories.ToListAsync());
         }
 
         // GET: ServiceRequestHistories/Details/5

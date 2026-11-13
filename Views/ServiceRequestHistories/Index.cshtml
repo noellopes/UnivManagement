@@ -16,19 +16,10 @@
                 @Html.DisplayNameFor(model => model.ServiceRequestId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ServiceRequest)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.OldStatusId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OldStatus)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.NewStatusId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NewStatus)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Action)
@@ -46,22 +37,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(model => item.ServiceRequestId)
+                @item.ServiceRequest?.Title
             </td>
             <td>
-                @Html.DisplayFor(model => item.ServiceRequest)
+                @(item.OldStatus?.Name ?? "(none)")
             </td>
             <td>
-                @Html.DisplayFor(model => item.OldStatusId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.OldStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.NewStatusId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.NewStatus)
+                @(item.NewStatus?.Name ?? "(none)")
             </td>
             <td>
                 @Html.DisplayFor(model => item.Action)
