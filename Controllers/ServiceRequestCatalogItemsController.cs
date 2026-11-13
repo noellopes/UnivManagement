@@ -15,13 +15,17 @@ public class ServiceRequestCatalogItemsController : Controller
     }
 
     // GET: SERVICEREQUESTCATALOGITEMS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index(string? successMessage = null)    
     {
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
         return View(await _context.ServiceRequestCatalogItems.Include(c => c.Type).ToListAsync());
     }
 
     // GET: SERVICEREQUESTCATALOGITEMS/Details/5
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, string? successMessage = null)
     {
         if (id == null)
         {
@@ -34,6 +38,11 @@ public class ServiceRequestCatalogItemsController : Controller
         if (servicerequestcatalogitem == null)
         {
             return View("NotFound");
+        }
+
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
         }
 
         return View(servicerequestcatalogitem);
@@ -57,9 +66,13 @@ public class ServiceRequestCatalogItemsController : Controller
         {
             _context.Add(servicerequestcatalogitem);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), 
+                new { id = servicerequestcatalogitem.ServiceRequestCatalogItemId, 
+                successMessage = "Service created successfully." });
         }
-        ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes, "ServiceRequestTypeId", "Name", servicerequestcatalogitem.ServiceRequestTypeId);
+
+        ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes, 
+            "ServiceRequestTypeId", "Name", servicerequestcatalogitem.ServiceRequestTypeId);
         return View(servicerequestcatalogitem);
     }
 
@@ -111,7 +124,9 @@ public class ServiceRequestCatalogItemsController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), 
+                new { id = servicerequestcatalogitem.ServiceRequestCatalogItemId,
+                successMessage = "Service updated successfully." });
         }
         ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes, "ServiceRequestTypeId", "Name", servicerequestcatalogitem.ServiceRequestTypeId);
         return View(servicerequestcatalogitem);
@@ -148,7 +163,8 @@ public class ServiceRequestCatalogItemsController : Controller
         }
 
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), 
+            new { successMessage = "Service deleted successfully." });
     }
 
     private bool ServiceRequestCatalogItemExists(int? id)
