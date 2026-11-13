@@ -72,6 +72,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestComment> ServiceRequestComments { get; set; } = default!;
 
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
