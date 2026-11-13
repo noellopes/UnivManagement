@@ -33,7 +33,7 @@ public class ServiceRequestCatalogItemsController : Controller
             .FirstOrDefaultAsync(m => m.ServiceRequestCatalogItemId == id);
         if (servicerequestcatalogitem == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         return View(servicerequestcatalogitem);
@@ -74,7 +74,7 @@ public class ServiceRequestCatalogItemsController : Controller
         var servicerequestcatalogitem = await _context.ServiceRequestCatalogItems.FindAsync(id);
         if (servicerequestcatalogitem == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes, "ServiceRequestTypeId", "Name", servicerequestcatalogitem.ServiceRequestTypeId);
