@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
@@ -14,21 +13,21 @@ public class FeedbackController : Controller
     }
 
     // GET: FEEDBACKS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index()
     {
         return View(await _context.Feedback.ToListAsync());
     }
 
     // GET: FEEDBACKS/Details/5
-    public async Task<IActionResult> Details(int? feedbackid)
+    public async Task<IActionResult> Details(int? id)
     {
-        if (feedbackid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var feedback = await _context.Feedback
-            .FirstOrDefaultAsync(m => m.FeedbackID == feedbackid);
+            .FirstOrDefaultAsync(m => m.FeedbackID == id);
         if (feedback == null)
         {
             return NotFound();
@@ -44,11 +43,9 @@ public class FeedbackController : Controller
     }
 
     // POST: FEEDBACKS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("FeedbackID,SubmissaoID,DocenteID,Docente,Data_Feedback")] Feedback feedback)
+    public async Task<IActionResult> Create([Bind("FeedbackID,SubmissaoID,DocenteID,Data_Feedback,Descricao,Nota")] Feedback feedback)
     {
         if (ModelState.IsValid)
         {
@@ -60,14 +57,14 @@ public class FeedbackController : Controller
     }
 
     // GET: FEEDBACKS/Edit/5
-    public async Task<IActionResult> Edit(int? feedbackid)
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (feedbackid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var feedback = await _context.Feedback.FindAsync(feedbackid);
+        var feedback = await _context.Feedback.FindAsync(id);
         if (feedback == null)
         {
             return NotFound();
@@ -76,13 +73,11 @@ public class FeedbackController : Controller
     }
 
     // POST: FEEDBACKS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? feedbackid, [Bind("FeedbackID,SubmissaoID,DocenteID,Docente,Data_Feedback")] Feedback feedback)
+    public async Task<IActionResult> Edit(int id, [Bind("FeedbackID,SubmissaoID,DocenteID,Data_Feedback,Descricao,Nota")] Feedback feedback)
     {
-        if (feedbackid != feedback.FeedbackID)
+        if (id != feedback.FeedbackID)
         {
             return NotFound();
         }
@@ -111,15 +106,15 @@ public class FeedbackController : Controller
     }
 
     // GET: FEEDBACKS/Delete/5
-    public async Task<IActionResult> Delete(int? feedbackid)
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (feedbackid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var feedback = await _context.Feedback
-            .FirstOrDefaultAsync(m => m.FeedbackID == feedbackid);
+            .FirstOrDefaultAsync(m => m.FeedbackID == id);
         if (feedback == null)
         {
             return NotFound();
@@ -131,9 +126,9 @@ public class FeedbackController : Controller
     // POST: FEEDBACKS/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? feedbackid)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var feedback = await _context.Feedback.FindAsync(feedbackid);
+        var feedback = await _context.Feedback.FindAsync(id);
         if (feedback != null)
         {
             _context.Feedback.Remove(feedback);
@@ -143,8 +138,8 @@ public class FeedbackController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool FeedbackExists(int? feedbackid)
+    private bool FeedbackExists(int id)
     {
-        return _context.Feedback.Any(e => e.FeedbackID == feedbackid);
+        return _context.Feedback.Any(e => e.FeedbackID == id);
     }
 }

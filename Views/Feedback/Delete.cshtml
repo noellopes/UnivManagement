@@ -1,11 +1,12 @@
 @model UnivManagement.Models.Feedback
 
 @{
-    ViewData["Title"] = "Detalhes do Feedback";
+    ViewData["Title"] = "Eliminar Feedback";
 }
 
-<h1>Detalhes do Feedback</h1>
+<h1>Eliminar Feedback</h1>
 
+<h3>Tem a certeza de que pretende eliminar este registo?</h3>
 <div>
     <h4>Feedback</h4>
     <hr />
@@ -45,8 +46,10 @@
             @Html.DisplayFor(model => model.Nota)
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.FeedbackID" class="btn btn-warning">Editar</a> |
-    <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="FeedbackID" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
+    </form>
 </div>
