@@ -1,0 +1,49 @@
+@model ServiceRequestCatalogItem
+
+@{
+    ViewData["Title"] = "Delete service";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to the service catalog</a>
+
+    <header class="my-4">
+        <h1 class="display-6">Delete service</h1>
+    </header>
+
+    <div class="alert alert-danger" role="alert">
+        Are you sure you want to delete this service? This action cannot be undone.
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+
+                <dt class="col-sm-3">Type</dt>
+                <dd class="col-sm-9">@Model.Type?.Name</dd>
+
+                <dt class="col-sm-3">Processing days</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ProcessingDays)</dd>
+
+                <dt class="col-sm-3">Active</dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge text-bg-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge text-bg-secondary">No</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.ServiceRequestCatalogItemId" method="post" class="mt-4">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
