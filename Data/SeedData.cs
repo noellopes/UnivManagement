@@ -9,7 +9,7 @@ namespace UnivManagement.Data
             if (dbContext == null) throw new ArgumentNullException(nameof(dbContext));
 
             PopulateTipoBolsa(dbContext);
-            PopulateCriterios(dbContext);
+
         }
 
         private static void PopulateTipoBolsa(UniversityDbContext dbContext)
@@ -74,28 +74,6 @@ namespace UnivManagement.Data
             dbContext.SaveChanges();
         }
 
-        private static void PopulateCriterios(UniversityDbContext dbContext)
-        {
-            if (dbContext.CriterioElegibilidade.Any()) return;
 
-            var tiposBolsa = dbContext.TipoBolsa.ToDictionary(t => t.Nome, t => t.TipoBolsaId);
-
-            if (tiposBolsa.Count == 0) return;
-
-            var criterios = new List<CriterioElegibilidade>
-            {
-                // Bolsa de Mérito (Merit)
-                new CriterioElegibilidade { Descricao = "Students must have a minimum academic average of 16 out of 20.", RendimentoMaximo = 30000m, EctsMinimos = 45, TipoBolsaId = tiposBolsa["Bolsa de Mérito"] },
-
-                // Bolsa Social de Emergência / Social
-                new CriterioElegibilidade { Descricao = "Students must belong to a low-income family and demonstrate financial need.", RendimentoMaximo = 12000m, EctsMinimos = 30, TipoBolsaId = tiposBolsa["Bolsa Social de Emergência"] },
-
-                // Bolsa de Mobilidade Internacional (Erasmus)
-                new CriterioElegibilidade { Descricao = "Students must be officially selected for an Erasmus+ exchange programme.", RendimentoMaximo = 30000m, EctsMinimos = 30, TipoBolsaId = tiposBolsa["Bolsa de Mobilidade Internacional"] }
-            };
-
-            dbContext.CriterioElegibilidade.AddRange(criterios);
-            dbContext.SaveChanges();
-        }
     }
 }

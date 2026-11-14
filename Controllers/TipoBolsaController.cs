@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
@@ -20,15 +19,15 @@ public class TipoBolsaController : Controller
     }
 
     // GET: TIPOBOLSAS/Details/5
-    public async Task<IActionResult> Details(int? tipobolsaid)
+    public async Task<IActionResult> Details(int? id)
     {
-        if (tipobolsaid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var tipobolsa = await _context.TipoBolsa
-            .FirstOrDefaultAsync(m => m.TipoBolsaId == tipobolsaid);
+            .FirstOrDefaultAsync(m => m.TipoBolsaId == id);
         if (tipobolsa == null)
         {
             return NotFound();
@@ -60,14 +59,14 @@ public class TipoBolsaController : Controller
     }
 
     // GET: TIPOBOLSAS/Edit/5
-    public async Task<IActionResult> Edit(int? tipobolsaid)
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (tipobolsaid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var tipobolsa = await _context.TipoBolsa.FindAsync(tipobolsaid);
+        var tipobolsa = await _context.TipoBolsa.FindAsync(id);
         if (tipobolsa == null)
         {
             return NotFound();
@@ -80,9 +79,9 @@ public class TipoBolsaController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? tipobolsaid, [Bind("TipoBolsaId,Nome,Descricao")] TipoBolsa tipobolsa)
+    public async Task<IActionResult> Edit(int id, [Bind("TipoBolsaId,Nome,Descricao")] TipoBolsa tipobolsa)
     {
-        if (tipobolsaid != tipobolsa.TipoBolsaId)
+        if (id != tipobolsa.TipoBolsaId)
         {
             return NotFound();
         }
@@ -111,15 +110,15 @@ public class TipoBolsaController : Controller
     }
 
     // GET: TIPOBOLSAS/Delete/5
-    public async Task<IActionResult> Delete(int? tipobolsaid)
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (tipobolsaid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var tipobolsa = await _context.TipoBolsa
-            .FirstOrDefaultAsync(m => m.TipoBolsaId == tipobolsaid);
+            .FirstOrDefaultAsync(m => m.TipoBolsaId == id);
         if (tipobolsa == null)
         {
             return NotFound();
@@ -131,9 +130,9 @@ public class TipoBolsaController : Controller
     // POST: TIPOBOLSAS/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? tipobolsaid)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var tipobolsa = await _context.TipoBolsa.FindAsync(tipobolsaid);
+        var tipobolsa = await _context.TipoBolsa.FindAsync(id);
         if (tipobolsa != null)
         {
             _context.TipoBolsa.Remove(tipobolsa);
@@ -143,8 +142,8 @@ public class TipoBolsaController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool TipoBolsaExists(int? tipobolsaid)
+    private bool TipoBolsaExists(int id)
     {
-        return _context.TipoBolsa.Any(e => e.TipoBolsaId == tipobolsaid);
+        return _context.TipoBolsa.Any(e => e.TipoBolsaId == id);
     }
 }
