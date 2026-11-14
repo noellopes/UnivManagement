@@ -31,12 +31,19 @@
                 @Html.DisplayFor(model => item.NomeTipo)
             </td>
             <td>
-                @Html.DisplayFor(model => item.Obrigatorio)
+                @if (item.Obrigatorio)
+                {
+                    <span class="badge rounded-pill text-bg-success">Sim</span>
+                }
+                else
+                {
+                    <span class="badge rounded-pill text-bg-secondary">Não</span>
+                }
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TipoDocumentoId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TipoDocumentoId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TipoDocumentoId">Delete</a>
+            <td class ="text-end">
+                        <a asp-action="Edit" asp-route-id="@item.TipoDocumentoId" class="btn btn-sm btn-outline-primary">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.TipoDocumentoId" class="btn btn-sm btn-outline-secondary">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.TipoDocumentoId" class="btn btn-sm btn-outline-danger">Delete</a>
             </td>
         </tr>
 }
