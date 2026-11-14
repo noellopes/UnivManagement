@@ -1319,6 +1319,43 @@ namespace UnivManagement.Migrations
                     b.ToTable("TiposRefeicao");
                 });
 
+            modelBuilder.Entity("UnivManagement.Models.Trabalho", b =>
+                {
+                    b.Property<int>("TrabalhoID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrabalhoID"));
+
+                    b.Property<DateTime>("Data_Limite")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DocenteId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("E_individual")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UcId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TrabalhoID");
+
+                    b.HasIndex("DocenteId");
+
+                    b.HasIndex("UcId");
+
+                    b.ToTable("Trabalhos");
+                });
+
             modelBuilder.Entity("UnivManagement.Models.AcademicManagement.Course", b =>
                 {
                     b.HasOne("UnivManagement.Models.Docente", "Docente")
@@ -1530,6 +1567,25 @@ namespace UnivManagement.Migrations
                     b.Navigation("Status");
 
                     b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.Trabalho", b =>
+                {
+                    b.HasOne("UnivManagement.Models.Docente", "Docente")
+                        .WithMany()
+                        .HasForeignKey("DocenteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UnivManagement.Models.AcademicManagement.UC", "UC")
+                        .WithMany()
+                        .HasForeignKey("UcId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Docente");
+
+                    b.Navigation("UC");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.AntigoAluno", b =>
