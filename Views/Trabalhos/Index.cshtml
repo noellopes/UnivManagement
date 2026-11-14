@@ -1,0 +1,54 @@
+@model IEnumerable<UnivManagement.Models.Trabalho>
+
+@{
+    ViewData["Title"] = "Trabalhos";
+}
+
+<div class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <h1 class="h3 mb-0">Trabalhos</h1>
+        <a asp-action="Create" class="btn btn-primary">Criar trabalho</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p class="text-body-secondary">Ainda não existem trabalhos registados.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Título</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Data-limite</th>
+                        <th scope="col">ID do docente</th>
+                        <th scope="col">ID da UC</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var trabalho in Model)
+                    {
+                        <tr>
+                            <td>@trabalho.Titulo</td>
+                            <td>@(trabalho.E_individual ? "Individual" : "Em grupo")</td>
+                            <td>@trabalho.Data_Limite.ToString("dd/MM/yyyy")</td>
+                            <td>@trabalho.DocenteId</td>
+                            <td>@trabalho.UcId</td>
+                            <td>
+                                <a asp-action="Details" asp-route-trabalhoid="@trabalho.TrabalhoID"
+                                   class="btn btn-sm btn-outline-secondary">Detalhes</a>
+                                <a asp-action="Edit" asp-route-trabalhoid="@trabalho.TrabalhoID"
+                                   class="btn btn-sm btn-outline-primary">Editar</a>
+                                <a asp-action="Delete" asp-route-trabalhoid="@trabalho.TrabalhoID"
+                                   class="btn btn-sm btn-outline-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
