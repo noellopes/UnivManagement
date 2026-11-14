@@ -27,7 +27,7 @@ namespace UnivManagement.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var tecnico = await _context.Tecnicos
@@ -36,7 +36,7 @@ namespace UnivManagement.Controllers
 
             if (tecnico == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             if (successMessage != null)
@@ -75,13 +75,13 @@ namespace UnivManagement.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var tecnico = await _context.Tecnicos.FindAsync(id);
             if (tecnico == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             ViewBag.DepartamentoId = new SelectList(_context.Departamentos, "DepartamentoId", "Nome", tecnico.DepartamentoId);
@@ -95,7 +95,7 @@ namespace UnivManagement.Controllers
         {
             if (id != tecnico.TecnicoId)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             if (ModelState.IsValid)
@@ -109,7 +109,7 @@ namespace UnivManagement.Controllers
                 {
                     if (!TecnicoExists(tecnico.TecnicoId))
                     {
-                        return NotFound();
+                        return View("NotFound");
                     }
                     else
                     {
@@ -129,7 +129,7 @@ namespace UnivManagement.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             var tecnico = await _context.Tecnicos
@@ -138,7 +138,7 @@ namespace UnivManagement.Controllers
 
             if (tecnico == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(tecnico);
