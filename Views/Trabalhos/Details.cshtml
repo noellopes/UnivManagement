@@ -1,73 +1,35 @@
 @model UnivManagement.Models.Trabalho
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do trabalho";
 }
 
-<h1>Details</h1>
+<div class="container py-4">
+    <h1 class="h3 mb-4">Detalhes do trabalho</h1>
 
-<div>
-    <h4>Trabalho</h4>
-    <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DocenteId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DocenteId)
-        </dd>
+        <dt class="col-sm-3">Título</dt>
+        <dd class="col-sm-9">@Model.Titulo</dd>
+
+        <dt class="col-sm-3">Descrição</dt>
+        <dd class="col-sm-9 text-break" style="white-space: pre-wrap;">@Model.Descricao</dd>
+
+        <dt class="col-sm-3">Tipo de trabalho</dt>
+        <dd class="col-sm-9">@(Model.E_individual ? "Individual" : "Em grupo")</dd>
+
+        <dt class="col-sm-3">Data-limite de entrega</dt>
+        <dd class="col-sm-9">@Model.Data_Limite.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-3">ID do docente</dt>
+        <dd class="col-sm-9">@Model.DocenteId</dd>
+
+        <dt class="col-sm-3">ID da unidade curricular</dt>
+        <dd class="col-sm-9">@Model.UcId</dd>
     </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Docente)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Docente)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UcId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UcId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UC)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UC)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.E_individual)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.E_individual)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Titulo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Titulo)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descricao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descricao)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Data_Limite)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Data_Limite)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.TrabalhoID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-trabalhoid="@Model.TrabalhoID"
+           class="btn btn-primary">Editar</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Voltar à lista</a>
+    </div>
 </div>
