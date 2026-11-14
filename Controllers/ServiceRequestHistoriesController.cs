@@ -33,7 +33,11 @@ namespace UnivManagement.Controllers {
             }
 
             var serviceRequestHistory = await _context.ServiceRequestHistories
+                .Include(h => h.ServiceRequest)
+                .Include(h => h.OldStatus)
+                .Include(h => h.NewStatus)
                 .FirstOrDefaultAsync(m => m.ServiceRequestHistoryId == id);
+
             if (serviceRequestHistory == null)
             {
                 return NotFound();
@@ -124,7 +128,11 @@ namespace UnivManagement.Controllers {
             }
 
             var serviceRequestHistory = await _context.ServiceRequestHistories
+                .Include(h => h.ServiceRequest)
+                .Include(h => h.OldStatus)
+                .Include(h => h.NewStatus)
                 .FirstOrDefaultAsync(m => m.ServiceRequestHistoryId == id);
+                
             if (serviceRequestHistory == null)
             {
                 return NotFound();
@@ -147,7 +155,6 @@ namespace UnivManagement.Controllers {
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool ServiceRequestHistoryExists(int? id)
         {
             return _context.ServiceRequestHistories.Any(e => e.ServiceRequestHistoryId == id);
