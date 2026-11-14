@@ -13,17 +13,45 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TipoBolsaId" />
-            <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
+
+            <div class="mb-3">
+                <label asp-for="Nome" class="form-label">Nome</label>
                 <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
+                <span asp-validation-for="Nome" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
+
+            <div class="mb-3">
+                <label asp-for="Descricao" class="form-label">Descrição</label>
                 <input asp-for="Descricao" class="form-control" />
-                <span asp-validation-for="Descricao" class="text-danger"></span>
+                <span asp-validation-for="Descricao" class="text-danger small"></span>
             </div>
-            <div class="form-group">
+
+            <div class="mb-3">
+                <label asp-for="RendimentoMaximo" class="form-label">Rendimento máximo (€)</label>
+                <input asp-for="RendimentoMaximo" class="form-control" placeholder="Ex.: 12354" />
+                <span asp-validation-for="RendimentoMaximo" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EctsMinimos" class="form-label">ECTS mínimos</label>
+                <input asp-for="EctsMinimos" class="form-control" placeholder="Ex.: 30" />
+                <span asp-validation-for="EctsMinimos" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MediaMinima" class="form-label">Média mínima</label>
+                <input asp-for="MediaMinima" class="form-control" placeholder="Ex.: 16" />
+                <span asp-validation-for="MediaMinima" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CriteriosElegibilidade" class="form-label">Critérios de elegibilidade</label>
+                <textarea asp-for="CriteriosElegibilidade" class="form-control" rows="3"
+                          placeholder="Descreva outros requisitos da bolsa"></textarea>
+                <span asp-validation-for="CriteriosElegibilidade" class="text-danger small"></span>
+            </div>
+
+            <div class="mt-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -35,5 +63,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

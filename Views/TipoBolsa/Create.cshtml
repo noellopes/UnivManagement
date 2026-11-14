@@ -19,15 +19,41 @@
             </div>
 
             <div class="form-group mb-3">
-                <label asp-for="Descricao" class="control-label"></label>
+                <label asp-for="Descricao" class="control-label">Descrição</label>
                 <input asp-for="Descricao" class="form-control" />
                 <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="RendimentoMaximo" class="form-label">Rendimento máximo (€)</label>
+                <input asp-for="RendimentoMaximo" class="form-control" placeholder="Ex.: 12354" />
+                <span asp-validation-for="RendimentoMaximo" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EctsMinimos" class="form-label">ECTS mínimos</label>
+                <input asp-for="EctsMinimos" class="form-control" placeholder="Ex.: 30" />
+                <span asp-validation-for="EctsMinimos" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MediaMinima" class="form-label">Média mínima</label>
+                <input asp-for="MediaMinima" class="form-control" placeholder="Ex.: 16" />
+                <span asp-validation-for="MediaMinima" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CriteriosElegibilidade" class="form-label">Critérios de elegibilidade</label>
+                <textarea asp-for="CriteriosElegibilidade" class="form-control" rows="3"
+                          placeholder="Descreva outros requisitos da bolsa"></textarea>
+                <span asp-validation-for="CriteriosElegibilidade" class="text-danger small"></span>
             </div>
 
             <div class="form-group mt-3 d-flex gap-2">
                 <input type="submit" value="Create" class="btn text-white" style="background-color: #1d4e6b;" />
                 <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
             </div>
+           
         </form>
     </div>
 </div>
