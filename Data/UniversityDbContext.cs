@@ -68,7 +68,12 @@ namespace UnivManagement.Data {
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
 
-
+            // Tipos de avaliação
+            modelBuilder.Entity<AvaliacaoUC>()
+             .HasOne(a => a.TipoAvaliacao)
+              .WithMany()
+              .HasForeignKey(a => a.T_Avaliacao)
+              .OnDelete(DeleteBehavior.Restrict);
             // Tipos de avaliação
             modelBuilder.Entity<TipoAvaliacao>().HasData(
                 new TipoAvaliacao
