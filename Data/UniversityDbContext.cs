@@ -119,5 +119,7 @@ namespace UnivManagement.Data
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
 
         public DbSet<Tecnico> Tecnicos { get; set; }
+
+        public DbSet<Departamento> Departamentos { get; set; }
     }
 }
