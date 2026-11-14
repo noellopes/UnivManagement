@@ -1,41 +1,35 @@
 @model IEnumerable<UnivManagement.Models.TipoBolsa>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tipos de Bolsa";
 }
 
-<h1>Index</h1>
+<h1>Tipos de Bolsa</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Criar Novo Tipo de Bolsa</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th></th>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrição</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Descricao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TipoBolsaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TipoBolsaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TipoBolsaId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+                <td>@item.Descricao</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TipoBolsaId">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.TipoBolsaId">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TipoBolsaId">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
