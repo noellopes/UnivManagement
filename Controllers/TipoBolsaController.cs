@@ -47,7 +47,7 @@ public class TipoBolsaController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("TipoBolsaId,Nome,Descricao")] TipoBolsa tipobolsa)
+    public async Task<IActionResult> Create([Bind("TipoBolsaId,Nome,Descricao,RendimentoMaximo,EctsMinimos,MediaMinima,CriteriosElegibilidade")] TipoBolsa tipobolsa)
     {
         if (ModelState.IsValid)
         {
@@ -79,7 +79,7 @@ public class TipoBolsaController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("TipoBolsaId,Nome,Descricao")] TipoBolsa tipobolsa)
+    public async Task<IActionResult> Edit(int id, [Bind("TipoBolsaId,Nome,Descricao,RendimentoMaximo,EctsMinimos,MediaMinima,CriteriosElegibilidade")] TipoBolsa tipobolsa)
     {
         if (id != tipobolsa.TipoBolsaId)
         {
