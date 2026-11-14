@@ -703,6 +703,8 @@ namespace UnivManagement.Migrations
 
                     b.HasKey("AvaliacaoID");
 
+                    b.HasIndex("T_Avaliacao");
+
                     b.ToTable("AvaliacoesUC");
                 });
 
@@ -1301,6 +1303,43 @@ namespace UnivManagement.Migrations
                     b.ToTable("ServicoFuncionario");
                 });
 
+            modelBuilder.Entity("UnivManagement.Models.TipoAvaliacao", b =>
+                {
+                    b.Property<int>("T_Avaliacao")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tipo_Prova")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("T_Avaliacao");
+
+                    b.ToTable("TiposAvaliacao");
+
+                    b.HasData(
+                        new
+                        {
+                            T_Avaliacao = 1,
+                            Tipo_Prova = "Avaliação Contínua"
+                        },
+                        new
+                        {
+                            T_Avaliacao = 2,
+                            Tipo_Prova = "Exame"
+                        },
+                        new
+                        {
+                            T_Avaliacao = 3,
+                            Tipo_Prova = "Exame de Recurso"
+                        },
+                        new
+                        {
+                            T_Avaliacao = 4,
+                            Tipo_Prova = "Época Especial"
+                        });
+                });
+
             modelBuilder.Entity("UnivManagement.Models.TipoRefeicao", b =>
                 {
                     b.Property<int>("TipoRefeicaoId")
@@ -1393,6 +1432,17 @@ namespace UnivManagement.Migrations
                     b.Navigation("Estagio");
 
                     b.Navigation("OrientadorEstagio");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.AvaliacaoUC", b =>
+                {
+                    b.HasOne("UnivManagement.Models.TipoAvaliacao", "TipoAvaliacao")
+                        .WithMany()
+                        .HasForeignKey("T_Avaliacao")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("TipoAvaliacao");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.Candidatura", b =>
