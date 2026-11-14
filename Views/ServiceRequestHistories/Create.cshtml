@@ -15,38 +15,24 @@
 
             <div class="form-group">
                 <label asp-for="ServiceRequestId" class="control-label"></label>
-                <input asp-for="ServiceRequestId" class="form-control" />
+                <select asp-for="ServiceRequestId" asp-items="ViewBag.ServiceRequestId" class="form-control"></select>
                 <span asp-validation-for="ServiceRequestId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="ServiceRequest" class="control-label"></label>
-                <input asp-for="ServiceRequest" class="form-control" />
-                <span asp-validation-for="ServiceRequest" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
                 <label asp-for="OldStatusId" class="control-label"></label>
-                <input asp-for="OldStatusId" class="form-control" />
+                <select asp-for="OldStatusId" asp-items="ViewBag.OldStatusId" class="form-control">
+                    <option value="">(none)</option>
+                </select>
                 <span asp-validation-for="OldStatusId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="OldStatus" class="control-label"></label>
-                <input asp-for="OldStatus" class="form-control" />
-                <span asp-validation-for="OldStatus" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
                 <label asp-for="NewStatusId" class="control-label"></label>
-                <input asp-for="NewStatusId" class="form-control" />
+                <select asp-for="NewStatusId" asp-items="ViewBag.NewStatusId" class="form-control">
+                    <option value="">(none)</option>
+                </select>
                 <span asp-validation-for="NewStatusId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="NewStatus" class="control-label"></label>
-                <input asp-for="NewStatus" class="form-control" />
-                <span asp-validation-for="NewStatus" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -62,11 +48,6 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="ChangedAt" class="control-label"></label>
-                <input asp-for="ChangedAt" class="form-control" />
-                <span asp-validation-for="ChangedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -76,3 +57,8 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

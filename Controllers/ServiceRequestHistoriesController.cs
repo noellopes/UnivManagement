@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models;
 using UnivManagement.Data;
+using UnivManagement.Models;
 
 namespace UnivManagement.Controllers {
     public class ServiceRequestHistoriesController : Controller
@@ -47,8 +48,9 @@ namespace UnivManagement.Controllers {
         }
 
         // GET: ServiceRequestHistories/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            await LoadListsAsync();
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace UnivManagement.Controllers {
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ServiceRequestHistoryId,ServiceRequestId,ServiceRequest,OldStatusId,OldStatus,NewStatusId,NewStatus,Action,Note,ChangedAt")] ServiceRequestHistory serviceRequestHistory)
+        public async Task<IActionResult> Create([Bind("ServiceRequestId,OldStatusId,NewStatusId,Action,Note")] ServiceRequestHistory serviceRequestHistory)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +67,7 @@ namespace UnivManagement.Controllers {
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            await LoadListsAsync();
             return View(serviceRequestHistory);
         }
 
@@ -158,6 +161,17 @@ namespace UnivManagement.Controllers {
         private bool ServiceRequestHistoryExists(int? id)
         {
             return _context.ServiceRequestHistories.Any(e => e.ServiceRequestHistoryId == id);
+        }
+
+        private async Task LoadListsAsync()
+        {
+            ViewData["ServiceRequestId"] = new SelectList(
+                await _context.ServiceRequests.OrderBy(r => r.Title).ToListAsync(),
+                "ServiceRequestId", "Title");
+
+            var statuses = await _context.ServiceRequestStatuses.OrderBy(s => s.DisplayOrder).ToListAsync();
+            ViewData["OldStatusId"] = new SelectList(statuses, "ServiceRequestStatusId", "Name");
+            ViewData["NewStatusId"] = new SelectList(statuses, "ServiceRequestStatusId", "Name");
         }
     }
 }
