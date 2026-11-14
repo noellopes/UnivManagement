@@ -10,7 +10,7 @@ namespace UnivManagement.Models
         public int TrabalhoID { get; set; }
 
         public int DocenteId { get; set; }
-        public Docente? Docente { get; set; }
+        public Docente? Docente { get; set; }  //falta a criação de docente(trabalho esse relacionado a outro grupo) 
 
         public int UcId { get; set; }
         public UC? UC { get; set; }
