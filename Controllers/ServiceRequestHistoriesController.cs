@@ -41,7 +41,7 @@ namespace UnivManagement.Controllers {
 
             if (serviceRequestHistory == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
             return View(serviceRequestHistory);
@@ -82,7 +82,7 @@ namespace UnivManagement.Controllers {
             var serviceRequestHistory = await _context.ServiceRequestHistories.FindAsync(id);
             if (serviceRequestHistory == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
             await LoadListsAsync();
             return View(serviceRequestHistory);
