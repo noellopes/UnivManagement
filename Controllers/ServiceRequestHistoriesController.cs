@@ -84,6 +84,7 @@ namespace UnivManagement.Controllers {
             {
                 return NotFound();
             }
+            await LoadListsAsync();
             return View(serviceRequestHistory);
         }
 
@@ -92,7 +93,7 @@ namespace UnivManagement.Controllers {
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("ServiceRequestHistoryId,ServiceRequestId,ServiceRequest,OldStatusId,OldStatus,NewStatusId,NewStatus,Action,Note,ChangedAt")] ServiceRequestHistory serviceRequestHistory)
+        public async Task<IActionResult> Edit(int? id, [Bind("ServiceRequestHistoryId,ServiceRequestId,OldStatusId,NewStatusId,Action,Note")] ServiceRequestHistory serviceRequestHistory)
         {
             if (id != serviceRequestHistory.ServiceRequestHistoryId)
             {
@@ -104,6 +105,7 @@ namespace UnivManagement.Controllers {
                 try
                 {
                     _context.Update(serviceRequestHistory);
+                    _context.Entry(serviceRequestHistory).Property(h => h.ChangedAt).IsModified = false;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -119,6 +121,7 @@ namespace UnivManagement.Controllers {
                 }
                 return RedirectToAction(nameof(Index));
             }
+            await LoadListsAsync();
             return View(serviceRequestHistory);
         }
 
