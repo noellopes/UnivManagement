@@ -1,0 +1,66 @@
+@model UnivManagement.Models.Notas
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Notas</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AvaliacaoID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AvaliacaoID)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AvaliacaoUC)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AvaliacaoUC)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InscrUcID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InscrUcID)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InscrUC)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InscrUC)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Data)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Data)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nota)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nota)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Aprovado)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Aprovado)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.NotaID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
