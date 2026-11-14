@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 
-namespace UnivManagement.Data {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+namespace UnivManagement.Data
+{
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
+    {
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             base.OnModelCreating(modelBuilder);
 
             // ServiceRequestType: two request types cannot have the same name
@@ -47,7 +50,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.Telephone)
                 .IsUnique();
-          
+
             // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
@@ -123,7 +126,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
-        
+
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
@@ -141,5 +144,7 @@ namespace UnivManagement.Data {
         public DbSet<TipoAvaliacao> TiposAvaliacao { get; set; } = default!;
         public DbSet<UnivManagement.Models.Feedback> Feedback { get; set; }
         public DbSet<Trabalho> Trabalhos { get; set; } = default!;
+        public DbSet<Notas> Notas { get; set; } = default!;
+        // Grupo 3
     }
 }
