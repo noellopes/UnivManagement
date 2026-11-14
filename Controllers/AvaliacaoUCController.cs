@@ -13,22 +13,23 @@ public class AvaliacaoUCController : Controller
         _context = context;
     }
 
-    // GET: AVALIACAOUCS
-    public async Task<IActionResult> Index()    
+    // GET: AvaliacaoUC
+    public async Task<IActionResult> Index()
     {
         return View(await _context.AvaliacoesUC.ToListAsync());
     }
 
-    // GET: AVALIACAOUCS/Details/5
-    public async Task<IActionResult> Details(int? avaliacaoid)
+    // GET: AvaliacaoUC/Details/5
+    public async Task<IActionResult> Details(int? id)
     {
-        if (avaliacaoid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var avaliacaouc = await _context.AvaliacoesUC
-            .FirstOrDefaultAsync(m => m.AvaliacaoID == avaliacaoid);
+            .FirstOrDefaultAsync(m => m.AvaliacaoID == id);
+
         if (avaliacaouc == null)
         {
             return NotFound();
@@ -37,52 +38,55 @@ public class AvaliacaoUCController : Controller
         return View(avaliacaouc);
     }
 
-    // GET: AVALIACAOUCS/Create
+    // GET: AvaliacaoUC/Create
     public IActionResult Create()
     {
         return View();
     }
 
-    // POST: AVALIACAOUCS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: AvaliacaoUC/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("AvaliacaoID,T_Avaliacao,UcID,Data")] AvaliacaoUC avaliacaouc)
+    public async Task<IActionResult> Create(
+        [Bind("AvaliacaoID,T_Avaliacao,UcID,Data")] AvaliacaoUC avaliacaouc)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(avaliacaouc);
+            _context.AvaliacoesUC.Add(avaliacaouc);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
         return View(avaliacaouc);
     }
 
-    // GET: AVALIACAOUCS/Edit/5
-    public async Task<IActionResult> Edit(int? avaliacaoid)
+    // GET: AvaliacaoUC/Edit/5
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (avaliacaoid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var avaliacaouc = await _context.AvaliacoesUC.FindAsync(avaliacaoid);
+        var avaliacaouc = await _context.AvaliacoesUC.FindAsync(id);
+
         if (avaliacaouc == null)
         {
             return NotFound();
         }
+
         return View(avaliacaouc);
     }
 
-    // POST: AVALIACAOUCS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: AvaliacaoUC/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? avaliacaoid, [Bind("AvaliacaoID,T_Avaliacao,UcID,Data")] AvaliacaoUC avaliacaouc)
+    public async Task<IActionResult> Edit(
+        int id,
+        [Bind("AvaliacaoID,T_Avaliacao,UcID,Data")] AvaliacaoUC avaliacaouc)
     {
-        if (avaliacaoid != avaliacaouc.AvaliacaoID)
+        if (id != avaliacaouc.AvaliacaoID)
         {
             return NotFound();
         }
@@ -100,26 +104,27 @@ public class AvaliacaoUCController : Controller
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
+
             return RedirectToAction(nameof(Index));
         }
+
         return View(avaliacaouc);
     }
 
-    // GET: AVALIACAOUCS/Delete/5
-    public async Task<IActionResult> Delete(int? avaliacaoid)
+    // GET: AvaliacaoUC/Delete/5
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (avaliacaoid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var avaliacaouc = await _context.AvaliacoesUC
-            .FirstOrDefaultAsync(m => m.AvaliacaoID == avaliacaoid);
+            .FirstOrDefaultAsync(m => m.AvaliacaoID == id);
+
         if (avaliacaouc == null)
         {
             return NotFound();
@@ -128,23 +133,26 @@ public class AvaliacaoUCController : Controller
         return View(avaliacaouc);
     }
 
-    // POST: AVALIACAOUCS/Delete/5
+    // POST: AvaliacaoUC/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? avaliacaoid)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var avaliacaouc = await _context.AvaliacoesUC.FindAsync(avaliacaoid);
+        var avaliacaouc = await _context.AvaliacoesUC.FindAsync(id);
+
         if (avaliacaouc != null)
         {
             _context.AvaliacoesUC.Remove(avaliacaouc);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
-    private bool AvaliacaoUCExists(int? avaliacaoid)
+    // Verifica se uma avaliação existe
+    private bool AvaliacaoUCExists(int id)
     {
-        return _context.AvaliacoesUC.Any(e => e.AvaliacaoID == avaliacaoid);
+        return _context.AvaliacoesUC
+            .Any(e => e.AvaliacaoID == id);
     }
 }
