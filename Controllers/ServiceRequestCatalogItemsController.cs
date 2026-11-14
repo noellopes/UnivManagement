@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,7 +14,7 @@ public class ServiceRequestCatalogItemsController : Controller
     }
 
     // GET: SERVICEREQUESTCATALOGITEMS
-    public async Task<IActionResult> Index(string? successMessage = null)    
+    public async Task<IActionResult> Index(string? successMessage = null)
     {
         if (successMessage != null)
         {
@@ -62,16 +61,32 @@ public class ServiceRequestCatalogItemsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("ServiceRequestCatalogItemId,Name,Description,ServiceRequestTypeId,ProcessingDays,RequiredDocuments,IsActive")] ServiceRequestCatalogItem servicerequestcatalogitem)
     {
+        // Two services cannot have the same name
+        if (_context.ServiceRequestCatalogItems.Any(c => c.Name == servicerequestcatalogitem.Name))
+        {
+            ModelState.AddModelError("Name", "There is already a service with this name.");
+        }
+
+        // The selected type has to exist (0 already has its own message)
+        if (servicerequestcatalogitem.ServiceRequestTypeId > 0
+            && !_context.ServiceRequestTypes.Any(t => t.ServiceRequestTypeId == servicerequestcatalogitem.ServiceRequestTypeId))
+        {
+            ModelState.AddModelError("ServiceRequestTypeId", "The selected type does not exist.");
+        }
+
         if (ModelState.IsValid)
         {
             _context.Add(servicerequestcatalogitem);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), 
-                new { id = servicerequestcatalogitem.ServiceRequestCatalogItemId, 
-                successMessage = "Service created successfully." });
+            return RedirectToAction(nameof(Details),
+                new
+                {
+                    id = servicerequestcatalogitem.ServiceRequestCatalogItemId,
+                    successMessage = "Service created successfully."
+                });
         }
 
-        ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes, 
+        ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes,
             "ServiceRequestTypeId", "Name", servicerequestcatalogitem.ServiceRequestTypeId);
         return View(servicerequestcatalogitem);
     }
@@ -106,6 +121,20 @@ public class ServiceRequestCatalogItemsController : Controller
             return NotFound();
         }
 
+        // Two services cannot have the same name (the one being edited does not count)
+        if (_context.ServiceRequestCatalogItems.Any(c => c.Name == servicerequestcatalogitem.Name
+            && c.ServiceRequestCatalogItemId != servicerequestcatalogitem.ServiceRequestCatalogItemId))
+        {
+            ModelState.AddModelError("Name", "There is already a service with this name.");
+        }
+
+        // The selected type has to exist (0 already has its own message)
+        if (servicerequestcatalogitem.ServiceRequestTypeId > 0
+            && !_context.ServiceRequestTypes.Any(t => t.ServiceRequestTypeId == servicerequestcatalogitem.ServiceRequestTypeId))
+        {
+            ModelState.AddModelError("ServiceRequestTypeId", "The selected type does not exist.");
+        }
+
         if (ModelState.IsValid)
         {
             try
@@ -124,10 +153,14 @@ public class ServiceRequestCatalogItemsController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Details), 
-                new { id = servicerequestcatalogitem.ServiceRequestCatalogItemId,
-                successMessage = "Service updated successfully." });
+            return RedirectToAction(nameof(Details),
+                new
+                {
+                    id = servicerequestcatalogitem.ServiceRequestCatalogItemId,
+                    successMessage = "Service updated successfully."
+                });
         }
+
         ViewData["ServiceRequestTypeId"] = new SelectList(_context.ServiceRequestTypes, "ServiceRequestTypeId", "Name", servicerequestcatalogitem.ServiceRequestTypeId);
         return View(servicerequestcatalogitem);
     }
@@ -145,7 +178,8 @@ public class ServiceRequestCatalogItemsController : Controller
             .FirstOrDefaultAsync(m => m.ServiceRequestCatalogItemId == id);
         if (servicerequestcatalogitem == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "Success: The service was already deleted by another user." });
         }
 
         return View(servicerequestcatalogitem);
@@ -160,10 +194,10 @@ public class ServiceRequestCatalogItemsController : Controller
         if (servicerequestcatalogitem != null)
         {
             _context.ServiceRequestCatalogItems.Remove(servicerequestcatalogitem);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index), 
+        return RedirectToAction(nameof(Index),
             new { successMessage = "Service deleted successfully." });
     }
 
