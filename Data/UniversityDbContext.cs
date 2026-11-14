@@ -67,8 +67,34 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
+
+
+            // Tipos de avaliação
+            modelBuilder.Entity<TipoAvaliacao>().HasData(
+                new TipoAvaliacao
+                {
+                    T_Avaliacao = 1,
+                    Tipo_Prova = "Avaliação Contínua"
+                },
+                new TipoAvaliacao
+                {
+                    T_Avaliacao = 2,
+                    Tipo_Prova = "Exame"
+                },
+                new TipoAvaliacao
+                {
+                    T_Avaliacao = 3,
+                    Tipo_Prova = "Exame de Recurso"
+                },
+                new TipoAvaliacao
+                {
+                    T_Avaliacao = 4,
+                    Tipo_Prova = "Época Especial"
+                }
+            );
+
         }
-      
+
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
@@ -107,6 +133,7 @@ namespace UnivManagement.Data {
 
         // Grupo 3
         public DbSet<AvaliacaoUC> AvaliacoesUC { get; set; } = default!;
+        public DbSet<TipoAvaliacao> TiposAvaliacao { get; set; } = default!;
         public DbSet<UnivManagement.Models.Feedback> Feedback { get; set; }
         public DbSet<Trabalho> Trabalhos { get; set; } = default!;
     }
