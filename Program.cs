@@ -5,13 +5,22 @@ using UnivManagement.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("UniversityConnection") ?? throw new InvalidOperationException("Connection string 'UniversityConnection' not found.");
-builder.Services.AddDbContext<UniversityDbContext>(options =>
-    options.UseSqlServer(connectionString));
 
-connectionString = builder.Configuration.GetConnectionString("UsersConnection") ?? throw new InvalidOperationException("Connection string 'UsersConnection' not found.");
+var universityConnectionString =
+    builder.Configuration.GetConnectionString("UniversityConnection")
+    ?? throw new InvalidOperationException(
+        "Connection string 'UniversityConnection' not found.");
+
+builder.Services.AddDbContext<UniversityDbContext>(options =>
+    options.UseSqlServer(universityConnectionString));
+
+var usersConnectionString =
+    builder.Configuration.GetConnectionString("UsersConnection")
+    ?? throw new InvalidOperationException(
+        "Connection string 'UsersConnection' not found.");
+
 builder.Services.AddDbContext<ApplicationUsersDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(usersConnectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

@@ -1,5 +1,7 @@
-﻿using System;
+﻿
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UnivManagement.Models
 {
@@ -9,7 +11,10 @@ namespace UnivManagement.Models
         public int AvaliacaoID { get; set; }
 
         [Required]
+        [ForeignKey(nameof(TipoAvaliacao))]
         public int T_Avaliacao { get; set; }
+
+        public TipoAvaliacao TipoAvaliacao { get; set; } = null!;
 
         [Required]
         public int UcID { get; set; }
@@ -19,3 +24,4 @@ namespace UnivManagement.Models
         public DateTime Data { get; set; }
     }
 }
+
