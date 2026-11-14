@@ -10,13 +10,14 @@ namespace UnivManagement.Controllers
             return View();
         }
 
-        // GET: //Cliente
-        public IActionResult Cliente()
+        // GET: /PerfilAcessoGestaoCantinaAlimentacao/Cliente
+        public IActionResult Consumidor()
         {
-            return View();
+            return RedirectToAction("Index", "GestaoCantinaAlimentacaoConsumidor");
+
         }
 
-        // GET: /
+        // GET: /PerfilAcessoGestaoCantinaAlimentacao/Gestao
         public IActionResult Gestao()
         {
 
