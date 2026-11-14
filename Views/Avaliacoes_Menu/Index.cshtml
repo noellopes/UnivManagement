@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Trabalhos e Avaliações";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="container mt-4">
+    <div class="mb-3">
+        <a asp-controller="Home" asp-action="Index" class="text-decoration-none text-secondary">
+            <i class="bi bi-arrow-left"></i> Início
+        </a>
+    </div>
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-normal">Avaliações e Trabalhos</h1>
+        <p class="text-muted fs-5">Gestão de avaliações, exames, trabalhos de grupo, submissões e feedback.</p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- 1. Diogo: Avaliações, Tipos de Avaliação e Submissões -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">
+                        <i class="bi bi-clipboard-check me-2"></i>Avaliações e Submissões
+                    </h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        Gerir avaliações, tipos de avaliação e acompanhar as submissões de trabalhos.
+                    </p>
+                    <button type="button" class="btn btn-outline-primary w-100 mt-3" disabled>
+                        Em breve
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Vasco: Notas e Exames -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">
+                        <i class="bi bi-award me-2"></i>Notas e Exames
+                    </h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        Consultar e registar exames realizados e as respetivas notas finais.
+                    </p>
+                    <button type="button" class="btn btn-outline-primary w-100 mt-3" disabled>
+                        Em breve
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Joel: Trabalhos e Grupos -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">
+                        <i class="bi bi-people me-2"></i>Trabalhos e Grupos
+                    </h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        Criar e gerir enunciados de trabalhos práticos e a constituição dos grupos.
+                    </p>
+                    <button type="button" class="btn btn-outline-primary w-100 mt-3" disabled>
+                        Em breve
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. João: Feedback -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">
+                        <i class="bi bi-chat-square-text me-2"></i>Feedback
+                    </h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        Atribuir e consultar comentários e avaliações detalhadas sobre as submissões.
+                    </p>
+                    <a asp-controller="Feedback" asp-action="Index" class="btn btn-outline-primary w-100 mt-3">
+                        Aceder ao Módulo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

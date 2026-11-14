@@ -1,0 +1,72 @@
+@model UnivManagement.Models.AvaliacaoUC
+
+@{
+    ViewData["Title"] = "Eliminar Avaliação";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Eliminar Avaliação</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white">
+            Confirmação de Eliminação
+        </div>
+
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+                <strong>Atenção!</strong>
+                Tem a certeza de que pretende eliminar esta avaliação?
+                Esta ação não pode ser desfeita.
+            </div>
+
+            <h5 class="mb-3">Dados da Avaliação</h5>
+
+            <dl class="row">
+                <dt class="col-sm-4">
+                    Tipo de Avaliação
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.T_Avaliacao
+                </dd>
+
+                <dt class="col-sm-4">
+                    Unidade Curricular
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.UcID
+                </dd>
+
+                <dt class="col-sm-4">
+                    Data da Avaliação
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.Data.ToString("dd/MM/yyyy")
+                </dd>
+            </dl>
+
+            <form asp-action="Delete" method="post">
+
+                <input type="hidden"
+                       asp-for="AvaliacaoID" />
+
+                <div class="d-flex gap-2 mt-4">
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Eliminar Avaliação
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
