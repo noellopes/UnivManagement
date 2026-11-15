@@ -1033,6 +1033,38 @@ namespace UnivManagement.Migrations
                     b.ToTable("GestoresEstagio");
                 });
 
+            modelBuilder.Entity("UnivManagement.Models.Notas", b =>
+                {
+                    b.Property<int>("NotaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotaID"));
+
+                    b.Property<bool>("Aprovado")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("AvaliacaoID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InscrUcID")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Nota")
+                        .HasColumnType("real");
+
+                    b.HasKey("NotaID");
+
+                    b.HasIndex("AvaliacaoID");
+
+                    b.HasIndex("InscrUcID");
+
+                    b.ToTable("Notas");
+                });
+
             modelBuilder.Entity("UnivManagement.Models.Oferta", b =>
                 {
                     b.Property<int>("IdOferta")
@@ -1565,6 +1597,25 @@ namespace UnivManagement.Migrations
                         .IsRequired();
 
                     b.Navigation("Docente");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.Notas", b =>
+                {
+                    b.HasOne("UnivManagement.Models.AvaliacaoUC", "AvaliacaoUC")
+                        .WithMany()
+                        .HasForeignKey("AvaliacaoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UnivManagement.Models.AcademicManagement.InscrUC", "InscrUC")
+                        .WithMany()
+                        .HasForeignKey("InscrUcID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AvaliacaoUC");
+
+                    b.Navigation("InscrUC");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.Oferta", b =>

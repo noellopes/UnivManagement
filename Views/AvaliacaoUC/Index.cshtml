@@ -31,7 +31,8 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.T_Avaliacao</td>
+                            
+                            <td>@item.TipoAvaliacao.Tipo_Prova</td>
                             <td>@item.UcID</td>
                             <td>@item.Data.ToString("dd/MM/yyyy")</td>
 

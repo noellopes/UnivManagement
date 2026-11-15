@@ -12,8 +12,8 @@ using UnivManagement.Data;
 namespace UnivManagement.Migrations
 {
     [DbContext(typeof(UniversityDbContext))]
-    [Migration("20261114170613_AtualizacaoGrupo3")]
-    partial class AtualizacaoGrupo3
+    [Migration("20261114173726_AdicionarTabelaNotas")]
+    partial class AdicionarTabelaNotas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -706,6 +706,8 @@ namespace UnivManagement.Migrations
 
                     b.HasKey("AvaliacaoID");
 
+                    b.HasIndex("T_Avaliacao");
+
                     b.ToTable("AvaliacoesUC");
                 });
 
@@ -1034,6 +1036,38 @@ namespace UnivManagement.Migrations
                     b.ToTable("GestoresEstagio");
                 });
 
+            modelBuilder.Entity("UnivManagement.Models.Notas", b =>
+                {
+                    b.Property<int>("NotaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotaID"));
+
+                    b.Property<bool>("Aprovado")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("AvaliacaoID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InscrUcID")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Nota")
+                        .HasColumnType("real");
+
+                    b.HasKey("NotaID");
+
+                    b.HasIndex("AvaliacaoID");
+
+                    b.HasIndex("InscrUcID");
+
+                    b.ToTable("Notas");
+                });
+
             modelBuilder.Entity("UnivManagement.Models.Oferta", b =>
                 {
                     b.Property<int>("IdOferta")
@@ -1304,6 +1338,43 @@ namespace UnivManagement.Migrations
                     b.ToTable("ServicoFuncionario");
                 });
 
+            modelBuilder.Entity("UnivManagement.Models.TipoAvaliacao", b =>
+                {
+                    b.Property<int>("T_Avaliacao")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tipo_Prova")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("T_Avaliacao");
+
+                    b.ToTable("TiposAvaliacao");
+
+                    b.HasData(
+                        new
+                        {
+                            T_Avaliacao = 1,
+                            Tipo_Prova = "Avaliação Contínua"
+                        },
+                        new
+                        {
+                            T_Avaliacao = 2,
+                            Tipo_Prova = "Exame"
+                        },
+                        new
+                        {
+                            T_Avaliacao = 3,
+                            Tipo_Prova = "Exame de Recurso"
+                        },
+                        new
+                        {
+                            T_Avaliacao = 4,
+                            Tipo_Prova = "Época Especial"
+                        });
+                });
+
             modelBuilder.Entity("UnivManagement.Models.TipoRefeicao", b =>
                 {
                     b.Property<int>("TipoRefeicaoId")
@@ -1435,6 +1506,17 @@ namespace UnivManagement.Migrations
                     b.Navigation("OrientadorEstagio");
                 });
 
+            modelBuilder.Entity("UnivManagement.Models.AvaliacaoUC", b =>
+                {
+                    b.HasOne("UnivManagement.Models.TipoAvaliacao", "TipoAvaliacao")
+                        .WithMany()
+                        .HasForeignKey("T_Avaliacao")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("TipoAvaliacao");
+                });
+
             modelBuilder.Entity("UnivManagement.Models.Candidatura", b =>
                 {
                     b.HasOne("UnivManagement.Models.AntigoAluno", "AntigoAluno")
@@ -1518,6 +1600,25 @@ namespace UnivManagement.Migrations
                         .IsRequired();
 
                     b.Navigation("Docente");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.Notas", b =>
+                {
+                    b.HasOne("UnivManagement.Models.AvaliacaoUC", "AvaliacaoUC")
+                        .WithMany()
+                        .HasForeignKey("AvaliacaoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UnivManagement.Models.AcademicManagement.InscrUC", "InscrUC")
+                        .WithMany()
+                        .HasForeignKey("InscrUcID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AvaliacaoUC");
+
+                    b.Navigation("InscrUC");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.Oferta", b =>

@@ -19,18 +19,22 @@
                 <div asp-validation-summary="ModelOnly"
                      class="text-danger mb-3"></div>
 
+                
                 <div class="mb-3">
-                    <label asp-for="T_Avaliacao"
-                           class="form-label">
+                    <label asp-for="T_Avaliacao" class="form-label">
                         Tipo de Avaliação
                     </label>
 
-                    <input asp-for="T_Avaliacao"
-                           class="form-control" />
+                    <select asp-for="T_Avaliacao"
+                            asp-items="ViewBag.TiposAvaliacao"
+                            class="form-select">
+                        <option value="">-- Selecionar Tipo de Avaliação --</option>
+                    </select>
 
                     <span asp-validation-for="T_Avaliacao"
                           class="text-danger"></span>
                 </div>
+
 
                 <div class="mb-3">
                     <label asp-for="UcID"
