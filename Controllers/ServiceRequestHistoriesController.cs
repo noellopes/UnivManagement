@@ -126,7 +126,9 @@ namespace UnivManagement.Controllers {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id = serviceRequestHistory.ServiceRequestHistoryId, msg = "History entry edited successfully." });
             }
             await LoadListsAsync();
             return View(serviceRequestHistory);
