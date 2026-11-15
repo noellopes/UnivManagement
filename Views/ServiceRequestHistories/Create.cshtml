@@ -1,0 +1,85 @@
+@model UnivManagement.Models.ServiceRequestHistory
+
+@{
+    ViewData["Title"] = "Add history entry";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="mb-4">
+                <h1 class="h2 mb-1">Add history entry</h1>
+                <p class="text-body-secondary mb-0">Fill in the information below to record a change in a request.</p>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary py-3">
+                    <h2 class="h5 mb-0">
+                        <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
+                        History entry information
+                    </h2>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="ServiceRequestId" class="form-label fw-semibold"></label>
+                            <select asp-for="ServiceRequestId" asp-items="ViewBag.ServiceRequestId" class="form-select"></select>
+                            <span asp-validation-for="ServiceRequestId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="OldStatusId" class="form-label fw-semibold"></label>
+                            <select asp-for="OldStatusId" asp-items="ViewBag.OldStatusId" class="form-select">
+                                <option value="">(none)</option>
+                            </select>
+                            <span asp-validation-for="OldStatusId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NewStatusId" class="form-label fw-semibold"></label>
+                            <select asp-for="NewStatusId" asp-items="ViewBag.NewStatusId" class="form-select">
+                                <option value="">(none)</option>
+                            </select>
+                            <span asp-validation-for="NewStatusId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Action" class="form-label fw-semibold"></label>
+                            <input asp-for="Action" class="form-control" placeholder="Enter the action performed" />
+                            <span asp-validation-for="Action" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Note" class="form-label fw-semibold"></label>
+                            <textarea asp-for="Note" class="form-control" rows="4" placeholder="Optional note"></textarea>
+                            <span asp-validation-for="Note" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
+                                Add history entry
+                            </button>
+
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left-square me-1" aria-hidden="true"></i>
+                                Back to List
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
