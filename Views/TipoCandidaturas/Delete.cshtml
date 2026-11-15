@@ -1,0 +1,95 @@
+
+@model UnivManagement.Models.TipoCandidatura
+
+@{
+    ViewData["Title"] = "Delete Application Type";
+}
+
+<div class="container mt-5 mb-5">
+
+    <!-- Page Header -->
+    <div class="text-center mb-4">
+        <h1 class="h2 fw-bold mb-2" style="color: #2F506F;">
+            Delete Application Type
+        </h1>
+        <p class="text-muted small">
+            Are you sure you want to delete this application type?
+        </p>
+    </div>
+
+    <!-- Centered Delete Card -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-7 col-xl-6">
+
+            <div class="card shadow-sm border-0 rounded-3"
+                 style="border-top: 4px solid #dc3545 !important;">
+
+                <div class="card-body p-4">
+
+                    <!-- Warning -->
+                    <div class="alert alert-warning border-0 small mb-4">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        This action cannot be undone.
+                    </div>
+
+                    <!-- Application Type Name -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold"
+                               style="color: #2F506F;">
+                            Application Type Name
+                        </label>
+
+                        <p class="text-secondary mb-0">
+                            @Html.DisplayFor(model => model.Designacao)
+                        </p>
+                    </div>
+
+                    <hr />
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold"
+                               style="color: #2F506F;">
+                            Description
+                        </label>
+
+                        <p class="text-secondary mb-0">
+                            @if (string.IsNullOrWhiteSpace(Model.Descricao))
+                            {
+                                <span class="text-muted fst-italic">
+                                    No description provided.
+                                </span>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.Descricao)
+                            }
+                        </p>
+                    </div>
+
+                    <!-- Buttons -->
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="TipoCandidaturaId" />
+
+                        <div class="d-flex justify-content-center gap-2 pt-3 border-top">
+
+                            <button type="submit"
+                                    class="btn btn-danger px-4">
+                                <i class="bi bi-trash-fill me-2"></i>
+                                Confirm Delete
+                            </button>
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary px-4">
+                                Cancel
+                            </a>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

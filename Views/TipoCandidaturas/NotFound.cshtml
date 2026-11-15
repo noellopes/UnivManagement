@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewData["Title"] = "Application Type Not Found";
+}
+
+<div class="container py-5 d-flex align-items-center justify-content-center"
+     style="min-height: 70vh;">
+
+    <div class="card border-0 shadow-sm rounded-4 text-center w-100"
+         style="max-width: 650px; border-top: 5px solid #F0A52B !important;">
+
+        <div class="card-body p-4 p-md-5">
+
+            <!-- Error Icon -->
+            <div class="mb-4">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center"
+                     style="width: 110px; height: 110px; background-color: #FFF3D6;">
+
+                    <i class="bi bi-exclamation-triangle-fill"
+                       style="font-size: 3.5rem; color: #F0A52B;"
+                       aria-hidden="true"></i>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <h1 class="display-3 fw-bold mb-2" style="color: #2F506F;">
+                404
+            </h1>
+
+            <h2 class="h3 fw-bold mb-3" style="color: #2F506F;">
+                Application Type Not Found
+            </h2>
+
+            <p class="text-muted mx-auto mb-4" style="max-width: 450px;">
+                The selected application type could not be found.
+                It may have been deleted or is no longer available.
+            </p>
+
+            <hr class="my-4 opacity-25">
+
+            <!-- Navigation Buttons -->
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+
+                <a asp-controller="TipoCandidaturas"
+                   asp-action="Index"
+                   class="btn text-white px-4 py-2 shadow-sm"
+                   style="background-color: #2F506F;">
+
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Back to Application Types
+                </a>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary px-4 py-2">
+
+                    <i class="bi bi-house me-2"></i>
+                    Home
+                </a>
+
+            </div>
+
+            <p class="small text-muted mt-4 mb-0">
+                <i class="bi bi-info-circle me-1"></i>
+                Please return to the application types list to continue.
+            </p>
+
+        </div>
+    </div>
+</div>

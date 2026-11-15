@@ -1,0 +1,108 @@
+@model UnivManagement.Models.TipoCandidatura
+
+@{
+    ViewData["Title"] = "Create Application Type";
+}
+
+<div class="container mt-4 mb-5">
+
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 pb-3 border-bottom">
+        <div>
+            <h1 class="fw-bold mb-2" style="color: #2F506F;">
+                Create Application Type
+            </h1>
+
+            <p class="text-muted mb-0">
+                Add a new application type to the university admission system.
+            </p>
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary mt-3 mt-sm-0">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to List
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+
+            <form asp-action="Create"
+                  method="post"
+                  class="card border-0 shadow-sm"
+                  style="border-top: 4px solid #F0A52B !important;">
+
+                <div class="card-body p-4">
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-1" style="color: #2F506F;">
+                            <i class="bi bi-file-earmark-plus me-2"></i>
+                            Application Type Information
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            Complete the information below to create a new application type.
+                        </p>
+                    </div>
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger mb-3">
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Designacao"
+                               class="form-label fw-semibold text-secondary">
+                            Application Type Name
+                        </label>
+
+                        <input asp-for="Designacao"
+                               class="form-control"
+                               placeholder="e.g. National Admission"
+                               autofocus />
+
+                        <span asp-validation-for="Designacao"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Descricao"
+                               class="form-label fw-semibold text-secondary">
+                            Description
+                        </label>
+
+                        <textarea asp-for="Descricao"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Enter a description of this application type"></textarea>
+
+                        <span asp-validation-for="Descricao"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="submit"
+                                class="btn px-4 text-white"
+                                style="background-color: #2F506F; border-color: #2F506F;">
+                            <i class="bi bi-plus-circle me-1"></i>
+                            Create Application Type
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary px-4">
+                            Cancel
+                        </a>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

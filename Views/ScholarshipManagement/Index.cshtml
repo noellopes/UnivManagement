@@ -1,0 +1,182 @@
+﻿@{
+    ViewData["Title"] = "Scholarship Management";
+}
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="text-center rounded-4 p-4 p-md-5 mb-4"
+         style="background-color: #F4F7FA; border: 1px solid #DCE5EE;">
+
+        <div class="mb-3">
+            <i class="bi bi-mortarboard-fill display-4"
+               style="color: #365B7D;"></i>
+        </div>
+
+        <h1 class="fw-bold mb-2" style="color: #243B53;">
+            Scholarship Management
+        </h1>
+
+        <p class="text-secondary mb-0 fs-5">
+            Manage scholarship programs, application types,
+            document requirements, and evaluation staff.
+        </p>
+    </div>
+
+    <!-- Modules -->
+    <div class="row g-4">
+
+        <!-- Scholarship Types -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm rounded-4"
+                 style="border: 1px solid #DCE5EE;">
+
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start gap-4">
+
+                        <div class="rounded-circle p-3 flex-shrink-0"
+                             style="background-color: #E8EFF6; color: #365B7D;">
+                            <i class="bi bi-mortarboard-fill fs-1"></i>
+                        </div>
+
+                        <div class="flex-grow-1">
+                            <h5 class="fw-bold mb-2" style="color: #243B53;">
+                                Scholarship Types
+                            </h5>
+
+                            <p class="text-secondary">
+                                Manage scholarship programs, budgets,
+                                and available opportunities.
+                            </p>
+
+                            <a asp-controller="TipoBolsas"
+                               asp-action="Index"
+                               class="btn text-white px-4"
+                               style="background-color: #365B7D;">
+                                <i class="bi bi-eye me-2"></i>
+                                View
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Application Types -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm rounded-4"
+                 style="border: 1px solid #DCE5EE;">
+
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start gap-4">
+
+                        <div class="rounded-circle p-3 flex-shrink-0"
+                             style="background-color: #E8EFF6; color: #365B7D;">
+                            <i class="bi bi-file-earmark-text fs-1"></i>
+                        </div>
+
+                        <div class="flex-grow-1">
+                            <h5 class="fw-bold mb-2" style="color: #243B53;">
+                                Application Types
+                            </h5>
+
+                            <p class="text-secondary">
+                                Manage the different types of scholarship
+                                applications.
+                            </p>
+
+                            <a asp-controller="TipoCandidaturas"
+                               asp-action="Index"
+                               class="btn text-white px-4"
+                               style="background-color: #365B7D;">
+                                <i class="bi bi-eye me-2"></i>
+                                View
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document Types -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm rounded-4"
+                 style="border: 1px solid #DCE5EE;">
+
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start gap-4">
+
+                        <div class="rounded-circle p-3 flex-shrink-0"
+                             style="background-color: #E8EFF6; color: #365B7D;">
+                            <i class="bi bi-file-earmark-richtext-fill fs-1"></i>
+                        </div>
+
+                        <div class="flex-grow-1">
+                            <h5 class="fw-bold mb-2" style="color: #243B53;">
+                                Document Types
+                            </h5>
+
+                            <p class="text-secondary">
+                                Manage required and optional documents
+                                for scholarship applications.
+                            </p>
+
+                            <a asp-controller="TipoDocumentos"
+                               asp-action="Index"
+                               class="btn text-white px-4"
+                               style="background-color: #365B7D;">
+                                <i class="bi bi-eye me-2"></i>
+                                View
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technicians -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm rounded-4"
+                 style="border: 1px solid #DCE5EE;">
+
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start gap-4">
+
+                        <div class="rounded-circle p-3 flex-shrink-0"
+                             style="background-color: #E8EFF6; color: #365B7D;">
+                            <i class="bi bi-person-gear fs-1"></i>
+                        </div>
+
+                        <div class="flex-grow-1">
+                            <h5 class="fw-bold mb-2" style="color: #243B53;">
+                                Technicians
+                            </h5>
+
+                            <p class="text-secondary">
+                                Manage staff responsible for reviewing
+                                and evaluating applications.
+                            </p>
+
+                            <a asp-controller="Tecnicos"
+                               asp-action="Index"
+                               class="btn text-white px-4"
+                               style="background-color: #365B7D;">
+                                <i class="bi bi-eye me-2"></i>
+                                View
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

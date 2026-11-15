@@ -1,0 +1,115 @@
+
+@model UnivManagement.Models.TipoCandidatura
+
+@{
+    ViewData["Title"] = "Application Type Details";
+}
+
+<div class="container mt-5 mb-5">
+
+    <!-- Page Header -->
+    <div class="text-center mb-4">
+        <h1 class="h2 fw-bold mb-2" style="color: #2F506F;">
+            Application Type Details
+        </h1>
+        <p class="text-muted small">
+            View the information about this application type.
+        </p>
+    </div>
+
+    <!-- Details Card -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-7 col-xl-6">
+
+            <div class="card shadow-sm border-0 rounded-3"
+                 style="border-top: 4px solid #F0A52B !important;">
+
+                <div class="card-body p-4">
+
+                    <!-- Success Message -->
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        var successType = ViewBag.SuccessType as string ?? "success";
+
+                        <div class="alert alert-@successType alert-dismissible fade show border-0 shadow-sm"
+                             role="alert">
+
+                            @if (successType == "success")
+                            {
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                            }
+                            else if (successType == "warning")
+                            {
+                                <i class="bi bi-pencil-square me-2"></i>
+                            }
+
+                            @ViewBag.SuccessMessage
+
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close">
+                            </button>
+                        </div>
+                    }
+
+                    <!-- Application Type Name -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold"
+                               style="color: #2F506F;">
+                            Application Type Name
+                        </label>
+
+                        <p class="mb-0 text-secondary">
+                            @Html.DisplayFor(model => model.Designacao)
+                        </p>
+                    </div>
+
+                    <hr />
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold"
+                               style="color: #2F506F;">
+                            Description
+                        </label>
+
+                        <p class="mb-0 text-secondary">
+                            @if (string.IsNullOrWhiteSpace(Model.Descricao))
+                            {
+                                <span class="text-muted fst-italic">
+                                    No description provided.
+                                </span>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.Descricao)
+                            }
+                        </p>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-center gap-2 pt-3 border-top">
+
+                        <a asp-action="Edit"
+                           asp-route-id="@Model.TipoCandidaturaId"
+                           class="btn text-white px-4"
+                           style="background-color: #F0A52B; border-color: #F0A52B;">
+                            <i class="bi bi-pencil-fill me-2"></i>
+                            Edit
+                        </a>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary px-4">
+                            <i class="bi bi-arrow-left me-2"></i>
+                            Back to List
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

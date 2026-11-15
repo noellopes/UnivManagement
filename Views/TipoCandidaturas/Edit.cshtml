@@ -1,0 +1,99 @@
+
+@model UnivManagement.Models.TipoCandidatura
+
+@{
+    ViewData["Title"] = "Edit Application Type";
+}
+
+<div class="container mt-5 mb-5">
+
+    <!-- Centered Page Header -->
+    <div class="text-center mb-4">
+        <h1 class="h2 fw-bold mb-2" style="color: #2F506F;">
+            Edit Application Type
+        </h1>
+        <p class="text-muted small">
+            Update the application type information.
+        </p>
+    </div>
+
+    <!-- Centered Form -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-7 col-xl-6">
+
+            <div class="card shadow-sm border-0 rounded-3"
+                 style="border-top: 4px solid #F0A52B !important;">
+
+                <div class="card-body p-4">
+
+                    <form asp-action="Edit">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3"></div>
+
+                        <input type="hidden" asp-for="TipoCandidaturaId" />
+
+                        <!-- Application Type Name -->
+                        <div class="mb-3">
+                            <label asp-for="Designacao"
+                                   class="form-label fw-semibold"
+                                   style="color: #2F506F;">
+                                Application Type Name
+                            </label>
+
+                            <input asp-for="Designacao"
+                                   class="form-control"
+                                   placeholder="Enter application type name" />
+
+                            <span asp-validation-for="Designacao"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label asp-for="Descricao"
+                                   class="form-label fw-semibold"
+                                   style="color: #2F506F;">
+                                Description
+                            </label>
+
+                            <textarea asp-for="Descricao"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Enter description (optional)"></textarea>
+
+                            <span asp-validation-for="Descricao"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-center gap-2 pt-3 border-top">
+
+                            <button type="submit"
+                                    class="btn text-white px-4"
+                                    style="background-color: #2F506F; border-color: #2F506F;">
+                                <i class="bi bi-check-lg me-2"></i>
+                                Save Changes
+                            </button>
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary px-4">
+                                Cancel
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

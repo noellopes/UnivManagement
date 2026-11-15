@@ -1,0 +1,134 @@
+
+@model IEnumerable<UnivManagement.Models.TipoCandidatura>
+
+@{
+    ViewData["Title"] = "Application Types";
+}
+
+<div class="container mt-5 mb-5">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 fw-bold mb-1" style="color: #2F506F;">
+                Application Types
+            </h1>
+            <p class="text-muted small mb-0">
+                Manage the different types of applications.
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn text-white shadow-sm"
+           style="background-color: #198754;">
+            <i class="bi bi-plus-circle me-1"></i>
+            Create New
+        </a>
+    </div>
+
+    <!-- Delete Success Message Only -->
+    @if (ViewBag.SuccessMessage != null &&
+         ViewBag.SuccessType == "danger")
+    {
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm"
+             role="alert">
+
+            <i class="bi bi-trash-fill me-2"></i>
+            @ViewBag.SuccessMessage
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close">
+            </button>
+        </div>
+    }
+
+    <!-- Application Types Table -->
+    <div class="card shadow-sm border-0 rounded-3"
+         style="border-top: 4px solid #2F506F !important;">
+
+        <div class="card-body p-4">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead>
+                        <tr style="color: #2F506F;">
+                            <th style="width: 25%;">Application Type</th>
+                            <th>Description</th>
+                            <th class="text-center" style="width: 25%;">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">
+                                        @Html.DisplayFor(modelItem => item.Designacao)
+                                    </td>
+
+                                    <td class="text-muted">
+                                        @if (!string.IsNullOrWhiteSpace(item.Descricao))
+                                        {
+                                            @item.Descricao
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted fst-italic">
+                                                No description available
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+
+                                            <a asp-action="Details"
+                                               asp-route-id="@item.TipoCandidaturaId"
+                                               class="btn btn-sm text-white"
+                                               style="background-color: #2F506F;"
+                                               title="Details">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.TipoCandidaturaId"
+                                               class="btn btn-sm text-dark"
+                                               style="background-color: #F0A52B;"
+                                               title="Edit">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@item.TipoCandidaturaId"
+                                               class="btn btn-sm btn-danger"
+                                               title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">
+                                    <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                                    No application types found.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
