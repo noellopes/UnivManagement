@@ -14,24 +14,35 @@ public class CourseStateController : Controller
     }
 
     // GET: COURSESTATES
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index(string? successMessage = null)    
     {
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
+
         return View(await _context.CourseState.ToListAsync());
     }
 
-    // GET: COURSESTATES/Details/5
-    public async Task<IActionResult> Details(int? coursestateid)
+    // GET: COURSESTATE/Details/5
+    public async Task<IActionResult> Details(int? id, string? successMessage = null)
     {
-        if (coursestateid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var coursestate = await _context.CourseState
-            .FirstOrDefaultAsync(m => m.CourseStateId == coursestateid);
+            .FirstOrDefaultAsync(m => m.CourseStateId == id);
+
         if (coursestate == null)
         {
-            return NotFound();
+            return View("NotFound");
+        }
+
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
         }
 
         return View(coursestate);
@@ -50,27 +61,46 @@ public class CourseStateController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("CourseStateId,Name,Description")] CourseState coursestate)
     {
+
+        /* Unicidade do Name */
+        if (await _context.CourseState.AnyAsync(cs => cs.Name == coursestate.Name))
+            ModelState.AddModelError(nameof(CourseState.Name),
+                "Já existe um estado de curso com este Nome.");
+
         if (ModelState.IsValid)
         {
-            _context.Add(coursestate);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Add(coursestate);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Details),
+                    new { id = coursestate.CourseStateId, successMessage = "Estado de curso criado com sucesso." }
+                );
+            }
+            catch (DbUpdateException ex) when (IsUniqueViolation(ex))
+            {
+                ModelState.AddModelError("",
+                    "Não foi possível guardar: já existe um estado com este Nome.");
+            }
+
         }
         return View(coursestate);
     }
 
     // GET: COURSESTATES/Edit/5
-    public async Task<IActionResult> Edit(int? coursestateid)
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (coursestateid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var coursestate = await _context.CourseState.FindAsync(coursestateid);
+        var coursestate = await _context.CourseState.FindAsync(id);
+        
         if (coursestate == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
         return View(coursestate);
     }
@@ -80,12 +110,18 @@ public class CourseStateController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? coursestateid, [Bind("CourseStateId,Name,Description")] CourseState coursestate)
+    public async Task<IActionResult> Edit(int? id, [Bind("CourseStateId,Name,Description")] CourseState coursestate)
     {
-        if (coursestateid != coursestate.CourseStateId)
+        if (id != coursestate.CourseStateId)
         {
             return NotFound();
         }
+
+        /* Unicidade do Name (excluindo o próprio) */
+        if (await _context.CourseState.AnyAsync(cs =>
+                cs.Name == coursestate.Name && cs.CourseStateId != coursestate.CourseStateId))
+            ModelState.AddModelError(nameof(CourseState.Name),
+                "Já existe outro estado de curso com este Nome.");
 
         if (ModelState.IsValid)
         {
@@ -93,37 +129,49 @@ public class CourseStateController : Controller
             {
                 _context.Update(coursestate);
                 await _context.SaveChangesAsync();
+
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id = coursestate.CourseStateId, successMessage = "Dados do estado atualizados com sucesso." }
+                );
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!CourseStateExists(coursestate.CourseStateId))
                 {
-                    return NotFound();
+                    return View("NotFound");
                 }
-                else
-                {
+                
                     throw;
-                }
+                
             }
-            return RedirectToAction(nameof(Index));
+            catch (DbUpdateException ex) when (IsUniqueViolation(ex))
+            {
+                ModelState.AddModelError("",
+                    "Não foi possível guardar: já existe um estado com este Nome.");
+            }
+          
         }
         return View(coursestate);
     }
 
-    // GET: COURSESTATES/Delete/5
-    public async Task<IActionResult> Delete(int? coursestateid)
+    // GET: COURSESTATE/Delete/5
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (coursestateid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var coursestate = await _context.CourseState
-            .FirstOrDefaultAsync(m => m.CourseStateId == coursestateid);
+            .FirstOrDefaultAsync(m => m.CourseStateId == id);
+
         if (coursestate == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "Aviso: O Estado já tinha sido eliminado por outro utilizador." });
         }
+
 
         return View(coursestate);
     }
@@ -131,20 +179,40 @@ public class CourseStateController : Controller
     // POST: COURSESTATES/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? coursestateid)
+    public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var coursestate = await _context.CourseState.FindAsync(coursestateid);
-        if (coursestate != null)
+        var coursestate = await _context.CourseState.FindAsync(id);
+
+        if (coursestate == null)
         {
-            _context.CourseState.Remove(coursestate);
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "Aviso: O Estado já não existe." });
         }
 
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        try
+        {
+            _context.CourseState.Remove(coursestate);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            // FK violation: o estado está a ser usado por cursos
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "Não é possível eliminar este Estado porque está a ser utilizado por cursos." });
+        }
+
+        return RedirectToAction(nameof(Index),
+            new { successMessage = "Estado de curso eliminado com sucesso." });
     }
 
-    private bool CourseStateExists(int? coursestateid)
+    private bool CourseStateExists(int? id)
     {
-        return _context.CourseState.Any(e => e.CourseStateId == coursestateid);
+        return _context.CourseState.Any(e => e.CourseStateId == id);
+    }
+
+    private static bool IsUniqueViolation(DbUpdateException ex)
+    {
+        return ex.InnerException is Microsoft.Data.SqlClient.SqlException sql
+            && (sql.Number == 2601 || sql.Number == 2627);
     }
 }
