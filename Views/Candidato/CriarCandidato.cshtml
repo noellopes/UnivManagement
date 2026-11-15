@@ -1,0 +1,106 @@
+﻿@using UnivManagement.Models
+@model Candidato;
+
+@{
+    ViewData["Title"] = "Registar Novo Candidato";
+}
+
+<h1 class="mb-4">@ViewData["Title"]</h1>
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">
+            <i class="bi bi-person-plus me-2"></i> Novo Candidato
+        </h4>
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4"></div>
+
+            <div class="row">
+                <!-- Coluna da Esquerda -->
+                <div class="col-md-6">
+
+                    <div class="mb-3">
+                        <label asp-for="Nome" class="form-label fw-bold"></label>
+                        <input asp-for="Nome" class="form-control" placeholder="Ex: Ana Maria Silva">
+                        <span asp-validation-for="Nome" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-bold"></label>
+                        <input asp-for="Email" class="form-control" placeholder="Ex: ana.silva@email.com">
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Telemovel" class="form-label fw-bold"></label>
+                        <input asp-for="Telemovel" class="form-control" placeholder="Ex: 912345678">
+                        <span asp-validation-for="Telemovel" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DataNascimento" class="form-label fw-bold"></label>
+                        <input asp-for="DataNascimento" type="date" class="form-control">
+                        <span asp-validation-for="DataNascimento" class="text-danger small"></span>
+                    </div>
+
+                </div>
+
+                <!-- Coluna da Direita -->
+                <div class="col-md-6">
+
+                    <div class="mb-3">
+                        <label asp-for="NIF" class="form-label fw-bold"></label>
+                        <input asp-for="NIF" class="form-control" placeholder="Ex: 123456789">
+                        <span asp-validation-for="NIF" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="instituicaoEnsino" class="form-label fw-bold"></label>
+                        <input asp-for="instituicaoEnsino" class="form-control" placeholder="Ex: Universidade da Beira Interior">
+                        <span asp-validation-for="instituicaoEnsino" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Curso" class="form-label fw-bold"></label>
+                        <input asp-for="Curso" class="form-control" placeholder="Ex: Engenharia Informática">
+                        <span asp-validation-for="Curso" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="RendimentoAgregado" class="form-label fw-bold"></label>
+                        <input asp-for="RendimentoAgregado" class="form-control" placeholder="Ex: 12500.00">
+                        <span asp-validation-for="RendimentoAgregado" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Chave primária escondida -->
+                    <input asp-for="CandidatoId" type="hidden" />
+
+                </div>
+
+            </div>
+
+            <div class="mt-4 d-flex justify-content-end gap-2 border-top pt-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle me-1"></i> Submeter Registo
+                </button>
+                <a href="javascript:void(0);" onclick="history.back();" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left-circle me-1"></i> Voltar
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,46 @@
+@model IEnumerable<UnivManagement.Models.TipoBolsa>
+
+@{
+    ViewData["Title"] = "Tipos de bolsa";
+}
+
+<div class="d-flex justify-content-between align-items-start mb-3">
+    <div>
+        <h1 style="color: #1d4e6b;">Tipos de bolsa</h1>
+        <p class="text-muted mb-0">Gerir os tipos de bolsa e os respetivos critérios de elegibilidade.</p>
+    </div>
+    <a asp-action="Create" class="btn text-white" style="background-color: #e8a33d; border-color: #e8a33d;">
+        + Adicionar tipo de bolsa
+    </a>
+</div>
+
+<div class="card shadow-sm" style="border-top: 4px solid #e8a33d;">
+    <div class="card-body">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col" class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@item.Nome</td>
+                        <td class="text-muted">@item.Descricao</td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Details" asp-route-id="@item.TipoBolsaId"
+                               class="btn btn-sm btn-outline-secondary">Detalhes</a>
+                            <a asp-action="Edit" asp-route-id="@item.TipoBolsaId"
+                               class="btn btn-sm" style="color: #1d4e6b; border-color: #1d4e6b;">Editar</a>
+                            <a asp-action="Delete" asp-route-id="@item.TipoBolsaId"
+                               class="btn btn-sm btn-outline-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
