@@ -31,6 +31,7 @@
                     <label asp-for="NumStudent" class="form-label fw-semibold"></label>
                     <input asp-for="NumStudent"
                            class="form-control"
+                           value="@ViewBag.NextNumStudent"
                            placeholder="1000001"
                            autofocus />
                     <span asp-validation-for="NumStudent" class="text-danger small"></span>
@@ -83,7 +84,10 @@
                     <label asp-for="NIF" class="form-label fw-semibold"></label>
                     <input asp-for="NIF"
                            class="form-control"
-                           placeholder="123456789" />
+                           placeholder="501442600"
+                           maxlength="9"
+                           inputmode="numeric"
+                           pattern="[0-9]*" />
                     <span asp-validation-for="NIF" class="text-danger small"></span>
                 </div>
 

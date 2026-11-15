@@ -61,10 +61,12 @@ public class Student {
     [Display(Name = "Morada")]
     public required string Address { get; set; }
 
-    /* NIF: */
+
+    /* NIF */
     [Required(ErrorMessage = "O {0} é obrigatório.")]
     [Display(Name = "NIF")]
-    [RegularExpression(@"^[0-9]{1,9}$", ErrorMessage = "O {0} deve conter apenas dígitos (máximo 9).")]
+    [StringLength(9, MinimumLength = 9, ErrorMessage = "O {0} deve ter exatamente 9 dígitos.")]
+    [RegularExpression(@"^[0-9]+$", ErrorMessage = "O {0} deve conter apenas dígitos.")]
     public required string NIF { get; set; }
 
     /* EMAIL: */

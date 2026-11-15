@@ -64,9 +64,15 @@
                     <span asp-validation-for="Email" class="text-danger small"></span>
                 </div>
 
+               
                 <div class="col-md-4">
-                    <label asp-for="NIF" class="form-label"></label>
-                    <input asp-for="NIF" class="form-control" placeholder="123456789" />
+                    <label asp-for="NIF" class="form-label fw-semibold"></label>
+                    <input asp-for="NIF"
+                           class="form-control"
+                           placeholder="501442600"
+                           maxlength="9"
+                           inputmode="numeric"
+                           pattern="[0-9]*" />
                     <span asp-validation-for="NIF" class="text-danger small"></span>
                 </div>
 
