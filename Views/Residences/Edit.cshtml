@@ -1,0 +1,55 @@
+@model UnivManagement.Models.AccommodationManagement.Residence
+
+@{
+    ViewData["Title"] = "Edit Residence";
+}
+
+<h1>Edit</h1>
+<h4>Residence</h4>
+<hr />
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Campo oculto obrigatório para manter o ID -->
+            <input type="hidden" asp-for="ResidenceId" />
+
+            <div class="form-group mb-4">
+                <label asp-for="Name" class="control-label fw-bold"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter the residence name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Address" class="control-label fw-bold"></label>
+                <input asp-for="Address" class="form-control" placeholder="Enter the full address" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Capacity" class="control-label fw-bold"></label>
+                <input asp-for="Capacity" class="form-control" type="number" placeholder="Enter number of beds" />
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check mb-4">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" />
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>
+
+            <div class="form-group mt-4 d-flex gap-2">
+                <input type="submit" value="Edit" class="btn btn-primary px-4" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

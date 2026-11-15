@@ -1,0 +1,58 @@
+@model UnivManagement.Models.AccommodationManagement.Residence
+
+@{
+    ViewData["Title"] = "Residence Details";
+}
+
+<h1>Details</h1>
+<h4>Residence</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-3 text-muted">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-9 fw-bold">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+
+                    <dt class="col-sm-3 text-muted mt-3">
+                        @Html.DisplayNameFor(model => model.Address)
+                    </dt>
+                    <dd class="col-sm-9 mt-3">
+                        @Html.DisplayFor(model => model.Address)
+                    </dd>
+
+                    <dt class="col-sm-3 text-muted mt-3">
+                        @Html.DisplayNameFor(model => model.Capacity)
+                    </dt>
+                    <dd class="col-sm-9 mt-3">
+                        @Html.DisplayFor(model => model.Capacity)
+                    </dd>
+
+                    <dt class="col-sm-3 text-muted mt-3">
+                        @Html.DisplayNameFor(model => model.IsActive)
+                    </dt>
+                    <dd class="col-sm-9 mt-3">
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success">Yes</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">No</span>
+                        }
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="mt-2 d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model?.ResidenceId" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
