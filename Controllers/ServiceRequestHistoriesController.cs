@@ -26,7 +26,7 @@ namespace UnivManagement.Controllers {
         }
 
         // GET: ServiceRequestHistories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string? msg = null)
         {
             if (id == null)
             {
@@ -42,6 +42,11 @@ namespace UnivManagement.Controllers {
             if (serviceRequestHistory == null)
             {
                 return View("NotFound");
+            }
+
+            if (msg != null)
+            {
+                ViewBag.SuccessMessage = msg;
             }
 
             return View(serviceRequestHistory);
@@ -65,7 +70,9 @@ namespace UnivManagement.Controllers {
             {
                 _context.Add(serviceRequestHistory);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id = serviceRequestHistory.ServiceRequestHistoryId, msg = "History entry created successfully." });
             }
             await LoadListsAsync();
             return View(serviceRequestHistory);
