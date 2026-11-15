@@ -1,19 +1,19 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.RegularExpressions;
 
 namespace UnivManagement.Models
 {
     [Table("ClassSession")]
     public class Session
     {
-        [Column("ClassSessionId")]
         public int SessionId { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique o {0}.")]
         [StringLength(20, ErrorMessage = "O {0} não pode exceder {1} caracteres.")]
         [Display(Name = "Dia da Semana")]
-        public string DiaSemana { get; set; }
+        public required string DiaSemana { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique a {0}.")]
         [DataType(DataType.Time)]
@@ -44,7 +44,7 @@ namespace UnivManagement.Models
         [Display(Name = "Turma")]
         public int IdTurma { get; set; }
 
-        //[ForeignKey("IdTurma")]
-        //public Group? Group { get; set; }
+        [ForeignKey("IdTurma")]
+        public Group? Group { get; set; }
     }
 }
