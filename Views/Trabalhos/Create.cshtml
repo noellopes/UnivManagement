@@ -24,14 +24,18 @@
 
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label asp-for="DocenteId" class="form-label">ID do docente</label>
-                <input asp-for="DocenteId" type="number" min="1" required class="form-control" />
+                <label asp-for="DocenteId" class="form-label">Docente</label>
+                <select asp-for="DocenteId" asp-items="ViewBag.Docentes" class="form-select" required>
+                <option value="">Seleciona um docente</option>
+                </select>
                 <span asp-validation-for="DocenteId" class="text-danger"></span>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label asp-for="UcId" class="form-label">ID da unidade curricular</label>
-                <input asp-for="UcId" type="number" min="1" required class="form-control" />
+                <label asp-for="UcId" class="form-label">Unidade curricular</label>
+                <select asp-for="UcId" asp-items="ViewBag.Ucs" class="form-select" required>
+                <option value="">Seleciona uma UC</option>
+                </select>
                 <span asp-validation-for="UcId" class="text-danger"></span>
             </div>
 
