@@ -41,8 +41,15 @@ public class AvaliacaoUCController : Controller
     // GET: AvaliacaoUC/Create
     public IActionResult Create()
     {
+        ViewBag.TiposAvaliacao = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            _context.TiposAvaliacao.OrderBy(t => t.T_Avaliacao),
+            "T_Avaliacao",
+            "Tipo_Prova"
+        );
+
         return View();
     }
+
 
     // POST: AvaliacaoUC/Create
     [HttpPost]
@@ -57,6 +64,13 @@ public class AvaliacaoUCController : Controller
 
             return RedirectToAction(nameof(Index));
         }
+
+        ViewBag.TiposAvaliacao = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+          _context.TiposAvaliacao.OrderBy(t => t.T_Avaliacao),
+          "T_Avaliacao",
+          "Tipo_Prova",
+          avaliacaouc.T_Avaliacao
+        );
 
         return View(avaliacaouc);
     }
