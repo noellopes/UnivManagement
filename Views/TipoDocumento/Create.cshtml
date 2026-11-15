@@ -1,36 +1,37 @@
 @model UnivManagement.Models.TipoDocumento
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Novo tipo de documento";
 }
 
-<h1>Create</h1>
+<h1 class="mb-4">Novo tipo de documento</h1>
 
-<h4>TipoDocumento</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="NomeTipo" class="control-label"></label>
+            <div class="mb-3">
+                <label asp-for="NomeTipo" class="form-label"></label>
                 <input asp-for="NomeTipo" class="form-control" />
+                <div class="form-text">Máximo de 100 caracteres.</div>
                 <span asp-validation-for="NomeTipo" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Obrigatorio" class="control-label"></label>
+            <div class="form-check mb-4">
                 <input asp-for="Obrigatorio" class="form-check-input" />
-                <span asp-validation-for="Obrigatorio" class="text-danger"></span>
+                <label asp-for="Obrigatorio" class="form-check-label"></label>
+                <div class="form-text">Marca se o estudante tem de entregar este documento.</div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Guardar tipo de documento</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
