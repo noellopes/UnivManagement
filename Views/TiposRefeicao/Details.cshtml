@@ -1,0 +1,18 @@
+@model UnivManagement.Models.TipoRefeicao
+
+@{
+    ViewData["Title"] = "Detalhes do tipo de refeição";
+}
+
+<h1>Detalhes do tipo de refeição</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nome)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Nome)</dd>
+</dl>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.TipoRefeicaoId" class="btn btn-warning">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
+</div>
