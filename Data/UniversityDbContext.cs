@@ -55,7 +55,7 @@ namespace UnivManagement.Data {
 
             // Residence: atributo Name é único:
             modelBuilder.Entity<Models.AccommodationManagement.Residence>()
-                .HasIndex(r => r.Name)
+                .HasIndex(r => r.Name);
             // Room: número único por residência:
             modelBuilder.Entity<Models.AccommodationManagement.Room>()
                 .HasIndex(r => new { r.ResidenceId, r.Number })
