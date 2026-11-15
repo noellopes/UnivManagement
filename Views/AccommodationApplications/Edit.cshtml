@@ -1,0 +1,64 @@
+@model UnivManagement.Models.AccommodationManagement.AccommodationApplication
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>AccommodationApplication</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AccommodationApplicationId" />
+            <div class="form-group">
+                <label asp-for="StudentId" class="control-label"></label>
+                <input asp-for="StudentId" class="form-control" />
+                <span asp-validation-for="StudentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AcademicYearId" class="control-label"></label>
+                <input asp-for="AcademicYearId" class="form-control" />
+                <span asp-validation-for="AcademicYearId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmittedAt" class="control-label"></label>
+                <input asp-for="SubmittedAt" class="form-control" />
+                <span asp-validation-for="SubmittedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HasScholarshipPriority" class="control-label"></label>
+                <input asp-for="HasScholarshipPriority" class="form-check-input" />
+                <span asp-validation-for="HasScholarshipPriority" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriorityCheckedAt" class="control-label"></label>
+                <input asp-for="PriorityCheckedAt" class="form-control" />
+                <span asp-validation-for="PriorityCheckedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriorityOverrideReason" class="control-label"></label>
+                <input asp-for="PriorityOverrideReason" class="form-control" />
+                <span asp-validation-for="PriorityOverrideReason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
