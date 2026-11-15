@@ -13,11 +13,17 @@ public class AvaliacaoUCController : Controller
         _context = context;
     }
 
+
     // GET: AvaliacaoUC
     public async Task<IActionResult> Index()
     {
-        return View(await _context.AvaliacoesUC.ToListAsync());
+        var avaliacoes = await _context.AvaliacoesUC
+            .Include(a => a.TipoAvaliacao)
+            .ToListAsync();
+
+        return View(avaliacoes);
     }
+
 
 
     // GET: AvaliacaoUC/Details/5
@@ -149,6 +155,7 @@ public class AvaliacaoUCController : Controller
 
     }
 
+
     // GET: AvaliacaoUC/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
@@ -158,7 +165,8 @@ public class AvaliacaoUCController : Controller
         }
 
         var avaliacaouc = await _context.AvaliacoesUC
-            .FirstOrDefaultAsync(m => m.AvaliacaoID == id);
+            .Include(a => a.TipoAvaliacao)
+            .FirstOrDefaultAsync(a => a.AvaliacaoID == id);
 
         if (avaliacaouc == null)
         {
@@ -167,6 +175,7 @@ public class AvaliacaoUCController : Controller
 
         return View(avaliacaouc);
     }
+
 
     // POST: AvaliacaoUC/Delete/5
     [HttpPost, ActionName("Delete")]
