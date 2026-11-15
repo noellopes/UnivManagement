@@ -14,11 +14,13 @@ public class ResidencesController : Controller
         _context = context;
     }
 
+    // GET: RESIDENCES
     public async Task<IActionResult> Index()
     {
         return View(await _context.Residence.ToListAsync());
     }
 
+    // GET: RESIDENCES/Details/5
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
@@ -36,11 +38,13 @@ public class ResidencesController : Controller
         return View(residence);
     }
 
+    // GET: RESIDENCES/Create
     public IActionResult Create()
     {
         return View();
     }
 
+    // POST: RESIDENCES/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("ResidenceId,Name,Address,Capacity,IsActive")] Residence residence)
@@ -49,11 +53,16 @@ public class ResidencesController : Controller
         {
             _context.Add(residence);
             await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Residence created successfully!";
             return RedirectToAction(nameof(Index));
         }
+
+        TempData["ErrorMessage"] = "Could not create the residence. Please check the form errors.";
         return View(residence);
     }
 
+    // GET: RESIDENCES/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -69,6 +78,7 @@ public class ResidencesController : Controller
         return View(residence);
     }
 
+    // POST: RESIDENCES/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int? id, [Bind("ResidenceId,Name,Address,Capacity,IsActive")] Residence residence)
@@ -84,6 +94,8 @@ public class ResidencesController : Controller
             {
                 _context.Update(residence);
                 await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Residence updated successfully!";
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -98,9 +110,12 @@ public class ResidencesController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+
+        TempData["ErrorMessage"] = "Could not update the residence. Please check the form errors.";
         return View(residence);
     }
 
+    // GET: RESIDENCES/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -118,17 +133,31 @@ public class ResidencesController : Controller
         return View(residence);
     }
 
+    // POST: RESIDENCES/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var residence = await _context.Residence.FindAsync(id);
-        if (residence != null)
+        try
         {
-            _context.Residence.Remove(residence);
+            var residence = await _context.Residence.FindAsync(id);
+            if (residence != null)
+            {
+                _context.Residence.Remove(residence);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Residence deleted successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Residence not found.";
+            }
+        }
+        catch (Exception)
+        {
+            TempData["ErrorMessage"] = "Cannot delete this residence because it has associated records.";
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
