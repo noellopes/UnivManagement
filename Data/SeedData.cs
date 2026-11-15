@@ -8,56 +8,61 @@ namespace UnivManagement.Data
     {
         internal static void Populate(UniversityDbContext? db)
         {
-            if (db == null) throw new ArgumentNullException(nameof(db));
+            if (db == null)
+                throw new ArgumentNullException(nameof(db));
 
             PopulateTipoCandidaturas(db);
         }
 
+
         private static void PopulateTipoCandidaturas(UniversityDbContext db)
         {
-            if (db.TipoCandidatura.Any()) return;
+            // Insert initial application types only when the table is empty.
+            if (db.TipoCandidatura.Any())
+                return;
 
             var tipos = new List<TipoCandidatura>
-            {
-                new TipoCandidatura
-                {
-                    Designacao = "National Admission",
-                    Descricao = "Application through the regular national higher education admission process."
-                },
+    {
+        new TipoCandidatura
+        {
+            Designacao = "First-time Application",
+            Descricao = "Application submitted by a student applying for a higher education scholarship for the first time."
+        },
 
-                new TipoCandidatura
-                {
-                    Designacao = "International Student Admission",
-                    Descricao = "Application for admission by eligible international students."
-                },
+        new TipoCandidatura
+        {
+            Designacao = "Renewal Application",
+            Descricao = "Application submitted by a student who previously received a scholarship and is requesting its renewal for a new academic year."
+        },
 
-                new TipoCandidatura
-                {
-                    Designacao = "Transfer Admission",
-                    Descricao = "Application from students wishing to transfer from another higher education institution or course."
-                },
+        new TipoCandidatura
+        {
+            Designacao = "Transfer Application",
+            Descricao = "Application submitted by a student who has transferred to another higher education institution and wishes to continue receiving scholarship support."
+        },
 
-                new TipoCandidatura
-                {
-                    Designacao = "Re-admission",
-                    Descricao = "Application from former students wishing to resume their studies."
-                },
+        new TipoCandidatura
+        {
+            Designacao = "Late Application",
+            Descricao = "Scholarship application submitted after the regular application deadline, subject to university regulations."
+        },
 
-                new TipoCandidatura
-                {
-                    Designacao = "Special Admission - Over 23",
-                    Descricao = "Application through the special admission process for applicants aged 23 or older."
-                },
+        new TipoCandidatura
+        {
+            Designacao = "Reassessment Request",
+            Descricao = "Request submitted by a student asking for a review of a scholarship decision due to changes in financial or personal circumstances."
+        },
 
-                new TipoCandidatura
-                {
-                    Designacao = "Admission for Degree Holders",
-                    Descricao = "Application from candidates who already hold a higher education degree."
-                }
-            };
+        new TipoCandidatura
+        {
+            Designacao = "Exceptional Application",
+            Descricao = "Application submitted by a student facing exceptional personal, social or financial circumstances that require special consideration."
+        }
+    };
 
             db.TipoCandidatura.AddRange(tipos);
             db.SaveChanges();
         }
+
     }
 }
