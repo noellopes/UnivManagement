@@ -15,8 +15,13 @@ namespace UnivManagement.Controllers {
         }
 
         // GET: ServiceRequestHistories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? msg = null)
         {
+            if (msg != null)
+            {
+                ViewBag.SuccessMessage = msg;
+            }
+
             var histories = _context.ServiceRequestHistories
                 .Include(h => h.ServiceRequest)
                 .Include(h => h.OldStatus)
@@ -147,10 +152,10 @@ namespace UnivManagement.Controllers {
                 .Include(h => h.OldStatus)
                 .Include(h => h.NewStatus)
                 .FirstOrDefaultAsync(m => m.ServiceRequestHistoryId == id);
-                
+
             if (serviceRequestHistory == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index), new { msg = "The history entry was already deleted." });
             }
 
             return View(serviceRequestHistory);
@@ -165,10 +170,10 @@ namespace UnivManagement.Controllers {
             if (serviceRequestHistory != null)
             {
                 _context.ServiceRequestHistories.Remove(serviceRequestHistory);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { msg = "History entry deleted successfully." });
         }
         private bool ServiceRequestHistoryExists(int? id)
         {
