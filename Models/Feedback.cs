@@ -13,7 +13,7 @@ namespace UnivManagement.Models
         [Display(Name = "Submissão")]
         public int SubmissaoID { get; set; }
 
-        //[ForeignKey("SubmissaoID")]
+        [ForeignKey("SubmissaoID")]
         //public virtual SubmissaoTrabalho SubmissaoTrabalho { get; set; }
 
         [Required(ErrorMessage = "O docente é obrigatório.")]
