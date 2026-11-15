@@ -58,18 +58,21 @@ public class NotasController : Controller
     // POST: Notas/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("NotaID,AvaliacaoID,InscrUcID,Data,Nota,Aprovado")] Notas nota)
+    public async Task<IActionResult> Create([Bind("NotaID,AvaliacaoID,InscrUcID,Data,Nota")] Notas novaNota)
     {
+        // Aprovado quando a nota e 9,5 ou mais
+        novaNota.Aprovado = novaNota.Nota >= 9.5f;
+
         if (ModelState.IsValid)
         {
-            _context.Notas.Add(nota);
+            _context.Notas.Add(novaNota);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-        PreencherListas(nota.AvaliacaoID, nota.InscrUcID);
-        return View(nota);
+        PreencherListas(novaNota.AvaliacaoID, novaNota.InscrUcID);
+        return View(novaNota);
     }
 
     // GET: Notas/Edit/5
@@ -94,23 +97,26 @@ public class NotasController : Controller
     // POST: Notas/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("NotaID,AvaliacaoID,InscrUcID,Data,Nota,Aprovado")] Notas nota)
+    public async Task<IActionResult> Edit(int id, [Bind("NotaID,AvaliacaoID,InscrUcID,Data,Nota")] Notas notaEditada)
     {
-        if (id != nota.NotaID)
+        if (id != notaEditada.NotaID)
         {
             return NotFound();
         }
+
+        // Aprovado quando a nota e 9,5 ou mais
+        notaEditada.Aprovado = notaEditada.Nota >= 9.5f;
 
         if (ModelState.IsValid)
         {
             try
             {
-                _context.Notas.Update(nota);
+                _context.Notas.Update(notaEditada);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NotaExiste(nota.NotaID))
+                if (!NotaExiste(notaEditada.NotaID))
                 {
                     return NotFound();
                 }
@@ -123,8 +129,8 @@ public class NotasController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        PreencherListas(nota.AvaliacaoID, nota.InscrUcID);
-        return View(nota);
+        PreencherListas(notaEditada.AvaliacaoID, notaEditada.InscrUcID);
+        return View(notaEditada);
     }
 
     // GET: Notas/Delete/5
