@@ -19,6 +19,7 @@ public class AvaliacaoUCController : Controller
         return View(await _context.AvaliacoesUC.ToListAsync());
     }
 
+
     // GET: AvaliacaoUC/Details/5
     public async Task<IActionResult> Details(int? id)
     {
@@ -28,7 +29,8 @@ public class AvaliacaoUCController : Controller
         }
 
         var avaliacaouc = await _context.AvaliacoesUC
-            .FirstOrDefaultAsync(m => m.AvaliacaoID == id);
+            .Include(a => a.TipoAvaliacao)
+            .FirstOrDefaultAsync(a => a.AvaliacaoID == id);
 
         if (avaliacaouc == null)
         {
@@ -37,6 +39,7 @@ public class AvaliacaoUCController : Controller
 
         return View(avaliacaouc);
     }
+
 
     // GET: AvaliacaoUC/Create
     public IActionResult Create()
@@ -75,6 +78,7 @@ public class AvaliacaoUCController : Controller
         return View(avaliacaouc);
     }
 
+
     // GET: AvaliacaoUC/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
@@ -90,8 +94,16 @@ public class AvaliacaoUCController : Controller
             return NotFound();
         }
 
+        ViewBag.TiposAvaliacao = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            _context.TiposAvaliacao.OrderBy(t => t.T_Avaliacao),
+            "T_Avaliacao",
+            "Tipo_Prova",
+            avaliacaouc.T_Avaliacao
+        );
+
         return View(avaliacaouc);
     }
+
 
     // POST: AvaliacaoUC/Edit/5
     [HttpPost]
@@ -125,7 +137,16 @@ public class AvaliacaoUCController : Controller
             return RedirectToAction(nameof(Index));
         }
 
+
+        ViewBag.TiposAvaliacao = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            _context.TiposAvaliacao.OrderBy(t => t.T_Avaliacao),
+            "T_Avaliacao",
+            "Tipo_Prova",
+            avaliacaouc.T_Avaliacao
+        );
+
         return View(avaliacaouc);
+
     }
 
     // GET: AvaliacaoUC/Delete/5
