@@ -14,13 +14,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SubmissaoID)
+                @Html.DisplayNameFor(model => model.SubmissaoTrabalhoId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DocenteID)
+                @Html.DisplayNameFor(model => model.DocenteId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Data_Feedback)
+                @Html.DisplayNameFor(model => model.DataFeedback)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Descricao)
@@ -36,13 +36,13 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SubmissaoID)
+                    @Html.DisplayFor(modelItem => item.SubmissaoTrabalhoId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DocenteID)
+                    @Html.DisplayFor(modelItem => item.DocenteId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Data_Feedback)
+                    @Html.DisplayFor(modelItem => item.DataFeedback)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Descricao)
@@ -51,9 +51,9 @@
                     @Html.DisplayFor(modelItem => item.Nota)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.FeedbackID" class="btn btn-sm btn-warning">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.FeedbackID" class="btn btn-sm btn-info">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@item.FeedbackID" class="btn btn-sm btn-danger">Eliminar</a>
+                    <a asp-action="Edit" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-warning">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-info">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-danger">Eliminar</a>
                 </td>
             </tr>
         }

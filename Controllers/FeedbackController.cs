@@ -27,7 +27,7 @@ public class FeedbackController : Controller
         }
 
         var feedback = await _context.Feedback
-            .FirstOrDefaultAsync(m => m.FeedbackID == id);
+            .FirstOrDefaultAsync(m => m.FeedbackId == id);
         if (feedback == null)
         {
             return NotFound();
@@ -77,7 +77,7 @@ public class FeedbackController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, [Bind("FeedbackID,SubmissaoID,DocenteID,Data_Feedback,Descricao,Nota")] Feedback feedback)
     {
-        if (id != feedback.FeedbackID)
+        if (id != feedback.FeedbackId)
         {
             return NotFound();
         }
@@ -91,7 +91,7 @@ public class FeedbackController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FeedbackExists(feedback.FeedbackID))
+                if (!FeedbackExists(feedback.FeedbackId))
                 {
                     return NotFound();
                 }
@@ -114,7 +114,7 @@ public class FeedbackController : Controller
         }
 
         var feedback = await _context.Feedback
-            .FirstOrDefaultAsync(m => m.FeedbackID == id);
+            .FirstOrDefaultAsync(m => m.FeedbackId == id);
         if (feedback == null)
         {
             return NotFound();
@@ -140,6 +140,6 @@ public class FeedbackController : Controller
 
     private bool FeedbackExists(int id)
     {
-        return _context.Feedback.Any(e => e.FeedbackID == id);
+        return _context.Feedback.Any(e => e.FeedbackId == id);
     }
 }

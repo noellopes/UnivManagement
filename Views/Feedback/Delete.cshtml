@@ -12,24 +12,24 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SubmissaoID)
+            @Html.DisplayNameFor(model => model.SubmissaoTrabalhoId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SubmissaoID)
+            @Html.DisplayFor(model => model.SubmissaoTrabalhoId)
         </dd>
         
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DocenteID)
+            @Html.DisplayNameFor(model => model.DocenteId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DocenteID)
+            @Html.DisplayFor(model => model.DocenteId)
         </dd>
         
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Data_Feedback)
+            @Html.DisplayNameFor(model => model.DataFeedback)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Data_Feedback)
+            @Html.DisplayFor(model => model.DataFeedback)
         </dd>
 
         <dt class="col-sm-2">
@@ -48,7 +48,7 @@
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="FeedbackID" />
+        <input type="hidden" asp-for="FeedbackId" />
         <input type="submit" value="Eliminar" class="btn btn-danger" /> |
         <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
     </form>
