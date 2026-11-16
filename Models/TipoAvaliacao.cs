@@ -1,17 +1,14 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace UnivManagement.Models
 {
     public class TipoAvaliacao
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int T_Avaliacao { get; set; }
+        public int TipoAvaliacaoId { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Tipo_Prova { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Por favor, insira o {0}.")]
+        [StringLength(50, ErrorMessage = "O campo {0} não pode exceder {1} carateres.")]
+        [Display(Name = "Tipo de Prova")]
+        public required string TipoProva { get; set; }
     }
 }

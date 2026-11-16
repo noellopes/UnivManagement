@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 
 namespace UnivManagement.Data
@@ -6,6 +7,7 @@ namespace UnivManagement.Data
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
     {
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -70,37 +72,6 @@ namespace UnivManagement.Data
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
-
-            // Tipos de avaliação
-            modelBuilder.Entity<AvaliacaoUC>()
-             .HasOne(a => a.TipoAvaliacao)
-              .WithMany()
-              .HasForeignKey(a => a.T_Avaliacao)
-              .OnDelete(DeleteBehavior.Restrict);
-            // Tipos de avaliação
-            modelBuilder.Entity<TipoAvaliacao>().HasData(
-                new TipoAvaliacao
-                {
-                    T_Avaliacao = 1,
-                    Tipo_Prova = "Avaliação Contínua"
-                },
-                new TipoAvaliacao
-                {
-                    T_Avaliacao = 2,
-                    Tipo_Prova = "Exame"
-                },
-                new TipoAvaliacao
-                {
-                    T_Avaliacao = 3,
-                    Tipo_Prova = "Exame de Recurso"
-                },
-                new TipoAvaliacao
-                {
-                    T_Avaliacao = 4,
-                    Tipo_Prova = "Época Especial"
-                }
-            );
-
         }
 
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
@@ -144,7 +115,7 @@ namespace UnivManagement.Data
         public DbSet<TipoAvaliacao> TiposAvaliacao { get; set; } = default!;
         public DbSet<UnivManagement.Models.Feedback> Feedback { get; set; }
         public DbSet<Trabalho> Trabalhos { get; set; } = default!;
-        public DbSet<Notas> Notas { get; set; } = default!;
+        public DbSet<Nota> Notas { get; set; } = default!;
         // Grupo 3
     }
 }
