@@ -15,8 +15,14 @@ public class LivroController : Controller
     }
 
     // GET: Livro
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? successMessage = null)
     {
+
+        if(successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
+
         var livros = await _context.Livros
             .Include(l => l.LivrosAutores)
                 .ThenInclude(la => la.Autor)
@@ -199,7 +205,8 @@ public class LivroController : Controller
         _context.Livros.Remove(livro);
         await _context.SaveChangesAsync();
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index),
+            new {successMessage = "Livro eliminado com sucesso."});
     }
 
     private async Task CarregarAutores(

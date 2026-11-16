@@ -133,6 +133,11 @@
                    class="btn btn-warning">
                     ✏️ Editar Livro
                 </a>
+                <a asp-action="Delete"
+                   asp-route-id="@Model.LivroId"
+                   class="btn btn-danger">
+                    🗑️ Eliminar Livro
+                </a>
 
                 <a asp-action="Index"
                    class="btn btn-outline-secondary">
