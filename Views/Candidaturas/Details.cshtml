@@ -1,0 +1,61 @@
+@model UnivManagement.Models.Candidatura
+
+@{
+    ViewData["Title"] = "Detalhes da Candidatura";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-info text-white py-3">
+                    <h4 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Detalhes da Candidatura</h4>
+                </div>
+                <div class="card-body p-4">
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 text-muted">Estudante</dt>
+                        <dd class="col-sm-8 fw-semibold text-dark">
+                            @(Model.Estudante != null ? Model.Estudante.Nome : "Estudante Desconhecido")
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Oferta</dt>
+                        <dd class="col-sm-8 fw-semibold text-dark">
+                            @(Model.Oferta != null ? Model.Oferta.Titulo : "Oferta Desconhecida")
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Data da Candidatura</dt>
+                        <dd class="col-sm-8">
+                            @Model.DataCandidatura.ToShortDateString()
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Estado</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Estado == "Submetida")
+                            {
+                                <span class="badge bg-success bg-opacity-10 text-success px-2 py-1">@Model.Estado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning bg-opacity-10 text-warning px-2 py-1">@Model.Estado</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Currículo</dt>
+                        <dd class="col-sm-8 text-secondary">
+                            @Model.Curriculo
+                        </dd>
+                    </dl>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Voltar à Lista
+                        </a>
+                        <a asp-action="Edit" asp-route-idcandidatura="@Model.IdCandidatura" class="btn btn-primary">
+                            <i class="bi bi-pencil me-1"></i> Editar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

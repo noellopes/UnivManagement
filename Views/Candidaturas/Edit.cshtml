@@ -1,0 +1,66 @@
+@model UnivManagement.Models.Candidatura
+
+@{
+    ViewData["Title"] = "Editar Candidatura";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-secondary text-white py-3">
+                    <h4 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Editar Candidatura</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <input type="hidden" asp-for="IdCandidatura" />
+
+                        <div class="mb-3">
+                            <label asp-for="IdAluno" class="form-label fw-semibold">Estudante</label>
+                            <select asp-for="IdAluno" class="form-select" asp-items="@(new SelectList(ViewBag.Alunos, "IdAluno", "Nome"))">
+                                <option value="">-- Selecione um Estudante --</option>
+                            </select>
+                            <span asp-validation-for="IdAluno" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="IdOferta" class="form-label fw-semibold">Oferta</label>
+                            <select asp-for="IdOferta" class="form-select" asp-items="@(new SelectList(ViewBag.Ofertas, "IdOferta", "Titulo"))">
+                                <option value="">-- Selecione uma Oferta --</option>
+                            </select>
+                            <span asp-validation-for="IdOferta" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DataCandidatura" class="form-label fw-semibold">Data da Candidatura</label>
+                            <input asp-for="DataCandidatura" class="form-control" type="date" />
+                            <span asp-validation-for="DataCandidatura" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Curriculo" class="form-label fw-semibold">Currículo</label>
+                            <input asp-for="Curriculo" class="form-control" />
+                            <span asp-validation-for="Curriculo" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Voltar à Lista
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i> Guardar Alterações
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

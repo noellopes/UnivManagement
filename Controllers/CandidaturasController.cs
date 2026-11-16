@@ -1,8 +1,7 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models;
 using UnivManagement.Data;
+using UnivManagement.Models;
 
 public class CandidaturasController : Controller
 {
@@ -13,13 +12,36 @@ public class CandidaturasController : Controller
         _context = context;
     }
 
-    // GET: CANDIDATURAS
-    public async Task<IActionResult> Index()    
+    private async Task CarregarListas()
     {
-        return View(await _context.Candidaturas.ToListAsync());
+        ViewBag.Alunos = await _context.Estudantes.ToListAsync();
+        ViewBag.Ofertas = await _context.Ofertas.ToListAsync();
     }
 
-    // GET: CANDIDATURAS/Details/5
+    private string CalcularEstado(DateTime dataCandidatura)
+    {
+        DateTime hoje = DateTime.Today;
+
+        if (dataCandidatura.Date > hoje)
+        {
+            return "Pendente";
+        }
+
+        return "Submetida";
+    }
+
+    // GET: Candidaturas
+    public async Task<IActionResult> Index()
+    {
+        var candidaturas = await _context.Candidaturas
+            .Include(c => c.Estudante)
+            .Include(c => c.Oferta)
+            .ToListAsync();
+
+        return View(candidaturas);
+    }
+
+    // GET: Candidaturas/Details
     public async Task<IActionResult> Details(int? idcandidatura)
     {
         if (idcandidatura == null)
@@ -28,38 +50,73 @@ public class CandidaturasController : Controller
         }
 
         var candidatura = await _context.Candidaturas
-            .FirstOrDefaultAsync(m => m.IdCandidatura == idcandidatura);
+            .Include(c => c.Estudante)
+            .Include(c => c.Oferta)
+            .FirstOrDefaultAsync(c => c.IdCandidatura == idcandidatura);
+
         if (candidatura == null)
         {
             return NotFound();
         }
 
+        ViewBag.NomeAluno = candidatura.Estudante != null
+            ? candidatura.Estudante.Nome
+            : "Aluno não encontrado";
+
+        ViewBag.NomeOferta = candidatura.Oferta != null
+            ? candidatura.Oferta.Titulo
+            : "Oferta não encontrada";
+
         return View(candidatura);
     }
 
-    // GET: CANDIDATURAS/Create
-    public IActionResult Create()
+    // GET: Candidaturas/Create
+    public async Task<IActionResult> Create()
     {
+        await CarregarListas();
         return View();
     }
 
-    // POST: CANDIDATURAS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: Candidaturas/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("IdCandidatura,IdAluno,Estudante,IdOferta,Oferta,DataCandidatura,Estado,Curriculo")] Candidatura candidatura)
+    public async Task<IActionResult> Create(
+        int IdAluno,
+        int IdOferta,
+        DateTime DataCandidatura,
+        string Curriculo)
     {
-        if (ModelState.IsValid)
+        var candidatura = new Candidatura
         {
-            _context.Add(candidatura);
+            IdAluno = IdAluno,
+            IdOferta = IdOferta,
+            DataCandidatura = DataCandidatura,
+            Curriculo = Curriculo ?? string.Empty
+        };
+
+        if (!_context.Estudantes.Any(a => a.IdAluno == IdAluno))
+        {
+            ViewBag.ErroFormulario = "Selecione um aluno válido.";
+        }
+        else if (!_context.Ofertas.Any(o => o.IdOferta == IdOferta))
+        {
+            ViewBag.ErroFormulario = "Selecione uma oferta válida.";
+        }
+        else if (ModelState.IsValid)
+        {
+            candidatura.Estado = CalcularEstado(DataCandidatura);
+
+            _context.Candidaturas.Add(candidatura);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
+        await CarregarListas();
         return View(candidatura);
     }
 
-    // GET: CANDIDATURAS/Edit/5
+    // GET: Candidaturas/Edit
     public async Task<IActionResult> Edit(int? idcandidatura)
     {
         if (idcandidatura == null)
@@ -68,30 +125,56 @@ public class CandidaturasController : Controller
         }
 
         var candidatura = await _context.Candidaturas.FindAsync(idcandidatura);
+
         if (candidatura == null)
         {
             return NotFound();
         }
+
+        await CarregarListas();
         return View(candidatura);
     }
 
-    // POST: CANDIDATURAS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: Candidaturas/Edit
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? idcandidatura, [Bind("IdCandidatura,IdAluno,Estudante,IdOferta,Oferta,DataCandidatura,Estado,Curriculo")] Candidatura candidatura)
+    public async Task<IActionResult> Edit(
+        int? idcandidatura,
+        int IdAluno,
+        int IdOferta,
+        DateTime DataCandidatura,
+        string Curriculo)
     {
-        if (idcandidatura != candidatura.IdCandidatura)
+        if (idcandidatura == null)
         {
             return NotFound();
         }
 
-        if (ModelState.IsValid)
+        var candidatura = await _context.Candidaturas.FindAsync(idcandidatura);
+
+        if (candidatura == null)
         {
+            return NotFound();
+        }
+
+        if (!_context.Estudantes.Any(a => a.IdAluno == IdAluno))
+        {
+            ViewBag.ErroFormulario = "Selecione um aluno válido.";
+        }
+        else if (!_context.Ofertas.Any(o => o.IdOferta == IdOferta))
+        {
+            ViewBag.ErroFormulario = "Selecione uma oferta válida.";
+        }
+        else if (ModelState.IsValid)
+        {
+            candidatura.IdAluno = IdAluno;
+            candidatura.IdOferta = IdOferta;
+            candidatura.DataCandidatura = DataCandidatura;
+            candidatura.Curriculo = Curriculo ?? string.Empty;
+            candidatura.Estado = CalcularEstado(DataCandidatura);
+
             try
             {
-                _context.Update(candidatura);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -105,12 +188,16 @@ public class CandidaturasController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction(nameof(Details),
+                new { idcandidatura = candidatura.IdCandidatura });
         }
+
+        await CarregarListas();
         return View(candidatura);
     }
 
-    // GET: CANDIDATURAS/Delete/5
+    // GET: Candidaturas/Delete
     public async Task<IActionResult> Delete(int? idcandidatura)
     {
         if (idcandidatura == null)
@@ -119,7 +206,10 @@ public class CandidaturasController : Controller
         }
 
         var candidatura = await _context.Candidaturas
-            .FirstOrDefaultAsync(m => m.IdCandidatura == idcandidatura);
+            .Include(c => c.Estudante)
+            .Include(c => c.Oferta)
+            .FirstOrDefaultAsync(c => c.IdCandidatura == idcandidatura);
+
         if (candidatura == null)
         {
             return NotFound();
@@ -128,23 +218,24 @@ public class CandidaturasController : Controller
         return View(candidatura);
     }
 
-    // POST: CANDIDATURAS/Delete/5
+    // POST: Candidaturas/Delete
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? idcandidatura)
     {
         var candidatura = await _context.Candidaturas.FindAsync(idcandidatura);
+
         if (candidatura != null)
         {
             _context.Candidaturas.Remove(candidatura);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool CandidaturaExists(int? idcandidatura)
     {
-        return _context.Candidaturas.Any(e => e.IdCandidatura == idcandidatura);
+        return _context.Candidaturas.Any(c => c.IdCandidatura == idcandidatura);
     }
 }

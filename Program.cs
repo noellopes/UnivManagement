@@ -18,7 +18,6 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationUsersDbContext>();
-
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -32,17 +31,10 @@ if (app.Environment.IsDevelopment())
     {
         var db = servicesScope.ServiceProvider.GetRequiredService<UniversityDbContext>();
 
-        // Garante que a base de dados está criada e aplica o Seed Data
+        // Garante que a base de dados está criada e aplica o Seed Data completo
         db.Database.EnsureCreated();
 
-        if (!db.Estudantes.Any())
-        {
-            db.Estudantes.AddRange(
-                new Estudante { Nome = "João Pereira", Email = "joao.pereira@universidade.pt", Curso = "Engenharia Informática", SituacaoProfissional = "Estudante" },
-                new Estudante { Nome = "Sofia Martins", Email = "sofia.martins@universidade.pt", Curso = "Engenharia Informática", SituacaoProfissional = "Estudante" }
-            );
-            db.SaveChanges();
-        }
+        SeedData.Initialize(db);
     }
 }
 else
