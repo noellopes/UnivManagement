@@ -2,7 +2,7 @@
 
 namespace UnivManagement.Models.AccommodationManagement;
 
-public class Room
+public class Room1
 {
     public int RoomId { get; set; }
 
@@ -39,7 +39,7 @@ public class RoomType
     [Display(Name = "Nome")]
     public required string Name { get; set; }
 
-    public ICollection<Room> Rooms { get; set; } = new List<Room>();
+    public ICollection<Room1> Rooms { get; set; } = new List<Room1>();
 }
 
 public class RoomStatus
@@ -51,5 +51,5 @@ public class RoomStatus
     [Display(Name = "Nome")]
     public required string Name { get; set; }
 
-    public ICollection<Room> Rooms { get; set; } = new List<Room>();
+    public ICollection<Room1> Rooms { get; set; } = new List<Room1>();
 }

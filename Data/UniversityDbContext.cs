@@ -35,18 +35,18 @@ namespace UnivManagement.Data
                 .IsUnique();
 
             // Room: número único por residência:
-            modelBuilder.Entity<Models.AccommodationManagement.Room>()
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
                 .HasIndex(r => new { r.ResidenceId, r.Number })
                 .IsUnique();
 
             // Room: relações com RoomType e RoomStatus (sem apagar quartos em cascata):
-            modelBuilder.Entity<Models.AccommodationManagement.Room>()
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
                 .HasOne(r => r.RoomType)
                 .WithMany(t => t.Rooms)
                 .HasForeignKey(r => r.RoomTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Models.AccommodationManagement.Room>()
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
                 .HasOne(r => r.RoomStatus)
                 .WithMany(s => s.Rooms)
                 .HasForeignKey(r => r.RoomStatusId)
@@ -77,7 +77,7 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
 
-        public DbSet<UnivManagement.Models.AccommodationManagement.Room> Room { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.Room1> Room { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.RoomType> RoomType { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.RoomStatus> RoomStatus { get; set; } = default!;
     }
