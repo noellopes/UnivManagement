@@ -1,41 +1,46 @@
 @model IEnumerable<UnivManagement.Models.EstadoPossivel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Estados possíveis";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between align-items-start mb-3">
+    <div>
+        <h1 style="color: #1d4e6b;">Estados possíveis</h1>
+        <p class="text-muted mb-0">Gerir os estados por onde uma candidatura pode passar.</p>
+    </div>
+    <a asp-action="Create" class="btn text-white" style="background-color: #e8a33d; border-color: #e8a33d;">
+        + Adicionar estado
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NomeEstado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.NomeEstado)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Descricao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.EstadoPossivelId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.EstadoPossivelId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.EstadoPossivelId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="card shadow-sm" style="border-top: 4px solid #e8a33d;">
+    <div class="card-body">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th scope="col">Nome do estado</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col" class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@item.NomeEstado</td>
+                        <td class="text-muted">@item.Descricao</td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Details" asp-route-id="@item.EstadoPossivelId"
+                               class="btn btn-sm btn-outline-secondary">Detalhes</a>
+                            <a asp-action="Edit" asp-route-id="@item.EstadoPossivelId"
+                               class="btn btn-sm" style="color: #1d4e6b; border-color: #1d4e6b;">Editar</a>
+                            <a asp-action="Delete" asp-route-id="@item.EstadoPossivelId"
+                               class="btn btn-sm btn-outline-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
