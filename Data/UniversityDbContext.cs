@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
+using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+        public DbSet<UnivManagement.Models.FuncaoDocente> FuncaoDocente { get; set; } = default!;
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
@@ -63,10 +65,23 @@ namespace UnivManagement.Data {
                 .HasIndex(c => c.Code)
                 .IsUnique();
 
-            // Evita duplicações na tabela CourseStudyPlanYear:
-            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
-                .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
-                .IsUnique();
+            modelBuilder.Entity<CourseStudyPlanYear>()
+          .HasOne(c => c.Course)
+          .WithMany()
+          .HasForeignKey(c => c.CourseId)
+          .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CourseStudyPlanYear>()
+                .HasOne(c => c.StudyPlan)
+                .WithMany()
+                .HasForeignKey(c => c.StudyPlanId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CourseStudyPlanYear>()
+                .HasOne(c => c.AcademicYear)
+                .WithMany()
+                .HasForeignKey(c => c.AcademicYearId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
       
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
