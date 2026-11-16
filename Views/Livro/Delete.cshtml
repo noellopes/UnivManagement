@@ -1,85 +1,167 @@
-
 @model UnivManagement.Models.Livro
 
 @{
     ViewData["Title"] = "Eliminar Livro";
 }
 
-<h1>Eliminar Livro</h1>
+<div class="container mt-4 mb-5">
 
-<div class="alert alert-warning mt-3">
-    Tens a certeza de que pretendes eliminar este livro?
-</div>
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-2">
+            🗑️ Eliminar Livro
+        </h1>
 
-<div class="card shadow-sm">
-    <div class="card-body">
+        <p class="text-muted mb-0">
+            Confirma a eliminação do livro selecionado.
+        </p>
+    </div>
 
-        <h4 class="card-title">@Model.Titulo</h4>
+    <!-- Aviso de eliminação -->
+    <div class="alert alert-danger d-flex align-items-start gap-3 mb-4"
+         role="alert">
 
-        <dl class="row mt-4">
+        <span class="fs-4">⚠️</span>
 
-            <dt class="col-sm-3">
-                ISBN
-            </dt>
-            <dd class="col-sm-9">
-                @Model.ISBN
-            </dd>
+        <div>
+            <h5 class="alert-heading fw-bold">
+                Atenção! Esta ação é irreversível.
+            </h5>
 
-            <dt class="col-sm-3">
-                Título
-            </dt>
-            <dd class="col-sm-9">
-                @Model.Titulo
-            </dd>
+            <p class="mb-0">
+                Tens a certeza de que pretendes eliminar este livro?
+                Confirma os dados apresentados abaixo antes de continuar.
+            </p>
+        </div>
+    </div>
 
-            <dt class="col-sm-3">
-                Tipo
-            </dt>
-            <dd class="col-sm-9">
-                @Model.Tipo
-            </dd>
+    <!-- Cartão com os dados do livro -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
 
-            <dt class="col-sm-3">
-                Valor da Multa
-            </dt>
-            <dd class="col-sm-9">
-                @Model.ValorMulta.ToString("F2") €
-            </dd>
+        <div class="card-header bg-white p-4">
+            <h4 class="fw-bold mb-2">
+                📚 @Model.Titulo
+            </h4>
 
-            <dt class="col-sm-3">
-                Autores
-            </dt>
-            <dd class="col-sm-9">
-                @if (Model.LivrosAutores.Any())
-                {
-                    @string.Join(", ",
-                        Model.LivrosAutores.Select(la => la.Autor.Nome))
-                }
-                else
-                {
-                    <span>Sem autores associados</span>
-                }
-            </dd>
+            <p class="text-muted mb-0">
+                Livro selecionado para eliminação
+            </p>
+        </div>
 
-        </dl>
+        <div class="card-body p-4">
 
-        <form asp-action="Delete"
-              asp-route-id="@Model.LivroId"
-              method="post">
+            <h5 class="fw-semibold mb-4">
+                Informações do Livro
+            </h5>
 
-            @Html.AntiForgeryToken()
+            <div class="row g-4">
 
-            <input type="hidden" asp-for="LivroId" />
+                <!-- ISBN -->
+                <div class="col-md-6">
+                    <div class="text-muted fw-semibold mb-2">
+                        ISBN
+                    </div>
 
-            <button type="submit" class="btn btn-danger">
-                Eliminar Livro
-            </button>
+                    <div class="p-3 bg-light rounded-3">
+                        @Model.ISBN
+                    </div>
+                </div>
 
-            <a asp-action="Index" class="btn btn-secondary">
-                Cancelar
-            </a>
+                <!-- Título -->
+                <div class="col-md-6">
+                    <div class="text-muted fw-semibold mb-2">
+                        Título
+                    </div>
 
-        </form>
+                    <div class="p-3 bg-light rounded-3">
+                        @Model.Titulo
+                    </div>
+                </div>
 
+                <!-- Tipo -->
+                <div class="col-md-6">
+                    <div class="text-muted fw-semibold mb-2">
+                        Tipo
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3">
+                        <span class="badge bg-info text-dark">
+                            @Model.Tipo
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Valor da Multa -->
+                <div class="col-md-6">
+                    <div class="text-muted fw-semibold mb-2">
+                        Valor da Multa
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3">
+                        <span class="fw-bold text-danger">
+                            @Model.ValorMulta.ToString("F2") €
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Autores -->
+                <div class="col-12">
+                    <div class="text-muted fw-semibold mb-2">
+                        Autores
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3">
+                        @if (Model.LivrosAutores.Any())
+                        {
+                            <span class="fw-medium">
+                                @string.Join(", ",
+                                    Model.LivrosAutores.Select(la => la.Autor.Nome))
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-muted fst-italic">
+                                Sem autores associados
+                            </span>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Formulário de eliminação -->
+            <hr class="my-4" />
+
+            <form asp-action="Delete"
+                  asp-route-id="@Model.LivroId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="LivroId" />
+
+                <div class="d-flex gap-2 flex-wrap">
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        🗑️ Eliminar Livro
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        ← Cancelar
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-outline-primary">
+                        🏠 Voltar ao Início
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
     </div>
 </div>
