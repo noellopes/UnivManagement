@@ -144,7 +144,7 @@ namespace UnivManagement.Data
         public DbSet<TipoAvaliacao> TiposAvaliacao { get; set; } = default!;
         public DbSet<UnivManagement.Models.Feedback> Feedback { get; set; }
         public DbSet<Trabalho> Trabalhos { get; set; } = default!;
-        public DbSet<Notas> Notas { get; set; } = default!;
+        public DbSet<Nota> Notas { get; set; } = default!;
         // Grupo 3
     }
 }
