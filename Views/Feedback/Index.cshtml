@@ -10,52 +10,59 @@
     <a asp-action="Create" class="btn btn-primary">Criar Novo Feedback</a>
 </p>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SubmissaoTrabalhoId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DocenteId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataFeedback)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nota)
-            </th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@if (!Model.Any())
+{
+    <p>Ainda não há feedbacks registados.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SubmissaoTrabalhoId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocenteId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataFeedback)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nota)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-warning">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-info">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-danger">Eliminar</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubmissaoTrabalhoId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocenteId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataFeedback)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descricao)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nota)
+                </th>
+                <th>Ações</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubmissaoTrabalhoId)
+                    </td>
+                    <td>
+                        @item.Docente?.Nome
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataFeedback)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nota)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-warning">Editar</a> |
+                        <a asp-action="Details" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-info">Detalhes</a> |
+                        <a asp-action="Delete" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
