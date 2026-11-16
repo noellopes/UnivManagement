@@ -4,6 +4,7 @@ namespace UnivManagement.Models.AccommodationManagement;
 
 public class Room1
 {
+    [Key]
     public int RoomId { get; set; }
 
     [Display(Name = "Residência")]
