@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace UnivManagement.Models
 {
@@ -14,6 +15,7 @@ namespace UnivManagement.Models
         [ForeignKey(nameof(TipoAvaliacao))]
         public int T_Avaliacao { get; set; }
 
+        [ValidateNever]
         public TipoAvaliacao TipoAvaliacao { get; set; } = null!;
 
         [Required]
@@ -24,4 +26,3 @@ namespace UnivManagement.Models
         public DateTime Data { get; set; }
     }
 }
-

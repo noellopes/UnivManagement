@@ -1,5 +1,6 @@
-
+﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Data;
@@ -13,90 +14,109 @@ public class NotasController : Controller
         _context = context;
     }
 
-    // GET: NOTASS
-    public async Task<IActionResult> Index()    
+    // GET: Notas
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Notas.ToListAsync());
-    }
-
-    // GET: NOTASS/Details/5
-    public async Task<IActionResult> Details(int? notaid)
-    {
-        if (notaid == null)
-        {
-            return NotFound();
-        }
-
         var notas = await _context.Notas
-            .FirstOrDefaultAsync(m => m.NotaID == notaid);
-        if (notas == null)
-        {
-            return NotFound();
-        }
+            .Include(n => n.AvaliacaoUC)
+                .ThenInclude(a => a!.TipoAvaliacao)
+            .Include(n => n.InscrUC)
+            .ToListAsync();
 
         return View(notas);
     }
 
-    // GET: NOTASS/Create
+    // GET: Notas/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var nota = await _context.Notas
+            .Include(n => n.AvaliacaoUC)
+                .ThenInclude(a => a!.TipoAvaliacao)
+            .Include(n => n.InscrUC)
+            .FirstOrDefaultAsync(n => n.NotaID == id);
+
+        if (nota == null)
+        {
+            return NotFound();
+        }
+
+        return View(nota);
+    }
+
+    // GET: Notas/Create
     public IActionResult Create()
     {
+        PreencherListas();
         return View();
     }
 
-    // POST: NOTASS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: Notas/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("NotaID,AvaliacaoID,AvaliacaoUC,InscrUcID,InscrUC,Data,Nota,Aprovado")] Notas notas)
+    public async Task<IActionResult> Create([Bind("NotaID,AvaliacaoID,InscrUcID,Data,Nota")] Notas novaNota)
     {
+        // Aprovado quando a nota e 9,5 ou mais
+        novaNota.Aprovado = novaNota.Nota >= 9.5f;
+
         if (ModelState.IsValid)
         {
-            _context.Add(notas);
+            _context.Notas.Add(novaNota);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
-        return View(notas);
+
+        PreencherListas(novaNota.AvaliacaoID, novaNota.InscrUcID);
+        return View(novaNota);
     }
 
-    // GET: NOTASS/Edit/5
-    public async Task<IActionResult> Edit(int? notaid)
+    // GET: Notas/Edit/5
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (notaid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var notas = await _context.Notas.FindAsync(notaid);
-        if (notas == null)
+        var nota = await _context.Notas.FindAsync(id);
+
+        if (nota == null)
         {
             return NotFound();
         }
-        return View(notas);
+
+        PreencherListas(nota.AvaliacaoID, nota.InscrUcID);
+        return View(nota);
     }
 
-    // POST: NOTASS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: Notas/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? notaid, [Bind("NotaID,AvaliacaoID,AvaliacaoUC,InscrUcID,InscrUC,Data,Nota,Aprovado")] Notas notas)
+    public async Task<IActionResult> Edit(int id, [Bind("NotaID,AvaliacaoID,InscrUcID,Data,Nota")] Notas notaEditada)
     {
-        if (notaid != notas.NotaID)
+        if (id != notaEditada.NotaID)
         {
             return NotFound();
         }
+
+        // Aprovado quando a nota e 9,5 ou mais
+        notaEditada.Aprovado = notaEditada.Nota >= 9.5f;
 
         if (ModelState.IsValid)
         {
             try
             {
-                _context.Update(notas);
+                _context.Notas.Update(notaEditada);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NotasExists(notas.NotaID))
+                if (!NotaExiste(notaEditada.NotaID))
                 {
                     return NotFound();
                 }
@@ -105,46 +125,71 @@ public class NotasController : Controller
                     throw;
                 }
             }
+
             return RedirectToAction(nameof(Index));
         }
-        return View(notas);
+
+        PreencherListas(notaEditada.AvaliacaoID, notaEditada.InscrUcID);
+        return View(notaEditada);
     }
 
-    // GET: NOTASS/Delete/5
-    public async Task<IActionResult> Delete(int? notaid)
+    // GET: Notas/Delete/5
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (notaid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var notas = await _context.Notas
-            .FirstOrDefaultAsync(m => m.NotaID == notaid);
-        if (notas == null)
+        var nota = await _context.Notas
+            .Include(n => n.AvaliacaoUC)
+                .ThenInclude(a => a!.TipoAvaliacao)
+            .Include(n => n.InscrUC)
+            .FirstOrDefaultAsync(n => n.NotaID == id);
+
+        if (nota == null)
         {
             return NotFound();
         }
 
-        return View(notas);
+        return View(nota);
     }
 
-    // POST: NOTASS/Delete/5
+    // POST: Notas/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? notaid)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var notas = await _context.Notas.FindAsync(notaid);
-        if (notas != null)
+        var nota = await _context.Notas.FindAsync(id);
+
+        if (nota != null)
         {
-            _context.Notas.Remove(notas);
+            _context.Notas.Remove(nota);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
-    private bool NotasExists(int? notaid)
+    private bool NotaExiste(int id)
     {
-        return _context.Notas.Any(e => e.NotaID == notaid);
+        return _context.Notas.Any(n => n.NotaID == id);
+    }
+
+    // Listas para escolher a avaliação e a inscrição nos formulários
+    private void PreencherListas(int? avaliacaoEscolhida = null, int? inscricaoEscolhida = null)
+    {
+        var avaliacoes = _context.AvaliacoesUC
+            .Include(a => a.TipoAvaliacao)
+            .OrderBy(a => a.Data)
+            .Select(a => new
+            {
+                a.AvaliacaoID,
+                Texto = a.TipoAvaliacao.Tipo_Prova + " - UC " + a.UcID + " - " + a.Data.ToString("dd/MM/yyyy")
+            })
+            .ToList();
+
+        ViewData["AvaliacaoID"] = new SelectList(avaliacoes, "AvaliacaoID", "Texto", avaliacaoEscolhida);
+        ViewData["InscrUcID"] = new SelectList(_context.InscrUC, "InscrUCId", "InscrUCId", inscricaoEscolhida);
     }
 }
