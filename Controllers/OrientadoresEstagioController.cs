@@ -49,7 +49,7 @@ public class OrientadoresEstagioController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Nome,Email,Password")] OrientadorEstagio orientadorestagio)
+        [Bind("Nome,Email")] OrientadorEstagio orientadorestagio)
     {
         if (ModelState.IsValid)
         {
@@ -87,9 +87,11 @@ public class OrientadoresEstagioController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
-    int? orientadorId, string Nome, string Email, string? Password)
+        int? orientadorId,
+        [Bind("OrientadorId,Nome,Email")] OrientadorEstagio formulario)
     {
-        if (orientadorId == null)
+        if (orientadorId == null ||
+            orientadorId != formulario.OrientadorId)
         {
             return NotFound();
         }
@@ -104,13 +106,8 @@ public class OrientadoresEstagioController : Controller
 
         if (ModelState.IsValid)
         {
-            orientadorestagio.Nome = Nome;
-            orientadorestagio.Email = Email;
-
-            if (!string.IsNullOrEmpty(Password))
-            {
-                orientadorestagio.Password = Password;
-            }
+            orientadorestagio.Nome = formulario.Nome;
+            orientadorestagio.Email = formulario.Email;
 
             try
             {
@@ -131,7 +128,7 @@ public class OrientadoresEstagioController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        return View(orientadorestagio);
+        return View(formulario);
     }
 
     // GET: OrientadoresEstagio/Delete/5

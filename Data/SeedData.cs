@@ -200,22 +200,22 @@ namespace UnivManagement.Data
 
             string[] nomes =
             {
-                "Carlos Andrade",
-                "Helena Marques",
-                "Manuel Tavares",
-                "Isabel Correia",
-                "Paulo Gonçalves",
-                "Teresa Martins",
-                "Jorge Almeida",
-                "Cristina Ferreira",
-                "Fernando Lopes",
-                "Sandra Ribeiro",
-                "António Cardoso",
-                "Luísa Santos",
-                "Rui Machado",
-                "Susana Pereira",
-                "José Oliveira"
-            };
+        "Carlos Andrade",
+        "Helena Marques",
+        "Manuel Tavares",
+        "Isabel Correia",
+        "Paulo Gonçalves",
+        "Teresa Martins",
+        "Jorge Almeida",
+        "Cristina Ferreira",
+        "Fernando Lopes",
+        "Sandra Ribeiro",
+        "António Cardoso",
+        "Luísa Santos",
+        "Rui Machado",
+        "Susana Pereira",
+        "José Oliveira"
+    };
 
             int i = 0;
 
@@ -228,8 +228,7 @@ namespace UnivManagement.Data
                     OrientadorEstagio orientador = new OrientadorEstagio
                     {
                         Nome = nomes[i % nomes.Length],
-                        Email = email,
-                        Password = "Orientador" + (i + 1) + "!"
+                        Email = email
                     };
 
                     db.OrientadoresEstagio.Add(orientador);

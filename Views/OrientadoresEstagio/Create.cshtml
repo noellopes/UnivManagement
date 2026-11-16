@@ -11,30 +11,28 @@
     <form asp-action="Create" method="post">
 
         <div class="mb-3">
-            <label class="form-label">Nome</label>
-            <input type="text"
-                   name="Nome"
-                   class="form-control"
-                   required />
+            <label asp-for="Nome" class="form-label">Nome</label>
+
+            <input asp-for="Nome"
+                   class="form-control" />
+
+            <span asp-validation-for="Nome"
+                  class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email"
-                   name="Email"
-                   class="form-control"
-                   required />
-        </div>
+            <label asp-for="Email" class="form-label">Email</label>
 
-        <div class="mb-3">
-            <label class="form-label">Password</label>
-            <input type="password"
-                   name="Password"
-                   class="form-control"
-                   required />
+            <input asp-for="Email"
+                   type="email"
+                   class="form-control" />
+
+            <span asp-validation-for="Email"
+                  class="text-danger"></span>
         </div>
 
         <div class="mt-4">
+
             <button type="submit" class="btn btn-primary">
                 Criar
             </button>
@@ -42,6 +40,7 @@
             <a asp-action="Index" class="btn btn-secondary">
                 Cancelar
             </a>
+
         </div>
 
     </form>

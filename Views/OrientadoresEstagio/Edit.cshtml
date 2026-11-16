@@ -12,37 +12,31 @@
           asp-route-orientadorId="@Model.OrientadorId"
           method="post">
 
-        <input type="hidden"
-               name="orientadorId"
-               value="@Model.OrientadorId" />
+        <input asp-for="OrientadorId" type="hidden" />
 
         <div class="mb-3">
-            <label class="form-label">Nome</label>
-            <input type="text"
-                   name="Nome"
-                   value="@Model.Nome"
-                   class="form-control"
-                   required />
+            <label asp-for="Nome" class="form-label">Nome</label>
+
+            <input asp-for="Nome"
+                   class="form-control" />
+
+            <span asp-validation-for="Nome"
+                  class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email"
-                   name="Email"
-                   value="@Model.Email"
-                   class="form-control"
-                   required />
-        </div>
+            <label asp-for="Email" class="form-label">Email</label>
 
-        <div class="mb-3">
-            <label class="form-label">Password</label>
-            <input type="password"
-                   name="Password"
-                   class="form-control"
-                   placeholder="Deixar vazio para manter a atual" />
+            <input asp-for="Email"
+                   type="email"
+                   class="form-control" />
+
+            <span asp-validation-for="Email"
+                  class="text-danger"></span>
         </div>
 
         <div class="mt-4">
+
             <button type="submit" class="btn btn-primary">
                 Guardar Alterações
             </button>
@@ -52,6 +46,7 @@
                class="btn btn-secondary">
                 Cancelar
             </a>
+
         </div>
 
     </form>

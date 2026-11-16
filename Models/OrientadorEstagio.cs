@@ -8,14 +8,12 @@ namespace UnivManagement.Models
         [Key]
         public int OrientadorId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O nome é obrigatório.")]
         public string Nome { get; set; }
 
-        [Required, EmailAddress]
+        [Required(ErrorMessage = "O email é obrigatório.")]
+        [EmailAddress(ErrorMessage = "Introduza um email válido.")]
         public string Email { get; set; }
-
-        [Required]
-        public string Password { get; set; }
 
         public ICollection<Estagio> Estagios { get; set; } = new List<Estagio>();
         public ICollection<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();
