@@ -5,7 +5,7 @@ namespace UnivManagement.Models.AccommodationManagement;
     /// <summary>
     /// Room model class from Accommodation Management domain.
     /// </summary>
-public class Room
+public class Room1
 {
 
     /* ID: */

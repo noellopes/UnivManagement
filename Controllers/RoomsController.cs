@@ -47,7 +47,7 @@ public class RoomsController : Controller
     // POST: Rooms/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("RoomId,ResidenceId,Number,Floor,Capacity,Type,Status")] Room room)
+    public async Task<IActionResult> Create([Bind("RoomId,ResidenceId,Number,Floor,Capacity,Type,Status")] Room1 room)
     {
         if (ModelState.IsValid)
         {
@@ -77,7 +77,7 @@ public class RoomsController : Controller
     // POST: Rooms/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("RoomId,ResidenceId,Number,Floor,Capacity,Type,Status")] Room room)
+    public async Task<IActionResult> Edit(int id, [Bind("RoomId,ResidenceId,Number,Floor,Capacity,Type,Status")] Room1 room)
     {
         if (id != room.RoomId)
         {
