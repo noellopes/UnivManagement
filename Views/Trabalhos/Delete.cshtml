@@ -1,82 +1,39 @@
 @model UnivManagement.Models.Trabalho
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar trabalho";
 }
 
-<h1>Delete</h1>
+<div class="container py-4">
+    <h1 class="h3 mb-4">Eliminar trabalho</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>UnivManagement.Models.Trabalho</h4>
-    <hr />
+    <div class="alert alert-warning">
+        Tens a certeza de que queres eliminar este trabalho?
+    </div>
+
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DocenteId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DocenteId)
-        </dd>
+        <dt class="col-sm-3">Título</dt>
+        <dd class="col-sm-9">@Model.Titulo</dd>
+
+        <dt class="col-sm-3">Descrição</dt>
+        <dd class="col-sm-9 text-break" style="white-space: pre-wrap;">@Model.Descricao</dd>
+
+        <dt class="col-sm-3">Tipo de trabalho</dt>
+        <dd class="col-sm-9">@(Model.E_individual ? "Individual" : "Em grupo")</dd>
+
+        <dt class="col-sm-3">Data-limite de entrega</dt>
+        <dd class="col-sm-9">@Model.Data_Limite.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-3">ID do docente</dt>
+        <dd class="col-sm-9">@Model.DocenteId</dd>
+
+        <dt class="col-sm-3">ID da unidade curricular</dt>
+        <dd class="col-sm-9">@Model.UcId</dd>
     </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Docente)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Docente)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UcId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UcId)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UC)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UC)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.E_individual)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.E_individual)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Titulo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Titulo)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descricao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descricao)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Data_Limite)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Data_Limite)
-        </dd>
-    </dl>
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="TrabalhoID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+
+    <form asp-action="Delete" asp-route-trabalhoid="@Model.TrabalhoID"
+          method="post" class="d-flex gap-2">
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
     </form>
 </div>

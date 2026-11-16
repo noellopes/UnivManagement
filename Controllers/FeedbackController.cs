@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models;
 using UnivManagement.Data;
+using UnivManagement.Models;
 
 public class FeedbackController : Controller
 {
@@ -12,13 +13,17 @@ public class FeedbackController : Controller
         _context = context;
     }
 
-    // GET: FEEDBACKS
+    // GET: Feedback
     public async Task<IActionResult> Index()
     {
-        return View(await _context.Feedback.ToListAsync());
+        var feedbacks = await _context.Feedback
+            .Include(f => f.Docente)
+            .ToListAsync();
+
+        return View(feedbacks);
     }
 
-    // GET: FEEDBACKS/Details/5
+    // GET: Feedback/Details/5
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
@@ -27,7 +32,9 @@ public class FeedbackController : Controller
         }
 
         var feedback = await _context.Feedback
-            .FirstOrDefaultAsync(m => m.FeedbackID == id);
+            .Include(f => f.Docente)
+            .FirstOrDefaultAsync(m => m.FeedbackId == id);
+
         if (feedback == null)
         {
             return NotFound();
@@ -36,16 +43,17 @@ public class FeedbackController : Controller
         return View(feedback);
     }
 
-    // GET: FEEDBACKS/Create
+    // GET: Feedback/Create
     public IActionResult Create()
     {
+        PreencherListas();
         return View();
     }
 
-    // POST: FEEDBACKS/Create
+    // POST: Feedback/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("FeedbackID,SubmissaoID,DocenteID,Data_Feedback,Descricao,Nota")] Feedback feedback)
+    public async Task<IActionResult> Create([Bind("FeedbackId,SubmissaoTrabalhoId,DocenteId,DataFeedback,Descricao,Nota")] Feedback feedback)
     {
         if (ModelState.IsValid)
         {
@@ -53,10 +61,12 @@ public class FeedbackController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        PreencherListas(feedback.DocenteId);
         return View(feedback);
     }
 
-    // GET: FEEDBACKS/Edit/5
+    // GET: Feedback/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -69,15 +79,17 @@ public class FeedbackController : Controller
         {
             return NotFound();
         }
+
+        PreencherListas(feedback.DocenteId);
         return View(feedback);
     }
 
-    // POST: FEEDBACKS/Edit/5
+    // POST: Feedback/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("FeedbackID,SubmissaoID,DocenteID,Data_Feedback,Descricao,Nota")] Feedback feedback)
+    public async Task<IActionResult> Edit(int id, [Bind("FeedbackId,SubmissaoTrabalhoId,DocenteId,DataFeedback,Descricao,Nota")] Feedback feedback)
     {
-        if (id != feedback.FeedbackID)
+        if (id != feedback.FeedbackId)
         {
             return NotFound();
         }
@@ -91,7 +103,7 @@ public class FeedbackController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FeedbackExists(feedback.FeedbackID))
+                if (!FeedbackExists(feedback.FeedbackId))
                 {
                     return NotFound();
                 }
@@ -102,10 +114,12 @@ public class FeedbackController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+
+        PreencherListas(feedback.DocenteId);
         return View(feedback);
     }
 
-    // GET: FEEDBACKS/Delete/5
+    // GET: Feedback/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -114,7 +128,9 @@ public class FeedbackController : Controller
         }
 
         var feedback = await _context.Feedback
-            .FirstOrDefaultAsync(m => m.FeedbackID == id);
+            .Include(f => f.Docente)
+            .FirstOrDefaultAsync(m => m.FeedbackId == id);
+
         if (feedback == null)
         {
             return NotFound();
@@ -123,7 +139,7 @@ public class FeedbackController : Controller
         return View(feedback);
     }
 
-    // POST: FEEDBACKS/Delete/5
+    // POST: Feedback/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
@@ -132,14 +148,19 @@ public class FeedbackController : Controller
         if (feedback != null)
         {
             _context.Feedback.Remove(feedback);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool FeedbackExists(int id)
     {
-        return _context.Feedback.Any(e => e.FeedbackID == id);
+        return _context.Feedback.Any(e => e.FeedbackId == id);
+    }
+
+    private void PreencherListas(int? docenteEscolhido = null)
+    {
+        ViewBag.Docentes = new SelectList(_context.Set<Docente>(), "DocenteId", "Nome", docenteEscolhido);
     }
 }

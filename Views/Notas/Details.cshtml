@@ -1,66 +1,32 @@
-@model UnivManagement.Models.Notas
+﻿@model UnivManagement.Models.Nota
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes da nota";
 }
 
-<h1>Details</h1>
+<h1>Detalhes da nota</h1>
+<hr />
 
-<div>
-    <h4>Notas</h4>
-    <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AvaliacaoID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AvaliacaoID)
-        </dd>
+        <dt class="col-sm-3">Avaliação</dt>
+        <dd class="col-sm-9">@Model.AvaliacaoUC?.TipoAvaliacao?.Tipo_Prova - UC @Model.AvaliacaoUC?.UcID</dd>
+
+        <dt class="col-sm-3">Data da avaliação</dt>
+        <dd class="col-sm-9">@Model.AvaliacaoUC?.Data.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-3">Inscrição na UC</dt>
+        <dd class="col-sm-9">Nº @Model.InscrUcId</dd>
+
+        <dt class="col-sm-3">Data da nota</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Data)</dd>
+
+        <dt class="col-sm-3">Nota</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Valor)</dd>
+
+        <dt class="col-sm-3">Aprovado</dt>
+        <dd class="col-sm-9">@(Model.Aprovado ? "Sim" : "Não")</dd>
     </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AvaliacaoUC)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AvaliacaoUC)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InscrUcID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InscrUcID)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InscrUC)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InscrUC)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Data)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Data)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nota)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nota)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Aprovado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Aprovado)
-        </dd>
-    </dl>
-</div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.NotaID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.NotaId" class="btn btn-warning">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
 </div>

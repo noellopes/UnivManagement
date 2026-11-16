@@ -16,7 +16,6 @@ public class TrabalhosController : Controller
     // GET: TRABALHOS
     public async Task<IActionResult> Index()    
     {
-        System.Diagnostics.Debug.WriteLine("Base de dados de Trabalhos: " + _context.Database.GetDbConnection().Database);
         return View(await _context.Trabalhos.ToListAsync());
     }
 
@@ -49,7 +48,7 @@ public class TrabalhosController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("TrabalhoID,DocenteId,Docente,UcId,UC,E_individual,Titulo,Descricao,Data_Limite")] Trabalho trabalho)
+    public async Task<IActionResult> Create([Bind("DocenteId,UcId,E_individual,Titulo,Descricao,Data_Limite")] Trabalho trabalho)
     {
         if (ModelState.IsValid)
         {

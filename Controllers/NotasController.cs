@@ -38,7 +38,7 @@ public class NotasController : Controller
             .Include(n => n.AvaliacaoUC)
                 .ThenInclude(a => a!.TipoAvaliacao)
             .Include(n => n.InscrUC)
-            .FirstOrDefaultAsync(n => n.NotaID == id);
+            .FirstOrDefaultAsync(n => n.NotaId == id);
 
         if (nota == null)
         {
@@ -58,18 +58,21 @@ public class NotasController : Controller
     // POST: Notas/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("NotaID,AvaliacaoID,InscrUcID,Data,Nota,Aprovado")] Notas nota)
+    public async Task<IActionResult> Create([Bind("NotaId,AvaliacaoId,InscrUcId,Data,Valor")] Nota novaNota)
     {
+        // Aprovado quando a nota e 9,5 ou mais
+        novaNota.Aprovado = novaNota.Valor >= 9.5f;
+
         if (ModelState.IsValid)
         {
-            _context.Notas.Add(nota);
+            _context.Notas.Add(novaNota);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-        PreencherListas(nota.AvaliacaoID, nota.InscrUcID);
-        return View(nota);
+        PreencherListas(novaNota.AvaliacaoId, novaNota.InscrUcId);
+        return View(novaNota);
     }
 
     // GET: Notas/Edit/5
@@ -87,30 +90,33 @@ public class NotasController : Controller
             return NotFound();
         }
 
-        PreencherListas(nota.AvaliacaoID, nota.InscrUcID);
+        PreencherListas(nota.AvaliacaoId, nota.InscrUcId);
         return View(nota);
     }
 
     // POST: Notas/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("NotaID,AvaliacaoID,InscrUcID,Data,Nota,Aprovado")] Notas nota)
+    public async Task<IActionResult> Edit(int id, [Bind("NotaId,AvaliacaoId,InscrUcId,Data,Valor")] Nota notaEditada)
     {
-        if (id != nota.NotaID)
+        if (id != notaEditada.NotaId)
         {
             return NotFound();
         }
+
+        // Aprovado quando a nota e 9,5 ou mais
+        notaEditada.Aprovado = notaEditada.Valor >= 9.5f;
 
         if (ModelState.IsValid)
         {
             try
             {
-                _context.Notas.Update(nota);
+                _context.Notas.Update(notaEditada);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NotaExiste(nota.NotaID))
+                if (!NotaExiste(notaEditada.NotaId))
                 {
                     return NotFound();
                 }
@@ -123,8 +129,8 @@ public class NotasController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        PreencherListas(nota.AvaliacaoID, nota.InscrUcID);
-        return View(nota);
+        PreencherListas(notaEditada.AvaliacaoId, notaEditada.InscrUcId);
+        return View(notaEditada);
     }
 
     // GET: Notas/Delete/5
@@ -139,7 +145,7 @@ public class NotasController : Controller
             .Include(n => n.AvaliacaoUC)
                 .ThenInclude(a => a!.TipoAvaliacao)
             .Include(n => n.InscrUC)
-            .FirstOrDefaultAsync(n => n.NotaID == id);
+            .FirstOrDefaultAsync(n => n.NotaId == id);
 
         if (nota == null)
         {
@@ -167,7 +173,7 @@ public class NotasController : Controller
 
     private bool NotaExiste(int id)
     {
-        return _context.Notas.Any(n => n.NotaID == id);
+        return _context.Notas.Any(n => n.NotaId == id);
     }
 
     // Listas para escolher a avaliação e a inscrição nos formulários
@@ -183,7 +189,7 @@ public class NotasController : Controller
             })
             .ToList();
 
-        ViewData["AvaliacaoID"] = new SelectList(avaliacoes, "AvaliacaoID", "Texto", avaliacaoEscolhida);
-        ViewData["InscrUcID"] = new SelectList(_context.InscrUC, "InscrUCId", "InscrUCId", inscricaoEscolhida);
+        ViewData["AvaliacaoId"] = new SelectList(avaliacoes, "AvaliacaoID", "Texto", avaliacaoEscolhida);
+        ViewData["InscrUcId"] = new SelectList(_context.InscrUC, "InscrUCId", "InscrUCId", inscricaoEscolhida);
     }
 }

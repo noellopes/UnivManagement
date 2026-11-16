@@ -5,34 +5,33 @@ using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Models
 {
-    public class Notas
+    public class Nota
     {
-        [Key]
-        public int NotaID { get; set; }
+        public int NotaId { get; set; }
 
-        [Required(ErrorMessage = "A avaliação é obrigatória.")]
+        [Required(ErrorMessage = "Por favor, escolha a {0}.")]
         [Display(Name = "Avaliação")]
-        public int AvaliacaoID { get; set; }
+        public int AvaliacaoId { get; set; }
 
-        [ForeignKey(nameof(AvaliacaoID))]
+        [ForeignKey("AvaliacaoId")]
         public AvaliacaoUC? AvaliacaoUC { get; set; }
 
-        [Required(ErrorMessage = "A inscrição na UC é obrigatória.")]
+        [Required(ErrorMessage = "Por favor, escolha a {0}.")]
         [Display(Name = "Inscrição na UC")]
-        public int InscrUcID { get; set; }
+        public int InscrUcId { get; set; }
 
-        [ForeignKey(nameof(InscrUcID))]
+        [ForeignKey("InscrUcId")]
         public InscrUC? InscrUC { get; set; }
 
-        [Required(ErrorMessage = "A data é obrigatória.")]
+        [Required(ErrorMessage = "Por favor, insira a {0}.")]
         [DataType(DataType.Date)]
         [Display(Name = "Data")]
         public DateTime Data { get; set; }
 
-        [Required(ErrorMessage = "A nota é obrigatória.")]
-        [Range(0, 20, ErrorMessage = "A nota tem de estar entre 0 e 20.")]
+        [Required(ErrorMessage = "Por favor, insira a {0}.")]
+        [Range(0, 20, ErrorMessage = "A {0} tem de estar entre {1} e {2}.")]
         [Display(Name = "Nota")]
-        public float Nota { get; set; }
+        public float Valor { get; set; }
 
         [Display(Name = "Aprovado")]
         public bool Aprovado { get; set; }

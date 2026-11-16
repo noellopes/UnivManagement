@@ -1,71 +1,48 @@
-@model IEnumerable<UnivManagement.Models.Notas>
+﻿@model IEnumerable<UnivManagement.Models.Nota>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Notas";
 }
 
-<h1>Index</h1>
+<h1>Notas</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Lançar nova nota</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AvaliacaoID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AvaliacaoUC)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InscrUcID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InscrUC)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Data)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nota)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Aprovado)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.AvaliacaoID)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.AvaliacaoUC)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.InscrUcID)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.InscrUC)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Data)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Nota)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Aprovado)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.NotaID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.NotaID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.NotaID">Delete</a>
-            </td>
-        </tr>
+
+@if (!Model.Any())
+{
+    <p>Ainda não há notas lançadas.</p>
 }
-    </tbody>
-</table>
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Avaliação</th>
+                <th>Inscrição na UC</th>
+                <th>Data</th>
+                <th>Nota</th>
+                <th>Aprovado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.AvaliacaoUC?.TipoAvaliacao?.Tipo_Prova - UC @item.AvaliacaoUC?.UcID</td>
+                    <td>Nº @item.InscrUcId</td>
+                    <td>@Html.DisplayFor(modelItem => item.Data)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Valor)</td>
+                    <td>@(item.Aprovado ? "Sim" : "Não")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.NotaId" class="btn btn-sm btn-warning">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.NotaId" class="btn btn-sm btn-info">Detalhes</a>
+                        <a asp-action="Delete" asp-route-id="@item.NotaId" class="btn btn-sm btn-danger">Apagar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
