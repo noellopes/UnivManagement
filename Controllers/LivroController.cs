@@ -158,7 +158,8 @@ public class LivroController : Controller
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details),
+                new {id = livro.LivroId, successMessage =  "Os detalhes do livro foram alterados com sucesso"});
         }
 
         await CarregarAutores(autoresSelecionados);
