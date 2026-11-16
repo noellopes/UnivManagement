@@ -21,6 +21,13 @@
                 Esta ação não pode ser desfeita.
             </div>
 
+            @if (ViewBag.Erro != null)
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.Erro
+                </div>
+            }
+
             <h5 class="mb-3">Dados da Avaliação</h5>
 
             <dl class="row">
@@ -28,41 +35,36 @@
                     Tipo de Avaliação
                 </dt>
                 <dd class="col-sm-8">
-                    @Model.TipoAvaliacao.Tipo_Prova
+                    @Model.TipoAvaliacao?.TipoProva
                 </dd>
 
                 <dt class="col-sm-4">
                     Unidade Curricular
                 </dt>
                 <dd class="col-sm-8">
-                    @Model.UcID
+                    @Model.UcId
                 </dd>
 
                 <dt class="col-sm-4">
                     Data da Avaliação
                 </dt>
                 <dd class="col-sm-8">
-                    @Model.Data.ToString("dd/MM/yyyy")
+                    @Html.DisplayFor(model => model.Data)
                 </dd>
             </dl>
 
             <form asp-action="Delete" method="post">
 
-                <input type="hidden"
-                       asp-for="AvaliacaoID" />
+                <input type="hidden" asp-for="AvaliacaoUCId" />
 
                 <div class="d-flex gap-2 mt-4">
-
-                    <button type="submit"
-                            class="btn btn-danger">
+                    <button type="submit" class="btn btn-danger">
                         Eliminar Avaliação
                     </button>
 
-                    <a asp-action="Index"
-                       class="btn btn-secondary">
+                    <a asp-action="Index" class="btn btn-secondary">
                         Cancelar
                     </a>
-
                 </div>
 
             </form>

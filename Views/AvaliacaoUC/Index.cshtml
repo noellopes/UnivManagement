@@ -31,26 +31,25 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            
-                            <td>@item.TipoAvaliacao.Tipo_Prova</td>
-                            <td>@item.UcID</td>
-                            <td>@item.Data.ToString("dd/MM/yyyy")</td>
+                            <td>@item.TipoAvaliacao?.TipoProva</td>
+                            <td>@item.UcId</td>
+                            <td>@Html.DisplayFor(modelItem => item.Data)</td>
 
                             <td class="text-center">
                                 <a asp-action="Edit"
-                                   asp-route-id="@item.AvaliacaoID"
+                                   asp-route-id="@item.AvaliacaoUCId"
                                    class="btn btn-warning btn-sm">
                                     Editar
                                 </a>
 
                                 <a asp-action="Details"
-                                   asp-route-id="@item.AvaliacaoID"
+                                   asp-route-id="@item.AvaliacaoUCId"
                                    class="btn btn-info btn-sm">
                                     Detalhes
                                 </a>
 
                                 <a asp-action="Delete"
-                                   asp-route-id="@item.AvaliacaoID"
+                                   asp-route-id="@item.AvaliacaoUCId"
                                    class="btn btn-danger btn-sm">
                                     Eliminar
                                 </a>
