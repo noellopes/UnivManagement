@@ -88,29 +88,20 @@ public class OrientadoresEstagioController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
         int? orientadorId,
-        [Bind("OrientadorId,Nome,Email")] OrientadorEstagio formulario)
+        [Bind("OrientadorId,Nome,Email")] OrientadorEstagio orientadorestagio)
     {
         if (orientadorId == null ||
-            orientadorId != formulario.OrientadorId)
-        {
-            return NotFound();
-        }
-
-        var orientadorestagio = await _context.OrientadoresEstagio
-            .FindAsync(orientadorId);
-
-        if (orientadorestagio == null)
+            orientadorId <= 0 ||
+            orientadorId != orientadorestagio.OrientadorId)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            orientadorestagio.Nome = formulario.Nome;
-            orientadorestagio.Email = formulario.Email;
-
             try
             {
+                _context.Update(orientadorestagio);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -128,7 +119,7 @@ public class OrientadoresEstagioController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        return View(formulario);
+        return View(orientadorestagio);
     }
 
     // GET: OrientadoresEstagio/Delete/5
