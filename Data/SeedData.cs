@@ -310,15 +310,15 @@ namespace UnivManagement.Data
                 int idEmpresa =
                     empresas[i % empresas.Count].IdEmpresa;
 
-                int idOrientador =
-                    orientadores[i % orientadores.Count].IdOrientador;
+                int orientadorId =
+                    orientadores[i % orientadores.Count].OrientadorId;
 
                 string plano = planos[i % planos.Length];
 
                 if (!estagios.Any(e =>
                     e.StudentId == studentId &&
                     e.IdEmpresa == idEmpresa &&
-                    e.IdOrientador == idOrientador &&
+                    e.OrientadorId == orientadorId &&
                     e.DataInicio == dataInicio &&
                     e.DataFim == dataFim &&
                     e.PlanoTrabalhos == plano))
@@ -332,7 +332,7 @@ namespace UnivManagement.Data
                         PlanoTrabalhos = plano,
                         StudentId = studentId,
                         IdEmpresa = idEmpresa,
-                        IdOrientador = idOrientador
+                        OrientadorId = orientadorId
                     };
 
                     db.Estagios.Add(estagio);

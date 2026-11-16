@@ -9,12 +9,12 @@
 <div class="border rounded p-3 mt-4">
 
     <form asp-action="Edit"
-          asp-route-idorientador="@Model.IdOrientador"
+          asp-route-orientadorId="@Model.OrientadorId"
           method="post">
 
         <input type="hidden"
-               name="IdOrientador"
-               value="@Model.IdOrientador" />
+               name="orientadorId"
+               value="@Model.OrientadorId" />
 
         <div class="mb-3">
             <label class="form-label">Nome</label>
@@ -48,7 +48,7 @@
             </button>
 
             <a asp-action="Details"
-               asp-route-idorientador="@Model.IdOrientador"
+               asp-route-orientadorId="@Model.OrientadorId"
                class="btn btn-secondary">
                 Cancelar
             </a>

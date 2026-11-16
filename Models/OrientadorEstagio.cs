@@ -6,7 +6,7 @@ namespace UnivManagement.Models
     public class OrientadorEstagio
     {
         [Key]
-        public int IdOrientador { get; set; }
+        public int OrientadorId { get; set; }
 
         [Required]
         public string Nome { get; set; }

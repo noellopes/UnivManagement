@@ -67,15 +67,15 @@ public class EstagiosController : Controller
     }
 
     // GET: Estagios/Details
-    public async Task<IActionResult> Details(int? idestagio)
+    public async Task<IActionResult> Details(int? estagioId)
     {
-        if (idestagio == null)
+        if (estagioId == null)
         {
             return NotFound();
         }
 
         var estagio = await _context.Estagios
-            .FirstOrDefaultAsync(e => e.IdEstagio == idestagio);
+            .FirstOrDefaultAsync(e => e.EstagioId == estagioId);
 
         if (estagio == null)
         {
@@ -101,11 +101,11 @@ public class EstagiosController : Controller
 
         ViewBag.NomeOrientador = "Sem orientador";
 
-        if (estagio.IdOrientador != null)
+        if (estagio.OrientadorId != null)
         {
             var orientador = await _context.OrientadoresEstagio
                 .FirstOrDefaultAsync(o =>
-                    o.IdOrientador == estagio.IdOrientador);
+                    o.OrientadorId == estagio.OrientadorId);
 
             ViewBag.NomeOrientador = orientador != null
                 ? orientador.Nome
@@ -131,7 +131,7 @@ public class EstagiosController : Controller
         string PlanoTrabalhos,
         int StudentId,
         int IdEmpresa,
-        int? IdOrientador)
+        int? OrientadorId)
     {
         var estagio = new Estagio
         {
@@ -140,7 +140,7 @@ public class EstagiosController : Controller
             PlanoTrabalhos = PlanoTrabalhos,
             StudentId = StudentId,
             IdEmpresa = IdEmpresa,
-            IdOrientador = IdOrientador
+            OrientadorId = OrientadorId
         };
 
         if (DataFimAnterior(DataInicio, DataFim))
@@ -158,9 +158,9 @@ public class EstagiosController : Controller
             ViewBag.ErroFormulario =
                 "Selecione uma empresa válida.";
         }
-        else if (IdOrientador != null &&
+        else if (OrientadorId != null &&
                  !_context.OrientadoresEstagio.Any(
-                     o => o.IdOrientador == IdOrientador))
+                     o => o.OrientadorId == OrientadorId))
         {
             ViewBag.ErroFormulario =
                 "Selecione um orientador válido.";
@@ -184,14 +184,14 @@ public class EstagiosController : Controller
     }
 
     // GET: Estagios/Edit
-    public async Task<IActionResult> Edit(int? idestagio)
+    public async Task<IActionResult> Edit(int? estagioId)
     {
-        if (idestagio == null)
+        if (estagioId == null)
         {
             return NotFound();
         }
 
-        var estagio = await _context.Estagios.FindAsync(idestagio);
+        var estagio = await _context.Estagios.FindAsync(estagioId);
 
         if (estagio == null)
         {
@@ -206,20 +206,20 @@ public class EstagiosController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
-        int? idestagio,
+        int? estagioId,
         DateTime DataInicio,
         DateTime DataFim,
         string PlanoTrabalhos,
         int StudentId,
         int IdEmpresa,
-        int? IdOrientador)
+        int? OrientadorId)
     {
-        if (idestagio == null)
+        if (estagioId == null)
         {
             return NotFound();
         }
 
-        var estagio = await _context.Estagios.FindAsync(idestagio);
+        var estagio = await _context.Estagios.FindAsync(estagioId);
 
         if (estagio == null)
         {
@@ -241,9 +241,9 @@ public class EstagiosController : Controller
             ViewBag.ErroFormulario =
                 "Selecione uma empresa válida.";
         }
-        else if (IdOrientador != null &&
+        else if (OrientadorId != null &&
                  !_context.OrientadoresEstagio.Any(
-                     o => o.IdOrientador == IdOrientador))
+                     o => o.OrientadorId == OrientadorId))
         {
             ViewBag.ErroFormulario =
                 "Selecione um orientador válido.";
@@ -255,7 +255,7 @@ public class EstagiosController : Controller
             estagio.PlanoTrabalhos = PlanoTrabalhos;
             estagio.StudentId = StudentId;
             estagio.IdEmpresa = IdEmpresa;
-            estagio.IdOrientador = IdOrientador;
+            estagio.OrientadorId = OrientadorId;
 
             estagio.Duracao = CalcularDuracao(
                 DataInicio, DataFim);
@@ -269,7 +269,7 @@ public class EstagiosController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EstagioExists(estagio.IdEstagio))
+                if (!EstagioExists(estagio.EstagioId))
                 {
                     return NotFound();
                 }
@@ -280,7 +280,7 @@ public class EstagiosController : Controller
             }
 
             return RedirectToAction(nameof(Details),
-                new { idestagio = estagio.IdEstagio });
+                new { estagioId = estagio.EstagioId });
         }
 
         await CarregarListas();
@@ -288,15 +288,15 @@ public class EstagiosController : Controller
     }
 
     // GET: Estagios/Delete
-    public async Task<IActionResult> Delete(int? idestagio)
+    public async Task<IActionResult> Delete(int? estagioId)
     {
-        if (idestagio == null)
+        if (estagioId == null)
         {
             return NotFound();
         }
 
         var estagio = await _context.Estagios
-            .FirstOrDefaultAsync(e => e.IdEstagio == idestagio);
+            .FirstOrDefaultAsync(e => e.EstagioId == estagioId);
 
         if (estagio == null)
         {
@@ -309,9 +309,9 @@ public class EstagiosController : Controller
     // POST: Estagios/Delete
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? idestagio)
+    public async Task<IActionResult> DeleteConfirmed(int? estagioId)
     {
-        var estagio = await _context.Estagios.FindAsync(idestagio);
+        var estagio = await _context.Estagios.FindAsync(estagioId);
 
         if (estagio != null)
         {
@@ -322,8 +322,8 @@ public class EstagiosController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool EstagioExists(int? idestagio)
+    private bool EstagioExists(int? estagioId)
     {
-        return _context.Estagios.Any(e => e.IdEstagio == idestagio);
+        return _context.Estagios.Any(e => e.EstagioId == estagioId);
     }
 }

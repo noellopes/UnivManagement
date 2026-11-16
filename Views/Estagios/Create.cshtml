@@ -149,12 +149,12 @@
 
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label asp-for="IdOrientador"
+                        <label asp-for="OrientadorId"
                                class="form-label">
                             Orientador de Estágio
                         </label>
 
-                        <select asp-for="IdOrientador"
+                        <select asp-for="OrientadorId"
                                 class="form-select">
 
                             <option value="">
@@ -163,7 +163,7 @@
 
                             @foreach (UnivManagement.Models.OrientadorEstagio orientador in ViewBag.Orientadores)
                             {
-                                <option value="@orientador.IdOrientador">
+                                <option value="@orientador.OrientadorId">
                                     @orientador.Nome
                                 </option>
                             }

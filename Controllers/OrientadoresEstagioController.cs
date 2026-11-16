@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
@@ -20,15 +19,15 @@ public class OrientadoresEstagioController : Controller
     }
 
     // GET: OrientadoresEstagio/Details
-    public async Task<IActionResult> Details(int? idorientador)
+    public async Task<IActionResult> Details(int? orientadorId)
     {
-        if (idorientador == null)
+        if (orientadorId == null)
         {
             return NotFound();
         }
 
         var orientadorestagio = await _context.OrientadoresEstagio
-            .FirstOrDefaultAsync(m => m.IdOrientador == idorientador);
+            .FirstOrDefaultAsync(m => m.OrientadorId == orientadorId);
 
         if (orientadorestagio == null)
         {
@@ -62,15 +61,15 @@ public class OrientadoresEstagioController : Controller
     }
 
     // GET: OrientadoresEstagio/Edit
-    public async Task<IActionResult> Edit(int? idorientador)
+    public async Task<IActionResult> Edit(int? orientadorId)
     {
-        if (idorientador == null)
+        if (orientadorId == null)
         {
             return NotFound();
         }
 
         var orientadorestagio = await _context.OrientadoresEstagio
-            .FindAsync(idorientador);
+            .FindAsync(orientadorId);
 
         if (orientadorestagio == null)
         {
@@ -84,15 +83,15 @@ public class OrientadoresEstagioController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
-    int? idorientador, string Nome, string Email, string? Password)
+    int? orientadorId, string Nome, string Email, string? Password)
     {
-        if (idorientador == null)
+        if (orientadorId == null)
         {
             return NotFound();
         }
 
         var orientadorestagio = await _context.OrientadoresEstagio
-            .FindAsync(idorientador);
+            .FindAsync(orientadorId);
 
         if (orientadorestagio == null)
         {
@@ -115,7 +114,7 @@ public class OrientadoresEstagioController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrientadorEstagioExists(orientadorestagio.IdOrientador))
+                if (!OrientadorEstagioExists(orientadorestagio.OrientadorId))
                 {
                     return NotFound();
                 }
@@ -132,15 +131,15 @@ public class OrientadoresEstagioController : Controller
     }
 
     // GET: OrientadoresEstagio/Delete
-    public async Task<IActionResult> Delete(int? idorientador)
+    public async Task<IActionResult> Delete(int? orientadorId)
     {
-        if (idorientador == null)
+        if (orientadorId == null)
         {
             return NotFound();
         }
 
         var orientadorestagio = await _context.OrientadoresEstagio
-            .FirstOrDefaultAsync(m => m.IdOrientador == idorientador);
+            .FirstOrDefaultAsync(m => m.OrientadorId == orientadorId);
 
         if (orientadorestagio == null)
         {
@@ -153,15 +152,15 @@ public class OrientadoresEstagioController : Controller
     // POST: OrientadoresEstagio/Delete
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? idorientador)
+    public async Task<IActionResult> DeleteConfirmed(int? orientadorId)
     {
-        if (idorientador == null)
+        if (orientadorId == null)
         {
             return NotFound();
         }
 
         var orientadorestagio = await _context.OrientadoresEstagio
-            .FindAsync(idorientador);
+            .FindAsync(orientadorId);
 
         if (orientadorestagio != null)
         {
@@ -172,9 +171,9 @@ public class OrientadoresEstagioController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool OrientadorEstagioExists(int? idorientador)
+    private bool OrientadorEstagioExists(int? orientadorId)
     {
         return _context.OrientadoresEstagio
-            .Any(e => e.IdOrientador == idorientador);
+            .Any(e => e.OrientadorId == orientadorId);
     }
 }

@@ -12,7 +12,7 @@
     <div class="card-body">
 
         <h5 class="card-title">
-            Estágio nº @Model.IdEstagio
+            Estágio nº @Model.EstagioId
         </h5>
 
         <hr />
@@ -24,21 +24,17 @@
         <div class="row">
 
             <div class="col-md-6">
-
                 <p>
                     <strong>Data de Início:</strong>
                     @Model.DataInicio.ToString("dd/MM/yyyy")
                 </p>
-
             </div>
 
             <div class="col-md-6">
-
                 <p>
                     <strong>Data de Fim:</strong>
                     @Model.DataFim.ToString("dd/MM/yyyy")
                 </p>
-
             </div>
 
         </div>
@@ -59,8 +55,8 @@
 <form asp-action="Delete" method="post">
 
     <input type="hidden"
-           name="idestagio"
-           value="@Model.IdEstagio" />
+           name="estagioId"
+           value="@Model.EstagioId" />
 
     <div class="mt-4">
 
@@ -70,7 +66,7 @@
         </button>
 
         <a asp-action="Details"
-           asp-route-idestagio="@Model.IdEstagio"
+           asp-route-estagioId="@Model.EstagioId"
            class="btn btn-secondary">
             Cancelar
         </a>

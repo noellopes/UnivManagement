@@ -9,7 +9,7 @@ namespace UnivManagement.Models
     public class Estagio
     {
         [Key]
-        public int IdEstagio { get; set; }
+        public int EstagioId { get; set; }
 
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
@@ -26,11 +26,11 @@ namespace UnivManagement.Models
         public Empresa? Empresa { get; set; }
 
         [ForeignKey("GestorEstagio")]
-        public int? IdGestor { get; set; }
+        public int? GestorId { get; set; }
         public GestorEstagio? GestorEstagio { get; set; }
 
         [ForeignKey("OrientadorEstagio")]
-        public int? IdOrientador { get; set; }
+        public int? OrientadorId { get; set; }
         public OrientadorEstagio? OrientadorEstagio { get; set; }
 
         public ICollection<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();

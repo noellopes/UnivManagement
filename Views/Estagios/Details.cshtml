@@ -12,7 +12,7 @@
     <div class="card-body">
 
         <h5 class="card-title">
-            Estágio nº @Model.IdEstagio
+            Estágio nº @Model.EstagioId
         </h5>
 
         <hr />
@@ -104,13 +104,13 @@
 <div class="mt-4">
 
     <a asp-action="Edit"
-       asp-route-idestagio="@Model.IdEstagio"
+       asp-route-estagioId="@Model.EstagioId"
        class="btn btn-primary">
         Editar
     </a>
 
     <a asp-action="Delete"
-       asp-route-idestagio="@Model.IdEstagio"
+       asp-route-estagioId="@Model.EstagioId"
        class="btn btn-danger">
         Eliminar
     </a>

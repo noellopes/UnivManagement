@@ -22,15 +22,15 @@
 
     <form asp-action="Delete" method="post">
 
-        <input type="hidden" name="idorientador"
-               value="@Model.IdOrientador" />
+        <input type="hidden" name="orientadorId"
+               value="@Model.OrientadorId" />
 
         <button type="submit" class="btn btn-danger">
             Eliminar
         </button>
 
         <a asp-action="Details"
-           asp-route-idorientador="@Model.IdOrientador"
+           asp-route-orientadorId="@Model.OrientadorId"
            class="btn btn-secondary">
             Cancelar
         </a>

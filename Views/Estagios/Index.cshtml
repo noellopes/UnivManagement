@@ -47,7 +47,7 @@
                     @foreach (var estagio in Model)
                     {
                         <tr>
-                            <td>@estagio.IdEstagio</td>
+                            <td>@estagio.EstagioId</td>
 
                             <td>
                                 @if (estagio.Student != null)
@@ -89,7 +89,7 @@
 
                             <td>
                                 <a asp-action="Details"
-                                   asp-route-idestagio="@estagio.IdEstagio"
+                                   asp-route-estagioId="@estagio.EstagioId"
                                    class="btn btn-secondary">
                                     Ver detalhes
                                 </a>
