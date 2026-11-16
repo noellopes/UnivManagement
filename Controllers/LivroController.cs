@@ -171,7 +171,7 @@ public class LivroController : Controller
             .FirstOrDefaultAsync(l => l.LivroId == id);
 
         if (livro == null)
-            return NotFound();
+            return View("NotFound");
 
         return View(livro);
     }
