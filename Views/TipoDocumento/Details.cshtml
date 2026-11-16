@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1 class="mb-4">Detalhes do tipo de documento</h1>
 
 <div>
     <h4>TipoDocumento</h4>
@@ -21,11 +21,18 @@
             @Html.DisplayNameFor(model => model.Obrigatorio)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Obrigatorio)
+            @if (Model.Obrigatorio)
+            {
+                <span class="badge rounded-pill text-bg-success">Sim</span>
+            }
+            else
+            {
+                <span class="badge rounded-pill text-bg-secondary">Não</span>
+            }
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.TipoDocumentoId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="d-flex gap-2 mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.TipoDocumentoId" class="btn btn-primary">Editar</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Voltar à lista</a>
 </div>
