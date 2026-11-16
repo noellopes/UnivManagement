@@ -1,0 +1,92 @@
+@model IEnumerable<UnivManagement.Models.Trabalho>
+
+@{
+    ViewData["Title"] = "Trabalhos";
+    var tipoSelecionado = ViewData["TipoSelecionado"] as string;
+    var temFiltro = tipoSelecionado is "individual" or "grupo";
+    var pesquisa = ViewData["Pesquisa"] as string;
+}
+<form asp-action="Index" method="get" class="d-flex flex-wrap align-items-end gap-2 mb-3">
+    <input type="hidden" name="tipo" value="@tipoSelecionado" />
+
+    <div>
+        <label for="pesquisa" class="form-label">Título do trabalho</label>
+        <input id="pesquisa" name="pesquisa" type="search"
+               value="@pesquisa" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary">Pesquisar</button>
+
+    <a asp-action="Index" asp-route-tipo="@tipoSelecionado"
+       class="btn btn-outline-secondary">Limpar pesquisa</a>
+</form>
+
+<div class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <h1 class="h3 mb-0">Trabalhos</h1>
+        <a asp-action="Create" class="btn btn-primary">Criar trabalho</a>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-3" role="group" aria-label="Filtrar por tipo">
+        <a asp-action="Index" asp-route-tipo="todos"
+           class="btn @(temFiltro ? "btn-outline-primary" : "btn-primary")">
+            Todos
+        </a>
+
+        <a asp-action="Index" asp-route-tipo="individual"
+           class="btn @(tipoSelecionado == "individual" ? "btn-primary" : "btn-outline-primary")">
+            Individuais
+        </a>
+
+        <a asp-action="Index" asp-route-tipo="grupo"
+           class="btn @(tipoSelecionado == "grupo" ? "btn-primary" : "btn-outline-primary")">
+            Em grupo
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p class="text-body-secondary">
+            @(temFiltro
+                ? "Não existem trabalhos deste tipo."
+                : "Ainda não existem trabalhos registados.")
+        </p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Título</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Data-limite</th>
+                        <th scope="col">Docente</th>
+                        <th scope="col">Unidade curricular</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var trabalho in Model)
+                    {
+                        <tr>
+                            <td>@trabalho.Titulo</td>
+                            <td>@(trabalho.E_individual ? "Individual" : "Em grupo")</td>
+                            <td>@trabalho.Data_Limite.ToString("dd/MM/yyyy")</td>
+                            <td>@(trabalho.Docente?.Nome ?? $"ID {trabalho.DocenteId}")</td>
+                            <td>@(trabalho.UC?.Name ?? $"ID {trabalho.UcId}")</td>
+                            <td>
+                                <a asp-action="Details" asp-route-trabalhoid="@trabalho.TrabalhoID"
+                                   class="btn btn-sm btn-outline-secondary">Detalhes</a>
+                                <a asp-action="Edit" asp-route-trabalhoid="@trabalho.TrabalhoID"
+                                   class="btn btn-sm btn-outline-primary">Editar</a>
+                                <a asp-action="Delete" asp-route-trabalhoid="@trabalho.TrabalhoID"
+                                   class="btn btn-sm btn-outline-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

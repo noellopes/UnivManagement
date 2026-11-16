@@ -1,0 +1,64 @@
+﻿@model UnivManagement.Models.Notas
+
+@{
+    ViewData["Title"] = "Editar nota";
+}
+
+<h1>Editar nota</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="NotaID" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="AvaliacaoID" class="form-label"></label>
+                <select asp-for="AvaliacaoID" class="form-select" asp-items="ViewBag.AvaliacaoID">
+                    <option value="">-- Escolha a avaliação --</option>
+                </select>
+                <span asp-validation-for="AvaliacaoID" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="InscrUcID" class="form-label"></label>
+                <select asp-for="InscrUcID" class="form-select" asp-items="ViewBag.InscrUcID">
+                    <option value="">-- Escolha a inscrição --</option>
+                </select>
+                <span asp-validation-for="InscrUcID" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Data" class="form-label"></label>
+                <input asp-for="Data" class="form-control" />
+                <span asp-validation-for="Data" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Nota" class="form-label"></label>
+                <input asp-for="Nota" class="form-control" step="0.1" min="0" max="20" />
+                <span asp-validation-for="Nota" class="text-danger"></span>
+                <div class="form-text">Com 9,5 ou mais o aluno fica aprovado automaticamente.</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Deixa escrever a nota com virgula (por exemplo 14,5)
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^\d+(,\d+)?$/.test(value);
+        };
+        // Verifica se a nota esta entre 0 e 20, tambem com virgula
+        $.validator.methods.range = function (value, element, param) {
+            var numero = parseFloat(value.replace(",", "."));
+            return this.optional(element) || (numero >= param[0] && numero <= param[1]);
+        };
+    </script>
+}
