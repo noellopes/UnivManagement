@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models.AccommodationManagement;
 using UnivManagement.Data;
+using UnivManagement.Models.AccommodationManagement;
 
-namespace UnivManagement.Controllers; // Confirma se tens o namespace aqui!
+namespace UnivManagement.Controllers;
 
 public class ApplicationStatusHistoriesController : Controller
 {
@@ -15,9 +16,23 @@ public class ApplicationStatusHistoriesController : Controller
     }
 
     // GET: ApplicationStatusHistories
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? applicationId)
     {
-        return View(await _context.ApplicationStatusHistory.ToListAsync());
+        var query = _context.ApplicationStatusHistory
+            .Include(h => h.AccommodationApplication)
+            .AsQueryable();
+
+        if (applicationId.HasValue)
+        {
+            query = query.Where(h => h.AccommodationApplicationId == applicationId.Value);
+            ViewBag.FilteredApplicationId = applicationId.Value;
+        }
+
+        var histories = await query
+            .OrderByDescending(h => h.ChangedAt)
+            .ToListAsync();
+
+        return View(histories);
     }
 
     // GET: ApplicationStatusHistories/Details/5
@@ -28,120 +43,83 @@ public class ApplicationStatusHistoriesController : Controller
             return NotFound();
         }
 
-        var applicationstatushistory = await _context.ApplicationStatusHistory
+        var history = await _context.ApplicationStatusHistory
+            .Include(h => h.AccommodationApplication)
             .FirstOrDefaultAsync(m => m.ApplicationStatusHistoryId == id);
-        if (applicationstatushistory == null)
+
+        if (history == null)
         {
             return NotFound();
         }
 
-        return View(applicationstatushistory);
+        return View(history);
     }
 
     // GET: ApplicationStatusHistories/Create
-    public IActionResult Create()
+    public IActionResult Create(int? applicationId)
     {
-        return View();
+        PopulateApplicationsDropDown(applicationId);
+
+        var model = new ApplicationStatusHistory
+        {
+            ChangedAt = DateTime.Now,
+            ChangedBy = User.Identity?.Name ?? string.Empty
+        };
+
+        if (applicationId.HasValue)
+        {
+            model.AccommodationApplicationId = applicationId.Value;
+        }
+
+        return View(model);
     }
 
     // POST: ApplicationStatusHistories/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ApplicationStatusHistoryId,AccommodationApplicationId,ChangedAt,ChangedBy")] ApplicationStatusHistory applicationstatushistory)
+    public async Task<IActionResult> Create([Bind("AccommodationApplicationId,Status,ChangedBy,Notes")] ApplicationStatusHistory history)
     {
-        if (ModelState.IsValid)
+        var application = await _context.AccommodationApplication
+            .FirstOrDefaultAsync(a => a.AccommodationApplicationId == history.AccommodationApplicationId);
+
+        if (application == null)
         {
-            _context.Add(applicationstatushistory);
+            ModelState.AddModelError("AccommodationApplicationId", "The selected application does not exist.");
+        }
+        else if (application.Status == history.Status)
+        {
+            ModelState.AddModelError("Status", $"The application is already in the '{history.Status}' status.");
+        }
+
+        if (ModelState.IsValid && application != null)
+        {
+            history.ChangedAt = DateTime.Now;
+
+            // Synchronize the current status on the AccommodationApplication record
+            application.Status = history.Status;
+            _context.Update(application);
+            _context.Add(history);
+
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            TempData["SuccessMessage"] = $"Application #{application.AccommodationApplicationId} status updated to {history.Status}.";
+            return RedirectToAction(nameof(Index), new { applicationId = application.AccommodationApplicationId });
         }
-        return View(applicationstatushistory);
+
+        PopulateApplicationsDropDown(history.AccommodationApplicationId);
+        return View(history);
     }
 
-    // GET: ApplicationStatusHistories/Edit/5
-    public async Task<IActionResult> Edit(int? id)
+    private void PopulateApplicationsDropDown(int? selectedApplicationId = null)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var applicationstatushistory = await _context.ApplicationStatusHistory.FindAsync(id);
-        if (applicationstatushistory == null)
-        {
-            return NotFound();
-        }
-        return View(applicationstatushistory);
-    }
-
-    // POST: ApplicationStatusHistories/Edit/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("ApplicationStatusHistoryId,AccommodationApplicationId,ChangedAt,ChangedBy")] ApplicationStatusHistory applicationstatushistory)
-    {
-        if (id != applicationstatushistory.ApplicationStatusHistoryId)
-        {
-            return NotFound();
-        }
-
-        if (ModelState.IsValid)
-        {
-            try
+        var applications = _context.AccommodationApplication
+            .OrderByDescending(a => a.AccommodationApplicationId)
+            .Select(a => new
             {
-                _context.Update(applicationstatushistory);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ApplicationStatusHistoryExists(applicationstatushistory.ApplicationStatusHistoryId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction(nameof(Index));
-        }
-        return View(applicationstatushistory);
-    }
+                a.AccommodationApplicationId,
+                Description = $"Application #{a.AccommodationApplicationId} (Student ID: {a.StudentId} | Current status: {a.Status})"
+            })
+            .ToList();
 
-    // GET: ApplicationStatusHistories/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var applicationstatushistory = await _context.ApplicationStatusHistory
-            .FirstOrDefaultAsync(m => m.ApplicationStatusHistoryId == id);
-        if (applicationstatushistory == null)
-        {
-            return NotFound();
-        }
-
-        return View(applicationstatushistory);
-    }
-
-    // POST: ApplicationStatusHistories/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-        var applicationstatushistory = await _context.ApplicationStatusHistory.FindAsync(id);
-        if (applicationstatushistory != null)
-        {
-            _context.ApplicationStatusHistory.Remove(applicationstatushistory);
-        }
-
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-
-    private bool ApplicationStatusHistoryExists(int id)
-    {
-        return _context.ApplicationStatusHistory.Any(e => e.ApplicationStatusHistoryId == id);
+        ViewBag.AccommodationApplicationId = new SelectList(applications, "AccommodationApplicationId", "Description", selectedApplicationId);
     }
 }
