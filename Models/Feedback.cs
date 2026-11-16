@@ -1,38 +1,34 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace UnivManagement.Models
 {
     public class Feedback
     {
-        [Key]
-        public int FeedbackID { get; set; }
+        public int FeedbackId { get; set; }
 
-        [Required(ErrorMessage = "A submissão é obrigatória.")]
+        [Required(ErrorMessage = "Por favor, insira a {0}.")]
         [Display(Name = "Submissão")]
-        public int SubmissaoID { get; set; }
+        public int SubmissaoTrabalhoId { get; set; }
 
-        [ForeignKey("SubmissaoID")]
-        //public virtual SubmissaoTrabalho SubmissaoTrabalho { get; set; }
+        // public SubmissaoTrabalho? SubmissaoTrabalho { get; set; } // Descomentar quando o Diogo criar a classe
 
-        [Required(ErrorMessage = "O docente é obrigatório.")]
+        [Required(ErrorMessage = "Por favor, escolha o {0}.")]
         [Display(Name = "Docente")]
-        public int DocenteID { get; set; }
+        public int DocenteId { get; set; }
 
-        [ForeignKey("DocenteID")]
-        public virtual Docente? Docente { get; set; }
+        public Docente? Docente { get; set; }
 
-        [Required(ErrorMessage = "A data de feedback é obrigatória.")]
+        [Required(ErrorMessage = "Por favor, insira a {0}.")]
         [DataType(DataType.Date)]
-        [Display(Name = "Data de Feedback")]
-        public DateTime Data_Feedback { get; set; }
+        [Display(Name = "Data do Feedback")]
+        public DateTime DataFeedback { get; set; }
 
-        [Required(ErrorMessage = "A descrição é obrigatória.")]
+        [Required(ErrorMessage = "Por favor, insira a {0}.")]
         [Display(Name = "Descrição")]
-        public string Descricao { get; set; }
+        public required string Descricao { get; set; }
 
-        [Required(ErrorMessage = "A nota é obrigatória.")]
+        [Required(ErrorMessage = "Por favor, insira a {0}.")]
+        [Range(0, 20, ErrorMessage = "A {0} tem de estar entre {1} e {2}.")]
         [Display(Name = "Nota")]
         public float Nota { get; set; }
     }
