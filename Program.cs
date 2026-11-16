@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
+using UnivManagement.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,19 +18,35 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationUsersDbContext>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) {
+if (app.Environment.IsDevelopment())
+{
     app.UseMigrationsEndPoint();
 
-    using (var servicesScope = app.Services.CreateScope()) {
-        var db = servicesScope.ServiceProvider.GetService<UniversityDbContext>();
-        SeedData.Populate(db);
+    using (var servicesScope = app.Services.CreateScope())
+    {
+        var db = servicesScope.ServiceProvider.GetRequiredService<UniversityDbContext>();
+
+        // Garante que a base de dados está criada e aplica o Seed Data
+        db.Database.EnsureCreated();
+
+        if (!db.Estudantes.Any())
+        {
+            db.Estudantes.AddRange(
+                new Estudante { Nome = "João Pereira", Email = "joao.pereira@universidade.pt", Curso = "Engenharia Informática", SituacaoProfissional = "Estudante" },
+                new Estudante { Nome = "Sofia Martins", Email = "sofia.martins@universidade.pt", Curso = "Engenharia Informática", SituacaoProfissional = "Estudante" }
+            );
+            db.SaveChanges();
+        }
     }
-} else {
+}
+else
+{
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();

@@ -37,6 +37,7 @@ namespace UnivManagement.Controllers
                 );
                 await _context.SaveChangesAsync();
             }
+            TempData["MensagemSucesso"] = "Dados de teste carregados com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -65,8 +66,6 @@ namespace UnivManagement.Controllers
         }
 
         // POST: Estudantes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdAluno,Nome,Email,Password,Curso,SituacaoProfissional")] Estudante estudante)
@@ -75,6 +74,10 @@ namespace UnivManagement.Controllers
             {
                 _context.Add(estudante);
                 await _context.SaveChangesAsync();
+
+                // Mensagem de sucesso ao criar
+                TempData["MensagemSucesso"] = "Estudante criado com sucesso!";
+
                 return RedirectToAction(nameof(Index));
             }
             return View(estudante);
@@ -97,8 +100,6 @@ namespace UnivManagement.Controllers
         }
 
         // POST: Estudantes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdAluno,Nome,Email,Password,Curso,SituacaoProfissional")] Estudante estudante)
@@ -114,6 +115,9 @@ namespace UnivManagement.Controllers
                 {
                     _context.Update(estudante);
                     await _context.SaveChangesAsync();
+
+                    // Mensagem de sucesso ao editar
+                    TempData["MensagemSucesso"] = "Estudante atualizado com sucesso!";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -158,9 +162,12 @@ namespace UnivManagement.Controllers
             if (estudante != null)
             {
                 _context.Estudantes.Remove(estudante);
+                await _context.SaveChangesAsync();
+
+                // Mensagem de sucesso ao apagar
+                TempData["MensagemSucesso"] = "Estudante eliminado com sucesso!";
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
