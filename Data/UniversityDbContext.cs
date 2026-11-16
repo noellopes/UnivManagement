@@ -2,11 +2,14 @@
 using UnivManagement.Models;
 using UnivManagement.Models.AcademicManagement;
 
-namespace UnivManagement.Data {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+namespace UnivManagement.Data
+{
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
+    {
         public DbSet<UnivManagement.Models.FuncaoDocente> FuncaoDocente { get; set; } = default!;
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             base.OnModelCreating(modelBuilder);
 
             // ServiceRequestType: two request types cannot have the same name
@@ -49,7 +52,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.Telephone)
                 .IsUnique();
-          
+
             // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
@@ -83,7 +86,7 @@ namespace UnivManagement.Data {
                 .HasForeignKey(c => c.AcademicYearId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
-      
+
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
@@ -107,8 +110,8 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
-        
-        public DbSet<AntigoAluno> AntigosAlunos { get; set; }
+
+        public DbSet<AntigoAluno> AntigosAlunos { get; set; } 
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
         public DbSet<Empregador> Empregadores { get; set; }
