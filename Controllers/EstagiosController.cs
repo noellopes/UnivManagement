@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
 using UnivManagement.Models;
@@ -12,11 +13,16 @@ public class EstagiosController : Controller
         _context = context;
     }
 
-    private async Task CarregarListas()
+    private void CarregarListas(Estagio? estagio = null)
     {
-        ViewBag.Alunos = await _context.Student.ToListAsync();
-        ViewBag.Empresas = await _context.Empresas.ToListAsync();
-        ViewBag.Orientadores = await _context.OrientadoresEstagio.ToListAsync();
+        ViewBag.StudentId = new SelectList(
+            _context.Student, "StudentId", "Name", estagio?.StudentId);
+
+        ViewBag.IdEmpresa = new SelectList(
+            _context.Empresas, "IdEmpresa", "Nome", estagio?.IdEmpresa);
+
+        ViewBag.OrientadorId = new SelectList(
+            _context.OrientadoresEstagio, "OrientadorId", "Nome", estagio?.OrientadorId);
     }
 
     private string CalcularEstado(DateTime dataInicio, DateTime dataFim)
@@ -89,9 +95,9 @@ public class EstagiosController : Controller
     }
 
     // GET: Estagios/Create
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
-        await CarregarListas();
+        CarregarListas();
         return View();
     }
 
@@ -101,41 +107,26 @@ public class EstagiosController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        DateTime DataInicio,
-        DateTime DataFim,
-        string PlanoTrabalhos,
-        int StudentId,
-        int IdEmpresa,
-        int? OrientadorId)
+        [Bind("DataInicio,DataFim,PlanoTrabalhos,StudentId,IdEmpresa,OrientadorId")] Estagio estagio)
     {
-        var estagio = new Estagio
-        {
-            DataInicio = DataInicio,
-            DataFim = DataFim,
-            PlanoTrabalhos = PlanoTrabalhos,
-            StudentId = StudentId,
-            IdEmpresa = IdEmpresa,
-            OrientadorId = OrientadorId
-        };
-
-        if (DataFimAnterior(DataInicio, DataFim))
+        if (DataFimAnterior(estagio.DataInicio, estagio.DataFim))
         {
             ViewBag.ErroDatas =
                 "A data de fim não pode ser anterior à data de início.";
         }
-        else if (!_context.Student.Any(a => a.StudentId == StudentId))
+        else if (!_context.Student.Any(a => a.StudentId == estagio.StudentId))
         {
             ViewBag.ErroFormulario =
                 "Selecione um aluno válido.";
         }
-        else if (!_context.Empresas.Any(e => e.IdEmpresa == IdEmpresa))
+        else if (!_context.Empresas.Any(e => e.IdEmpresa == estagio.IdEmpresa))
         {
             ViewBag.ErroFormulario =
                 "Selecione uma empresa válida.";
         }
-        else if (OrientadorId != null &&
+        else if (estagio.OrientadorId != null &&
                  !_context.OrientadoresEstagio.Any(
-                     o => o.OrientadorId == OrientadorId))
+                     o => o.OrientadorId == estagio.OrientadorId))
         {
             ViewBag.ErroFormulario =
                 "Selecione um orientador válido.";
@@ -143,18 +134,18 @@ public class EstagiosController : Controller
         else if (ModelState.IsValid)
         {
             estagio.Duracao = CalcularDuracao(
-                DataInicio, DataFim);
+                estagio.DataInicio, estagio.DataFim);
 
             estagio.Estado = CalcularEstado(
-                DataInicio, DataFim);
+                estagio.DataInicio, estagio.DataFim);
 
-            _context.Estagios.Add(estagio);
+            _context.Add(estagio);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-        await CarregarListas();
+        CarregarListas(estagio);
         return View(estagio);
     }
 
@@ -173,7 +164,7 @@ public class EstagiosController : Controller
             return NotFound();
         }
 
-        await CarregarListas();
+        CarregarListas(estagio);
         return View(estagio);
     }
 
@@ -184,64 +175,60 @@ public class EstagiosController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
         int? estagioId,
-        DateTime DataInicio,
-        DateTime DataFim,
-        string PlanoTrabalhos,
-        int StudentId,
-        int IdEmpresa,
-        int? OrientadorId)
+        [Bind("EstagioId,DataInicio,DataFim,PlanoTrabalhos,StudentId,IdEmpresa,OrientadorId")] Estagio estagio)
     {
-        if (estagioId == null)
+        if (estagioId == null ||
+            estagioId <= 0 ||
+            estagioId != estagio.EstagioId)
         {
             return NotFound();
         }
 
-        var estagio = await _context.Estagios.FindAsync(estagioId);
-
-        if (estagio == null)
-        {
-            return NotFound();
-        }
-
-        if (DataFimAnterior(DataInicio, DataFim))
+        if (DataFimAnterior(estagio.DataInicio, estagio.DataFim))
         {
             ViewBag.ErroDatas =
                 "A data de fim não pode ser anterior à data de início.";
         }
-        else if (!_context.Student.Any(a => a.StudentId == StudentId))
+        else if (!_context.Student.Any(a => a.StudentId == estagio.StudentId))
         {
             ViewBag.ErroFormulario =
                 "Selecione um aluno válido.";
         }
-        else if (!_context.Empresas.Any(e => e.IdEmpresa == IdEmpresa))
+        else if (!_context.Empresas.Any(e => e.IdEmpresa == estagio.IdEmpresa))
         {
             ViewBag.ErroFormulario =
                 "Selecione uma empresa válida.";
         }
-        else if (OrientadorId != null &&
+        else if (estagio.OrientadorId != null &&
                  !_context.OrientadoresEstagio.Any(
-                     o => o.OrientadorId == OrientadorId))
+                     o => o.OrientadorId == estagio.OrientadorId))
         {
             ViewBag.ErroFormulario =
                 "Selecione um orientador válido.";
         }
         else if (ModelState.IsValid)
         {
-            estagio.DataInicio = DataInicio;
-            estagio.DataFim = DataFim;
-            estagio.PlanoTrabalhos = PlanoTrabalhos;
-            estagio.StudentId = StudentId;
-            estagio.IdEmpresa = IdEmpresa;
-            estagio.OrientadorId = OrientadorId;
+            var dadosAtuais = await _context.Estagios
+                .Where(e => e.EstagioId == estagioId)
+                .Select(e => new { e.GestorId })
+                .FirstOrDefaultAsync();
+
+            if (dadosAtuais == null)
+            {
+                return NotFound();
+            }
+
+            estagio.GestorId = dadosAtuais.GestorId;
 
             estagio.Duracao = CalcularDuracao(
-                DataInicio, DataFim);
+                estagio.DataInicio, estagio.DataFim);
 
             estagio.Estado = CalcularEstado(
-                DataInicio, DataFim);
+                estagio.DataInicio, estagio.DataFim);
 
             try
             {
+                _context.Update(estagio);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -260,7 +247,7 @@ public class EstagiosController : Controller
                 new { estagioId = estagio.EstagioId });
         }
 
-        await CarregarListas();
+        CarregarListas(estagio);
         return View(estagio);
     }
 

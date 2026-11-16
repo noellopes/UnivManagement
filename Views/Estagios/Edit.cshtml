@@ -12,6 +12,8 @@
       asp-route-estagioId="@Model.EstagioId"
       method="post">
 
+    <input type="hidden" asp-for="EstagioId" />
+
     <div asp-validation-summary="All"
          class="text-danger"></div>
 
@@ -102,18 +104,12 @@
 
                         <select asp-for="StudentId"
                                 class="form-select"
+                                asp-items="ViewBag.StudentId"
                                 required>
 
                             <option value="">
                                 Selecione um aluno
                             </option>
-
-                            @foreach (UnivManagement.Models.AcademicManagement.Student aluno in ViewBag.Alunos)
-                            {
-                                <option value="@aluno.StudentId">
-                                    @aluno.Name
-                                </option>
-                            }
 
                         </select>
                     </div>
@@ -128,18 +124,12 @@
 
                         <select asp-for="IdEmpresa"
                                 class="form-select"
+                                asp-items="ViewBag.IdEmpresa"
                                 required>
 
                             <option value="">
                                 Selecione uma empresa
                             </option>
-
-                            @foreach (UnivManagement.Models.Empresa empresa in ViewBag.Empresas)
-                            {
-                                <option value="@empresa.IdEmpresa">
-                                    @empresa.Nome
-                                </option>
-                            }
 
                         </select>
                     </div>
@@ -157,18 +147,12 @@
                         </label>
 
                         <select asp-for="OrientadorId"
-                                class="form-select">
+                                class="form-select"
+                                asp-items="ViewBag.OrientadorId">
 
                             <option value="">
                                 Sem orientador
                             </option>
-
-                            @foreach (UnivManagement.Models.OrientadorEstagio orientador in ViewBag.Orientadores)
-                            {
-                                <option value="@orientador.OrientadorId">
-                                    @orientador.Nome
-                                </option>
-                            }
 
                         </select>
                     </div>
