@@ -1,4 +1,4 @@
-﻿@model UnivManagement.Models.Notas
+﻿@model UnivManagement.Models.Nota
 
 @{
     ViewData["Title"] = "Detalhes da nota";
@@ -15,18 +15,18 @@
         <dd class="col-sm-9">@Model.AvaliacaoUC?.Data.ToString("dd/MM/yyyy")</dd>
 
         <dt class="col-sm-3">Inscrição na UC</dt>
-        <dd class="col-sm-9">Nº @Model.InscrUcID</dd>
+        <dd class="col-sm-9">Nº @Model.InscrUcId</dd>
 
         <dt class="col-sm-3">Data da nota</dt>
         <dd class="col-sm-9">@Html.DisplayFor(model => model.Data)</dd>
 
         <dt class="col-sm-3">Nota</dt>
-        <dd class="col-sm-9">@Html.DisplayFor(model => model.Nota)</dd>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Valor)</dd>
 
         <dt class="col-sm-3">Aprovado</dt>
         <dd class="col-sm-9">@(Model.Aprovado ? "Sim" : "Não")</dd>
     </dl>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.NotaID" class="btn btn-warning">Editar</a>
+    <a asp-action="Edit" asp-route-id="@Model.NotaId" class="btn btn-warning">Editar</a>
     <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
 </div>

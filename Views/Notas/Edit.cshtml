@@ -1,4 +1,4 @@
-﻿@model UnivManagement.Models.Notas
+﻿@model UnivManagement.Models.Nota
 
 @{
     ViewData["Title"] = "Editar nota";
@@ -10,23 +10,23 @@
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Edit">
-            <input type="hidden" asp-for="NotaID" />
+            <input type="hidden" asp-for="NotaId" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="mb-3">
-                <label asp-for="AvaliacaoID" class="form-label"></label>
-                <select asp-for="AvaliacaoID" class="form-select" asp-items="ViewBag.AvaliacaoID">
+                <label asp-for="AvaliacaoId" class="form-label"></label>
+                <select asp-for="AvaliacaoId" class="form-select" asp-items="ViewBag.AvaliacaoId">
                     <option value="">-- Escolha a avaliação --</option>
                 </select>
-                <span asp-validation-for="AvaliacaoID" class="text-danger"></span>
+                <span asp-validation-for="AvaliacaoId" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="InscrUcID" class="form-label"></label>
-                <select asp-for="InscrUcID" class="form-select" asp-items="ViewBag.InscrUcID">
+                <label asp-for="InscrUcId" class="form-label"></label>
+                <select asp-for="InscrUcId" class="form-select" asp-items="ViewBag.InscrUcId">
                     <option value="">-- Escolha a inscrição --</option>
                 </select>
-                <span asp-validation-for="InscrUcID" class="text-danger"></span>
+                <span asp-validation-for="InscrUcId" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
@@ -36,9 +36,9 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="Nota" class="form-label"></label>
-                <input asp-for="Nota" class="form-control" step="0.1" min="0" max="20" />
-                <span asp-validation-for="Nota" class="text-danger"></span>
+                <label asp-for="Valor" class="form-label"></label>
+                <input asp-for="Valor" class="form-control" />
+                <span asp-validation-for="Valor" class="text-danger"></span>
                 <div class="form-text">Com 9,5 ou mais o aluno fica aprovado automaticamente.</div>
             </div>
 

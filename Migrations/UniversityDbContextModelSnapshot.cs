@@ -1033,34 +1033,34 @@ namespace UnivManagement.Migrations
                     b.ToTable("GestoresEstagio");
                 });
 
-            modelBuilder.Entity("UnivManagement.Models.Notas", b =>
+            modelBuilder.Entity("UnivManagement.Models.Nota", b =>
                 {
-                    b.Property<int>("NotaID")
+                    b.Property<int>("NotaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotaID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotaId"));
 
                     b.Property<bool>("Aprovado")
                         .HasColumnType("bit");
 
-                    b.Property<int>("AvaliacaoID")
+                    b.Property<int>("AvaliacaoId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("InscrUcID")
+                    b.Property<int>("InscrUcId")
                         .HasColumnType("int");
 
-                    b.Property<float>("Nota")
+                    b.Property<float>("Valor")
                         .HasColumnType("real");
 
-                    b.HasKey("NotaID");
+                    b.HasKey("NotaId");
 
-                    b.HasIndex("AvaliacaoID");
+                    b.HasIndex("AvaliacaoId");
 
-                    b.HasIndex("InscrUcID");
+                    b.HasIndex("InscrUcId");
 
                     b.ToTable("Notas");
                 });
@@ -1599,17 +1599,17 @@ namespace UnivManagement.Migrations
                     b.Navigation("Docente");
                 });
 
-            modelBuilder.Entity("UnivManagement.Models.Notas", b =>
+            modelBuilder.Entity("UnivManagement.Models.Nota", b =>
                 {
                     b.HasOne("UnivManagement.Models.AvaliacaoUC", "AvaliacaoUC")
                         .WithMany()
-                        .HasForeignKey("AvaliacaoID")
+                        .HasForeignKey("AvaliacaoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UnivManagement.Models.AcademicManagement.InscrUC", "InscrUC")
                         .WithMany()
-                        .HasForeignKey("InscrUcID")
+                        .HasForeignKey("InscrUcId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
