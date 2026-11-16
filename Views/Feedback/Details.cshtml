@@ -1,45 +1,52 @@
 @model UnivManagement.Models.Feedback
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Feedback";
 }
 
-<h1>Details</h1>
+<h1>Detalhes do Feedback</h1>
 
 <div>
     <h4>Feedback</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.SubmissaoID)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SubmissaoID)
         </dd>
-    </dl>
-        <dt class = "col-sm-2">
+        
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DocenteID)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DocenteID)
         </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Docente)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Docente)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
+        
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Data_Feedback)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Data_Feedback)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nota)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nota)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.FeedbackID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.FeedbackID" class="btn btn-warning">Editar</a> |
+    <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
 </div>

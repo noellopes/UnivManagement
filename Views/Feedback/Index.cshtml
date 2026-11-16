@@ -1,15 +1,16 @@
 @model IEnumerable<UnivManagement.Models.Feedback>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista de Feedback";
 }
 
-<h1>Index</h1>
+<h1>Lista de Feedback</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Criar Novo Feedback</a>
 </p>
-<table class="table">
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -19,35 +20,42 @@
                 @Html.DisplayNameFor(model => model.DocenteID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Docente)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Data_Feedback)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nota)
+            </th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.SubmissaoID)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DocenteID)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Docente)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Data_Feedback)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.FeedbackID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.FeedbackID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.FeedbackID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmissaoID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocenteID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data_Feedback)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nota)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.FeedbackID" class="btn btn-sm btn-warning">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.FeedbackID" class="btn btn-sm btn-info">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.FeedbackID" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
