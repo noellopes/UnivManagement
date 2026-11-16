@@ -26,7 +26,7 @@ public class LivroController : Controller
     }
 
     // GET: Livro/Details/5
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, string? successMessage = null)
     {
         if (id == null)
             return NotFound();
@@ -39,6 +39,11 @@ public class LivroController : Controller
         if (livro == null)
         {
             return View("NotFound");
+        }
+
+        if(successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
         }
             
 
@@ -74,7 +79,8 @@ public class LivroController : Controller
             _context.Livros.Add(livro);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Details), new { id = livro.LivroId});
+            return RedirectToAction(nameof(Details),
+                new { id = livro.LivroId, successMessage = "Livro criado com sucesso."});
         }
 
         await CarregarAutores(autoresSelecionados);
