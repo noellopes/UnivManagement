@@ -67,8 +67,17 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
+
+            // ApplicationStatusHistory: prevent deleting an application that already has status history
+            modelBuilder.Entity<Models.AccommodationManagement.ApplicationStatusHistory>()
+                    .HasOne(h => h.AccommodationApplication)
+                    .WithMany()
+                    .HasForeignKey(h => h.AccommodationApplicationId)
+                    .OnDelete(DeleteBehavior.Restrict);
         }
-      
+
+        
+
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
