@@ -66,7 +66,7 @@ public class EstagiosController : Controller
         return View(estagios);
     }
 
-    // GET: Estagios/Details
+    // GET: Estagios/Details/5
     public async Task<IActionResult> Details(int? estagioId)
     {
         if (estagioId == null)
@@ -123,6 +123,8 @@ public class EstagiosController : Controller
     }
 
     // POST: Estagios/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
@@ -183,7 +185,7 @@ public class EstagiosController : Controller
         return View(estagio);
     }
 
-    // GET: Estagios/Edit
+    // GET: Estagios/Edit/5
     public async Task<IActionResult> Edit(int? estagioId)
     {
         if (estagioId == null)
@@ -202,7 +204,9 @@ public class EstagiosController : Controller
         return View(estagio);
     }
 
-    // POST: Estagios/Edit
+    // POST: Estagios/Edit/5
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
@@ -287,7 +291,7 @@ public class EstagiosController : Controller
         return View(estagio);
     }
 
-    // GET: Estagios/Delete
+    // GET: Estagios/Delete/5
     public async Task<IActionResult> Delete(int? estagioId)
     {
         if (estagioId == null)
@@ -306,7 +310,7 @@ public class EstagiosController : Controller
         return View(estagio);
     }
 
-    // POST: Estagios/Delete
+    // POST: Estagios/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? estagioId)

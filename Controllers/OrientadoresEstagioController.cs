@@ -18,7 +18,7 @@ public class OrientadoresEstagioController : Controller
         return View(await _context.OrientadoresEstagio.ToListAsync());
     }
 
-    // GET: OrientadoresEstagio/Details
+    // GET: OrientadoresEstagio/Details/5
     public async Task<IActionResult> Details(int? orientadorId)
     {
         if (orientadorId == null)
@@ -44,6 +44,8 @@ public class OrientadoresEstagioController : Controller
     }
 
     // POST: OrientadoresEstagio/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
@@ -60,7 +62,7 @@ public class OrientadoresEstagioController : Controller
         return View(orientadorestagio);
     }
 
-    // GET: OrientadoresEstagio/Edit
+    // GET: OrientadoresEstagio/Edit/5
     public async Task<IActionResult> Edit(int? orientadorId)
     {
         if (orientadorId == null)
@@ -79,7 +81,9 @@ public class OrientadoresEstagioController : Controller
         return View(orientadorestagio);
     }
 
-    // POST: OrientadoresEstagio/Edit
+    // POST: OrientadoresEstagio/Edit/5
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
@@ -130,7 +134,7 @@ public class OrientadoresEstagioController : Controller
         return View(orientadorestagio);
     }
 
-    // GET: OrientadoresEstagio/Delete
+    // GET: OrientadoresEstagio/Delete/5
     public async Task<IActionResult> Delete(int? orientadorId)
     {
         if (orientadorId == null)
@@ -149,7 +153,7 @@ public class OrientadoresEstagioController : Controller
         return View(orientadorestagio);
     }
 
-    // POST: OrientadoresEstagio/Delete
+    // POST: OrientadoresEstagio/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? orientadorId)
