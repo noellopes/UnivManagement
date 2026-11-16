@@ -16,8 +16,13 @@ namespace UnivManagement.Controllers
         }
 
         // GET: Tecnicoes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? successMessage = null)
         {
+            if (successMessage != null)
+            {
+                ViewBag.SuccessMessage = successMessage;
+            }
+
             var tecnicos = _context.Tecnicos.Include(t => t.Departamento);
             return View(await tecnicos.ToListAsync());
         }
@@ -153,9 +158,10 @@ namespace UnivManagement.Controllers
             if (tecnico != null)
             {
                 _context.Tecnicos.Remove(tecnico);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { successMessage = "Técnico eliminado com sucesso." });
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
