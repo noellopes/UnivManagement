@@ -17,14 +17,6 @@ builder.Services.AddDbContext<UniversityDbContext>(options =>
 var usersConnectionString = builder.Configuration.GetConnectionString("UsersConnection")
     ?? throw new InvalidOperationException("Connection string 'UsersConnection' not found.");
 
-/*-------------------------------------------------------------------------------------------------*/
-// Ligação á base de dados de teste dos serviços
-var estagiosTesteConnectionString = builder.Configuration
-    .GetConnectionString("EstagiosTesteConnection");
-
-builder.Services.AddDbContext<EstagiosTesteDbContext>(options =>
-    options.UseSqlServer(estagiosTesteConnectionString));
-/*-------------------------------------------------------------------------------------------------*/
 
 builder.Services.AddDbContext<ApplicationUsersDbContext>(options =>
     options.UseSqlServer(usersConnectionString));
@@ -38,17 +30,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Seed the database with test data for EstagiosTesteDbContext
-if (app.Environment.IsDevelopment())
-{
-    using (var servicesScope = app.Services.CreateScope())
-    {
-        var db = servicesScope.ServiceProvider
-            .GetService<EstagiosTesteDbContext>();
-
-        EstagiosTesteSeedData.Populate(db);
-    }
-}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

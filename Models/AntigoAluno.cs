@@ -24,7 +24,6 @@ namespace UnivManagement.Models
 
         public Carreira Carreira { get; set; }
         public ICollection<Candidatura> Candidaturas { get; set; } = new List<Candidatura>();
-        public ICollection<Estagio> Estagios { get; set; } = new List<Estagio>();
 
         public void CriarConta() { }
         public void IniciarSessao() { }

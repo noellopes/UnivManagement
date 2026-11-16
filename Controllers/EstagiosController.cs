@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
-using UnivManagement.Models.TestesEstagios;
+using UnivManagement.Models;
 
 public class EstagiosController : Controller
 {
-    private readonly EstagiosTesteDbContext _context;
+    private readonly UniversityDbContext _context;
 
-    public EstagiosController(EstagiosTesteDbContext context)
+    public EstagiosController(UniversityDbContext context)
     {
         _context = context;
     }

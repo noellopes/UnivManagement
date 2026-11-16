@@ -1,4 +1,4 @@
-@model UnivManagement.Models.TestesEstagios.Estagio
+@model UnivManagement.Models.Estagio
 
 @{
     ViewData["Title"] = "Criar Estágio";
@@ -106,7 +106,7 @@
                                 Selecione um aluno
                             </option>
 
-                            @foreach (UnivManagement.Models.TestesEstagios.Student aluno in ViewBag.Alunos)
+                            @foreach (UnivManagement.Models.AcademicManagement.Student aluno in ViewBag.Alunos)
                             {
                                 <option value="@aluno.StudentId">
                                     @aluno.Name
@@ -132,7 +132,7 @@
                                 Selecione uma empresa
                             </option>
 
-                            @foreach (UnivManagement.Models.TestesEstagios.Empresa empresa in ViewBag.Empresas)
+                            @foreach (UnivManagement.Models.Empresa empresa in ViewBag.Empresas)
                             {
                                 <option value="@empresa.IdEmpresa">
                                     @empresa.Nome
@@ -161,7 +161,7 @@
                                 Sem orientador
                             </option>
 
-                            @foreach (UnivManagement.Models.TestesEstagios.OrientadorEstagio orientador in ViewBag.Orientadores)
+                            @foreach (UnivManagement.Models.OrientadorEstagio orientador in ViewBag.Orientadores)
                             {
                                 <option value="@orientador.IdOrientador">
                                     @orientador.Nome

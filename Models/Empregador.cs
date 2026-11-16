@@ -22,8 +22,6 @@ namespace UnivManagement.Models
         public int IdEmpresa { get; set; }
         public Empresa Empresa { get; set; }
 
-        public ICollection<Estagio> Estagios { get; set; } = new List<Estagio>();
-
         public void CriarConta() { }
         public void IniciarSessao() { }
         public void TerminarSessao() { }

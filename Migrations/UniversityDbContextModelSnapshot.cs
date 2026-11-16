@@ -857,13 +857,10 @@ namespace UnivManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdAluno")
+                    b.Property<int>("IdEmpresa")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdEmpregador")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdGestor")
+                    b.Property<int?>("IdGestor")
                         .HasColumnType("int");
 
                     b.Property<int?>("IdOrientador")
@@ -873,15 +870,18 @@ namespace UnivManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
                     b.HasKey("IdEstagio");
 
-                    b.HasIndex("IdAluno");
-
-                    b.HasIndex("IdEmpregador");
+                    b.HasIndex("IdEmpresa");
 
                     b.HasIndex("IdGestor");
 
                     b.HasIndex("IdOrientador");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Estagios");
                 });
@@ -1272,35 +1272,33 @@ namespace UnivManagement.Migrations
 
             modelBuilder.Entity("UnivManagement.Models.Estagio", b =>
                 {
-                    b.HasOne("UnivManagement.Models.AntigoAluno", "AntigoAluno")
-                        .WithMany("Estagios")
-                        .HasForeignKey("IdAluno")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UnivManagement.Models.Empregador", "Empregador")
-                        .WithMany("Estagios")
-                        .HasForeignKey("IdEmpregador")
+                    b.HasOne("UnivManagement.Models.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UnivManagement.Models.GestorEstagio", "GestorEstagio")
                         .WithMany("Estagios")
-                        .HasForeignKey("IdGestor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdGestor");
 
                     b.HasOne("UnivManagement.Models.OrientadorEstagio", "OrientadorEstagio")
                         .WithMany("Estagios")
                         .HasForeignKey("IdOrientador");
 
-                    b.Navigation("AntigoAluno");
+                    b.HasOne("UnivManagement.Models.AcademicManagement.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Empregador");
+                    b.Navigation("Empresa");
 
                     b.Navigation("GestorEstagio");
 
                     b.Navigation("OrientadorEstagio");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.Oferta", b =>
@@ -1350,13 +1348,6 @@ namespace UnivManagement.Migrations
 
                     b.Navigation("Carreira")
                         .IsRequired();
-
-                    b.Navigation("Estagios");
-                });
-
-            modelBuilder.Entity("UnivManagement.Models.Empregador", b =>
-                {
-                    b.Navigation("Estagios");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.Empresa", b =>
