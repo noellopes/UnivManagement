@@ -20,15 +20,15 @@ public class TipoDocumentoController : Controller
     }
 
     // GET: TIPODOCUMENTOS/Details/5
-    public async Task<IActionResult> Details(int? tipodocumentoid)
+    public async Task<IActionResult> Details(int? id)
     {
-        if (tipodocumentoid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var tipodocumento = await _context.TipoDocumento
-            .FirstOrDefaultAsync(m => m.TipoDocumentoId == tipodocumentoid);
+            .FirstOrDefaultAsync(m => m.TipoDocumentoId == id);
         if (tipodocumento == null)
         {
             return NotFound();
@@ -60,14 +60,14 @@ public class TipoDocumentoController : Controller
     }
 
     // GET: TIPODOCUMENTOS/Edit/5
-    public async Task<IActionResult> Edit(int? tipodocumentoid)
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (tipodocumentoid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var tipodocumento = await _context.TipoDocumento.FindAsync(tipodocumentoid);
+        var tipodocumento = await _context.TipoDocumento.FindAsync(id);
         if (tipodocumento == null)
         {
             return NotFound();
@@ -80,9 +80,9 @@ public class TipoDocumentoController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? tipodocumentoid, [Bind("TipoDocumentoId,NomeTipo,Obrigatorio")] TipoDocumento tipodocumento)
+    public async Task<IActionResult> Edit(int? id, [Bind("TipoDocumentoId,NomeTipo,Obrigatorio")] TipoDocumento tipodocumento)
     {
-        if (tipodocumentoid != tipodocumento.TipoDocumentoId)
+        if (id != tipodocumento.TipoDocumentoId)
         {
             return NotFound();
         }
@@ -111,15 +111,15 @@ public class TipoDocumentoController : Controller
     }
 
     // GET: TIPODOCUMENTOS/Delete/5
-    public async Task<IActionResult> Delete(int? tipodocumentoid)
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (tipodocumentoid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var tipodocumento = await _context.TipoDocumento
-            .FirstOrDefaultAsync(m => m.TipoDocumentoId == tipodocumentoid);
+            .FirstOrDefaultAsync(m => m.TipoDocumentoId == id);
         if (tipodocumento == null)
         {
             return NotFound();
@@ -131,9 +131,9 @@ public class TipoDocumentoController : Controller
     // POST: TIPODOCUMENTOS/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? tipodocumentoid)
+    public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var tipodocumento = await _context.TipoDocumento.FindAsync(tipodocumentoid);
+        var tipodocumento = await _context.TipoDocumento.FindAsync(id);
         if (tipodocumento != null)
         {
             _context.TipoDocumento.Remove(tipodocumento);
@@ -143,8 +143,8 @@ public class TipoDocumentoController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool TipoDocumentoExists(int? tipodocumentoid)
+    private bool TipoDocumentoExists(int? id)
     {
-        return _context.TipoDocumento.Any(e => e.TipoDocumentoId == tipodocumentoid);
+        return _context.TipoDocumento.Any(e => e.TipoDocumentoId == id);
     }
 }
