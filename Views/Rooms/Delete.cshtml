@@ -50,9 +50,17 @@
             @Model.RoomType?.Name
         </dd>
     </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RoomStatusId)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.RoomStatus?.Name
+        </dd>
+    </dl>
 
     <form asp-action="Delete" class="mt-3">
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="RoomId" />
         <input type="submit" value="Delete" class="btn btn-danger" />
         <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
     </form>
