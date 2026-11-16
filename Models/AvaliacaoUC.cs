@@ -1,28 +1,24 @@
-﻿
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace UnivManagement.Models
 {
     public class AvaliacaoUC
     {
-        [Key]
-        public int AvaliacaoID { get; set; }
+        public int AvaliacaoUCId { get; set; }
 
-        [Required]
-        [ForeignKey(nameof(TipoAvaliacao))]
-        public int T_Avaliacao { get; set; }
+        [Required(ErrorMessage = "Por favor, escolha o {0}.")]
+        [Display(Name = "Tipo de Avaliação")]
+        public int TipoAvaliacaoId { get; set; }
 
-        [ValidateNever]
-        public TipoAvaliacao TipoAvaliacao { get; set; } = null!;
+        public TipoAvaliacao? TipoAvaliacao { get; set; }
 
-        [Required]
-        public int UcID { get; set; }
+        [Required(ErrorMessage = "Por favor, insira a {0}.")]
+        [Display(Name = "Unidade Curricular")]
+        public int UcId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Por favor, insira a {0}.")]
         [DataType(DataType.Date)]
+        [Display(Name = "Data da Avaliação")]
         public DateTime Data { get; set; }
     }
 }
