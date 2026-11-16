@@ -74,7 +74,7 @@ public class LivroController : Controller
             _context.Livros.Add(livro);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id = livro.LivroId});
         }
 
         await CarregarAutores(autoresSelecionados);
