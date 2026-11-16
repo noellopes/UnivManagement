@@ -15,7 +15,9 @@ public class OrientadoresEstagioController : Controller
     // GET: OrientadoresEstagio
     public async Task<IActionResult> Index()
     {
-        return View(await _context.OrientadoresEstagio.ToListAsync());
+        return View(await _context.OrientadoresEstagio
+            .Include(o => o.Estagios)
+            .ToListAsync());
     }
 
     // GET: OrientadoresEstagio/Details/5
@@ -27,6 +29,7 @@ public class OrientadoresEstagioController : Controller
         }
 
         var orientadorestagio = await _context.OrientadoresEstagio
+            .Include(o => o.Estagios)
             .FirstOrDefaultAsync(m => m.OrientadorId == orientadorId);
 
         if (orientadorestagio == null)
@@ -131,6 +134,7 @@ public class OrientadoresEstagioController : Controller
         }
 
         var orientadorestagio = await _context.OrientadoresEstagio
+            .Include(o => o.Estagios)
             .FirstOrDefaultAsync(m => m.OrientadorId == orientadorId);
 
         if (orientadorestagio == null)
@@ -156,6 +160,13 @@ public class OrientadoresEstagioController : Controller
 
         if (orientadorestagio != null)
         {
+            if (await _context.Estagios.AnyAsync(
+                e => e.OrientadorId == orientadorId))
+            {
+                return RedirectToAction(nameof(Delete),
+                    new { orientadorId });
+            }
+
             _context.OrientadoresEstagio.Remove(orientadorestagio);
             await _context.SaveChangesAsync();
         }

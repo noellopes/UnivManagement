@@ -6,7 +6,17 @@
 
 <h2>Eliminar Orientador de Estágio</h2>
 
-<p>Tem a certeza de que pretende eliminar este orientador?</p>
+@if (Model.Estagios.Count > 0)
+{
+    <div class="alert alert-warning mt-4">
+        Não é possível eliminar este orientador porque possui
+        estágios associados.
+    </div>
+}
+else
+{
+    <p>Tem a certeza de que pretende eliminar este orientador?</p>
+}
 
 <div class="border rounded p-3 mt-4">
 
@@ -19,15 +29,28 @@
         <strong>Email:</strong>
         @Model.Email
     </p>
-
+    <p>
+        <strong>Estágios associados:</strong>
+        @Model.Estagios.Count
+    </p>
     <form asp-action="Delete" method="post">
 
-        <input type="hidden" name="orientadorId"
+        <input type="hidden"
+               name="orientadorId"
                value="@Model.OrientadorId" />
 
-        <button type="submit" class="btn btn-danger">
-            Eliminar
-        </button>
+        @if (Model.Estagios.Count == 0)
+        {
+            <button type="submit" class="btn btn-danger">
+                Eliminar
+            </button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-danger" disabled>
+                Eliminar
+            </button>
+        }
 
         <a asp-action="Details"
            asp-route-orientadorId="@Model.OrientadorId"
