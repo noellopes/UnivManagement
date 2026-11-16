@@ -77,12 +77,28 @@
 
                 <p>
                     <strong>Aluno:</strong>
-                    @ViewBag.NomeAluno
+
+                    @if (Model.Student != null)
+                    {
+                        @Html.DisplayFor(model => model.Student.Name)
+                    }
+                    else
+                    {
+                        <span>Aluno não encontrado</span>
+                    }
                 </p>
 
                 <p>
                     <strong>Empresa:</strong>
-                    @ViewBag.NomeEmpresa
+
+                    @if (Model.Empresa != null)
+                    {
+                        @Html.DisplayFor(model => model.Empresa.Nome)
+                    }
+                    else
+                    {
+                        <span>Empresa não encontrada</span>
+                    }
                 </p>
 
             </div>
@@ -91,7 +107,19 @@
 
                 <p>
                     <strong>Orientador de Estágio:</strong>
-                    @ViewBag.NomeOrientador
+
+                    @if (Model.OrientadorEstagio != null)
+                    {
+                        @Html.DisplayFor(model => model.OrientadorEstagio.Nome)
+                    }
+                    else if (Model.OrientadorId == null)
+                    {
+                        <span>Sem orientador</span>
+                    }
+                    else
+                    {
+                        <span>Orientador não encontrado</span>
+                    }
                 </p>
 
             </div>

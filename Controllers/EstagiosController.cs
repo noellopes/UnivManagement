@@ -49,18 +49,15 @@ public class EstagiosController : Controller
     // GET: Estagios
     public async Task<IActionResult> Index()
     {
-        var estagios = await _context.Estagios.ToListAsync();
+        var estagios = await _context.Estagios
+            .Include(e => e.Student)
+            .Include(e => e.Empresa)
+            .ToListAsync();
 
         foreach (var estagio in estagios)
         {
             estagio.Estado = CalcularEstado(
                 estagio.DataInicio, estagio.DataFim);
-
-            estagio.Student = await _context.Student
-                .FindAsync(estagio.StudentId);
-
-            estagio.Empresa = await _context.Empresas
-                .FindAsync(estagio.IdEmpresa);
         }
 
         return View(estagios);
@@ -75,6 +72,9 @@ public class EstagiosController : Controller
         }
 
         var estagio = await _context.Estagios
+            .Include(e => e.Student)
+            .Include(e => e.Empresa)
+            .Include(e => e.OrientadorEstagio)
             .FirstOrDefaultAsync(e => e.EstagioId == estagioId);
 
         if (estagio == null)
@@ -84,33 +84,6 @@ public class EstagiosController : Controller
 
         estagio.Estado = CalcularEstado(
             estagio.DataInicio, estagio.DataFim);
-
-        var aluno = await _context.Student
-            .FirstOrDefaultAsync(a => a.StudentId == estagio.StudentId);
-
-        var empresa = await _context.Empresas
-            .FirstOrDefaultAsync(e => e.IdEmpresa == estagio.IdEmpresa);
-
-        ViewBag.NomeAluno = aluno != null
-            ? aluno.Name
-            : "Aluno não encontrado";
-
-        ViewBag.NomeEmpresa = empresa != null
-            ? empresa.Nome
-            : "Empresa não encontrada";
-
-        ViewBag.NomeOrientador = "Sem orientador";
-
-        if (estagio.OrientadorId != null)
-        {
-            var orientador = await _context.OrientadoresEstagio
-                .FirstOrDefaultAsync(o =>
-                    o.OrientadorId == estagio.OrientadorId);
-
-            ViewBag.NomeOrientador = orientador != null
-                ? orientador.Nome
-                : "Orientador não encontrado";
-        }
 
         return View(estagio);
     }
