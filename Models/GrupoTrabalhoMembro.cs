@@ -6,7 +6,6 @@ namespace UnivManagement.Models
     {
         public int GrupoTrabalhoMembroId { get; set; }
 
-        public int GrupoTrabalhoId { get; set; }
         public GrupoTrabalho? GrupoTrabalho { get; set; }
         public int TrabalhoId { get; set; }
 

@@ -1,18 +1,26 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model UnivManagement.Models.GrupoTrabalho
+﻿@model UnivManagement.Models.GrupoTrabalho
 @using UnivManagement.Models
+@using UnivManagement.Models.AcademicManagement
 
 @{
     ViewData["Title"] = "Gerir membros";
+
     var membros = ViewData["Membros"] as IEnumerable<GrupoTrabalhoMembro>
         ?? Array.Empty<GrupoTrabalhoMembro>();
+
+    var alunos = ViewData["AlunosDisponiveis"] as IEnumerable<Student>
+        ?? Array.Empty<Student>();
 }
 
 <div class="container py-4">
     <h1 class="h3 mb-2">@Model.Nome</h1>
     <p class="text-muted">@(Model.Trabalho?.Titulo)</p>
+
+    @if (TempData["MembroErro"] is string erro)
+    {
+        <div class="alert alert-danger" role="alert">@erro</div>
+    }
+
     <form asp-action="RenomearGrupo" method="post" class="mb-3">
         <input type="hidden" name="grupoId" value="@Model.GrupoTrabalhoId" />
 
@@ -24,6 +32,7 @@
             Guardar nome
         </button>
     </form>
+
     <h2 class="h5 mt-4">Membros do grupo</h2>
 
     @if (membros.Any())
@@ -36,7 +45,8 @@
 
                     <form asp-action="RemoverMembro" method="post" class="m-0">
                         <input type="hidden" name="grupoId" value="@Model.GrupoTrabalhoId" />
-                        <input type="hidden" name="membroId" value="@membro.GrupoTrabalhoMembroId" />
+                        <input type="hidden" name="membroId"
+                               value="@membro.GrupoTrabalhoMembroId" />
 
                         <button type="submit" class="btn btn-sm btn-outline-danger">
                             Remover
@@ -50,14 +60,8 @@
     {
         <p class="text-muted">Este grupo ainda não tem membros.</p>
     }
-    @if (TempData["MembroErro"] is string erro)
-    {
-        <div class="alert alert-danger" role="alert">@erro</div>
-    }
 
-    @if (ViewData["AlunosDisponiveis"] is
-    IEnumerable<UnivManagement.Models.AcademicManagement.Student> alunos
-    && alunos.Any())
+    @if (alunos.Any())
     {
         <form asp-action="AdicionarMembro" method="post" class="mb-3">
             <input type="hidden" name="grupoId" value="@Model.GrupoTrabalhoId" />
@@ -83,6 +87,7 @@
     {
         <p class="text-muted">Não há alunos disponíveis para adicionar.</p>
     }
+
     <form asp-action="EliminarGrupo" method="post" class="mb-3"
           onsubmit="return confirm('Queres eliminar este grupo?');">
         <input type="hidden" name="grupoId" value="@Model.GrupoTrabalhoId" />
@@ -91,6 +96,7 @@
             Eliminar grupo
         </button>
     </form>
-    <a asp-action="Details" asp-route-trabalhoid="@Model.TrabalhoId"
+
+    <a asp-action="Details" asp-route-id="@Model.TrabalhoId"
        class="btn btn-outline-secondary">Voltar ao trabalho</a>
 </div>
