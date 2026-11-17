@@ -31,7 +31,7 @@ else
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.AvaliacaoUC?.TipoAvaliacao?.Tipo_Prova - UC @item.AvaliacaoUC?.UcID</td>
+                    <td>@item.AvaliacaoUC?.TipoAvaliacao?.TipoProva - UC @item.AvaliacaoUC?.UcId</td>
                     <td>Nº @item.InscrUcId</td>
                     <td>@Html.DisplayFor(modelItem => item.Data)</td>
                     <td>@Html.DisplayFor(modelItem => item.Valor)</td>
