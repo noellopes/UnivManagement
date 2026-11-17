@@ -38,7 +38,7 @@ public class NotasController : Controller
             .Include(n => n.AvaliacaoUC)
                 .ThenInclude(a => a!.TipoAvaliacao)
             .Include(n => n.InscrUC)
-            .FirstOrDefaultAsync(n => n.NotaID == id);
+            .FirstOrDefaultAsync(n => n.NotaId == id);
 
         if (nota == null)
         {
@@ -58,10 +58,10 @@ public class NotasController : Controller
     // POST: Notas/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("NotaID,AvaliacaoID,InscrUcID,Data,Nota")] Notas novaNota)
+    public async Task<IActionResult> Create([Bind("NotaId,AvaliacaoUCId,InscrUcId,Data,Valor")] Nota novaNota)
     {
         // Aprovado quando a nota e 9,5 ou mais
-        novaNota.Aprovado = novaNota.Nota >= 9.5f;
+        novaNota.Aprovado = novaNota.Valor >= 9.5f;
 
         if (ModelState.IsValid)
         {
@@ -71,7 +71,7 @@ public class NotasController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        PreencherListas(novaNota.AvaliacaoID, novaNota.InscrUcID);
+        PreencherListas(novaNota.AvaliacaoUCId, novaNota.InscrUcId);
         return View(novaNota);
     }
 
@@ -90,22 +90,22 @@ public class NotasController : Controller
             return NotFound();
         }
 
-        PreencherListas(nota.AvaliacaoID, nota.InscrUcID);
+        PreencherListas(nota.AvaliacaoUCId, nota.InscrUcId);
         return View(nota);
     }
 
     // POST: Notas/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("NotaID,AvaliacaoID,InscrUcID,Data,Nota")] Notas notaEditada)
+    public async Task<IActionResult> Edit(int id, [Bind("NotaId,AvaliacaoUCId,InscrUcId,Data,Valor")] Nota notaEditada)
     {
-        if (id != notaEditada.NotaID)
+        if (id != notaEditada.NotaId)
         {
             return NotFound();
         }
 
         // Aprovado quando a nota e 9,5 ou mais
-        notaEditada.Aprovado = notaEditada.Nota >= 9.5f;
+        notaEditada.Aprovado = notaEditada.Valor >= 9.5f;
 
         if (ModelState.IsValid)
         {
@@ -116,7 +116,7 @@ public class NotasController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NotaExiste(notaEditada.NotaID))
+                if (!NotaExiste(notaEditada.NotaId))
                 {
                     return NotFound();
                 }
@@ -129,7 +129,7 @@ public class NotasController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        PreencherListas(notaEditada.AvaliacaoID, notaEditada.InscrUcID);
+        PreencherListas(notaEditada.AvaliacaoUCId, notaEditada.InscrUcId);
         return View(notaEditada);
     }
 
@@ -145,7 +145,7 @@ public class NotasController : Controller
             .Include(n => n.AvaliacaoUC)
                 .ThenInclude(a => a!.TipoAvaliacao)
             .Include(n => n.InscrUC)
-            .FirstOrDefaultAsync(n => n.NotaID == id);
+            .FirstOrDefaultAsync(n => n.NotaId == id);
 
         if (nota == null)
         {
@@ -173,7 +173,7 @@ public class NotasController : Controller
 
     private bool NotaExiste(int id)
     {
-        return _context.Notas.Any(n => n.NotaID == id);
+        return _context.Notas.Any(n => n.NotaId == id);
     }
 
     // Listas para escolher a avaliação e a inscrição nos formulários
@@ -184,12 +184,12 @@ public class NotasController : Controller
             .OrderBy(a => a.Data)
             .Select(a => new
             {
-                a.AvaliacaoID,
-                Texto = a.TipoAvaliacao.Tipo_Prova + " - UC " + a.UcID + " - " + a.Data.ToString("dd/MM/yyyy")
+                a.AvaliacaoUCId,
+                Texto = a.TipoAvaliacao.TipoProva + " - UC " + a.UcId + " - " + a.Data.ToString("dd/MM/yyyy")
             })
             .ToList();
 
-        ViewData["AvaliacaoID"] = new SelectList(avaliacoes, "AvaliacaoID", "Texto", avaliacaoEscolhida);
-        ViewData["InscrUcID"] = new SelectList(_context.InscrUC, "InscrUCId", "InscrUCId", inscricaoEscolhida);
+        ViewData["AvaliacaoUCId"] = new SelectList(avaliacoes, "AvaliacaoUCId", "Texto", avaliacaoEscolhida);
+        ViewData["InscrUcId"] = new SelectList(_context.InscrUC, "InscrUCId", "InscrUCId", inscricaoEscolhida);
     }
 }

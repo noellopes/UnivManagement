@@ -1,5 +1,5 @@
-
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Data;
@@ -13,7 +13,6 @@ public class AvaliacaoUCController : Controller
         _context = context;
     }
 
-
     // GET: AvaliacaoUC
     public async Task<IActionResult> Index()
     {
@@ -23,8 +22,6 @@ public class AvaliacaoUCController : Controller
 
         return View(avaliacoes);
     }
-
-
 
     // GET: AvaliacaoUC/Details/5
     public async Task<IActionResult> Details(int? id)
@@ -36,7 +33,7 @@ public class AvaliacaoUCController : Controller
 
         var avaliacaouc = await _context.AvaliacoesUC
             .Include(a => a.TipoAvaliacao)
-            .FirstOrDefaultAsync(a => a.AvaliacaoID == id);
+            .FirstOrDefaultAsync(a => a.AvaliacaoUCId == id);
 
         if (avaliacaouc == null)
         {
@@ -46,25 +43,23 @@ public class AvaliacaoUCController : Controller
         return View(avaliacaouc);
     }
 
-
     // GET: AvaliacaoUC/Create
     public IActionResult Create()
     {
-        ViewBag.TiposAvaliacao = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
-            _context.TiposAvaliacao.OrderBy(t => t.T_Avaliacao),
-            "T_Avaliacao",
-            "Tipo_Prova"
+        ViewBag.TiposAvaliacao = new SelectList(
+            _context.TiposAvaliacao,
+            "TipoAvaliacaoId",
+            "TipoProva"
         );
 
         return View();
     }
 
-
     // POST: AvaliacaoUC/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("AvaliacaoID,T_Avaliacao,UcID,Data")] AvaliacaoUC avaliacaouc)
+        [Bind("AvaliacaoUCId,TipoAvaliacaoId,UcId,Data")] AvaliacaoUC avaliacaouc)
     {
         if (ModelState.IsValid)
         {
@@ -74,16 +69,15 @@ public class AvaliacaoUCController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewBag.TiposAvaliacao = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
-          _context.TiposAvaliacao.OrderBy(t => t.T_Avaliacao),
-          "T_Avaliacao",
-          "Tipo_Prova",
-          avaliacaouc.T_Avaliacao
+        ViewBag.TiposAvaliacao = new SelectList(
+            _context.TiposAvaliacao,
+            "TipoAvaliacaoId",
+            "TipoProva",
+            avaliacaouc.TipoAvaliacaoId
         );
 
         return View(avaliacaouc);
     }
-
 
     // GET: AvaliacaoUC/Edit/5
     public async Task<IActionResult> Edit(int? id)
@@ -100,25 +94,24 @@ public class AvaliacaoUCController : Controller
             return NotFound();
         }
 
-        ViewBag.TiposAvaliacao = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
-            _context.TiposAvaliacao.OrderBy(t => t.T_Avaliacao),
-            "T_Avaliacao",
-            "Tipo_Prova",
-            avaliacaouc.T_Avaliacao
+        ViewBag.TiposAvaliacao = new SelectList(
+            _context.TiposAvaliacao,
+            "TipoAvaliacaoId",
+            "TipoProva",
+            avaliacaouc.TipoAvaliacaoId
         );
 
         return View(avaliacaouc);
     }
-
 
     // POST: AvaliacaoUC/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
         int id,
-        [Bind("AvaliacaoID,T_Avaliacao,UcID,Data")] AvaliacaoUC avaliacaouc)
+        [Bind("AvaliacaoUCId,TipoAvaliacaoId,UcId,Data")] AvaliacaoUC avaliacaouc)
     {
-        if (id != avaliacaouc.AvaliacaoID)
+        if (id != avaliacaouc.AvaliacaoUCId)
         {
             return NotFound();
         }
@@ -132,7 +125,7 @@ public class AvaliacaoUCController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AvaliacaoUCExists(avaliacaouc.AvaliacaoID))
+                if (!AvaliacaoUCExists(avaliacaouc.AvaliacaoUCId))
                 {
                     return NotFound();
                 }
@@ -143,18 +136,15 @@ public class AvaliacaoUCController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-
-        ViewBag.TiposAvaliacao = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
-            _context.TiposAvaliacao.OrderBy(t => t.T_Avaliacao),
-            "T_Avaliacao",
-            "Tipo_Prova",
-            avaliacaouc.T_Avaliacao
+        ViewBag.TiposAvaliacao = new SelectList(
+            _context.TiposAvaliacao,
+            "TipoAvaliacaoId",
+            "TipoProva",
+            avaliacaouc.TipoAvaliacaoId
         );
 
         return View(avaliacaouc);
-
     }
-
 
     // GET: AvaliacaoUC/Delete/5
     public async Task<IActionResult> Delete(int? id)
@@ -166,7 +156,7 @@ public class AvaliacaoUCController : Controller
 
         var avaliacaouc = await _context.AvaliacoesUC
             .Include(a => a.TipoAvaliacao)
-            .FirstOrDefaultAsync(a => a.AvaliacaoID == id);
+            .FirstOrDefaultAsync(a => a.AvaliacaoUCId == id);
 
         if (avaliacaouc == null)
         {
@@ -176,12 +166,23 @@ public class AvaliacaoUCController : Controller
         return View(avaliacaouc);
     }
 
-
     // POST: AvaliacaoUC/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
+        // Impede apagar avaliações que já têm notas associadas
+        if (_context.Notas.Any(n => n.AvaliacaoUCId == id))
+        {
+            ViewBag.Erro = "Não pode apagar esta avaliação porque existem notas associadas.";
+
+            var avaliacao = await _context.AvaliacoesUC
+                .Include(a => a.TipoAvaliacao)
+                .FirstOrDefaultAsync(a => a.AvaliacaoUCId == id);
+
+            return View(avaliacao);
+        }
+
         var avaliacaouc = await _context.AvaliacoesUC.FindAsync(id);
 
         if (avaliacaouc != null)
@@ -197,6 +198,6 @@ public class AvaliacaoUCController : Controller
     private bool AvaliacaoUCExists(int id)
     {
         return _context.AvaliacoesUC
-            .Any(e => e.AvaliacaoID == id);
+            .Any(a => a.AvaliacaoUCId == id);
     }
 }
