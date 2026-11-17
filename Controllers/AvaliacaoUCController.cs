@@ -172,7 +172,7 @@ public class AvaliacaoUCController : Controller
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         // Impede apagar avaliações que já têm notas associadas
-        if (_context.Notas.Any(n => n.AvaliacaoId == id))
+        if (_context.Notas.Any(n => n.AvaliacaoUCId == id))
         {
             ViewBag.Erro = "Não pode apagar esta avaliação porque existem notas associadas.";
 
