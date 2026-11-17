@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
 namespace UnivManagement.Models.AcademicManagement
 {
@@ -13,7 +12,6 @@ namespace UnivManagement.Models.AcademicManagement
         [Required(ErrorMessage = "The {0} is required")]
         [Display(Name = "Course")]
         public int CourseId { get; set; }
-        [DeleteBehavior(DeleteBehavior.Restrict)]
         public Course? Course { get; set; }
 
 
@@ -21,7 +19,6 @@ namespace UnivManagement.Models.AcademicManagement
         [Required(ErrorMessage = "The {0} is required")]
         [Display(Name = "Study Plan")]
         public int StudyPlanId { get; set; }
-        [DeleteBehavior(DeleteBehavior.Restrict)]
         public StudyPlan? StudyPlan { get; set; }
 
 
@@ -29,10 +26,8 @@ namespace UnivManagement.Models.AcademicManagement
         [Required(ErrorMessage = "The {0} is required")]
         [Display(Name = "Academic Year")]
         public int AcademicYearId { get; set; }
-        [DeleteBehavior(DeleteBehavior.Restrict)]
         public AcademicYear? AcademicYear { get; set; }
 
 
     }
-}
 }

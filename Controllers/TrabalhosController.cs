@@ -272,7 +272,7 @@ public class TrabalhosController : Controller
         ViewData["Membros"] = await _context.GruposTrabalhoMembros
             .AsNoTracking()
             .Include(m => m.Student)
-            //.Where(m => m.GrupoTrabalhoId == grupoId)
+            .Where(m => m.GrupoTrabalhoId == grupoId)
             .OrderBy(m => m.Student!.Name)
             .ToListAsync();
 
@@ -319,7 +319,7 @@ public class TrabalhosController : Controller
 
         _context.GruposTrabalhoMembros.Add(new GrupoTrabalhoMembro
         {
-            //GrupoTrabalhoId = grupoId,
+            GrupoTrabalhoId = grupoId,
             StudentId = studentId
         });
 
@@ -350,12 +350,12 @@ public class TrabalhosController : Controller
             return NotFound();
         }
 
-       // var removidos = await _context.GruposTrabalhoMembros
-       //     .Where(m => m.GrupoTrabalhoId == grupoId &&
-       //                 m.GrupoTrabalhoMembroId == membroId)
-       //     .ExecuteDeleteAsync();
+        var removidos = await _context.GruposTrabalhoMembros
+            .Where(m => m.GrupoTrabalhoId == grupoId &&
+                        m.GrupoTrabalhoMembroId == membroId)
+            .ExecuteDeleteAsync();
 
-       // if (removidos == 0)
+        if (removidos == 0)
         {
             TempData["MembroErro"] = "O aluno já não pertence a este grupo.";
         }
@@ -407,17 +407,17 @@ public class TrabalhosController : Controller
             return NotFound();
         }
 
-        //var eliminados = await _context.GruposTrabalho
-          //  .Where(g => g.GrupoTrabalhoId == grupoId &&
-            //            !_context.GruposTrabalhoMembros.Any(m =>
-              //              m.GrupoTrabalhoId == g.GrupoTrabalhoId))
-            //.ExecuteDeleteAsync();
+        var eliminados = await _context.GruposTrabalho
+            .Where(g => g.GrupoTrabalhoId == grupoId &&
+                        !_context.GruposTrabalhoMembros.Any(m =>
+                            m.GrupoTrabalhoId == g.GrupoTrabalhoId))
+            .ExecuteDeleteAsync();
 
-        //if (eliminados == 0)
-        //{
-          //  TempData["MembroErro"] = "Remove os membros antes de eliminar o grupo.";
-          //  return RedirectToAction(nameof(GerirMembros), new { grupoId });
-        //}
+        if (eliminados == 0)
+        {
+            TempData["MembroErro"] = "Remove os membros antes de eliminar o grupo.";
+            return RedirectToAction(nameof(GerirMembros), new { grupoId });
+        }
 
         TempData["GrupoEliminado"] = $"O grupo «{grupo.Nome}» foi eliminado.";
         return RedirectToAction(nameof(Details), new { id = grupo.TrabalhoId });
