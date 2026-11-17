@@ -11,9 +11,9 @@ namespace UnivManagement.Models
 
         [Required(ErrorMessage = "Por favor, escolha a {0}.")]
         [Display(Name = "Avaliação")]
-        public int AvaliacaoId { get; set; }
+        public int AvaliacaoUCId { get; set; }
 
-        [ForeignKey("AvaliacaoId")]
+        [ForeignKey("AvaliacaoUCId")]
         public AvaliacaoUC? AvaliacaoUC { get; set; }
 
         [Required(ErrorMessage = "Por favor, escolha a {0}.")]

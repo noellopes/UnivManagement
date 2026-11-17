@@ -58,7 +58,7 @@ public class NotasController : Controller
     // POST: Notas/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("NotaId,AvaliacaoId,InscrUcId,Data,Valor")] Nota novaNota)
+    public async Task<IActionResult> Create([Bind("NotaId,AvaliacaoUCId,InscrUcId,Data,Valor")] Nota novaNota)
     {
         // Aprovado quando a nota e 9,5 ou mais
         novaNota.Aprovado = novaNota.Valor >= 9.5f;
@@ -71,7 +71,7 @@ public class NotasController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        PreencherListas(novaNota.AvaliacaoId, novaNota.InscrUcId);
+        PreencherListas(novaNota.AvaliacaoUCId, novaNota.InscrUcId);
         return View(novaNota);
     }
 
@@ -90,14 +90,14 @@ public class NotasController : Controller
             return NotFound();
         }
 
-        PreencherListas(nota.AvaliacaoId, nota.InscrUcId);
+        PreencherListas(nota.AvaliacaoUCId, nota.InscrUcId);
         return View(nota);
     }
 
     // POST: Notas/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("NotaId,AvaliacaoId,InscrUcId,Data,Valor")] Nota notaEditada)
+    public async Task<IActionResult> Edit(int id, [Bind("NotaId,AvaliacaoUCId,InscrUcId,Data,Valor")] Nota notaEditada)
     {
         if (id != notaEditada.NotaId)
         {
@@ -129,7 +129,7 @@ public class NotasController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        PreencherListas(notaEditada.AvaliacaoId, notaEditada.InscrUcId);
+        PreencherListas(notaEditada.AvaliacaoUCId, notaEditada.InscrUcId);
         return View(notaEditada);
     }
 
@@ -184,12 +184,12 @@ public class NotasController : Controller
             .OrderBy(a => a.Data)
             .Select(a => new
             {
-                a.AvaliacaoID,
-                Texto = a.TipoAvaliacao.Tipo_Prova + " - UC " + a.UcID + " - " + a.Data.ToString("dd/MM/yyyy")
+                a.AvaliacaoUCId,
+                Texto = a.TipoAvaliacao.TipoProva + " - UC " + a.UcId + " - " + a.Data.ToString("dd/MM/yyyy")
             })
             .ToList();
 
-        ViewData["AvaliacaoId"] = new SelectList(avaliacoes, "AvaliacaoID", "Texto", avaliacaoEscolhida);
+        ViewData["AvaliacaoUCId"] = new SelectList(avaliacoes, "AvaliacaoUCId", "Texto", avaliacaoEscolhida);
         ViewData["InscrUcId"] = new SelectList(_context.InscrUC, "InscrUCId", "InscrUCId", inscricaoEscolhida);
     }
 }
