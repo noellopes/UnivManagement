@@ -1,0 +1,77 @@
+@model IEnumerable<UnivManagement.Models.SubmissaoTrabalho>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TrabalhoId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trabalho)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GrupoTrabalhoId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GrupoTrabalho)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataEntrega)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CaminhoFicheiro)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.TrabalhoId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Trabalho)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.StudentId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Student)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.GrupoTrabalhoId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.GrupoTrabalho)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DataEntrega)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CaminhoFicheiro)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SubmissaoTrabalhoId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SubmissaoTrabalhoId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SubmissaoTrabalhoId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

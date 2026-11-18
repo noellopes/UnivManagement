@@ -1,0 +1,73 @@
+@model UnivManagement.Models.SubmissaoTrabalho
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>SubmissaoTrabalho</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TrabalhoId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TrabalhoId)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Trabalho)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Trabalho)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StudentId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StudentId)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Student)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Student)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GrupoTrabalhoId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GrupoTrabalhoId)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GrupoTrabalho)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GrupoTrabalho)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DataEntrega)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DataEntrega)
+        </dd>
+    </dl>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CaminhoFicheiro)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CaminhoFicheiro)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.SubmissaoTrabalhoId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
