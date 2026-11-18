@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Data;
@@ -12,76 +13,104 @@ public class SubmissaoTrabalhoController : Controller
         _context = context;
     }
 
-    // GET: SUBMISSAOTRABALHOS
-    public async Task<IActionResult> Index()    
+    // GET: SubmissaoTrabalho
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.SubmissoesTrabalho.ToListAsync());
+        var submissoes = await _context.SubmissoesTrabalho
+            .Include(s => s.Trabalho)
+            .Include(s => s.Student)
+            .Include(s => s.GrupoTrabalho)
+            .ToListAsync();
+
+        return View(submissoes);
     }
 
-    // GET: SUBMISSAOTRABALHOS/Details/5
-    public async Task<IActionResult> Details(int? submissaotrabalhoid)
+    // GET: SubmissaoTrabalho/Details/5
+    public async Task<IActionResult> Details(int? id)
     {
-        if (submissaotrabalhoid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var submissaotrabalho = await _context.SubmissoesTrabalho
-            .FirstOrDefaultAsync(m => m.SubmissaoTrabalhoId == submissaotrabalhoid);
-        if (submissaotrabalho == null)
+        var submissao = await _context.SubmissoesTrabalho
+            .Include(s => s.Trabalho)
+            .Include(s => s.Student)
+            .Include(s => s.GrupoTrabalho)
+            .FirstOrDefaultAsync(s => s.SubmissaoTrabalhoId == id);
+
+        if (submissao == null)
         {
             return NotFound();
         }
 
-        return View(submissaotrabalho);
+        return View(submissao);
     }
 
-    // GET: SUBMISSAOTRABALHOS/Create
+    // GET: SubmissaoTrabalho/Create
     public IActionResult Create()
     {
+        PreencherListas();
         return View();
     }
 
-    // POST: SUBMISSAOTRABALHOS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: SubmissaoTrabalho/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("SubmissaoTrabalhoId,TrabalhoId,Trabalho,StudentId,Student,GrupoTrabalhoId,GrupoTrabalho,DataEntrega,CaminhoFicheiro")] SubmissaoTrabalho submissaotrabalho)
+    public async Task<IActionResult> Create(
+        [Bind("SubmissaoTrabalhoId,TrabalhoId,StudentId,GrupoTrabalhoId,DataEntrega,CaminhoFicheiro")]
+        SubmissaoTrabalho submissao)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(submissaotrabalho);
+            _context.SubmissoesTrabalho.Add(submissao);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
-        return View(submissaotrabalho);
+
+        PreencherListas(
+            submissao.TrabalhoId,
+            submissao.StudentId,
+            submissao.GrupoTrabalhoId
+        );
+
+        return View(submissao);
     }
 
-    // GET: SUBMISSAOTRABALHOS/Edit/5
-    public async Task<IActionResult> Edit(int? submissaotrabalhoid)
+    // GET: SubmissaoTrabalho/Edit/5
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (submissaotrabalhoid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var submissaotrabalho = await _context.SubmissoesTrabalho.FindAsync(submissaotrabalhoid);
-        if (submissaotrabalho == null)
+        var submissao = await _context.SubmissoesTrabalho.FindAsync(id);
+
+        if (submissao == null)
         {
             return NotFound();
         }
-        return View(submissaotrabalho);
+
+        PreencherListas(
+            submissao.TrabalhoId,
+            submissao.StudentId,
+            submissao.GrupoTrabalhoId
+        );
+
+        return View(submissao);
     }
 
-    // POST: SUBMISSAOTRABALHOS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: SubmissaoTrabalho/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? submissaotrabalhoid, [Bind("SubmissaoTrabalhoId,TrabalhoId,Trabalho,StudentId,Student,GrupoTrabalhoId,GrupoTrabalho,DataEntrega,CaminhoFicheiro")] SubmissaoTrabalho submissaotrabalho)
+    public async Task<IActionResult> Edit(
+        int id,
+        [Bind("SubmissaoTrabalhoId,TrabalhoId,StudentId,GrupoTrabalhoId,DataEntrega,CaminhoFicheiro")]
+        SubmissaoTrabalho submissao)
     {
-        if (submissaotrabalhoid != submissaotrabalho.SubmissaoTrabalhoId)
+        if (id != submissao.SubmissaoTrabalhoId)
         {
             return NotFound();
         }
@@ -90,60 +119,101 @@ public class SubmissaoTrabalhoController : Controller
         {
             try
             {
-                _context.Update(submissaotrabalho);
+                _context.SubmissoesTrabalho.Update(submissao);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SubmissaoTrabalhoExists(submissaotrabalho.SubmissaoTrabalhoId))
+                if (!SubmissaoTrabalhoExists(submissao.SubmissaoTrabalhoId))
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
+
             return RedirectToAction(nameof(Index));
         }
-        return View(submissaotrabalho);
+
+        PreencherListas(
+            submissao.TrabalhoId,
+            submissao.StudentId,
+            submissao.GrupoTrabalhoId
+        );
+
+        return View(submissao);
     }
 
-    // GET: SUBMISSAOTRABALHOS/Delete/5
-    public async Task<IActionResult> Delete(int? submissaotrabalhoid)
+    // GET: SubmissaoTrabalho/Delete/5
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (submissaotrabalhoid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var submissaotrabalho = await _context.SubmissoesTrabalho
-            .FirstOrDefaultAsync(m => m.SubmissaoTrabalhoId == submissaotrabalhoid);
-        if (submissaotrabalho == null)
+        var submissao = await _context.SubmissoesTrabalho
+            .Include(s => s.Trabalho)
+            .Include(s => s.Student)
+            .Include(s => s.GrupoTrabalho)
+            .FirstOrDefaultAsync(s => s.SubmissaoTrabalhoId == id);
+
+        if (submissao == null)
         {
             return NotFound();
         }
 
-        return View(submissaotrabalho);
+        return View(submissao);
     }
 
-    // POST: SUBMISSAOTRABALHOS/Delete/5
+    // POST: SubmissaoTrabalho/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? submissaotrabalhoid)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var submissaotrabalho = await _context.SubmissoesTrabalho.FindAsync(submissaotrabalhoid);
-        if (submissaotrabalho != null)
+        var submissao = await _context.SubmissoesTrabalho.FindAsync(id);
+
+        if (submissao != null)
         {
-            _context.SubmissoesTrabalho.Remove(submissaotrabalho);
+            _context.SubmissoesTrabalho.Remove(submissao);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
-    private bool SubmissaoTrabalhoExists(int? submissaotrabalhoid)
+    // Preenche as listas dos formulários
+    private void PreencherListas(
+        int? trabalhoId = null,
+        int? studentId = null,
+        int? grupoTrabalhoId = null)
     {
-        return _context.SubmissoesTrabalho.Any(e => e.SubmissaoTrabalhoId == submissaotrabalhoid);
+        ViewBag.Trabalhos = new SelectList(
+            _context.Trabalhos,
+            "TrabalhoId",
+            "Titulo",
+            trabalhoId
+        );
+
+        ViewBag.Alunos = new SelectList(
+            _context.Student,
+            "StudentId",
+            "StudentId",
+            studentId
+        );
+
+        ViewBag.Grupos = new SelectList(
+            _context.Set<GrupoTrabalho>(),
+            "GrupoTrabalhoId",
+            "Nome",
+            grupoTrabalhoId
+        );
+    }
+
+    // Verifica se a submissão existe
+    private bool SubmissaoTrabalhoExists(int id)
+    {
+        return _context.SubmissoesTrabalho
+            .Any(s => s.SubmissaoTrabalhoId == id);
     }
 }

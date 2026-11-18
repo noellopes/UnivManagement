@@ -1,82 +1,55 @@
 @model UnivManagement.Models.SubmissaoTrabalho
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Submissão";
 }
 
-<h1>Delete</h1>
+<h1>Eliminar Submissão de Trabalho</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Tens a certeza de que queres eliminar esta submissão?</h3>
+
+<hr />
+
 <div>
-    <h4>UnivManagement.Models.SubmissaoTrabalho</h4>
-    <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TrabalhoId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TrabalhoId)
+
+        <dt class="col-sm-3">Trabalho</dt>
+        <dd class="col-sm-9">
+            @Model.Trabalho?.Titulo
         </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Trabalho)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Trabalho)
+
+        <dt class="col-sm-3">Aluno responsável</dt>
+        <dd class="col-sm-9">
+            @Model.StudentId
         </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StudentId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StudentId)
+
+        <dt class="col-sm-3">Grupo de trabalho</dt>
+        <dd class="col-sm-9">
+            @(Model.GrupoTrabalho?.Nome ?? "Individual")
         </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Student)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Student)
+
+        <dt class="col-sm-3">Data de Entrega</dt>
+        <dd class="col-sm-9">
+            @Model.DataEntrega.ToString("dd/MM/yyyy")
         </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GrupoTrabalhoId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GrupoTrabalhoId)
+
+        <dt class="col-sm-3">Ficheiro entregue</dt>
+        <dd class="col-sm-9">
+            @Model.CaminhoFicheiro
         </dd>
+
     </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GrupoTrabalho)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GrupoTrabalho)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataEntrega)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataEntrega)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CaminhoFicheiro)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CaminhoFicheiro)
-        </dd>
-    </dl>
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="SubmissaoTrabalhoId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" name="id"
+               value="@Model.SubmissaoTrabalhoId" />
+
+        <button type="submit" class="btn btn-danger">
+            Eliminar
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Cancelar
+        </a>
     </form>
 </div>
