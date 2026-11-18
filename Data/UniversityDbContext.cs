@@ -113,6 +113,7 @@ namespace UnivManagement.Data
         // Grupo 3
         public DbSet<AvaliacaoUC> AvaliacoesUC { get; set; } = default!;
         public DbSet<TipoAvaliacao> TiposAvaliacao { get; set; } = default!;
+        public DbSet<SubmissaoTrabalho> SubmissoesTrabalho { get; set; } = default!;
         public DbSet<UnivManagement.Models.Feedback> Feedback { get; set; }
         public DbSet<Trabalho> Trabalhos { get; set; } = default!;
         public DbSet<GrupoTrabalho> GruposTrabalho { get; set; } = default!;
