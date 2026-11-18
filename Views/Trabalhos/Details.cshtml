@@ -2,9 +2,6 @@
 
 @{
     ViewData["Title"] = "Detalhes do trabalho";
-
-    var totais = ViewData["TotalMembrosPorGrupo"] as Dictionary<int, int>
-        ?? new Dictionary<int, int>();
 }
 
 <div class="container py-4">
@@ -18,10 +15,10 @@
         <dd class="col-sm-9 text-break" style="white-space: pre-wrap;">@Model.Descricao</dd>
 
         <dt class="col-sm-3">Tipo de trabalho</dt>
-        <dd class="col-sm-9">@(Model.E_individual ? "Individual" : "Em grupo")</dd>
+        <dd class="col-sm-9">@(Model.EIndividual ? "Individual" : "Em grupo")</dd>
 
         <dt class="col-sm-3">Data-limite de entrega</dt>
-        <dd class="col-sm-9">@Model.Data_Limite.ToString("dd/MM/yyyy")</dd>
+        <dd class="col-sm-9">@Model.DataLimite.ToString("dd/MM/yyyy")</dd>
 
         <dt class="col-sm-3">Docente</dt>
         <dd class="col-sm-9">@(Model.Docente?.Nome ?? $"ID {Model.DocenteId}")</dd>
@@ -31,19 +28,24 @@
     </dl>
 
     <div class="d-flex gap-2">
-        <a asp-action="Edit" asp-route-trabalhoid="@Model.TrabalhoID"
+        <a asp-action="Edit" asp-route-id="@Model.TrabalhoId"
            class="btn btn-primary">Editar</a>
         <a asp-action="Index" class="btn btn-outline-secondary">Voltar à lista</a>
     </div>
 
-    @if (!Model.E_individual)
+    @if (!Model.EIndividual)
     {
         <section class="mt-4">
             <h2 class="h5">Grupos do trabalho</h2>
 
-            @if (TempData["GrupoCriado"] is string mensagem)
+            @if (TempData["GrupoCriado"] is string mensagemCriacao)
             {
-                <div class="alert alert-success" role="status">@mensagem</div>
+                <div class="alert alert-success" role="status">@mensagemCriacao</div>
+            }
+
+            @if (TempData["GrupoEliminado"] is string mensagemEliminacao)
+            {
+                <div class="alert alert-success" role="status">@mensagemEliminacao</div>
             }
 
             @if (TempData["GrupoErro"] is string erro)
@@ -57,19 +59,8 @@
                 <ul class="list-group mb-3">
                     @foreach (var grupo in grupos)
                     {
-
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            @{
-                                var total = totais.GetValueOrDefault(grupo.GrupoTrabalhoId);
-                            }
-
-                            <span>
-                                @grupo.Nome
-                                <span class="badge bg-secondary ms-2">
-                                    @total @(total == 1 ? "membro" : "membros")
-                                </span>
-                            </span>
-
+                            <span>@grupo.Nome</span>
                             <a asp-action="GerirMembros"
                                asp-route-grupoId="@grupo.GrupoTrabalhoId"
                                class="btn btn-sm btn-outline-primary">
@@ -85,7 +76,7 @@
             }
 
             <form asp-action="CriarGrupo" method="post">
-                <input type="hidden" name="trabalhoId" value="@Model.TrabalhoID" />
+                <input type="hidden" name="trabalhoId" value="@Model.TrabalhoId" />
 
                 <div class="mb-3">
                     <label for="nomeGrupo" class="form-label">Nome do grupo</label>
