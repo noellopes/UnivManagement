@@ -31,8 +31,22 @@ public class CandidaturasController : Controller
     }
 
     // GET: Candidaturas
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? mensagem)
     {
+        // Define a mensagem apenas se vier explicitamente no URL
+        if (mensagem == "criado")
+        {
+            ViewBag.MensagemSucesso = "Candidatura criada com sucesso!";
+        }
+        else if (mensagem == "editado")
+        {
+            ViewBag.MensagemSucesso = "Candidatura atualizada com sucesso!";
+        }
+        else if (mensagem == "eliminado")
+        {
+            ViewBag.MensagemSucesso = "Candidatura eliminada com sucesso!";
+        }
+
         var candidaturas = await _context.Candidaturas
             .Include(c => c.Estudante)
             .Include(c => c.Oferta)
@@ -109,7 +123,7 @@ public class CandidaturasController : Controller
             _context.Candidaturas.Add(candidatura);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { mensagem = "criado" }); ;
         }
 
         await CarregarListas();
@@ -189,8 +203,7 @@ public class CandidaturasController : Controller
                 }
             }
 
-            return RedirectToAction(nameof(Details),
-                new { idcandidatura = candidatura.IdCandidatura });
+            return RedirectToAction(nameof(Index), new { mensagem = "editado" });
         }
 
         await CarregarListas();
@@ -231,7 +244,7 @@ public class CandidaturasController : Controller
             await _context.SaveChangesAsync();
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { mensagem = "eliminado" });
     }
 
     private bool CandidaturaExists(int? idcandidatura)
