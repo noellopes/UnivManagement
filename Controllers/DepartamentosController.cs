@@ -48,7 +48,7 @@ public class DepartamentosController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("id,Nome,Ativo,DataCriacao")] Departamento departamento)
+    public async Task<IActionResult> Create([Bind("DepartamentoId,Nome,Ativo,DataCriacao")] Departamento departamento)
     {
         if (ModelState.IsValid)
         {
@@ -80,13 +80,13 @@ public class DepartamentosController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("id,Nome,Ativo,DataCriacao")] Departamento departamento)
+    public async Task<IActionResult> Edit(int id, [Bind("DepartamentoId,Nome,Ativo,DataCriacao")] Departamento departamento)
     {
-        if (id != departamento .DepartamentoId)
+        if (id != departamento.DepartamentoId)
         {
             return NotFound();
         }
-
+        
         if (ModelState.IsValid)
         {
             try
