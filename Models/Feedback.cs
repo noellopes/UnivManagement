@@ -6,11 +6,11 @@ namespace UnivManagement.Models
     {
         public int FeedbackId { get; set; }
 
-        [Required(ErrorMessage = "Por favor, insira a {0}.")]
+        [Required(ErrorMessage = "Por favor, escolha a {0}.")]
         [Display(Name = "Submissão")]
         public int SubmissaoTrabalhoId { get; set; }
 
-        public SubmissaoTrabalho? SubmissaoTrabalho { get; set; } 
+        public SubmissaoTrabalho? SubmissaoTrabalho { get; set; }
 
         [Required(ErrorMessage = "Por favor, escolha o {0}.")]
         [Display(Name = "Docente")]
