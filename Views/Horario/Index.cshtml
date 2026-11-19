@@ -1,0 +1,146 @@
+@model IEnumerable<UnivManagement.Models.Horario>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Semestre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiaSemana)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraFim)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoAula)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Periodicidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Observacoes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataCriacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UcId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Uc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartamentoId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Departamento)
+            </th>
+            
+            @* 
+            <th>
+                @Html.DisplayNameFor(model => model.TurmaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sala)
+            </th>
+            *@
+
+            <th>
+                @Html.DisplayNameFor(model => model.AcademicYearId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnoLetivo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Semestre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiaSemana)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraInicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraFim)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoAula)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Periodicidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacoes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataCriacao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UcId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartamentoId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Departamento)
+                </td>
+
+                @* 
+            <td>
+                @Html.DisplayFor(modelItem => item.TurmaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SalaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sala)
+            </td>
+            *@
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AcademicYearId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnoLetivo)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.HorarioId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.HorarioId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.HorarioId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
