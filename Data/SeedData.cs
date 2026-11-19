@@ -12,6 +12,7 @@ namespace UnivManagement.Data
 
             PopulateTipos(db);
             PopulateObras(db);
+            PopulateAutores(db);
         }
 
         private static void PopulateTipos(UniversityDbContext db)
@@ -80,6 +81,24 @@ namespace UnivManagement.Data
             };
 
             db.Obras.AddRange(obras);
+            db.SaveChanges();
+        }
+
+        private static void PopulateAutores(UniversityDbContext db)
+        {
+            if (db.Autores.Any())
+                return;
+
+            var autores = new List<Autor>
+    {
+        new Autor { Nome = "Robert C. Martin" },
+        new Autor { Nome = "Erich Gamma" },
+        new Autor { Nome = "Brian W. Kernighan" },
+        new Autor { Nome = "Joshua Bloch" },
+        new Autor { Nome = "Thomas H. Cormen" }
+    };
+
+            db.Autores.AddRange(autores);
             db.SaveChanges();
         }
     }
