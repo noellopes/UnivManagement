@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
+using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
@@ -7,8 +8,28 @@ namespace UnivManagement.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
-            // ServiceRequestType: two request types cannot have the same name
-            modelBuilder.Entity<Models.ServiceRequestType>()
+
+            modelBuilder.Entity<CourseStudyPlanYear>()
+                .HasOne(c => c.Course)
+                .WithMany()
+                .HasForeignKey(c => c.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<CourseStudyPlanYear>()
+                .HasOne(c => c.StudyPlan)
+                .WithMany()
+                .HasForeignKey(c => c.StudyPlanId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<CourseStudyPlanYear>()
+                .HasOne(c => c.AcademicYear)
+                .WithMany()
+                .HasForeignKey(c => c.AcademicYearId)
+                .OnDelete(DeleteBehavior.NoAction);
+        
+
+        // ServiceRequestType: two request types cannot have the same name
+        modelBuilder.Entity<Models.ServiceRequestType>()
                 .HasIndex(t => t.Name)
                 .IsUnique();
 
@@ -63,6 +84,11 @@ namespace UnivManagement.Data {
                 .HasIndex(c => c.Code)
                 .IsUnique();
 
+            // Docente: atributo NumDocente é único:
+            modelBuilder.Entity<Models.Docente>()
+                .HasIndex(d => d.NumDocente)
+                .IsUnique();
+
             // Evita duplicações na tabela CourseStudyPlanYear:
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
@@ -92,7 +118,11 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
-        
+
+        public DbSet<UnivManagement.Models.Docente> Docentes { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Departamento> Departamentos { get; set; } = default!;
+
+        //publicDbSet<UnivManagement.Models.FuncaoDocente> FuncoesDocentes { get; set; } = default!;
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
