@@ -1,0 +1,55 @@
+@model UnivManagement.Models.SubmissaoTrabalho
+
+@{
+    ViewData["Title"] = "Eliminar Submissão";
+}
+
+<h1>Eliminar Submissão de Trabalho</h1>
+
+<h3>Tens a certeza de que queres eliminar esta submissão?</h3>
+
+<hr />
+
+<div>
+    <dl class="row">
+
+        <dt class="col-sm-3">Trabalho</dt>
+        <dd class="col-sm-9">
+            @Model.Trabalho?.Titulo
+        </dd>
+
+        <dt class="col-sm-3">Aluno responsável</dt>
+        <dd class="col-sm-9">
+            @Model.StudentId
+        </dd>
+
+        <dt class="col-sm-3">Grupo de trabalho</dt>
+        <dd class="col-sm-9">
+            @(Model.GrupoTrabalho?.Nome ?? "Individual")
+        </dd>
+
+        <dt class="col-sm-3">Data de Entrega</dt>
+        <dd class="col-sm-9">
+            @Model.DataEntrega.ToString("dd/MM/yyyy")
+        </dd>
+
+        <dt class="col-sm-3">Ficheiro entregue</dt>
+        <dd class="col-sm-9">
+            @Model.CaminhoFicheiro
+        </dd>
+
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" name="id"
+               value="@Model.SubmissaoTrabalhoId" />
+
+        <button type="submit" class="btn btn-danger">
+            Eliminar
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Cancelar
+        </a>
+    </form>
+</div>

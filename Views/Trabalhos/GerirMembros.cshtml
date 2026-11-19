@@ -1,0 +1,102 @@
+﻿@model UnivManagement.Models.GrupoTrabalho
+@using UnivManagement.Models
+@using UnivManagement.Models.AcademicManagement
+
+@{
+    ViewData["Title"] = "Gerir membros";
+
+    var membros = ViewData["Membros"] as IEnumerable<GrupoTrabalhoMembro>
+        ?? Array.Empty<GrupoTrabalhoMembro>();
+
+    var alunos = ViewData["AlunosDisponiveis"] as IEnumerable<Student>
+        ?? Array.Empty<Student>();
+}
+
+<div class="container py-4">
+    <h1 class="h3 mb-2">@Model.Nome</h1>
+    <p class="text-muted">@(Model.Trabalho?.Titulo)</p>
+
+    @if (TempData["MembroErro"] is string erro)
+    {
+        <div class="alert alert-danger" role="alert">@erro</div>
+    }
+
+    <form asp-action="RenomearGrupo" method="post" class="mb-3">
+        <input type="hidden" name="grupoId" value="@Model.GrupoTrabalhoId" />
+
+        <label for="nomeGrupo" class="form-label">Nome do grupo</label>
+        <input id="nomeGrupo" name="nome" value="@Model.Nome"
+               class="form-control mb-2" maxlength="100" required />
+
+        <button type="submit" class="btn btn-outline-primary">
+            Guardar nome
+        </button>
+    </form>
+
+    <h2 class="h5 mt-4">Membros do grupo</h2>
+
+    @if (membros.Any())
+    {
+        <ul class="list-group mb-3">
+            @foreach (var membro in membros)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>@(membro.Student?.Name)</span>
+
+                    <form asp-action="RemoverMembro" method="post" class="m-0">
+                        <input type="hidden" name="grupoId" value="@Model.GrupoTrabalhoId" />
+                        <input type="hidden" name="membroId"
+                               value="@membro.GrupoTrabalhoMembroId" />
+
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            Remover
+                        </button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted">Este grupo ainda não tem membros.</p>
+    }
+
+    @if (alunos.Any())
+    {
+        <form asp-action="AdicionarMembro" method="post" class="mb-3">
+            <input type="hidden" name="grupoId" value="@Model.GrupoTrabalhoId" />
+
+            <div class="mb-3">
+                <label for="studentId" class="form-label">Aluno</label>
+                <select id="studentId" name="studentId" class="form-select" required>
+                    <option value="">Seleciona um aluno</option>
+
+                    @foreach (var aluno in alunos)
+                    {
+                        <option value="@aluno.StudentId">
+                            @aluno.Name (@aluno.NumStudent)
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Adicionar membro</button>
+        </form>
+    }
+    else
+    {
+        <p class="text-muted">Não há alunos disponíveis para adicionar.</p>
+    }
+
+    <form asp-action="EliminarGrupo" method="post" class="mb-3"
+          onsubmit="return confirm('Queres eliminar este grupo?');">
+        <input type="hidden" name="grupoId" value="@Model.GrupoTrabalhoId" />
+
+        <button type="submit" class="btn btn-outline-danger">
+            Eliminar grupo
+        </button>
+    </form>
+
+    <a asp-action="Details" asp-route-id="@Model.TrabalhoId"
+       class="btn btn-outline-secondary">Voltar ao trabalho</a>
+</div>
