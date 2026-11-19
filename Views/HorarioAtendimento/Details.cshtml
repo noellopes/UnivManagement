@@ -1,0 +1,58 @@
+@model UnivManagement.Models.HorarioAtendimento
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>HorarioAtendimento</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Semestre)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Semestre)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DiaSemana)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DiaSemana)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.HoraInicio)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.HoraInicio)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.HoraFim)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.HoraFim)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Modalidade)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Modalidade)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.RequerMarcacao)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.RequerMarcacao)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Estado)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Estado)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Observacoes)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Observacoes)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DataCriacao)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DataCriacao)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DocenteId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DocenteId)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DepartamentoId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DepartamentoId)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.AcademicYearId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.AcademicYearId)</dd>
+
+        @* A repor quando a Sala entrar na main
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.SalaId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.SalaId)</dd>
+        *@
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-atendimentoid="@Model?.AtendimentoId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
