@@ -1,0 +1,28 @@
+@model UnivManagement.Models.InscAval
+
+@{
+    ViewData["Title"] = "Apagar inscrição";
+}
+
+<h1>Apagar inscrição</h1>
+<h4>Tem a certeza que quer apagar esta inscrição?</h4>
+<hr />
+
+    <dl class="row">
+        <dt class="col-sm-3">Avaliação</dt>
+        <dd class="col-sm-9">@Model.AvaliacaoUC?.TipoAvaliacao?.TipoProva - UC @Model.AvaliacaoUC?.UcId</dd>
+
+        <dt class="col-sm-3">Data da avaliação</dt>
+        <dd class="col-sm-9">@Model.AvaliacaoUC?.Data.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-3">Inscrição na UC</dt>
+        <dd class="col-sm-9">Nº @Model.InscrUcId</dd>
+
+        <dt class="col-sm-3">Pago</dt>
+        <dd class="col-sm-9">@(Model.Pago ? "Sim" : "Não")</dd>
+    </dl>
+<form asp-action="Delete">
+    <input type="hidden" asp-for="InscAvalId" />
+    <input type="submit" value="Apagar" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

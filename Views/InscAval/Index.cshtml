@@ -1,0 +1,44 @@
+@model IEnumerable<UnivManagement.Models.InscAval>
+
+@{
+    ViewData["Title"] = "Inscrições nas avaliações";
+}
+
+<h1>Inscrições nas avaliações</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Nova inscrição</a>
+</p>
+
+@if (!Model.Any())
+{
+    <p>Ainda não há inscrições nas avaliações.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Avaliação</th>
+                <th>Inscrição na UC</th>
+                <th>Pago</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.AvaliacaoUC?.TipoAvaliacao?.TipoProva - UC @item.AvaliacaoUC?.UcId</td>
+                    <td>Nº @item.InscrUcId</td>
+                    <td>@(item.Pago ? "Sim" : "Não")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.InscAvalId" class="btn btn-sm btn-warning">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.InscAvalId" class="btn btn-sm btn-info">Detalhes</a>
+                        <a asp-action="Delete" asp-route-id="@item.InscAvalId" class="btn btn-sm btn-danger">Apagar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
