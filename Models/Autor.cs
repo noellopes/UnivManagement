@@ -8,7 +8,7 @@ namespace UnivManagement.Models
 
         public required string Nome { get; set; }
 
-        public ICollection<LivroAutor> LivrosAutores { get; set; }
-        = new List<LivroAutor>();
+        public ICollection<ObraAutor> ObrasAutores { get; set; }
+        = new List<ObraAutor>();
     }
 }

@@ -12,8 +12,8 @@ namespace UnivManagement.Models
 
         public string Estado { get; set; } = string.Empty;
 
-        public int LivroId { get; set; }
+        public int ObraId { get; set; }
 
-        public Livro? Livro { get; set; }
+        public Obra? Obra { get; set; }
     }
 }

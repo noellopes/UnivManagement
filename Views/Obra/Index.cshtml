@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UnivManagement.Models.Livro>
+﻿@model IEnumerable<UnivManagement.Models.Obra>
 
 @{
     ViewData["Title"] = "Catálogo da Biblioteca";
@@ -14,18 +14,20 @@
             <button type="button"
                     class="btn-close"
                     data-bs-dismiss="alert"
-                    aria-label="Close">
+                    aria-label="Fechar">
             </button>
         </div>
     }
+
     <!-- Cabeçalho -->
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
         <div>
             <h1 class="fw-bold mb-2">
                 📚 Catálogo da Biblioteca
             </h1>
+
             <p class="text-muted mb-0">
-                Consulta e gere os livros disponíveis na biblioteca.
+                Consulta e gere as obras disponíveis na biblioteca.
             </p>
         </div>
 
@@ -38,22 +40,22 @@
 
             <a asp-action="Create"
                class="btn btn-success">
-                ➕ Adicionar Livro
+                ➕ Adicionar Obra
             </a>
         </div>
     </div>
 
-    <!-- Cartão da lista de livros -->
+    <!-- Cartão da lista de obras -->
     <div class="card border-0 shadow-sm rounded-3">
 
         <div class="card-header bg-white py-3">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0 fw-semibold">
-                    📖 Lista de Livros
+                    📖 Lista de Obras
                 </h5>
 
                 <span class="badge bg-primary rounded-pill">
-                    @Model.Count() livros
+                    @Model.Count() obras
                 </span>
             </div>
         </div>
@@ -103,10 +105,12 @@
                                     </td>
 
                                     <td>
-                                        @if (item.LivrosAutores.Any())
+                                        @if (item.ObrasAutores.Any())
                                         {
                                             @string.Join(", ",
-                                                item.LivrosAutores.Select(la => la.Autor.Nome))
+                                                item.ObrasAutores
+                                                    .Where(oa => oa.Autor != null)
+                                                    .Select(oa => oa.Autor!.Nome))
                                         }
                                         else
                                         {
@@ -120,23 +124,23 @@
                                         <div class="d-flex justify-content-center gap-2 flex-wrap">
 
                                             <a asp-action="Details"
-                                               asp-route-id="@item.LivroId"
+                                               asp-route-id="@item.ObraId"
                                                class="btn btn-outline-info btn-sm"
                                                title="Ver detalhes">
                                                 👁️ Detalhes
                                             </a>
 
                                             <a asp-action="Edit"
-                                               asp-route-id="@item.LivroId"
+                                               asp-route-id="@item.ObraId"
                                                class="btn btn-outline-warning btn-sm"
-                                               title="Editar livro">
+                                               title="Editar obra">
                                                 ✏️ Editar
                                             </a>
 
                                             <a asp-action="Delete"
-                                               asp-route-id="@item.LivroId"
+                                               asp-route-id="@item.ObraId"
                                                class="btn btn-outline-danger btn-sm"
-                                               title="Eliminar livro">
+                                               title="Eliminar obra">
                                                 🗑️ Eliminar
                                             </a>
 
@@ -154,16 +158,16 @@
                     <div class="fs-1 mb-3">📚</div>
 
                     <h5 class="fw-semibold">
-                        Ainda não existem livros registados.
+                        Ainda não existem obras registadas.
                     </h5>
 
                     <p class="text-muted">
-                        Começa por adicionar o primeiro livro à biblioteca.
+                        Começa por adicionar a primeira obra à biblioteca.
                     </p>
 
                     <a asp-action="Create"
                        class="btn btn-success mt-2">
-                        ➕ Adicionar Primeiro Livro
+                        ➕ Adicionar Primeira Obra
                     </a>
                 </div>
             }

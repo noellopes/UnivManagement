@@ -1,7 +1,7 @@
-@model UnivManagement.Models.Livro
+@model UnivManagement.Models.Obra
 
 @{
-    ViewData["Title"] = "Editar Livro";
+    ViewData["Title"] = "Editar Obra";
 }
 
 <div class="container mt-4 mb-5">
@@ -9,11 +9,11 @@
     <!-- Cabeçalho -->
     <div class="mb-4">
         <h1 class="fw-bold mb-2">
-            ✏️ Editar Livro
+            ✏️ Editar Obra
         </h1>
 
         <p class="text-muted mb-0">
-            Atualiza as informações do livro selecionado.
+            Atualiza as informações da obra selecionada.
         </p>
     </div>
 
@@ -22,7 +22,7 @@
 
         <div class="card-header bg-white p-4">
             <h4 class="fw-bold mb-2">
-                📚 Informações do Livro
+                📚 Informações da Obra
             </h4>
 
             <p class="text-muted mb-0">
@@ -36,7 +36,7 @@
         <div class="card-body p-4">
 
             <form asp-action="Edit"
-                  asp-route-id="@Model.LivroId"
+                  asp-route-id="@Model.ObraId"
                   method="post">
 
                 <!-- Mensagens de validação -->
@@ -44,7 +44,7 @@
                      class="text-danger mb-3">
                 </div>
 
-                <input type="hidden" asp-for="LivroId" />
+                <input type="hidden" asp-for="ObraId" />
 
                 <div class="row g-4">
 
@@ -71,7 +71,7 @@
 
                         <input asp-for="Titulo"
                                class="form-control"
-                               placeholder="Introduz o título do livro" />
+                               placeholder="Introduz o título da obra" />
 
                         <span asp-validation-for="Titulo"
                               class="text-danger small">
@@ -132,6 +132,11 @@
                             mantém a tecla Ctrl pressionada
                             enquanto clicas nos nomes.
                         </div>
+
+                        <span class="text-danger small"
+                              data-valmsg-for="autoresSelecionados"
+                              data-valmsg-replace="true">
+                        </span>
                     </div>
 
                 </div>

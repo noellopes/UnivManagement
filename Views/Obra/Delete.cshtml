@@ -1,7 +1,7 @@
-@model UnivManagement.Models.Livro
+@model UnivManagement.Models.Obra
 
 @{
-    ViewData["Title"] = "Eliminar Livro";
+    ViewData["Title"] = "Eliminar Obra";
 }
 
 <div class="container mt-4 mb-5">
@@ -9,11 +9,11 @@
     <!-- Cabeçalho -->
     <div class="mb-4">
         <h1 class="fw-bold mb-2">
-            🗑️ Eliminar Livro
+            🗑️ Eliminar Obra
         </h1>
 
         <p class="text-muted mb-0">
-            Confirma a eliminação do livro selecionado.
+            Confirma a eliminação da obra selecionada.
         </p>
     </div>
 
@@ -29,13 +29,13 @@
             </h5>
 
             <p class="mb-0">
-                Tens a certeza de que pretendes eliminar este livro?
+                Tens a certeza de que pretendes eliminar esta obra?
                 Confirma os dados apresentados abaixo antes de continuar.
             </p>
         </div>
     </div>
 
-    <!-- Cartão com os dados do livro -->
+    <!-- Cartão com os dados da obra -->
     <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
 
         <div class="card-header bg-white p-4">
@@ -44,14 +44,14 @@
             </h4>
 
             <p class="text-muted mb-0">
-                Livro selecionado para eliminação
+                Obra selecionada para eliminação
             </p>
         </div>
 
         <div class="card-body p-4">
 
             <h5 class="fw-semibold mb-4">
-                Informações do Livro
+                Informações da Obra
             </h5>
 
             <div class="row g-4">
@@ -111,11 +111,14 @@
                     </div>
 
                     <div class="p-3 bg-light rounded-3">
-                        @if (Model.LivrosAutores.Any())
+
+                        @if (Model.ObrasAutores.Any())
                         {
                             <span class="fw-medium">
                                 @string.Join(", ",
-                                    Model.LivrosAutores.Select(la => la.Autor.Nome))
+                                    Model.ObrasAutores
+                                        .Where(oa => oa.Autor != null)
+                                        .Select(oa => oa.Autor!.Nome))
                             </span>
                         }
                         else
@@ -124,6 +127,7 @@
                                 Sem autores associados
                             </span>
                         }
+
                     </div>
                 </div>
 
@@ -133,18 +137,18 @@
             <hr class="my-4" />
 
             <form asp-action="Delete"
-                  asp-route-id="@Model.LivroId"
+                  asp-route-id="@Model.ObraId"
                   method="post">
 
                 @Html.AntiForgeryToken()
 
-                <input type="hidden" asp-for="LivroId" />
+                <input type="hidden" asp-for="ObraId" />
 
                 <div class="d-flex gap-2 flex-wrap">
 
                     <button type="submit"
                             class="btn btn-danger">
-                        🗑️ Eliminar Livro
+                        🗑️ Eliminar Obra
                     </button>
 
                     <a asp-action="Index"
@@ -159,7 +163,6 @@
                     </a>
 
                 </div>
-
             </form>
 
         </div>

@@ -1,10 +1,10 @@
 ﻿
 namespace UnivManagement.Models
 {
-    public class Livro
+    public class Obra
     {
         
-        public int LivroId { get; set; }
+        public int ObraId { get; set; }
 
         public  required string ISBN { get; set; }
 
@@ -17,8 +17,8 @@ namespace UnivManagement.Models
         public ICollection<Exemplar> Exemplares { get; set; }
             = new List<Exemplar>();
 
-        public ICollection<LivroAutor> LivrosAutores { get; set; }
-        = new List<LivroAutor>();
+        public ICollection<ObraAutor> ObrasAutores { get; set; }
+        = new List<ObraAutor>();
 
     }
 }

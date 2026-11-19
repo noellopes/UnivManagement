@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models;
+﻿using UnivManagement.Models;
 
 namespace UnivManagement.Data
 {
@@ -9,17 +8,17 @@ namespace UnivManagement.Data
         {
             if (db == null) throw new ArgumentNullException(nameof(db));
 
-            PopulateLivros(db);
+            PopulateObras(db);
 
         }
 
-        private static void PopulateLivros(UniversityDbContext db)
+        private static void PopulateObras(UniversityDbContext db)
         {
-            if (db.Livros.Any()) return;
+            if (db.Obras.Any()) return;
 
-            var livros = new List<Livro>
+            var obras = new List<Obra>
             {
-                    new Livro
+                    new Obra
     {
         ISBN = "9780132350884",
         Titulo = "Clean Code",
@@ -27,7 +26,7 @@ namespace UnivManagement.Data
         ValorMulta = 1.50
     },
 
-    new Livro
+    new Obra
     {
         ISBN = "9780201633610",
         Titulo = "Design Patterns",
@@ -35,7 +34,7 @@ namespace UnivManagement.Data
         ValorMulta = 2.00
     },
 
-    new Livro
+    new Obra
     {
         ISBN = "9780131103627",
         Titulo = "The C Programming Language",
@@ -43,7 +42,7 @@ namespace UnivManagement.Data
         ValorMulta = 1.50
     },
 
-    new Livro
+    new Obra
     {
         ISBN = "9780134685991",
         Titulo = "Effective Java",
@@ -51,7 +50,7 @@ namespace UnivManagement.Data
         ValorMulta = 2.00
     },
 
-    new Livro
+    new Obra
     {
         ISBN = "9780262033848",
         Titulo = "Introduction to Algorithms",
@@ -60,7 +59,7 @@ namespace UnivManagement.Data
     }
             };
 
-            db.Livros.AddRange(livros);
+            db.Obras.AddRange(obras);
 
             db.SaveChanges();
         }

@@ -1,31 +1,38 @@
-@model UnivManagement.Models.Livro
+@model UnivManagement.Models.Obra
 
 @{
-    ViewData["Title"] = "Detalhes do Livro";
+    ViewData["Title"] = "Detalhes da Obra";
 }
 
 <div class="container mt-4 mb-5">
 
     <!-- Cabeçalho da página -->
     <div class="mb-4">
+
         @if (ViewBag.SuccessMessage != null)
         {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+            <div class="alert alert-success alert-dismissible fade show"
+                 role="alert">
+
+                <i class="bi bi-check-circle me-2"
+                   aria-hidden="true"></i>
+
                 @ViewBag.SuccessMessage
+
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="alert"
-                        aria-label="Close">
+                        aria-label="Fechar">
                 </button>
             </div>
         }
+
         <h1 class="fw-bold mb-2">
-            📖 Detalhes do Livro
+            📖 Detalhes da Obra
         </h1>
 
         <p class="text-muted">
-            Consulta as informações do livro selecionado.
+            Consulta as informações da obra selecionada.
         </p>
     </div>
 
@@ -34,6 +41,7 @@
 
         <!-- Cabeçalho do cartão -->
         <div class="card-header bg-white p-4">
+
             <h3 class="fw-bold mb-2">
                 @Model.Titulo
             </h3>
@@ -47,7 +55,7 @@
         <div class="card-body p-4">
 
             <h5 class="fw-semibold mb-4">
-                📚 Informações do Livro
+                📚 Informações da Obra
             </h5>
 
             <div class="row g-4">
@@ -105,11 +113,14 @@
                     </label>
 
                     <div class="p-3 bg-light rounded-3">
-                        @if (Model.LivrosAutores.Any())
+
+                        @if (Model.ObrasAutores.Any())
                         {
                             <span class="fw-medium">
                                 @string.Join(", ",
-                                    Model.LivrosAutores.Select(la => la.Autor.Nome))
+                                    Model.ObrasAutores
+                                        .Where(oa => oa.Autor != null)
+                                        .Select(oa => oa.Autor!.Nome))
                             </span>
                         }
                         else
@@ -118,6 +129,7 @@
                                 Sem autores associados
                             </span>
                         }
+
                     </div>
                 </div>
 
@@ -129,14 +141,15 @@
             <div class="d-flex gap-2 flex-wrap">
 
                 <a asp-action="Edit"
-                   asp-route-id="@Model.LivroId"
+                   asp-route-id="@Model.ObraId"
                    class="btn btn-warning">
-                    ✏️ Editar Livro
+                    ✏️ Editar Obra
                 </a>
+
                 <a asp-action="Delete"
-                   asp-route-id="@Model.LivroId"
+                   asp-route-id="@Model.ObraId"
                    class="btn btn-danger">
-                    🗑️ Eliminar Livro
+                    🗑️ Eliminar Obra
                 </a>
 
                 <a asp-action="Index"

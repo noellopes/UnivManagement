@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Livro Não Encontrado";
+    ViewData["Title"] = "Obra Não Encontrada";
 }
 
 <div class="container mt-5 mb-5">
@@ -20,7 +20,7 @@
 
                     <!-- Título -->
                     <h2 class="fw-bold mb-3">
-                        Livro Não Encontrado
+                        Obra Não Encontrada
                     </h2>
 
                     <!-- Mensagem -->
@@ -28,26 +28,27 @@
                          role="alert">
 
                         <p class="fw-semibold mb-2">
-                            Não foi possível encontrar o livro selecionado.
+                            Não foi possível encontrar a obra selecionada.
                         </p>
-                        <p class="fw-semibold mb-2">
-                            O livro já poderá ter sido eliminado.
+
+                        <p class="fw-semibold mb-0">
+                            A obra poderá já ter sido eliminada.
                         </p>
 
                     </div>
 
                     <p class="text-muted mb-4">
                         Podes regressar ao catálogo para consultar
-                        os livros disponíveis.
+                        as obras disponíveis na biblioteca.
                     </p>
 
                     <!-- Botões de navegação -->
                     <div class="d-flex justify-content-center gap-2 flex-wrap">
 
-                        <a asp-controller="Livro"
+                        <a asp-controller="Obra"
                            asp-action="Index"
                            class="btn btn-primary">
-                            📚 Voltar à Lista de Livros
+                            📚 Voltar à Lista de Obras
                         </a>
 
                         <a asp-controller="Home"

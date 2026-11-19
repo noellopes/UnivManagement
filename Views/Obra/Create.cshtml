@@ -1,7 +1,7 @@
-@model UnivManagement.Models.Livro
+@model UnivManagement.Models.Obra
 
 @{
-    ViewData["Title"] = "Adicionar Livro";
+    ViewData["Title"] = "Adicionar Obra";
 }
 
 <div class="container mt-4 mb-5">
@@ -9,11 +9,11 @@
     <!-- Cabeçalho -->
     <div class="mb-4">
         <h1 class="fw-bold mb-2">
-            ➕ Adicionar Livro
+            ➕ Adicionar Obra
         </h1>
 
         <p class="text-muted mb-0">
-            Regista um novo livro no catálogo da biblioteca.
+            Regista uma nova obra no catálogo da biblioteca.
         </p>
     </div>
 
@@ -22,12 +22,12 @@
 
         <div class="card-header bg-white p-4">
             <h4 class="fw-bold mb-2">
-                📚 Informações do Novo Livro
+                📚 Informações da Nova Obra
             </h4>
 
             <p class="text-muted mb-0">
                 Preenche os dados abaixo para adicionar
-                um novo livro ao catálogo.
+                uma nova obra ao catálogo.
             </p>
         </div>
 
@@ -67,7 +67,7 @@
 
                         <input asp-for="Titulo"
                                class="form-control"
-                               placeholder="Introduz o título do livro" />
+                               placeholder="Introduz o título da obra" />
 
                         <span asp-validation-for="Titulo"
                               class="text-danger small">
@@ -115,6 +115,7 @@
                         <label for="autoresSelecionados"
                                class="form-label fw-semibold">
                             👤 Autores
+                            <span class="text-danger">*</span>
                         </label>
 
                         <select id="autoresSelecionados"
@@ -130,6 +131,11 @@
                             mantém a tecla Ctrl pressionada
                             enquanto clicas nos nomes.
                         </div>
+
+                        <span class="text-danger small"
+                              data-valmsg-for="autoresSelecionados"
+                              data-valmsg-replace="true">
+                        </span>
                     </div>
 
                 </div>
@@ -141,7 +147,7 @@
 
                     <button type="submit"
                             class="btn btn-success">
-                        ➕ Adicionar Livro
+                        ➕ Adicionar Obra
                     </button>
 
                     <a asp-action="Index"
