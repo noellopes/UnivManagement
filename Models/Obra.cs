@@ -10,7 +10,9 @@ namespace UnivManagement.Models
 
         public required string Titulo { get; set; }
 
-        public required string Tipo { get; set; }
+        public int TipoObraId { get; set; }
+
+        public TipoObra? Tipo { get; set; }
         
         public required double ValorMulta { get; set; }
 

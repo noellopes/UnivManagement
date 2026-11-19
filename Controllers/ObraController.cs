@@ -25,6 +25,7 @@ namespace UnivManagement.Controllers
             }
 
             var obras = await _context.Obras
+                .Include(o => o.Tipo)
                 .Include(o => o.ObrasAutores)
                     .ThenInclude(oa => oa.Autor)
                 .ToListAsync();
@@ -41,6 +42,7 @@ namespace UnivManagement.Controllers
                 return View("NotFound");
 
             var obra = await _context.Obras
+                .Include(o => o.Tipo)
                 .Include(o => o.ObrasAutores)
                     .ThenInclude(oa => oa.Autor)
                 .FirstOrDefaultAsync(o => o.ObraId == id);
@@ -60,6 +62,7 @@ namespace UnivManagement.Controllers
         public async Task<IActionResult> Create()
         {
             await CarregarAutores();
+            await CarregarTipos();
             return View();
         }
 
@@ -67,10 +70,21 @@ namespace UnivManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("ISBN,Titulo,Tipo,ValorMulta")] Obra obra,
+            [Bind("ISBN,Titulo,TipoObraId,ValorMulta")] Obra obra,
             List<int> autoresSelecionados)
         {
             await ValidarAutores(autoresSelecionados);
+
+            var tipoExiste = await _context.Tipos
+            .AnyAsync(t => t.TipoObraId == obra.TipoObraId);
+
+            if (!tipoExiste)
+            {
+                ModelState.AddModelError(
+                    "TipoObraId",
+                    "Selecione um tipo de obra válido."
+                );
+            }
 
             if (ModelState.IsValid)
             {
@@ -95,6 +109,7 @@ namespace UnivManagement.Controllers
             }
 
             await CarregarAutores(autoresSelecionados);
+            await CarregarTipos(obra.TipoObraId);
             return View(obra);
         }
 
@@ -114,6 +129,8 @@ namespace UnivManagement.Controllers
             await CarregarAutores(
                 obra.ObrasAutores.Select(oa => oa.AutorId));
 
+            await CarregarTipos(obra.TipoObraId);
+
             return View(obra);
         }
 
@@ -122,7 +139,7 @@ namespace UnivManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             int? id,
-            [Bind("ObraId,ISBN,Titulo,Tipo,ValorMulta")] Obra dados,
+            [Bind("ObraId,ISBN,Titulo,TipoObraId,ValorMulta")] Obra dados,
             List<int> autoresSelecionados)
         {
             if (id == null || id != dados.ObraId)
@@ -137,11 +154,22 @@ namespace UnivManagement.Controllers
 
             await ValidarAutores(autoresSelecionados);
 
+            var tipoExiste = await _context.Tipos
+            .AnyAsync(t => t.TipoObraId == dados.TipoObraId);
+
+            if (!tipoExiste)
+            {
+                ModelState.AddModelError(
+                    "TipoObraId",
+                    "Selecione um tipo de obra válido."
+                );
+            }
+
             if (ModelState.IsValid)
             {
                 obra.ISBN = dados.ISBN;
                 obra.Titulo = dados.Titulo;
-                obra.Tipo = dados.Tipo;
+                obra.TipoObraId = dados.TipoObraId;
                 obra.ValorMulta = dados.ValorMulta;
 
                 var idsNovos = autoresSelecionados
@@ -178,6 +206,7 @@ namespace UnivManagement.Controllers
             }
 
             await CarregarAutores(autoresSelecionados);
+            await CarregarTipos(obra.TipoObraId);
             return View(dados);
         }
 
@@ -188,6 +217,7 @@ namespace UnivManagement.Controllers
                 return View("NotFound");
 
             var obra = await _context.Obras
+                .Include(o => o.Tipo)
                 .Include(o => o.ObrasAutores)
                     .ThenInclude(oa => oa.Autor)
                 .FirstOrDefaultAsync(o => o.ObraId == id);
@@ -234,6 +264,20 @@ namespace UnivManagement.Controllers
                 "AutorId",
                 "Nome",
                 selecionados
+            );
+        }
+
+        private async Task CarregarTipos(int? tipoSelecionado = null)
+        {
+            var tipos = await _context.Tipos
+                .OrderBy(t => t.NomeTipo)
+                .ToListAsync();
+
+            ViewBag.Tipos = new SelectList(
+                tipos,
+                "TipoObraId",
+                "NomeTipo",
+                tipoSelecionado
             );
         }
 

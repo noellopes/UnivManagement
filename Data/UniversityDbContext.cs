@@ -69,6 +69,7 @@ namespace UnivManagement.Data {
         }
 
         public DbSet<Obra> Obras { get; set; } = default!;
+        public DbSet<TipoObra> Tipos { get; set;  } = default!;
         public DbSet<Exemplar> Exemplares { get; set; } = default!;
         public DbSet<Autor> Autores { get; set; } = default!;
         public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;
