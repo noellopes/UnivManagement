@@ -1,67 +1,75 @@
 @model UnivManagement.Models.Tecnico
 
 @{
-    ViewData["Title"] = "Detalhes do Técnico";
+    ViewData["Title"] = "Detalhes do técnico";
 }
 
-<div class="py-4">
+<div class="container py-4">
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+            @ViewBag.SuccessMessage
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Fechar">
+            </button>
+        </div>
+    }
+
+    <!-- Main Header -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start mb-4">
+        <div>
+            <h1 class="h2 fw-bold mb-1" style="color: #174966;">Detalhes do técnico</h1>
+            <p class="text-muted small mb-0">
+                Consultar os dados completos deste técnico.
+            </p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <a asp-action="Index"
+               class="btn btn-outline-secondary bg-white text-dark border px-3 py-2"
+               style="border-radius: 6px;">
+                Voltar à lista
+            </a>
+        </div>
+    </div>
+
     <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
-
-            @if (ViewBag.SuccessMessage != null)
-            {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
-                    @ViewBag.SuccessMessage
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert"
-                            aria-label="Fechar">
-                    </button>
-                </div>
-            }
-
-            <div class="mb-4">
-                <h1 class="h2 mb-1">Detalhes do Técnico</h1>
-                <p class="text-body-secondary mb-0">
-                    Consultar os dados completos deste técnico.
-                </p>
-            </div>
-
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-body-tertiary py-3">
-                    <h2 class="h5 mb-0">
-                        <i class="bi bi-person-badge me-2" aria-hidden="true"></i>
-                        Informação do Técnico
-                    </h2>
-                </div>
-
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card border-0 shadow-sm bg-white" style="border-top: 3px solid #e5a93b !important; border-radius: 8px;">
                 <div class="card-body p-4">
-                    <dl class="row mb-4">
-                        <dt class="col-sm-4 text-muted">Nome</dt>
-                        <dd class="col-sm-8 fw-semibold">@Html.DisplayFor(model => model.Nome)</dd>
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="small text-muted fw-semibold mb-1">Nome</div>
+                        <div class="text-dark fw-semibold">@Html.DisplayFor(model => model.Nome)</div>
+                    </div>
 
-                        <dt class="col-sm-4 text-muted">Email</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="small text-muted fw-semibold mb-1">Email</div>
+                        <div class="text-dark">@Html.DisplayFor(model => model.Email)</div>
+                    </div>
 
-                        <dt class="col-sm-4 text-muted mb-0">Departamento</dt>
-                        <dd class="col-sm-8 mb-0">@Html.DisplayFor(model => model.Departamento!.Nome)</dd>
-                    </dl>
+                    <div class="mb-4">
+                        <div class="small text-muted fw-semibold mb-1">Departamento</div>
+                        <div class="text-dark">@Html.DisplayFor(model => model.Departamento!.Nome)</div>
+                    </div>
 
                     <div class="d-flex flex-wrap gap-2">
-                        <a asp-action="Edit" asp-route-id="@Model.TecnicoId" class="btn btn-primary">
-                            <i class="bi bi-pencil-fill me-1" aria-hidden="true"></i>
+                        <a asp-action="Edit"
+                           asp-route-id="@Model.TecnicoId"
+                           class="btn text-white px-3 py-2"
+                           style="background-color: #174966; border-color: #174966; border-radius: 6px;">
                             Editar
                         </a>
 
-                        <a asp-action="Index" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>
-                            Voltar à Lista
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary bg-white text-dark border px-3 py-2"
+                           style="border-radius: 6px;">
+                            Voltar à lista
                         </a>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

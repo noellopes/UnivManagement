@@ -1,28 +1,30 @@
 @model UnivManagement.Models.Tecnico
 
 @{
-    ViewData["Title"] = "Editar Técnico";
+    ViewData["Title"] = "Editar técnico";
 }
 
-<div class="py-4">
+<div class="container py-4">
+    <!-- Main Header -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start mb-4">
+        <div>
+            <h1 class="h2 fw-bold mb-1" style="color: #174966;">Editar técnico</h1>
+            <p class="text-muted small mb-0">
+                Altere os dados e o departamento deste técnico.
+            </p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <a asp-action="Index"
+               class="btn btn-outline-secondary bg-white text-dark border px-3 py-2"
+               style="border-radius: 6px;">
+                Voltar à lista
+            </a>
+        </div>
+    </div>
+
     <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
-
-            <div class="mb-4">
-                <h1 class="h2 mb-1">Editar Técnico</h1>
-                <p class="text-body-secondary mb-0">
-                    Atualize os dados do técnico abaixo.
-                </p>
-            </div>
-
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-body-tertiary py-3">
-                    <h2 class="h5 mb-0">
-                        <i class="bi bi-person-badge me-2" aria-hidden="true"></i>
-                        Informação do Técnico
-                    </h2>
-                </div>
-
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card border-0 shadow-sm bg-white" style="border-top: 3px solid #e5a93b !important; border-radius: 8px;">
                 <div class="card-body p-4">
                     <form asp-action="Edit" method="post">
                         <div asp-validation-summary="ModelOnly"
@@ -31,55 +33,49 @@
 
                         <input type="hidden" asp-for="TecnicoId" />
 
-                        <div class="mb-4">
-                            <label asp-for="Nome" class="form-label fw-semibold">Nome</label>
-
+                        <div class="mb-3">
+                            <label asp-for="Nome" class="form-label text-dark">Nome</label>
                             <input asp-for="Nome"
                                    class="form-control" />
-
                             <span asp-validation-for="Nome"
                                   class="text-danger small"></span>
                         </div>
 
-                        <div class="mb-4">
-                            <label asp-for="Email" class="form-label fw-semibold">Email</label>
-
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label text-dark">Email</label>
                             <input asp-for="Email"
                                    class="form-control" />
-
                             <span asp-validation-for="Email"
                                   class="text-danger small"></span>
                         </div>
 
                         <div class="mb-4">
-                            <label asp-for="DepartamentoId" class="form-label fw-semibold">Departamento</label>
-
+                            <label asp-for="DepartamentoId" class="form-label text-dark">Departamento</label>
                             <select asp-for="DepartamentoId"
                                     class="form-select"
                                     asp-items="ViewBag.DepartamentoId">
                                 <option value="">-- Selecione um departamento --</option>
                             </select>
-
                             <span asp-validation-for="DepartamentoId"
                                   class="text-danger small"></span>
                         </div>
 
                         <div class="d-flex flex-wrap gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-lg me-1" aria-hidden="true"></i>
-                                Guardar Alterações
+                            <button type="submit"
+                                    class="btn text-white px-3 py-2"
+                                    style="background-color: #174966; border-color: #174966; border-radius: 6px;">
+                                Guardar alterações
                             </button>
 
                             <a asp-action="Index"
-                               class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>
-                                Voltar à Lista
+                               class="btn btn-outline-secondary bg-white text-dark border px-3 py-2"
+                               style="border-radius: 6px;">
+                                Cancelar
                             </a>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
