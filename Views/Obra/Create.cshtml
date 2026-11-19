@@ -81,9 +81,11 @@
                             Tipo <span class="text-danger">*</span>
                         </label>
 
-                        <input asp-for="TipoObraId"
-                               class="form-control"
-                               placeholder="Ex.: Manual, Livro Técnico" />
+                        <select asp-for="TipoObraId"
+                                asp-items="ViewBag.Tipos"
+                                class="form-select">
+                            <option value="">-- Selecione um tipo --</option>
+                        </select>
 
                         <span asp-validation-for="TipoObraId"
                               class="text-danger small">
