@@ -1,0 +1,33 @@
+@model UnivManagement.Models.Departamento
+
+@{
+    ViewData["Title"] = "Detalhes";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-4">@Model.Nome</h1>
+                <dl class="row mb-4">
+                    <dt class="col-sm-4">Estado</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.Ativo)
+                        {
+                            <span class="badge bg-success">Ativo</span>
+                        }
+                        else
+                        {
+
+                            <span class="badge bg-secondary">Inativo</span>
+                        }
+                    </dd>
+                    <dt class="col-sm-4">Data de criação</dt>
+                    <dd class="col-sm-8">@Model.DataCriacao.ToString("dd/MM/yyyy")</dd>
+                </dl>
+                <a asp-action="Edit" asp-route-id="@Model.DepartamentoId" class="btn btn-primary">Editar</a>
+                <a asp-action="Index" class="btn btn-outline-secondary">Voltar à lista</a>
+            </div>
+        </div>
+    </div>
+</div>
