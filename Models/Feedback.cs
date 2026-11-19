@@ -10,7 +10,7 @@ namespace UnivManagement.Models
         [Display(Name = "Submissão")]
         public int SubmissaoTrabalhoId { get; set; }
 
-        // public SubmissaoTrabalho? SubmissaoTrabalho { get; set; } // Descomentar quando o Diogo criar a classe
+        public SubmissaoTrabalho? SubmissaoTrabalho { get; set; } 
 
         [Required(ErrorMessage = "Por favor, escolha o {0}.")]
         [Display(Name = "Docente")]
