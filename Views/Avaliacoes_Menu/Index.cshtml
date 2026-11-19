@@ -28,9 +28,14 @@
                     <p class="card-text text-muted flex-grow-1">
                         Gerir avaliações, tipos de avaliação e acompanhar as submissões de trabalhos.
                     </p>
-                    <a asp-controller="AvaliacaoUC" asp-action="Index" class="btn btn-outline-primary w-100 mt-3">
-                        Aceder ao Módulo
-                    </a>
+                    <div class="col-12">
+                        <a asp-controller="AvaliacaoUC" asp-action="Index" class="btn btn-outline-primary w-100 mt-3">
+                            Avaliações
+                        </a>
+                        <a asp-controller="SubmissaoTrabalho" asp-action="Index" class="btn btn-outline-primary w-100 mt-3">
+                            Submissões
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
