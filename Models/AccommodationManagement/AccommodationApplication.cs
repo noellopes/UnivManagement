@@ -12,9 +12,6 @@ public class AccommodationApplication
     [Display(Name = "Ano Letivo")]
     public int AcademicYearId { get; set; }
 
-    [Display(Name = "Estado")]
-    public ApplicationStatus Status { get; set; } = ApplicationStatus.Submitted;
-
     [Display(Name = "Submetida em")]
     public DateTime SubmittedAt { get; set; } = DateTime.Now;
 
@@ -27,22 +24,4 @@ public class AccommodationApplication
     [StringLength(200, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
     [Display(Name = "Motivo")]
     public string? PriorityOverrideReason { get; set; }
-}
-
-public enum ApplicationStatus
-{
-    [Display(Name = "Submetida")]
-    Submitted,
-
-    [Display(Name = "Em processo")]
-    UnderReview,
-
-    [Display(Name = "Aceite")]
-    Approved,
-
-    [Display(Name = "Recusada")]
-    Rejected,
-
-    [Display(Name = "Retirada")]
-    Withdrawn
 }
