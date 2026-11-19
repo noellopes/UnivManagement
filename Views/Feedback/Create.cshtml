@@ -14,7 +14,9 @@
 
             <div class="form-group mb-3">
                 <label asp-for="SubmissaoTrabalhoId" class="control-label"></label>
-                <input asp-for="SubmissaoTrabalhoId" class="form-control" />
+                <select asp-for="SubmissaoTrabalhoId" asp-items="ViewBag.Submissoes" class="form-select">
+                    <option value="">-- Escolha a submissão --</option>
+                </select>
                 <span asp-validation-for="SubmissaoTrabalhoId" class="text-danger"></span>
             </div>
 

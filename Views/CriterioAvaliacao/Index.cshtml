@@ -1,0 +1,49 @@
+@model IEnumerable<UnivManagement.Models.CriterioAvaliacao>
+
+@{
+    ViewData["Title"] = "Critérios de Avaliação";
+}
+
+<h1>Critérios de Avaliação</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Novo Critério</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UcId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PesoTrab)
+            </th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UcId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UC.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PesoTrab)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CriterioAvaliacaoId">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.CriterioAvaliacaoId">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CriterioAvaliacaoId">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

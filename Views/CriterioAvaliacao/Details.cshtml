@@ -1,0 +1,39 @@
+@model UnivManagement.Models.CriterioAvaliacao
+
+@{
+    ViewData["Title"] = "Detalhes do Critério de Avaliação";
+}
+
+<h1>Detalhes do Critério de Avaliação</h1>
+
+<div>
+    <h4>Critério de Avaliação</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.UcId)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.UcId)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.UC)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.UC.Name)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.PesoTrab)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.PesoTrab)
+        </dd>
+    </dl>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model?.CriterioAvaliacaoId" class="btn btn-primary">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Voltar à Lista</a>
+</div>
