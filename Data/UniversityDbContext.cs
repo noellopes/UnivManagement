@@ -119,6 +119,7 @@ namespace UnivManagement.Data
         public DbSet<GrupoTrabalho> GruposTrabalho { get; set; } = default!;
         public DbSet<GrupoTrabalhoMembro> GruposTrabalhoMembros { get; set; } = default!;
         public DbSet<Nota> Notas { get; set; } = default!;
+        public DbSet<InscAval> InscAval { get; set; } = default!;
         // Grupo 3
     }
 }
