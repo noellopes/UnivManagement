@@ -45,7 +45,7 @@ public class AccommodationApplicationsController : Controller
     // POST: ACCOMMODATIONAPPLICATIONS/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("AccommodationApplicationId,StudentId,AcademicYearId,Status,SubmittedAt,HasScholarshipPriority,PriorityCheckedAt,PriorityOverrideReason")] AccommodationApplication accommodationapplication)
+    public async Task<IActionResult> Create([Bind("AccommodationApplicationId,StudentId,AcademicYearId,SubmittedAt,HasScholarshipPriority,PriorityCheckedAt,PriorityOverrideReason")] AccommodationApplication accommodationapplication)
     {
         if (ModelState.IsValid)
         {
@@ -76,7 +76,7 @@ public class AccommodationApplicationsController : Controller
     // POST: ACCOMMODATIONAPPLICATIONS/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("AccommodationApplicationId,StudentId,AcademicYearId,Status,SubmittedAt,HasScholarshipPriority,PriorityCheckedAt,PriorityOverrideReason")] AccommodationApplication accommodationapplication)
+    public async Task<IActionResult> Edit(int? id, [Bind("AccommodationApplicationId,StudentId,AcademicYearId,SubmittedAt,HasScholarshipPriority,PriorityCheckedAt,PriorityOverrideReason")] AccommodationApplication accommodationapplication)
     {
         if (id != accommodationapplication.AccommodationApplicationId)
         {
