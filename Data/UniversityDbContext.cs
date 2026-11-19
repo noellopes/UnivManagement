@@ -72,7 +72,13 @@ namespace UnivManagement.Data
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
-        }
+
+            modelBuilder.Entity<Feedback>()
+                .HasOne(f => f.SubmissaoTrabalho)
+                .WithMany()
+                .HasForeignKey(f => f.SubmissaoTrabalhoId)
+                .OnDelete(DeleteBehavior.Restrict);
+            }
 
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
@@ -119,6 +125,7 @@ namespace UnivManagement.Data
         public DbSet<GrupoTrabalho> GruposTrabalho { get; set; } = default!;
         public DbSet<GrupoTrabalhoMembro> GruposTrabalhoMembros { get; set; } = default!;
         public DbSet<Nota> Notas { get; set; } = default!;
+        public DbSet<CriterioAvaliacao> CriterioAvaliacao { get; set; }
         // Grupo 3
     }
 }
