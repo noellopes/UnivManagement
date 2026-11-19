@@ -1,71 +1,66 @@
 @model IEnumerable<UnivManagement.Models.Carreira>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Carreiras";
 }
 
-<h1>Index</h1>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-0 fw-bold">Gestão de Carreiras</h2>
+            <small class="text-muted">Percurso profissional, cargos e competências dos estudantes</small>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            Nova Carreira
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IdAluno)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estudante)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CargoAtual)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmpresaAtual)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Competencias)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Certificacoes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HistoricoProfissional)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.IdAluno)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Estudante)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.CargoAtual)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.EmpresaAtual)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Competencias)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Certificacoes)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.HistoricoProfissional)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdCarreira">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdCarreira">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdCarreira">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Estudante</th>
+                            <th>Cargo Atual</th>
+                            <th>Empresa Atual</th>
+                            <th>Competências</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">
+                                    @(item.Estudante?.Nome ?? $"Aluno #{item.IdAluno}")
+                                </td>
+                                <td>@(string.IsNullOrWhiteSpace(item.CargoAtual) ? "—" : item.CargoAtual)</td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(item.EmpresaAtual))
+                                    {
+                                        <span class="badge bg-secondary-subtle text-secondary">@item.EmpresaAtual</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">—</span>
+                                    }
+                                </td>
+                                <td class="text-truncate" style="max-width: 240px;">
+                                    @(string.IsNullOrWhiteSpace(item.Competencias) ? "—" : item.Competencias)
+                                </td>
+                                <td class="text-end">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a asp-action="Details" asp-route-id="@item.IdCarreira" class="btn btn-outline-info">Detalhes</a>
+                                        <a asp-action="Edit" asp-route-id="@item.IdCarreira" class="btn btn-outline-warning">Editar</a>
+                                        <a asp-action="Delete" asp-route-id="@item.IdCarreira" class="btn btn-outline-danger">Eliminar</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

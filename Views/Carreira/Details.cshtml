@@ -1,66 +1,48 @@
 @model UnivManagement.Models.Carreira
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes da Carreira";
 }
 
-<h1>Details</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 fw-bold">Detalhes da Carreira</h4>
+                    @if (!string.IsNullOrWhiteSpace(Model.EmpresaAtual))
+                    {
+                        <span class="badge bg-primary">@Model.EmpresaAtual</span>
+                    }
+                </div>
+                <div class="card-body p-4">
+                    <dl class="row mb-0 gy-2">
+                        <dt class="col-sm-4 text-muted">Estudante</dt>
+                        <dd class="col-sm-8 fw-semibold">@(Model.Estudante?.Nome ?? $"Aluno #{Model.IdAluno}")</dd>
 
-<div>
-    <h4>Carreira</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdAluno)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdAluno)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estudante)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estudante)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CargoAtual)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CargoAtual)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmpresaAtual)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmpresaAtual)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Competencias)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Competencias)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Certificacoes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Certificacoes)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HistoricoProfissional)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HistoricoProfissional)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.IdCarreira">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                        <dt class="col-sm-4 text-muted">Cargo Atual</dt>
+                        <dd class="col-sm-8">@(string.IsNullOrWhiteSpace(Model.CargoAtual) ? "—" : Model.CargoAtual)</dd>
+
+                        <dt class="col-sm-4 text-muted">Empresa Atual</dt>
+                        <dd class="col-sm-8">@(string.IsNullOrWhiteSpace(Model.EmpresaAtual) ? "—" : Model.EmpresaAtual)</dd>
+
+                        <dt class="col-sm-4 text-muted">Competências</dt>
+                        <dd class="col-sm-8">@(string.IsNullOrWhiteSpace(Model.Competencias) ? "—" : Model.Competencias)</dd>
+
+                        <dt class="col-sm-4 text-muted">Certificações</dt>
+                        <dd class="col-sm-8">@(string.IsNullOrWhiteSpace(Model.Certificacoes) ? "—" : Model.Certificacoes)</dd>
+
+                        <dt class="col-sm-4 text-muted">Histórico Profissional</dt>
+                        <dd class="col-sm-8" style="white-space: pre-line;">
+                            @(string.IsNullOrWhiteSpace(Model.HistoricoProfissional) ? "Sem histórico registado." : Model.HistoricoProfissional)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-white py-3 d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-light border">Voltar</a>
+                    <a asp-action="Edit" asp-route-id="@Model.IdCarreira" class="btn btn-warning">Editar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
