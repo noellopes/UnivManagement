@@ -1,0 +1,61 @@
+@model IEnumerable<UnivManagement.Models.Autor>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Gestão de Autores</h1>
+
+@if (TempData["Erro"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show"
+         role="alert">
+
+        <i class="bi bi-exclamation-triangle me-2"></i>
+
+        @TempData["Erro"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Fechar">
+        </button>
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-2"></i>
+        Adicionar Autor
+    </a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ObrasAutores)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ObrasAutores)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AutorId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AutorId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AutorId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
