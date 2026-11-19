@@ -1,0 +1,99 @@
+@model UnivManagement.Models.SubmissaoTrabalho
+
+@{
+    ViewData["Title"] = "Nova Submissão";
+}
+
+<h1>Nova Submissão de Trabalho</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="TrabalhoId" class="form-label"></label>
+
+                <select asp-for="TrabalhoId"
+                        asp-items="ViewBag.Trabalhos"
+                        class="form-select">
+                    <option value="">-- Escolha o trabalho --</option>
+                </select>
+
+                <span asp-validation-for="TrabalhoId"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StudentId" class="form-label"></label>
+
+                <select asp-for="StudentId"
+                        asp-items="ViewBag.Alunos"
+                        class="form-select">
+                    <option value="">-- Escolha o aluno --</option>
+                </select>
+
+                <span asp-validation-for="StudentId"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="GrupoTrabalhoId" class="form-label"></label>
+
+                <select asp-for="GrupoTrabalhoId"
+                        asp-items="ViewBag.Grupos"
+                        class="form-select">
+                    <option value="">-- Sem grupo (trabalho individual) --</option>
+                </select>
+
+                <span asp-validation-for="GrupoTrabalhoId"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DataEntrega" class="form-label"></label>
+
+                <input asp-for="DataEntrega" class="form-control" />
+
+                <span asp-validation-for="DataEntrega"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CaminhoFicheiro" class="form-label"></label>
+
+                <input asp-for="CaminhoFicheiro"
+                       class="form-control" />
+
+                <span asp-validation-for="CaminhoFicheiro"
+                      class="text-danger"></span>
+
+                <div class="form-text">
+                    Introduza o caminho do ficheiro entregue.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">
+                    Guardar Submissão
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

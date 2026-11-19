@@ -1,0 +1,51 @@
+@model UnivManagement.Models.SubmissaoTrabalho
+
+@{
+    ViewData["Title"] = "Detalhes da Submissão";
+}
+
+<h1>Detalhes da Submissão de Trabalho</h1>
+<hr />
+
+<div>
+    <dl class="row">
+
+        <dt class="col-sm-3">Trabalho</dt>
+        <dd class="col-sm-9">
+            @Model.Trabalho?.Titulo
+        </dd>
+
+        <dt class="col-sm-3">Aluno responsável</dt>
+        <dd class="col-sm-9">
+            @Model.StudentId
+        </dd>
+
+        <dt class="col-sm-3">Grupo de trabalho</dt>
+        <dd class="col-sm-9">
+            @(Model.GrupoTrabalho?.Nome ?? "Individual")
+        </dd>
+
+        <dt class="col-sm-3">Data de Entrega</dt>
+        <dd class="col-sm-9">
+            @Model.DataEntrega.ToString("dd/MM/yyyy")
+        </dd>
+
+        <dt class="col-sm-3">Ficheiro entregue</dt>
+        <dd class="col-sm-9">
+            @Model.CaminhoFicheiro
+        </dd>
+
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit"
+       asp-route-id="@Model.SubmissaoTrabalhoId"
+       class="btn btn-primary">
+        Editar
+    </a>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Voltar à Lista
+    </a>
+</div>

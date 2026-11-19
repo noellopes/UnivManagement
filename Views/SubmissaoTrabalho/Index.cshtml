@@ -1,0 +1,70 @@
+@model IEnumerable<UnivManagement.Models.SubmissaoTrabalho>
+
+@{
+    ViewData["Title"] = "Submissões de Trabalhos";
+}
+
+<h1>Submissões de Trabalhos</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Nova Submissão
+    </a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Trabalho</th>
+            <th>Aluno responsável</th>
+            <th>Grupo</th>
+            <th>Data de Entrega</th>
+            <th>Ficheiro</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Trabalho?.Titulo
+                </td>
+
+                <td>
+                    @item.StudentId
+                </td>
+
+                <td>
+                    @(item.GrupoTrabalho?.Nome ?? "Individual")
+                </td>
+
+                <td>
+                    @item.DataEntrega.ToString("dd/MM/yyyy")
+                </td>
+
+                <td>
+                    @item.CaminhoFicheiro
+                </td>
+
+                <td>
+                    <a asp-action="Edit"
+                       asp-route-id="@item.SubmissaoTrabalhoId">
+                        Editar
+                    </a> |
+
+                    <a asp-action="Details"
+                       asp-route-id="@item.SubmissaoTrabalhoId">
+                        Detalhes
+                    </a> |
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.SubmissaoTrabalhoId">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
