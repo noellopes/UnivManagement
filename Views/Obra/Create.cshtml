@@ -1,0 +1,178 @@
+@model UnivManagement.Models.Obra
+
+@{
+    ViewData["Title"] = "Adicionar Obra";
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-2">
+            ➕ Adicionar Obra
+        </h1>
+
+        <p class="text-muted mb-0">
+            Regista uma nova obra no catálogo da biblioteca.
+        </p>
+    </div>
+
+    <!-- Cartão do formulário -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+
+        <div class="card-header bg-white p-4">
+            <h4 class="fw-bold mb-2">
+                📚 Informações da Nova Obra
+            </h4>
+
+            <p class="text-muted mb-0">
+                Preenche os dados abaixo para adicionar
+                uma nova obra ao catálogo.
+            </p>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form asp-action="Create" method="post">
+
+                <!-- Mensagens de validação -->
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="row g-4">
+
+                    <!-- ISBN -->
+                    <div class="col-md-6">
+                        <label asp-for="ISBN"
+                               class="form-label fw-semibold">
+                            ISBN <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="ISBN"
+                               class="form-control"
+                               placeholder="Introduz o ISBN" />
+
+                        <span asp-validation-for="ISBN"
+                              class="text-danger small">
+                        </span>
+                    </div>
+
+                    <!-- Título -->
+                    <div class="col-md-6">
+                        <label asp-for="Titulo"
+                               class="form-label fw-semibold">
+                            Título <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Titulo"
+                               class="form-control"
+                               placeholder="Introduz o título da obra" />
+
+                        <span asp-validation-for="Titulo"
+                              class="text-danger small">
+                        </span>
+                    </div>
+
+                    <!-- Tipo -->
+                    <div class="col-md-6">
+                        <label asp-for="TipoObraId"
+                               class="form-label fw-semibold">
+                            Tipo <span class="text-danger">*</span>
+                        </label>
+
+                        <select asp-for="TipoObraId"
+                                asp-items="ViewBag.Tipos"
+                                class="form-select">
+                            <option value="">-- Selecione um tipo --</option>
+                        </select>
+
+                        <span asp-validation-for="TipoObraId"
+                              class="text-danger small">
+                        </span>
+                    </div>
+
+                    <!-- Valor da Multa -->
+                    <div class="col-md-6">
+                        <label asp-for="ValorMulta"
+                               class="form-label fw-semibold">
+                            Valor da Multa (€)
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <div class="input-group">
+                            <input asp-for="ValorMulta"
+                                   class="form-control" />
+
+                            <span class="input-group-text">€</span>
+                        </div>
+
+                        <span asp-validation-for="ValorMulta"
+                              class="text-danger small">
+                        </span>
+                    </div>
+
+                    <!-- Autores -->
+                    <div class="col-12">
+                        <label for="autoresSelecionados"
+                               class="form-label fw-semibold">
+                            👤 Autores
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <select id="autoresSelecionados"
+                                name="autoresSelecionados"
+                                asp-items="ViewBag.Autores"
+                                multiple
+                                size="5"
+                                class="form-select">
+                        </select>
+
+                        <div class="form-text mt-2">
+                            💡 Para selecionar vários autores,
+                            mantém a tecla Ctrl pressionada
+                            enquanto clicas nos nomes.
+                        </div>
+
+                        <span class="text-danger small"
+                              data-valmsg-for="autoresSelecionados"
+                              data-valmsg-replace="true">
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Botões -->
+                <hr class="my-4" />
+
+                <div class="d-flex gap-2 flex-wrap">
+
+                    <button type="submit"
+                            class="btn btn-success">
+                        ➕ Adicionar Obra
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        ← Voltar à Lista
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-outline-primary">
+                        🏠 Voltar ao Início
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

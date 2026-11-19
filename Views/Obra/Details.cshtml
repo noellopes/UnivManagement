@@ -1,0 +1,170 @@
+@model UnivManagement.Models.Obra
+
+@{
+    ViewData["Title"] = "Detalhes da Obra";
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Cabeçalho da página -->
+    <div class="mb-4">
+
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show"
+                 role="alert">
+
+                <i class="bi bi-check-circle me-2"
+                   aria-hidden="true"></i>
+
+                @ViewBag.SuccessMessage
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Fechar">
+                </button>
+            </div>
+        }
+
+        <h1 class="fw-bold mb-2">
+            📖 Detalhes da Obra
+        </h1>
+
+        <p class="text-muted">
+            Consulta as informações da obra selecionada.
+        </p>
+    </div>
+
+    <!-- Cartão com os detalhes -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+
+        <!-- Cabeçalho do cartão -->
+        <div class="card-header bg-white p-4">
+
+            <h3 class="fw-bold mb-2">
+                @Model.Titulo
+            </h3>
+
+            <span class="badge bg-info text-dark">
+                @Model.Tipo?.NomeTipo
+            </span>
+        </div>
+
+        <!-- Corpo do cartão -->
+        <div class="card-body p-4">
+
+            <h5 class="fw-semibold mb-4">
+                📚 Informações da Obra
+            </h5>
+
+            <div class="row g-4">
+
+                <!-- ISBN -->
+                <div class="col-md-6">
+                    <label class="form-label text-muted fw-semibold">
+                        ISBN
+                    </label>
+
+                    <div class="p-3 bg-light rounded-3">
+                        @Model.ISBN
+                    </div>
+                </div>
+
+                <!-- Título -->
+                <div class="col-md-6">
+                    <label class="form-label text-muted fw-semibold">
+                        Título
+                    </label>
+
+                    <div class="p-3 bg-light rounded-3">
+                        @Model.Titulo
+                    </div>
+                </div>
+
+                <!-- Tipo -->
+                <div class="col-md-6">
+                    <label class="form-label text-muted fw-semibold">
+                        Tipo
+                    </label>
+
+                    <div class="p-3 bg-light rounded-3">
+                        @Model.Tipo?.NomeTipo
+                    </div>
+                </div>
+
+                <!-- Valor da Multa -->
+                <div class="col-md-6">
+                    <label class="form-label text-muted fw-semibold">
+                        Valor da Multa
+                    </label>
+
+                    <div class="p-3 bg-light rounded-3">
+                        <span class="fw-bold text-danger">
+                            @Model.ValorMulta.ToString("F2") €
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Autores -->
+                <div class="col-12">
+                    <label class="form-label text-muted fw-semibold">
+                        Autores
+                    </label>
+
+                    <div class="p-3 bg-light rounded-3">
+
+                        @if (Model.ObrasAutores.Any())
+                        {
+                            <span class="fw-medium">
+                                @string.Join(", ",
+                                    Model.ObrasAutores
+                                        .Where(oa => oa.Autor != null)
+                                        .Select(oa => oa.Autor!.Nome))
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-muted fst-italic">
+                                Sem autores associados
+                            </span>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Botões de navegação -->
+            <hr class="my-4" />
+
+            <div class="d-flex gap-2 flex-wrap">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.ObraId"
+                   class="btn btn-warning">
+                    ✏️ Editar Obra
+                </a>
+
+                <a asp-action="Delete"
+                   asp-route-id="@Model.ObraId"
+                   class="btn btn-danger">
+                    🗑️ Eliminar Obra
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    ← Voltar à Lista
+                </a>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="btn btn-outline-primary">
+                    🏠 Voltar ao Início
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
