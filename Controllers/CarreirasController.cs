@@ -31,17 +31,17 @@ namespace UnivManagement.Controllers
             return View(carreiras);
         }
 
-        // GET: Carreiras/Details/5
-        public async Task<IActionResult> Details(int? idcarreira)
+        // GET: Carreiras/Details
+        public async Task<IActionResult> Details(int? id)
         {
-            if (idcarreira == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var carreira = await _context.Carreiras
                 .Include(c => c.Estudante)
-                .FirstOrDefaultAsync(m => m.IdCarreira == idcarreira);
+                .FirstOrDefaultAsync(m => m.IdCarreira == id);
 
             if (carreira == null)
             {
@@ -77,15 +77,15 @@ namespace UnivManagement.Controllers
             return View(carreira);
         }
 
-        // GET: Carreiras/Edit/5
-        public async Task<IActionResult> Edit(int? idcarreira)
+        // GET: Carreiras/Edit
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (idcarreira == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var carreira = await _context.Carreiras.FindAsync(idcarreira);
+            var carreira = await _context.Carreiras.FindAsync(id);
             if (carreira == null)
             {
                 return NotFound();
@@ -95,12 +95,12 @@ namespace UnivManagement.Controllers
             return View(carreira);
         }
 
-        // POST: Carreiras/Edit/5
+        // POST: Carreiras/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? idcarreira, [Bind("IdCarreira,IdAluno,CargoAtual,EmpresaAtual,Competencias,Certificacoes,HistoricoProfissional")] Carreira carreira)
+        public async Task<IActionResult> Edit(int? id, [Bind("IdCarreira,IdAluno,CargoAtual,EmpresaAtual,Competencias,Certificacoes,HistoricoProfissional")] Carreira carreira)
         {
-            if (idcarreira != carreira.IdCarreira)
+            if (id != carreira.IdCarreira)
             {
                 return NotFound();
             }
@@ -133,17 +133,17 @@ namespace UnivManagement.Controllers
             return View(carreira);
         }
 
-        // GET: Carreiras/Delete/5
-        public async Task<IActionResult> Delete(int? idcarreira)
+        // GET: Carreiras/Delete
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (idcarreira == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var carreira = await _context.Carreiras
                 .Include(c => c.Estudante)
-                .FirstOrDefaultAsync(m => m.IdCarreira == idcarreira);
+                .FirstOrDefaultAsync(m => m.IdCarreira == id);
 
             if (carreira == null)
             {
@@ -156,9 +156,9 @@ namespace UnivManagement.Controllers
         // POST: Carreiras/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int? idcarreira)
+        public async Task<IActionResult> DeleteConfirmed(int? id)
         {
-            var carreira = await _context.Carreiras.FindAsync(idcarreira);
+            var carreira = await _context.Carreiras.FindAsync(id);
             if (carreira != null)
             {
                 _context.Carreiras.Remove(carreira);
@@ -169,9 +169,9 @@ namespace UnivManagement.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CarreiraExists(int idcarreira)
+        private bool CarreiraExists(int id)
         {
-            return _context.Carreiras.Any(e => e.IdCarreira == idcarreira);
+            return _context.Carreiras.Any(e => e.IdCarreira == id);
         }
     }
 }
