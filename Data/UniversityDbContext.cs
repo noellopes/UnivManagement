@@ -7,6 +7,8 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<UnivManagement.Models.Session>()
+                .HasKey(s => s.ClassSessionId);
 
             // ServiceRequestType: two request types cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestType>()
