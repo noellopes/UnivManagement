@@ -55,7 +55,7 @@ public class FuncaoDocenteController : Controller
         {
             _context.Add(funcaodocente);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id = funcaodocente.FuncaoDocenteId });
         }
         return View(funcaodocente);
     }
