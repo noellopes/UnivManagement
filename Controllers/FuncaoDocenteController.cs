@@ -21,7 +21,7 @@ public class FuncaoDocenteController : Controller
 
     // GET: FUNCAODOCENTES/Details/5
     [HttpGet("FuncaoDocente/Details/{funcaodocenteid}")]
-    public async Task<IActionResult> Details(int? funcaodocenteid)
+    public async Task<IActionResult> Details(int? funcaodocenteid, string? successMessage = null)
     {
         if (funcaodocenteid == null)
         {
@@ -33,6 +33,11 @@ public class FuncaoDocenteController : Controller
         if (funcaodocente == null)
         {
             return View("NotFound");
+        }
+
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
         }
 
         return View(funcaodocente);
@@ -55,7 +60,9 @@ public class FuncaoDocenteController : Controller
         {
             _context.Add(funcaodocente);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), new { id = funcaodocente.FuncaoDocenteId });
+            return RedirectToAction(
+                nameof(Details), 
+                new { id = funcaodocente.FuncaoDocenteId, successMessage = "Fução docente criado com sucesso." });
         }
         return View(funcaodocente);
     }
@@ -134,7 +141,7 @@ public class FuncaoDocenteController : Controller
     // POST: FUNCAODOCENTES/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? funcaodocenteid)
+    public async Task<IActionResult> DeleteConfirmed(int? funcaodocenteid )
     {
         var funcaodocente = await _context.FuncaoDocente.FindAsync(funcaodocenteid);
         if (funcaodocente != null)
