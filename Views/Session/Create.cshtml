@@ -1,0 +1,95 @@
+@model UnivManagement.Models.Session
+
+@{
+    ViewData["Title"] = "Criar Aula";
+}
+
+<div class="container mt-4" style="max-width: 800px;">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h1 class="h2 fw-bold text-dark mb-1">Criar Nova Aula</h1>
+            <p class="text-muted small mb-0">Preencha os detalhes para agendar uma nova sessão de aula.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
+            <i class="bi bi-arrow-left"></i> Voltar à Lista
+        </a>
+    </div>
+
+    
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-4" role="alert"></div>
+
+                
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label asp-for="DiaSemana" class="form-label fw-semibold text-dark"></label>
+                        <input asp-for="DiaSemana" class="form-control" placeholder="Ex: Segunda-feira" />
+                        <span asp-validation-for="DiaSemana" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="HoraInicio" class="form-label fw-semibold text-dark"></label>
+                        <input asp-for="HoraInicio" type="time" class="form-control" />
+                        <span asp-validation-for="HoraInicio" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="HoraFim" class="form-label fw-semibold text-dark"></label>
+                        <input asp-for="HoraFim" type="time" class="form-control" />
+                        <span asp-validation-for="HoraFim" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label asp-for="TipoAula" class="form-label fw-semibold text-dark"></label>
+                        <input asp-for="TipoAula" class="form-control" placeholder="Ex: Teórica, TP, PL" />
+                        <span asp-validation-for="TipoAula" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="IdSala" class="form-label fw-semibold text-dark"></label>
+                        <input asp-for="IdSala" class="form-control" placeholder="Ex: Lab 3" />
+                        <span asp-validation-for="IdSala" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="IdTurma" class="form-label fw-semibold text-dark"></label>
+                        <input asp-for="IdTurma" class="form-control" />
+                        <span asp-validation-for="IdTurma" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                
+                <div class="mb-4">
+                    <label asp-for="Group" class="form-label fw-semibold text-dark"></label>
+                    <input asp-for="Group" class="form-control" placeholder="Selecione ou insira o grupo de turma" />
+                    <span asp-validation-for="Group" class="text-danger small"></span>
+                </div>
+
+                
+                <div class="mb-4">
+                    <div class="form-check form-switch fs-6">
+                        <input asp-for="Ativo" class="form-check-input" type="checkbox" role="switch" id="AtivoSwitch" />
+                        <label class="form-check-label fw-semibold text-dark ms-2" for="AtivoSwitch">
+                            @Html.DisplayNameFor(model => model.Ativo)
+                        </label>
+                    </div>
+                    <span asp-validation-for="Ativo" class="text-danger small"></span>
+                </div>
+
+                
+                <div class="d-flex align-items-center gap-2 pt-3 border-top">
+                    <button type="submit" class="btn btn-primary px-4 shadow-sm">
+                        <i class="bi bi-check-lg me-1"></i> Criar Aula
+                    </button>
+                    <a asp-action="Index" class="btn btn-light border px-4">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
