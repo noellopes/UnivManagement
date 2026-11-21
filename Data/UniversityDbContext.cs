@@ -8,6 +8,7 @@ namespace UnivManagement.Data
     {
         public DbSet<UnivManagement.Models.FuncaoDocente> FuncaoDocente { get; set; } = default!;
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
