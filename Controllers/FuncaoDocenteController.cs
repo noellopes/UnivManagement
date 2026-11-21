@@ -14,8 +14,13 @@ public class FuncaoDocenteController : Controller
     }
 
     // GET: FUNCAODOCENTES
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index(string? successMessage = null)    
     {
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
+
         return View(await _context.FuncaoDocente.ToListAsync());
     }
 
@@ -134,7 +139,8 @@ public class FuncaoDocenteController : Controller
             .FirstOrDefaultAsync(m => m.FuncaoDocenteId == funcaodocenteid);
         if (funcaodocente == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "Sucesso: A funcao docente já foi eliminada por outro utilizador." });
         }
 
         return View(funcaodocente);
@@ -149,10 +155,10 @@ public class FuncaoDocenteController : Controller
         if (funcaodocente != null)
         {
             _context.FuncaoDocente.Remove(funcaodocente);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { successMessage = "Funcao docente eliminada com sucesso." });
     }
 
     private bool FuncaoDocenteExists(int? funcaodocenteid)
