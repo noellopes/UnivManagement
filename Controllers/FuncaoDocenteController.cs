@@ -114,7 +114,9 @@ public class FuncaoDocenteController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+                nameof(Details),
+                new { id = funcaodocente.FuncaoDocenteId, successMessage = "Informações da função docente atualizadas com sucesso." });
         }
         return View(funcaodocente);
     }
