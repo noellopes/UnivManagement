@@ -6,7 +6,18 @@
 
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">
-
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                @ViewBag.SuccessMessage
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close">
+                </button>
+            </div>
+        }
         <div class="card shadow-sm border-0 rounded-3">
             <!-- Cabeçalho do Cartão -->
             <div class="card-header bg-info text-white py-3">
@@ -64,6 +75,12 @@
 
                 <!-- Botões de Ação -->
                 <div class="d-flex justify-content-between align-items-center">
+                    <a asp-action="Delete"
+                       asp-route-id="@Model?.FuncaoDocenteId"
+                       class="btn btn-danger">
+                        <i class="bi bi-trash me-1" aria-hidden="true"></i>
+                        Eliminar Função docente
+                    </a>
                     <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-3">
                         <i class="bi bi-arrow-left me-1"></i> Voltar à Lista
                     </a>

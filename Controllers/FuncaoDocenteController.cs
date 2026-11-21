@@ -14,14 +14,19 @@ public class FuncaoDocenteController : Controller
     }
 
     // GET: FUNCAODOCENTES
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index(string? successMessage = null)    
     {
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
+
         return View(await _context.FuncaoDocente.ToListAsync());
     }
 
     // GET: FUNCAODOCENTES/Details/5
     [HttpGet("FuncaoDocente/Details/{funcaodocenteid}")]
-    public async Task<IActionResult> Details(int? funcaodocenteid)
+    public async Task<IActionResult> Details(int? funcaodocenteid, string? successMessage = null)
     {
         if (funcaodocenteid == null)
         {
@@ -32,7 +37,12 @@ public class FuncaoDocenteController : Controller
             .FirstOrDefaultAsync(m => m.FuncaoDocenteId == funcaodocenteid);
         if (funcaodocente == null)
         {
-            return NotFound();
+            return View("NotFound");
+        }
+
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
         }
 
         return View(funcaodocente);
@@ -55,7 +65,9 @@ public class FuncaoDocenteController : Controller
         {
             _context.Add(funcaodocente);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+                nameof(Details), 
+                new { id = funcaodocente.FuncaoDocenteId, successMessage = "Fução docente criado com sucesso." });
         }
         return View(funcaodocente);
     }
@@ -66,7 +78,7 @@ public class FuncaoDocenteController : Controller
     {
         if (funcaodocenteid == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var funcaodocente = await _context.FuncaoDocente.FindAsync(funcaodocenteid);
@@ -107,7 +119,9 @@ public class FuncaoDocenteController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+                nameof(Details),
+                new { id = funcaodocente.FuncaoDocenteId, successMessage = "Informações da função docente atualizadas com sucesso." });
         }
         return View(funcaodocente);
     }
@@ -125,7 +139,8 @@ public class FuncaoDocenteController : Controller
             .FirstOrDefaultAsync(m => m.FuncaoDocenteId == funcaodocenteid);
         if (funcaodocente == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "Sucesso: A funcao docente já foi eliminada por outro utilizador." });
         }
 
         return View(funcaodocente);
@@ -134,16 +149,16 @@ public class FuncaoDocenteController : Controller
     // POST: FUNCAODOCENTES/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? funcaodocenteid)
+    public async Task<IActionResult> DeleteConfirmed(int? funcaodocenteid )
     {
         var funcaodocente = await _context.FuncaoDocente.FindAsync(funcaodocenteid);
         if (funcaodocente != null)
         {
             _context.FuncaoDocente.Remove(funcaodocente);
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { successMessage = "Funcao docente eliminada com sucesso." });
     }
 
     private bool FuncaoDocenteExists(int? funcaodocenteid)

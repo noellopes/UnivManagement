@@ -3,6 +3,18 @@
 @{
     ViewData["Title"] = "Funções Docentes";
 }
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+        @ViewBag.SuccessMessage
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close">
+        </button>
+    </div>
+}
 
 <!-- Incluir Bootstrap Icons caso ainda não esteja no _Layout.cshtml -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
