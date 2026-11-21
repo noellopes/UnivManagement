@@ -32,7 +32,7 @@ public class FuncaoDocenteController : Controller
             .FirstOrDefaultAsync(m => m.FuncaoDocenteId == funcaodocenteid);
         if (funcaodocente == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         return View(funcaodocente);
