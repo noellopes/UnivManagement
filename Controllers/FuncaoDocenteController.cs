@@ -66,7 +66,7 @@ public class FuncaoDocenteController : Controller
     {
         if (funcaodocenteid == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var funcaodocente = await _context.FuncaoDocente.FindAsync(funcaodocenteid);
