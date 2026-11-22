@@ -128,7 +128,6 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicDegree> AcademicDegree { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateEnrollment> StateEnrollment { get; set; } = default!;
 
