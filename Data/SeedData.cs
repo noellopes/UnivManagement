@@ -7,6 +7,14 @@ namespace UnivManagement.Data {
             if (db == null) throw new ArgumentNullException(nameof(db));
 
             PopulateCourseStates(db);
+            PopulateAcademicDegrees(db);
+            
+        }
+
+        private static void PopulateCourseStates(UniversityDbContext dbContext)
+        {
+            if (dbContext.CourseState.Any()) return;
+            PopulateCourseStates(db);
             PopulateStudents(db);
             PopulateStateEnrollments(db);
 
@@ -88,6 +96,34 @@ namespace UnivManagement.Data {
             /* 1000045 */ new Student { NumStudent = "1000045", Name = "Gonçalo Fonseca",     Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 5, 16),  Address = "Avenida Central, 5, Faro",                NIF = "200000381", Email = "goncalo.fonseca@uni.pt",    CountryPhoneCode = "+351", Telephone = "917000019" },
             /* 1000046 */ new Student { NumStudent = "1000046", Name = "Bárbara Machado",     Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2002, 2, 21),  Address = "Rua do Carmo, 60, Évora",                 NIF = "200000390", Email = "barbara.machado@uni.pt",    CountryPhoneCode = "+351", Telephone = "917000020" },
 
+            var courseStates = new List<CourseState>
+            {
+                new CourseState { Name = "DRAFT",     Description = "Curso em preparação, ainda não publicado." },
+                new CourseState { Name = "ACTIVE",    Description = "Curso a decorrer normalmente." },
+                new CourseState { Name = "SUSPENDED", Description = "Curso temporariamente suspenso." },
+                new CourseState { Name = "CONCLUDED", Description = "Curso terminado, sem novas inscrições." },
+                new CourseState { Name = "ARCHIVED",  Description = "Curso arquivado historicamente." }
+            };
+
+            dbContext.CourseState.AddRange(courseStates);
+            dbContext.SaveChanges(); 
+        }
+
+        private static void PopulateAcademicDegrees(UniversityDbContext dbContext)
+        {
+            if (dbContext.AcademicDegree.Any()) return;
+
+            var academicDegrees = new List<AcademicDegree>
+            {
+                new AcademicDegree { Name = "Licenciatura",  Description = "Grau de licenciado (3–4 anos)." },
+                new AcademicDegree { Name = "Mestrado",      Description = "Grau de mestre (2 anos)." },
+                new AcademicDegree { Name = "Doutoramento",  Description = "Grau de doutor." },
+                new AcademicDegree { Name = "Pós-Graduação", Description = "Especialização pós-licenciatura." },
+                new AcademicDegree { Name = "CTeSP",         Description = "Curso Técnico Superior Profissional." }
+            };
+
+            dbContext.AcademicDegree.AddRange(academicDegrees);
+            dbContext.SaveChanges();
             /* 1000047 */ new Student { NumStudent = "1000047", Name = "Rodrigo Araújo",      Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 3, 29),  Address = "Largo da Matriz, 4, Bragança",            NIF = "200000403", Email = "rodrigo.araujo@uni.pt",     CountryPhoneCode = "+351", Telephone = "918000001" },
             /* 1000048 */ new Student { NumStudent = "1000048", Name = "Liliana Barbosa",     Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 10, 8),  Address = "Rua Nova, 56, Guarda",                    NIF = "200000411", Email = "liliana.barbosa@uni.pt",    CountryPhoneCode = "+351", Telephone = "918000002" },
             /* 1000049 */ new Student { NumStudent = "1000049", Name = "Fernando Tavares",    Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1998, 6, 12),  Address = "Avenida do Brasil, 12, Castelo Branco",   NIF = "200000420", Email = "fernando.tavares@uni.pt",   CountryPhoneCode = "+351", Telephone = "918000003" },

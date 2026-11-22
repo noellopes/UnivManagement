@@ -1,0 +1,83 @@
+@model UnivManagement.Models.AcademicManagement.AcademicDegree
+@{
+    ViewData["Title"] = "Criar Grau Académico";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+
+        <div class="mb-4">
+            <h1 class="h2 mb-1">Criar Grau Académico</h1>
+            <p class="text-body-secondary mb-0">
+                Adicionar novo grau académico à universidade.
+            </p>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-body-tertiary py-3">
+                <h2 class="h5 mb-0">
+                    <i class="bi bi-mortarboard me-2" aria-hidden="true"></i>
+                    Informação do novo Grau Académico
+                </h2>
+            </div>
+
+            <div class="card-body p-4">
+                <form asp-action="Create" method="post">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger"
+                         role="alert"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="Name"
+                               class="form-label fw-semibold"></label>
+
+                        <input asp-for="Name"
+                               class="form-control"
+                               placeholder="Introduza o nome do grau académico"
+                               autofocus />
+
+                        <span asp-validation-for="Name"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description"
+                               class="form-label fw-semibold"></label>
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Introduza a descrição do grau académico"></textarea>
+
+                        <span asp-validation-for="Description"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus-lg me-1"
+                               aria-hidden="true"></i>
+                            Criar Grau Académico
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"
+                               aria-hidden="true"></i>
+                            Voltar à Lista
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

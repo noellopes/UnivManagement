@@ -7,7 +7,7 @@ namespace UnivManagement.Models.AcademicManagement
 {
     public class Course
     {
-        
+        [Display(Name = "Course ID")]
         public int CourseId { get; set; }
 
         [Required(ErrorMessage = "The {0} is required.")]
@@ -22,13 +22,8 @@ namespace UnivManagement.Models.AcademicManagement
 
 
         [Required(ErrorMessage = "The {0} is required.")]
-        [RegularExpression(@"^(CTeSP|Licenciatura|Mestrado|Doutoramento)$", ErrorMessage = "The {0} must be 'CTeSP', 'Licenciatura', 'Mestrado', or 'Doutoramento'.")]
-        [Display(Name = "Academic Degree")]
-        public required string AcademicDegree { get; set; }
-
-
-        [Required(ErrorMessage = "The {0} is required.")]
         [StringLength(5, MinimumLength = 2, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
+        [RegularExpression(@"^[A-Z0-9]+(?: [A-Z0-9]+)*$", ErrorMessage = "The {0} can only contain uppercase letters, numbers and single spaces.")]
         [Display(Name = "Acronym")]
         public required string Acronym { get; set; }
 
@@ -36,13 +31,7 @@ namespace UnivManagement.Models.AcademicManagement
         [Required(ErrorMessage = "The {0} is required.")]
         [DataType(DataType.Date)]
         [Display(Name = "Creation Date")]
-        public DateTime CreationDate { get; set; }
-
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [StringLength(20, ErrorMessage = "The {0} cannot be longer than {1} characters.")]
-        [Display(Name = "Course State")]
-        public required string CourseState { get; set; }
+        public DateOnly? CreationDate { get; set; }
 
 
         [StringLength(1000, ErrorMessage = "The {0} cannot be longer than {1} characters.")]
@@ -50,11 +39,17 @@ namespace UnivManagement.Models.AcademicManagement
         public string? Description { get; set; }
 
 
-        // --- Foreign Key para o Calendário Escolar ---
-        [Display(Name = "School Calendar")]
-        public int SchoolCalendarId { get; set; }
 
-        public SchoolCalendar? SchoolCalendar { get; set; }
+        // FOREIGN KEY and Navigation Property - ACADEMIC DEGREE 
+        [Display(Name = "Grau Académico")]
+        public int AcademicDegreeId { get; set; }
+        public AcademicDegree? AcademicDegree { get; set; }
+
+
+        // FOREIGN KEY and Navigation Property - COURSE STATE
+        [Display(Name = "Course State")]
+        public int CourseStateId { get; set; }
+        public CourseState? CourseState { get; set; }
 
 
         // --- Foreign Key para o Diretor de Curso (tabela do grupo do Simão (Docente)) ---
