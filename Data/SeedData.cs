@@ -7,16 +7,30 @@ namespace UnivManagement.Data {
             if (db == null) throw new ArgumentNullException(nameof(db));
 
             PopulateCourseStates(db);
+            PopulateStudents(db);
+            PopulateStateEnrollments(db);
 
         }
 
         private static void PopulateCourseStates(UniversityDbContext dbContext)
         {
             if (dbContext.CourseState.Any()) return;
-            PopulateStudents(db);
-            PopulateStateEnrollments(db);
 
+            var courseStates = new List<CourseState>
+        {
+            new CourseState { Name = "DRAFT", Description = "Curso em preparação, ainda não publicado."},
+            new CourseState { Name = "ACTIVE", Description = "Curso a decorrer normalmente."},
+            new CourseState { Name = "SUSPENDED", Description = "Curso temporariamente suspenso."},
+            new CourseState { Name = "CONCLUDED", Description = "Curso terminado, sem novas inscrições."},
+            new CourseState { Name = "ARCHIVED", Description = "Curso arquivado historicamente."}
+        };
+
+            dbContext.CourseState.AddRange(courseStates);
+            dbContext.SaveChanges();
         }
+        
+
+    
 
         private static void PopulateStudents(UniversityDbContext dbContext)
         {
@@ -41,7 +55,7 @@ namespace UnivManagement.Data {
             /* 1000014 */ new Student { NumStudent = "1000014", Name = "Inês Martins",        Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2003, 2, 14),  Address = "Rua do Comércio, 18, Santarém",           NIF = "200000071", Email = "ines.martins@uni.pt",       CountryPhoneCode = "+351", Telephone = "916000008" },
             /* 1000015 */ new Student { NumStudent = "1000015", Name = "André Sousa",         Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 8, 22),  Address = "Avenida Central, 41, Vila Real",          NIF = "200000080", Email = "andre.sousa@uni.pt",        CountryPhoneCode = "+351", Telephone = "916000009" },
             /* 1000016 */ new Student { NumStudent = "1000016", Name = "Mariana Fernandes",   Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 12, 9),  Address = "Rua do Carmo, 7, Bragança",               NIF = "200000098", Email = "mariana.fernandes@uni.pt",  CountryPhoneCode = "+351", Telephone = "916000010" },
-                    /* 1000017 */ new Student { NumStudent = "1000017", Name = "Filipe Gonçalves",    Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 5, 27),  Address = "Rua Nova do Almada, 30, Guarda",          NIF = "200000101", Email = "filipe.goncalves@uni.pt",   CountryPhoneCode = "+351", Telephone = "916000011" },
+            /* 1000017 */ new Student { NumStudent = "1000017", Name = "Filipe Gonçalves",    Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 5, 27),  Address = "Rua Nova do Almada, 30, Guarda",          NIF = "200000101", Email = "filipe.goncalves@uni.pt",   CountryPhoneCode = "+351", Telephone = "916000011" },
             /* 1000018 */ new Student { NumStudent = "1000018", Name = "Catarina Gomes",      Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2002, 9, 11),  Address = "Largo do Município, 5, Castelo Branco",   NIF = "200000110", Email = "catarina.gomes@uni.pt",     CountryPhoneCode = "+351", Telephone = "916000012" },
             /* 1000019 */ new Student { NumStudent = "1000019", Name = "Rui Lopes",           Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1998, 4, 3),   Address = "Rua Direita, 12, Beja",                   NIF = "200000128", Email = "rui.lopes@uni.pt",          CountryPhoneCode = "+351", Telephone = "916000013" },
             /* 1000020 */ new Student { NumStudent = "1000020", Name = "Joana Marques",       Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 6, 18),  Address = "Rua da República, 66, Portalegre",        NIF = "200000136", Email = "joana.marques@uni.pt",      CountryPhoneCode = "+351", Telephone = "916000014" },
@@ -92,7 +106,7 @@ namespace UnivManagement.Data {
         }
 
         private static void PopulateStateEnrollments(UniversityDbContext dbContext)
-        { 
+        {
             if (dbContext.StateEnrollment.Any()) return;
 
             var stateEnrollments = new List<StateEnrollment>
@@ -104,22 +118,12 @@ namespace UnivManagement.Data {
             new StateEnrollment {Name = "COMPLETED", Description = "Curso concluído com sucesso."},
             new StateEnrollment {Name = "CANCELLED", Description = "Inscrição cancelada antes do início."}
 
+            };
 
-            var courseStates = new List<CourseState>
-        {
-            new CourseState { Name = "DRAFT", Description = "Curso em preparação, ainda não publicado."},
-            new CourseState { Name = "ACTIVE", Description = "Curso a decorrer normalmente."},
-            new CourseState { Name = "SUSPENDED", Description = "Curso temporariamente suspenso."},
-            new CourseState { Name = "CONCLUDED", Description = "Curso terminado, sem novas inscrições."},
-            new CourseState { Name = "ARCHIVED", Description = "Curso arquivado historicamente."}
-        };
-
-            dbContext.CourseState.AddRange(courseStates);
-            dbContext.SaveChanges();
-        };
             dbContext.StateEnrollment.AddRange(stateEnrollments);
             dbContext.SaveChanges();
         }
+            
 
     }
 }
