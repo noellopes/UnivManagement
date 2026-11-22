@@ -28,6 +28,17 @@ namespace UnivManagement.Data {
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // ServiceRequestAttachment: a request cannot have two attachments with the same file name
+            modelBuilder.Entity<Models.ServiceRequestAttachment>()
+                .HasIndex(a => new { a.ServiceRequestId, a.FileName })
+                .IsUnique();
+
+            // ServiceRequestAttachment: when a request is deleted, its attachments are deleted with it
+            modelBuilder.Entity<Models.ServiceRequestAttachment>()
+                .HasOne(a => a.ServiceRequest)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.NumStudent)
@@ -72,6 +83,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestAttachment> ServiceRequestAttachments { get; set; } = default!;
 
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
