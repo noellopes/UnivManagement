@@ -68,6 +68,11 @@ namespace UnivManagement.Data {
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
 
+            // CourseState: Name do tipo curso é único
+            modelBuilder.Entity<Models.AcademicManagement.CourseState>()
+                .HasIndex(cs => cs.Name)
+                .IsUnique();
+
             // StateEnrollment, o name é único
             modelBuilder.Entity<Models.AcademicManagement.StateEnrollment>()
                 .HasIndex(se => se.Name)
@@ -96,6 +101,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateEnrollment> StateEnrollment { get; set; } = default!;
 
