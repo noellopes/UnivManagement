@@ -1,0 +1,82 @@
+@model UnivManagement.Models.AvaliacaoBolsa
+
+@{
+    ViewData["Title"] = "Adicionar avaliação";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1" style="color: #174966;">Adicionar avaliação</h1>
+            <p class="text-muted mb-0">Preencha os dados do parecer técnico e fundamente a decisão.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary">Voltar à lista</a>
+    </div>
+
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 680px; border-top: 4px solid #e5a93b !important; border-radius: 12px;">
+        <div class="card-body p-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CandidaturaBolsaId" class="form-label fw-semibold"></label>
+                        <input asp-for="CandidaturaBolsaId" class="form-control" placeholder="Ex.: 1" />
+                        <span asp-validation-for="CandidaturaBolsaId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TecnicoId" class="form-label fw-semibold"></label>
+                        <select asp-for="TecnicoId" class="form-select" asp-items="ViewBag.TecnicoId">
+                            <option value="">-- Selecione um técnico --</option>
+                        </select>
+                        <span asp-validation-for="TecnicoId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DataAvaliacao" class="form-label fw-semibold"></label>
+                        <input asp-for="DataAvaliacao" type="datetime-local" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                        <span asp-validation-for="DataAvaliacao" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Resultado" class="form-label fw-semibold"></label>
+                        <select asp-for="Resultado" class="form-select">
+                            <option value="">-- Selecione o resultado --</option>
+                            <option value="Favorável">Favorável</option>
+                            <option value="Desfavorável">Desfavorável</option>
+                        </select>
+                        <span asp-validation-for="Resultado" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Parecer" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Parecer" class="form-control" rows="4" placeholder="Fundamente detalhadamente o parecer técnico..."></textarea>
+                    <span asp-validation-for="Parecer" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Observacoes" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Observacoes" class="form-control" rows="2" placeholder="Observações adicionais (opcional)"></textarea>
+                    <span asp-validation-for="Observacoes" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn text-white fw-semibold px-4" style="background-color: #174966;">
+                        Guardar avaliação
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-3">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

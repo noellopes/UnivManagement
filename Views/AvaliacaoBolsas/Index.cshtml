@@ -1,0 +1,73 @@
+@model IEnumerable<UnivManagement.Models.AvaliacaoBolsa>
+
+@{
+    ViewData["Title"] = "Avaliações";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1" style="color: #174966;">Avaliações</h1>
+            <p class="text-muted mb-0">Gerir os pareceres técnicos e as avaliações das candidaturas.</p>
+        </div>
+        <a asp-action="Create" class="btn fw-semibold text-white px-3 py-2" style="background-color: #e5a93b; border-radius: 8px;">
+            + Adicionar avaliação
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0" style="border-top: 4px solid #e5a93b !important; border-radius: 12px;">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="border-bottom">
+                        <tr>
+                            <th class="ps-4 py-3 fw-bold">Candidatura</th>
+                            <th class="py-3 fw-bold">Técnico</th>
+                            <th class="py-3 fw-bold">Data</th>
+                            <th class="py-3 fw-bold">Resultado</th>
+                            <th class="py-3 fw-bold">Parecer</th>
+                            <th class="pe-4 py-3 fw-bold text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    Não existem avaliações registadas.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4 py-3 fw-semibold">#@item.CandidaturaBolsaId</td>
+                                    <td class="py-3">@(item.Tecnico?.Nome ?? $"Técnico #{item.TecnicoId}")</td>
+                                    <td class="py-3 text-muted">@item.DataAvaliacao.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td class="py-3">
+                                        @if (item.Resultado == "Favorável")
+                                        {
+                                            <span class="badge bg-success">@item.Resultado</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">@item.Resultado</span>
+                                        }
+                                    </td>
+                                    <td class="py-3 text-truncate" style="max-width: 260px;">@item.Parecer</td>
+                                    <td class="pe-4 py-3 text-end text-nowrap">
+                                        <a asp-action="Details" asp-route-id="@item.AvaliacaoBolsaId" class="btn btn-sm btn-outline-secondary me-1">Detalhes</a>
+                                        <a asp-action="Edit" asp-route-id="@item.AvaliacaoBolsaId" class="btn btn-sm btn-outline-primary me-1" style="border-color: #174966; color: #174966;">Editar</a>
+                                        <a asp-action="Delete" asp-route-id="@item.AvaliacaoBolsaId" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
