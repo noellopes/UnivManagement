@@ -20,17 +20,17 @@ public class RoomController : Controller
     }
 
     // GET: ROOMS/Details/5
-    [HttpGet("RoomController/Details/{RoomControllerId}")]
+    [HttpGet("Room/Details/{RoomId}")]
 
-    public async Task<IActionResult> Details(int? roomid)
+    public async Task<IActionResult> Details(int? roomId)
     {
-        if (roomid == null)
+        if (roomId == null)
         {
             return NotFound();
         }
 
         var room = await _context.Room
-            .FirstOrDefaultAsync(m => m.RoomId == roomid);
+            .FirstOrDefaultAsync(m => m.RoomId == roomId);
         if (room == null)
         {
             return NotFound();
@@ -62,15 +62,15 @@ public class RoomController : Controller
     }
 
     // GET: ROOMS/Edit/5
-    [HttpGet("RoomController/Edit/{RoomControllerId}")]
-    public async Task<IActionResult> Edit(int? roomid)
+    [HttpGet("Room/Edit/{RoomId}")]
+    public async Task<IActionResult> Edit(int? roomId)
     {
-        if (roomid == null)
+        if (roomId == null)
         {
             return NotFound();
         }
 
-        var room = await _context.Room.FindAsync(roomid);
+        var room = await _context.Room.FindAsync(roomId);
         if (room == null)
         {
             return NotFound();
@@ -83,9 +83,9 @@ public class RoomController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? roomid, [Bind("RoomId,NumeroSala,Piso,Lotacao,Estado,IdEdificio,Edificio,IdTipoSala,TipoSala")] Room room)
+    public async Task<IActionResult> Edit(int? roomId, [Bind("RoomId,NumeroSala,Piso,Lotacao,Estado,IdEdificio,Edificio,IdTipoSala,TipoSala")] Room room)
     {
-        if (roomid != room.RoomId)
+        if (roomId != room.RoomId)      
         {
             return NotFound();
         }
@@ -114,16 +114,16 @@ public class RoomController : Controller
     }
 
     // GET: ROOMS/Delete/5
-    [HttpGet("RoomController/Delete/{RoomControllerId}")]
-    public async Task<IActionResult> Delete(int? roomid)
+    [HttpGet("Room/Delete/{RoomId}")]
+    public async Task<IActionResult> Delete(int? roomId)        
     {
-        if (roomid == null)
+        if (roomId == null)
         {
             return NotFound();
         }
 
         var room = await _context.Room
-            .FirstOrDefaultAsync(m => m.RoomId == roomid);
+            .FirstOrDefaultAsync(m => m.RoomId == roomId);
         if (room == null)
         {
             return NotFound();
@@ -135,9 +135,9 @@ public class RoomController : Controller
     // POST: ROOMS/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? roomid)
+    public async Task<IActionResult> DeleteConfirmed(int? roomId)
     {
-        var room = await _context.Room.FindAsync(roomid);
+        var room = await _context.Room.FindAsync(roomId);
         if (room != null)
         {
             _context.Room.Remove(room);
@@ -147,8 +147,8 @@ public class RoomController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool RoomExists(int? roomid)
+    private bool RoomExists(int? roomId)
     {
-        return _context.Room.Any(e => e.RoomId == roomid);
+        return _context.Room.Any(e => e.RoomId == roomId);
     }
 }
