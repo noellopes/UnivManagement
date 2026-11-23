@@ -1,0 +1,45 @@
+﻿@model UnivManagement.Models.AvaliacaoUC
+
+@{
+    ViewData["Title"] = "Detalhes da Avaliação";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Detalhes da Avaliação</h2>
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-primary text-white">
+            Informações da Avaliação
+        </div>
+
+        <div class="card-body">
+
+            <dl class="row">
+
+                <dt class="col-sm-4">Tipo de Avaliação</dt>
+                <dd class="col-sm-8">
+                    @Model.TipoAvaliacao?.TipoProva
+                </dd>
+
+                <dt class="col-sm-4">Unidade Curricular</dt>
+                <dd class="col-sm-8">
+                    @Model.UcId
+                </dd>
+
+                <dt class="col-sm-4">Data da Avaliação</dt>
+                <dd class="col-sm-8">
+                    @Model.Data.ToString("dd/MM/yyyy")
+                </dd>
+
+            </dl>
+
+            <a asp-action="IndexAluno"
+               class="btn btn-secondary">
+                Voltar à Lista
+            </a>
+
+        </div>
+    </div>
+</div>
