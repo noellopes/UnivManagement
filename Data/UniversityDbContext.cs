@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Models.AcademicManagement;
 
@@ -25,6 +25,52 @@ namespace UnivManagement.Data {
 
             modelBuilder.Entity<Models.ServiceRequest>()
                 .HasOne(r => r.Status)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ServiceRequestPriority: two priorities cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
+            // ServiceRequestPriority: two priorities cannot have the same level
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Level)
+                .IsUnique();
+            // ServiceRequestCatalogItem: two services cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
+            // ServiceRequestCatalogItem: a type that is used by a service cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
+                .HasOne(c => c.Type)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+            // ServiceRequestAttachment: a request cannot have two attachments with the same file name
+            modelBuilder.Entity<Models.ServiceRequestAttachment>()
+                .HasIndex(a => new { a.ServiceRequestId, a.FileName })
+                .IsUnique();
+
+            // ServiceRequestAttachment: when a request is deleted, its attachments are deleted with it
+            modelBuilder.Entity<Models.ServiceRequestAttachment>()
+                .HasOne(a => a.ServiceRequest)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
+            // ServiceRequestHistory: the history belongs to its request and is deleted with it
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.ServiceRequest)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ServiceRequestHistory: a status that appears in the history cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.OldStatus)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.NewStatus)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -91,6 +137,13 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestPriority> ServiceRequestPriorities { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestAttachment> ServiceRequestAttachments { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestComment> ServiceRequestComments { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestAssignment> ServiceRequestAssignments { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestHistory> ServiceRequestHistories { get; set; } = default!;
+
+        public DbSet<UnivManagement.Models.ServiceRequestCatalogItem> ServiceRequestCatalogItems { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;

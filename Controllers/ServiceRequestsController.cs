@@ -13,7 +13,11 @@ namespace UnivManagement.Controllers {
         }
 
         // GET: ServiceRequests?search=...&status=2&type=1
-        public async Task<IActionResult> Index(string? search, int? status, int? type) {
+        public async Task<IActionResult> Index(string? search, int? status, int? type, string? msg = null) {
+            if (msg != null) {
+                ViewBag.SuccessMessage = msg;
+            }
+
             var requests = _context.ServiceRequests
                 .Include(r => r.Type)
                 .Include(r => r.Status)
@@ -42,7 +46,7 @@ namespace UnivManagement.Controllers {
         }
 
         // GET: ServiceRequests/Details/5
-        public async Task<IActionResult> Details(int? id) {
+        public async Task<IActionResult> Details(int? id, string? msg = null) {
             if (id == null) {
                 return NotFound();
             }
@@ -52,7 +56,11 @@ namespace UnivManagement.Controllers {
                 .Include(r => r.Status)
                 .FirstOrDefaultAsync(r => r.ServiceRequestId == id);
             if (serviceRequest == null) {
-                return NotFound();
+                return View("NotFound");
+            }
+
+            if (msg != null) {
+                ViewBag.SuccessMessage = msg;
             }
 
             return View(serviceRequest);
@@ -88,8 +96,9 @@ namespace UnivManagement.Controllers {
             _context.Add(serviceRequest);
             await _context.SaveChangesAsync();
 
-            TempData["Message"] = "The request was created.";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+                nameof(Details),
+                new { id = serviceRequest.ServiceRequestId, msg = "Request created successfully." });
         }
 
         // GET: ServiceRequests/Edit/5
@@ -100,7 +109,7 @@ namespace UnivManagement.Controllers {
 
             var serviceRequest = await _context.ServiceRequests.FindAsync(id);
             if (serviceRequest == null) {
-                return NotFound();
+                return View("NotFound");
             }
 
             await PopulateListsAsync(serviceRequest.ServiceRequestTypeId, serviceRequest.ServiceRequestStatusId);
@@ -129,7 +138,7 @@ namespace UnivManagement.Controllers {
 
             var serviceRequest = await _context.ServiceRequests.FindAsync(id);
             if (serviceRequest == null) {
-                return NotFound();
+                return View("NotFound");
             }
 
             // Copy only the editable fields; CreatedAt is kept from the database
@@ -147,8 +156,9 @@ namespace UnivManagement.Controllers {
 
             await _context.SaveChangesAsync();
 
-            TempData["Message"] = "The request was updated.";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+                nameof(Details),
+                new { id = serviceRequest.ServiceRequestId, msg = "Request edited successfully." });
         }
 
         // GET: ServiceRequests/Delete/5
@@ -162,7 +172,7 @@ namespace UnivManagement.Controllers {
                 .Include(r => r.Status)
                 .FirstOrDefaultAsync(r => r.ServiceRequestId == id);
             if (serviceRequest == null) {
-                return NotFound();
+                return RedirectToAction(nameof(Index), new { msg = "The request was already deleted." });
             }
 
             return View(serviceRequest);
@@ -178,8 +188,7 @@ namespace UnivManagement.Controllers {
                 await _context.SaveChangesAsync();
             }
 
-            TempData["Message"] = "The request was deleted.";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { msg = "Request deleted successfully." });
         }
 
         // New requests start with the first status of the list that does not close the request
@@ -191,6 +200,9 @@ namespace UnivManagement.Controllers {
         }
 
         private async Task ValidateTypeAsync(int typeId) {
+            // Leaving the select empty fails the model binding with a generic message, so ours replaces it
+            ModelState.Remove(nameof(ServiceRequest.ServiceRequestTypeId));
+
             if (!await _context.ServiceRequestTypes.AnyAsync(t => t.ServiceRequestTypeId == typeId)) {
                 ModelState.AddModelError(nameof(ServiceRequest.ServiceRequestTypeId), "Please choose a request type from the list.");
             }

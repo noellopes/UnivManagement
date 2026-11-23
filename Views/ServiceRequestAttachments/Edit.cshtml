@@ -1,0 +1,60 @@
+@model ServiceRequestAttachment
+
+@{
+    ViewData["Title"] = "Edit attachment";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to the attachments</a>
+
+    <header class="my-4">
+        <h1 class="display-6">Edit attachment</h1>
+    </header>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="ServiceRequestAttachmentId" />
+
+                <div class="mb-3">
+                    <label asp-for="ServiceRequestId" class="form-label">Request</label>
+                    <select asp-for="ServiceRequestId" asp-items="ViewBag.ServiceRequestId" class="form-select">
+                        <option value="0">Choose a request</option>
+                    </select>
+                    <span asp-validation-for="ServiceRequestId" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="FileName" class="form-label"></label>
+                    <input asp-for="FileName" class="form-control" />
+                    <span asp-validation-for="FileName" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SizeInKb" class="form-label"></label>
+                    <input asp-for="SizeInKb" class="form-control" min="1" max="5120" placeholder="Size in KB (1 to 5120)" />
+                    <span asp-validation-for="SizeInKb" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

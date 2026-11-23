@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "Requests and Administrative Services";
 }
 
@@ -22,9 +22,21 @@
                     <p class="card-text text-body-secondary flex-grow-1">
                         Submit new administrative requests and manage existing ones.
                     </p>
-                    <button type="button" class="btn btn-outline-primary w-100" disabled>
-                        Coming soon
-                    </button>
+                    <a asp-controller="ServiceRequests" asp-action="Index" class="btn btn-outline-primary w-100">Open</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5"><i class="bi bi-tags"></i> Request Types</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Manage the kinds of requests that can be submitted.
+                    </p>
+                    <a asp-controller="ServiceRequestTypes" asp-action="Index" class="btn btn-outline-primary w-100">
+                        Open
+                    </a>
                 </div>
             </div>
         </div>
@@ -78,9 +90,9 @@
                     <p class="card-text text-body-secondary flex-grow-1">
                         Assign each request to the appropriate department or staff member.
                     </p>
-                    <button type="button" class="btn btn-outline-primary w-100" disabled>
-                        Coming soon
-                    </button>
+                    <a asp-controller="ServiceRequestAssignments" asp-action="Index" class="btn btn-outline-primary w-100">
+                        Open
+                    </a>
                 </div>
             </div>
         </div>
@@ -92,9 +104,80 @@
                     <p class="card-text text-body-secondary flex-grow-1">
                         Track request status, comments, attachments, and the actions taken on each request.
                     </p>
-                    <button type="button" class="btn btn-outline-primary w-100" disabled>
-                        Coming soon
-                    </button>
+                    <a asp-controller="ServiceRequestHistories" asp-action="Index" class="btn btn-outline-primary w-100">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5"><i class="bi bi-list-check"></i> Statuses</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Define the steps a request goes through, from submitted to resolved.
+                    </p>
+                    <a asp-controller="ServiceRequestStatuses" asp-action="Index" class="btn btn-outline-primary w-100">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5"><i class="bi bi-flag"></i> Priorities</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Define how fast each request has to be answered: the priority levels and their response days.
+                    </p>
+                    <a asp-controller="ServiceRequestPriorities" asp-action="Index" class="btn btn-outline-primary w-100">
+                        Manage priorities
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5"><i class="bi bi-card-list"></i> Service catalog</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Manage the services that can be requested, with their type and processing days.
+                    </p>
+                    <a asp-controller="ServiceRequestCatalogItems" asp-action="Index" class="btn btn-outline-primary w-100">
+                        Manage services
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5"><i class="bi bi-paperclip"></i> Attachments</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Manage the documents attached to the service requests.
+                    </p>
+                    <a asp-controller="ServiceRequestAttachments" asp-action="Index" class="btn btn-outline-primary w-100">
+                        Manage attachments
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5"><i class="bi bi-chat-left-text"></i> Comments</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Notes and comments written on the service requests.
+                    </p>
+                    <a asp-controller="ServiceRequestComments" asp-action="Index" class="btn btn-outline-primary w-100">
+                        Open
+                    </a>
                 </div>
             </div>
         </div>
