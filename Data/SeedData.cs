@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
+using UnivManagement.Data;
+using UnivManagement.Models;
 
 namespace UnivManagement.Data
 {
@@ -8,6 +10,22 @@ namespace UnivManagement.Data
         internal static void Populate(UniversityDbContext? db)
         {
             if (db == null) throw new ArgumentNullException(nameof(db));
+namespace UnivManagement.Models
+{
+    public static class SeedData
+    {
+        public static void Populate(IServiceProvider serviceProvider)
+        {
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<UniversityDbContext>();
+
+                // 1. Verifica se já existem departamentos na base de dados
+                if (context.Departamentos != null && context.Departamentos.Any())
+                {
+                    return; // Se já houver dados, não faz nada para evitar duplicações
+                }
 
             PopulateFuncoesDocentes(db);
             PopulateServicosFuncionarios(db);
@@ -51,6 +69,12 @@ namespace UnivManagement.Data
             if (db.Funcionario.Any()) return;
 
             var servicoPadrao = db.ServicoFuncionario.First();
+                // 2. Adiciona os registos estáticos iniciais
+                context.Departamentos.AddRange(
+                    new Departamento { Nome = "Informática" },
+                    new Departamento { Nome = "Matemática" },
+                    new Departamento { Nome = "Gestão" }
+                );
 
             var servicoRH = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Recursos Humanos") ?? servicoPadrao;
             var servicoAcad = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Serviços Académicos") ?? servicoPadrao;
@@ -102,6 +126,9 @@ namespace UnivManagement.Data
 
             db.Funcionario.AddRange(funcionarios);
             db.SaveChanges();
+                // 3. Guarda as alterações na base de dados
+                context.SaveChanges();
+            }
         }
     }
 }

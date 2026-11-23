@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
+using UnivManagement.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,7 @@ if (app.Environment.IsDevelopment()) {
 
     using (var servicesScope = app.Services.CreateScope()) {
         var db = servicesScope.ServiceProvider.GetService<UniversityDbContext>();
-        SeedData.Populate(db);
+        SeedData.Populate(app.Services);
     }
 } else {
     app.UseExceptionHandler("/Home/Error");

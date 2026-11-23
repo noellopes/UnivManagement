@@ -13,8 +13,28 @@ namespace UnivManagement.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // ServiceRequestType: two request types cannot have the same name
-            modelBuilder.Entity<Models.ServiceRequestType>()
+
+            modelBuilder.Entity<CourseStudyPlanYear>()
+                .HasOne(c => c.Course)
+                .WithMany()
+                .HasForeignKey(c => c.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<CourseStudyPlanYear>()
+                .HasOne(c => c.StudyPlan)
+                .WithMany()
+                .HasForeignKey(c => c.StudyPlanId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<CourseStudyPlanYear>()
+                .HasOne(c => c.AcademicYear)
+                .WithMany()
+                .HasForeignKey(c => c.AcademicYearId)
+                .OnDelete(DeleteBehavior.NoAction);
+        
+
+        // ServiceRequestType: two request types cannot have the same name
+        modelBuilder.Entity<Models.ServiceRequestType>()
                 .HasIndex(t => t.Name)
                 .IsUnique();
 

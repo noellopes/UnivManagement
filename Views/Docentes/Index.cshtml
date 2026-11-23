@@ -1,0 +1,80 @@
+@model IEnumerable<UnivManagement.Models.Docente>
+
+@{
+    ViewData["Title"] = "Lista de Docentes";
+}
+
+<div class="container mt-4">
+    <!-- Alerta de Sucesso (TempData) -->
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-3 mb-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["MensagemSucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark">Lista de Docentes</h2>
+        <a asp-action="Create" class="btn btn-primary rounded-pill px-4 shadow-sm">
+            <i class="bi bi-plus-circle me-2"></i> Criar Novo Docente
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-uppercase fs-7">
+                        <tr>
+                            <th class="py-3 ps-4">NumDocente</th>
+                            <th class="py-3">Nome</th>
+                            <th class="py-3">Departamento</th>
+                            <th class="py-3">Estado</th>
+                            <th class="py-3">Morada</th>
+                            <th class="py-3">Telefone</th>
+                            <th class="py-3">Email</th>
+                            <th class="py-3 text-end pe-4">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-bold">@item.NumDocente</td>
+                                <td class="fw-semibold">@item.Nome</td>
+                                <td>@(item.Departamento != null ? item.Departamento.Nome : "Sem departamento")</td>
+                                <td>
+                                    @if (item.Ativo)
+                                    {
+                                        <span class="badge bg-success rounded-pill px-3 py-2">Ativo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger rounded-pill px-3 py-2">Inativo</span>
+                                    }
+                                </td>
+                                <td class="text-muted small">@item.Morada</td>
+                                <td class="text-muted small">@item.Telefone</td>
+                                <td class="text-muted small">@item.Email</td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Edit" asp-route-id="@item.DocenteId" class="btn btn-warning btn-sm text-dark" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.DocenteId" class="btn btn-info btn-sm text-white" title="Detalhes">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.DocenteId" class="btn btn-danger btn-sm" title="Eliminar">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@* </div> *@
