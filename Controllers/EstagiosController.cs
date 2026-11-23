@@ -54,8 +54,13 @@ public class EstagiosController : Controller
     }
 
     // GET: Estagios
-    public async Task<IActionResult> Index(int page = 1)
+    public async Task<IActionResult> Index(int page = 1, string? successMessage = null)
     {
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
+
         var estagios = _context.Estagios
             .Include(e => e.Student)
             .Include(e => e.Empresa)
@@ -74,7 +79,7 @@ public class EstagiosController : Controller
     }
 
     // GET: Estagios/Details/5
-    public async Task<IActionResult> Details(int? estagioId)
+    public async Task<IActionResult> Details(int? estagioId, string? successMessage = null)
     {
         if (estagioId == null)
         {
@@ -94,6 +99,11 @@ public class EstagiosController : Controller
 
         estagio.Estado = CalcularEstado(
             estagio.DataInicio, estagio.DataFim);
+
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
 
         return View(estagio);
     }
@@ -146,7 +156,12 @@ public class EstagiosController : Controller
             _context.Add(estagio);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details),
+                new
+                {
+                    estagioId = estagio.EstagioId,
+                    successMessage = "Estágio criado com sucesso."
+                });
         }
 
         CarregarListas(estagio);
@@ -248,7 +263,11 @@ public class EstagiosController : Controller
             }
 
             return RedirectToAction(nameof(Details),
-                new { estagioId = estagio.EstagioId });
+                new
+                {
+                    estagioId = estagio.EstagioId,
+                    successMessage = "Estágio atualizado com sucesso."
+                });
         }
 
         CarregarListas(estagio);
@@ -268,7 +287,8 @@ public class EstagiosController : Controller
 
         if (estagio == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "O estágio já tinha sido eliminado." });
         }
 
         return View(estagio);
@@ -285,9 +305,13 @@ public class EstagiosController : Controller
         {
             _context.Estagios.Remove(estagio);
             await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index),
+                new { successMessage = "Estágio eliminado com sucesso." });
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index),
+            new { successMessage = "O estágio já tinha sido eliminado." });
     }
 
     private bool EstagioExists(int? estagioId)
