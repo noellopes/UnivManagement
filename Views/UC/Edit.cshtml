@@ -24,22 +24,59 @@
             <input type="hidden" asp-for="UcId" />
 
             <div class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label asp-for="Code" class="form-label"></label>
                     <input asp-for="Code" class="form-control" />
                     <span asp-validation-for="Code" class="text-danger small"></span>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-8">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
                     <label asp-for="Acronym" class="form-label"></label>
                     <input asp-for="Acronym" class="form-control" />
                     <span asp-validation-for="Acronym" class="text-danger small"></span>
                 </div>
 
-                <div class="col-12">
-                    <label asp-for="Name" class="form-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger small"></span>
+                <div class="col-md-4">
+                    <label asp-for="ValueECTS" class="form-label"></label>
+                    <input asp-for="ValueECTS" class="form-control" type="number" min="0" max="300" />
+                    <span asp-validation-for="ValueECTS" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="NumHours" class="form-label"></label>
+                    <input asp-for="NumHours" class="form-control" type="number" min="0" max="1000" />
+                    <span asp-validation-for="NumHours" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Semester" class="form-label"></label>
+                    <input asp-for="Semester" class="form-control" type="number" min="1" max="10" />
+                    <span asp-validation-for="Semester" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Year" class="form-label"></label>
+                    <input asp-for="Year" class="form-control" type="number" min="1" max="5" />
+                    <span asp-validation-for="Year" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="StudyPlanId" class="form-label">
+                        Plano de Estudos
+                        <span class="text-muted fw-normal">(opcional)</span>
+                    </label>
+
+                    <select asp-for="StudyPlanId" class="form-select" asp-items="ViewBag.StudyPlans">
+                        <option value="">-- Sem plano de estudos --</option>
+                    </select>
+
+                    <span asp-validation-for="StudyPlanId" class="text-danger small"></span>
                 </div>
 
                 <div class="col-12">

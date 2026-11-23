@@ -1,0 +1,103 @@
+@model UnivManagement.Models.AcademicManagement.StudyPlan
+
+@{
+    ViewData["Title"] = "Eliminar Plano de Estudos";
+
+    var ucCount = ViewData["UcCount"] as int? ?? 0;
+    var enrollmentCount = ViewData["EnrollmentCount"] as int? ?? 0;
+    var blocked = ucCount > 0 || enrollmentCount > 0;
+}
+
+<div class="mb-4">
+    <h1 class="h2 mb-1">Eliminar Plano de Estudos</h1>
+    <p class="text-muted mb-0">Confirme a eliminação do plano selecionado.</p>
+</div>
+
+<div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-3 fs-4" aria-hidden="true"></i>
+    <div>
+        <strong>Atenção!</strong>
+        Tem a certeza de que pretende eliminar este plano de estudos?
+        Os anos associados serão eliminados com o plano. As unidades curriculares não são eliminadas.
+    </div>
+</div>
+
+@if (blocked) {
+    <div class="alert alert-warning" role="alert">
+        <h2 class="h6 alert-heading">
+            <i class="bi bi-exclamation-triangle me-1" aria-hidden="true"></i>
+            Este plano não pode ser eliminado enquanto tiver associações
+        </h2>
+
+        <ul class="mb-0">
+            @if (ucCount > 0) {
+                <li>@ucCount unidade(s) curricular(es) ainda atribuída(s) a este plano.</li>
+            }
+            @if (enrollmentCount > 0) {
+                <li>@enrollmentCount inscrição(ões) ainda associada(s) a este plano.</li>
+            }
+        </ul>
+
+        <p class="mb-0 mt-2">
+            Desassocie ou reatribua esses registos antes de eliminar o plano.
+        </p>
+    </div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-diagram-3 me-2" aria-hidden="true"></i>
+            Dados do Plano de Estudos
+        </h2>
+    </div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3 text-muted">@Html.DisplayNameFor(model => model.Code)</dt>
+            <dd class="col-sm-9 fw-semibold">@Html.DisplayFor(model => model.Code)</dd>
+
+            <dt class="col-sm-3 text-muted">Curso</dt>
+            <dd class="col-sm-9">
+                @if (Model.Course != null) {
+                    <span class="badge text-bg-secondary">
+                        @Model.Course.Code — @Model.Course.Name
+                    </span>
+                }
+                else {
+                    <span class="text-muted">Sem curso associado</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3 text-muted">@Html.DisplayNameFor(model => model.NumYears)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.NumYears)</dd>
+
+            <dt class="col-sm-3 text-muted">@Html.DisplayNameFor(model => model.EctsTotal)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.EctsTotal)</dd>
+
+            <dt class="col-sm-3 text-muted">@Html.DisplayNameFor(model => model.CreationDate)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CreationDate)</dd>
+
+            <dt class="col-sm-3 text-muted">Vigor</dt>
+            <dd class="col-sm-9">@Model.StartVigor – @Model.EndVigor</dd>
+        </dl>
+    </div>
+
+    <div class="card-footer bg-body">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="StudyPlanId" />
+
+            <div class="d-flex justify-content-end flex-wrap gap-2">
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                    Voltar à Lista
+                </a>
+
+                <button type="submit" class="btn btn-danger" @(blocked ? "disabled" : null)>
+                    <i class="bi bi-trash me-2" aria-hidden="true"></i>
+                    Confirmar Eliminação
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

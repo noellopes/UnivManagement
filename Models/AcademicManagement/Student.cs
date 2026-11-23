@@ -1,81 +1,100 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace UnivManagement.Models.AcademicManagement;
-
-/*
-Student:
- * IdStudent    int
- * NumStudent   decimal     (7 digits max)
- * Name         string      (60 characters max)
- * Gender       string      (1 character, 'M' / 'F')
- * Nationality  string      (20 characters max)
- * BirthDate    DateTime    (Date type without Time)
- * Address      string      (60 characters max)
- * NIF          decimal     (9 digits max)
- * Email        string      (45 characters max)
- * Telephone    string      (9 digit characters)
-*/
 
 /// <summary>
 /// Student model class from Academic Management domain.
 /// </summary>
-public class Student {
-    /* ID: */
-    public required int StudentId { get; set; }
+public class Student : IValidatableObject {
+    public int StudentId { get; set; }
 
-    /* STUDENT NUMBER: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [RegularExpression(@"^(1[0-9]{6}|2000000)$", ErrorMessage = "O {0} deve ser um número entre 1000000 e 2000000.")]
     [Display(Name = "Número de Aluno")]
-    [Range(1000000, 9999999, ErrorMessage = "Número de aluno deve ter 7 dígitos | Student number must have 7 digits.")]
-    public required decimal NumStudent { get; set; }
+    public string NumStudent { get; set; } = string.Empty;
 
-    /* NAME: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [StringLength(60, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [StringLength(60, ErrorMessage = "O {0} não pode ter mais de {1} caracteres.")]
     [Display(Name = "Nome")]
-    public required string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
-    /* GENDER: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [StringLength(1, ErrorMessage = "O {0} deve ter apenas {1} carácter. | The {0} must contain only {1} character.")]
-    [RegularExpression("^[MF]$", ErrorMessage = "Sexo deve ser 'M' ou 'F'. | Gender must be 'M' or 'F'.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [RegularExpression("^[MF]$", ErrorMessage = "Sexo deve ser 'M' ou 'F'.")]
     [Display(Name = "Sexo")]
-    public required string Gender { get; set; }
+    public string Gender { get; set; } = string.Empty;
 
-    /* NATIONALITY: */
-    [Required(ErrorMessage = "A {0} é obrigatória. | The {0} is required.")]
-    [StringLength(20, ErrorMessage = "A {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
+    [Required(ErrorMessage = "A {0} é obrigatória.")]
+    [StringLength(20, ErrorMessage = "A {0} não pode ter mais de {1} caracteres.")]
     [Display(Name = "Nacionalidade")]
-    public required string Nationality { get; set; }
+    public string Nationality { get; set; } = string.Empty;
 
-    /* BIRTH DATE: */
-    [Required(ErrorMessage = "A {0} é obrigatória. | The {0} is required.")]
+    [Required(ErrorMessage = "A {0} é obrigatória.")]
     [DataType(DataType.Date)]
     [Display(Name = "Data de Nascimento")]
-    public required DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
 
-    /* ADDRESS: */
-    [Required(ErrorMessage = "A {0} é obrigatória. | The {0} is required.")]
-    [StringLength(60, ErrorMessage = "A {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
+    [Required(ErrorMessage = "A {0} é obrigatória.")]
+    [StringLength(60, ErrorMessage = "A {0} não pode ter mais de {1} caracteres.")]
     [Display(Name = "Morada")]
-    public required string Address { get; set; }
+    public string Address { get; set; } = string.Empty;
 
-    /* NIF: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
     [Display(Name = "NIF")]
-    [Range(0, 999999999, ErrorMessage = "O {0} deve ter 9 dígitos no máximo | {0} must have the maximum of 9 digits.")]
-    public required decimal NIF { get; set; }
+    public string NIF { get; set; } = string.Empty;
 
-    /* EMAIL: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [StringLength(45, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
-    [EmailAddress(ErrorMessage = "O {0} não é válido. | The {0} is not valid.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [StringLength(100, ErrorMessage = "O {0} não pode ter mais de {1} caracteres.")]
+    [EmailAddress(ErrorMessage = "O {0} não é válido.")]
     [Display(Name = "Email")]
-    public required string Email { get; set; }
+    public string Email { get; set; } = string.Empty;
 
-    /* TELEPHONE: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [RegularExpression(@"^\+[0-9]{1,4}$", ErrorMessage = "O {0} deve começar por '+' e conter no máximo 4 dígitos.")]
+    [Display(Name = "Indicativo do País")]
+    public string CountryPhoneCode { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [RegularExpression("^[0-9]{9}$", ErrorMessage = "O {0} deve conter exatamente 9 dígitos.")]
     [Display(Name = "Telefone")]
-    [RegularExpression("^[0-9]{9}$", ErrorMessage = "O {0} deve conter exatamente 9 dígitos. | The {0} must contain exactly 9 digits.")]
-    public required string Telephone { get; set; }
+    public string Telephone { get; set; } = string.Empty;
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
+        // A obrigatoriedade é tratada pelo [Required].
+        if (string.IsNullOrWhiteSpace(NIF)) {
+            yield break;
+        }
+
+        if (NIF.Length != 9 || !NIF.All(char.IsAsciiDigit)) {
+            yield return new ValidationResult(
+                "O NIF deve conter exatamente 9 dígitos.",
+                new[] { nameof(NIF) });
+        }
+        else if (!IsValidNif(NIF)) {
+            yield return new ValidationResult(
+                "O NIF não é válido.",
+                new[] { nameof(NIF) });
+        }
+    }
+
+    /// <summary>
+    /// Checks the format (nine digits) and the Modulo 11 check digit
+    /// described in the Portuguese NIF validation rules.
+    /// </summary>
+    public static bool IsValidNif(string? nif) {
+        if (nif is null || nif.Length != 9) return false;
+        
+        var sum = 0;
+        for (var i = 0; i < 8; i++) {
+            if (!char.IsAsciiDigit(nif[i])) return false;
+
+            sum += (nif[i] - '0') * (9 - i);
+        }
+
+        if (!char.IsAsciiDigit(nif[8])) return false;
+
+        var remainder = sum % 11;
+        var expectedCheckDigit = remainder < 2 ? 0 : 11 - remainder;
+
+        return expectedCheckDigit == nif[8] - '0';
+    }
 }

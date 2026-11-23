@@ -1,110 +1,59 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace UnivManagement.Models.AcademicManagement
+namespace UnivManagement.Models.AcademicManagement;
+
+/// <summary>
+/// School calendar model class from Academic Management domain.
+/// A school calendar belongs to one AcademicYear and contains one or more Semesters.
+/// </summary>
+public class SchoolCalendar : IValidatableObject
 {
-    public class SchoolCalendar
+    public int SchoolCalendarId { get; set; }
+
+    [Range(1, int.MaxValue, ErrorMessage = "O {0} é obrigatório.")]
+    [Display(Name = "Ano Letivo")]
+    public int AcademicYearId { get; set; }
+
+    public AcademicYear? AcademicYear { get; set; }
+
+    [Range(1, 10, ErrorMessage = "O {0} deve estar entre {1} e {2}.")]
+    [Display(Name = "Total de Semestres")]
+    public int TotalSemesters { get; set; }
+
+    [Required(ErrorMessage = "A {0} é obrigatória.")]
+    [DataType(DataType.Date)]
+    [Display(Name = "Início do Calendário")]
+    public DateOnly StartDate { get; set; }
+
+    [Required(ErrorMessage = "A {0} é obrigatória.")]
+    [DataType(DataType.Date)]
+    [Display(Name = "Fim do Calendário")]
+    public DateOnly EndDate { get; set; }
+
+    [Required(ErrorMessage = "A {0} é obrigatória.")]
+    [DataType(DataType.Date)]
+    [Display(Name = "Início dos Exames Especiais")]
+    public DateOnly StartSpecialExam { get; set; }
+
+    [Required(ErrorMessage = "A {0} é obrigatória.")]
+    [DataType(DataType.Date)]
+    [Display(Name = "Fim dos Exames Especiais")]
+    public DateOnly EndSpecialExam { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
+        if (EndDate < StartDate)
+        {
+            yield return new ValidationResult(
+                "A data de fim do calendário não pode ser anterior à data de início.",
+                new[] { nameof(EndDate) });
+        }
 
-        public int SchoolCalendarId { get; set; }
-
-        // --- Academic Year Dates ---
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Academic year start date")]
-        public DateTime StartYear { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Academic year end date")]
-        public DateTime EndYear { get; set; }
-
-        // --- Semester 1 ---
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 1 start date")]
-        public DateTime StartSemesterS1 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 1 end date")]
-        public DateTime EndSemesterS1 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 1 frequency exams start date")]
-        public DateTime StartFreqExamS1 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 1 frequency exams end date")]
-        public DateTime EndFreqExamS1 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 1 resit exams start date")]
-        public DateTime StartResitExamS1 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 1 resit exams end date")]
-        public DateTime EndResitExamS1 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 1 special exams start date")]
-        public DateTime StartSpecialExamS1 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 1 special exams end date")]
-        public DateTime EndSpecialExamS1 { get; set; }
-
-        // --- Semester 2 ---
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 2 start date")]
-        public DateTime StartSemesterS2 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 2 end date")]
-        public DateTime EndSemesterS2 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 2 frequency exams start date")]
-        public DateTime StartFreqExamS2 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 2 frequency exams end date")]
-        public DateTime EndFreqExamS2 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 2 resit exams start date")]
-        public DateTime StartResitExamS2 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 2 resit exams end date")]
-        public DateTime EndResitExamS2 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 2 special exams start date")]
-        public DateTime StartSpecialExamS2 { get; set; }
-
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Semester 2 special exams end date")]
-        public DateTime EndSpecialExamS2 { get; set; }
-
-        // --- Foreign Key & Navigation Property ---
-        [Display(Name = "Academic year")]
-        public int AcademicYearId { get; set; }
-
-        public AcademicYear? AcademicYear { get; set; }
+        if (EndSpecialExam < StartSpecialExam)
+        {
+            yield return new ValidationResult(
+                "A data de fim dos exames especiais não pode ser anterior à data de início.",
+                new[] { nameof(EndSpecialExam) });
+        }
     }
 }

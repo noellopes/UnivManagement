@@ -1,0 +1,884 @@
+@model UnivManagement.Models.AcademicManagement.StudyPlanFormModel
+
+@functions {
+    private IEnumerable<UnivManagement.Models.AcademicManagement.UC> UcOptions =>
+        ViewData["UcOptions"] as IEnumerable<UnivManagement.Models.AcademicManagement.UC>
+            ?? Enumerable.Empty<UnivManagement.Models.AcademicManagement.UC>();
+
+    private static string UcLabel(UnivManagement.Models.AcademicManagement.UC uc) =>
+        string.IsNullOrWhiteSpace(uc.Acronym)
+            ? $"{uc.Code} — {uc.Name}"
+            : $"{uc.Code} — {uc.Name} ({uc.Acronym})";
+}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-info-circle me-2" aria-hidden="true"></i>
+            Dados Gerais
+        </h2>
+    </div>
+
+    <div class="card-body">
+        <form asp-action="@(Model.IsEdit ? "Edit" : "Create")"
+              asp-route-id="@(Model.IsEdit ? Model.StudyPlanId : (int?)null)"
+              method="post"
+              id="studyPlanForm">
+
+            @if (Model.IsEdit) {
+                <input type="hidden" asp-for="StudyPlanId" />
+                <input type="hidden" asp-for="OriginalYearIds" />
+                <input type="hidden" asp-for="OriginalUcIds" />
+            }
+
+            <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Code" class="form-label fw-semibold"></label>
+                    <input asp-for="Code" class="form-control" placeholder="Ex.: LEI2026" autofocus />
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="CourseId" class="form-label fw-semibold"></label>
+                    <select asp-for="CourseId" class="form-select" asp-items="ViewBag.Courses">
+                        <option value="">-- Selecione o curso --</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="CreationDate" class="form-label fw-semibold"></label>
+                    <input asp-for="CreationDate" class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="StartVigor" class="form-label fw-semibold"></label>
+                    <input asp-for="StartVigor" class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="EndVigor" class="form-label fw-semibold"></label>
+                    <input asp-for="EndVigor" class="form-control" />
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <div>
+                    <h3 class="h5 mb-0">Conteúdos do Plano</h3>
+                    <p class="text-muted small mb-0">
+                        Adicione anos, semestres e unidades curriculares. O ano e o semestre de cada UC
+                        são definidos pela posição da linha.
+                    </p>
+                </div>
+
+                <button type="button" class="btn btn-outline-primary" id="addYearBtn">
+                    <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>
+                    Adicionar Ano
+                </button>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <div class="border rounded-3 p-3 h-100">
+                        <span class="text-muted small d-block">Anos do plano</span>
+                        <span class="h4 mb-0" data-plan-years>@Model.Years.Count</span>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="border rounded-3 p-3 h-100">
+                        <span class="text-muted small d-block">ECTS total do plano</span>
+                        <span class="h4 mb-0" data-plan-ects>@Model.Years.Sum(y => y.ECTSTotalYear ?? 0)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="yearContainer" data-plan-editor>
+                @for (var y = 0; y < Model.Years.Count; y++) {
+                    var yearNumber = y + 1;
+                    var yearRows = Model.Ucs
+                        .Select((uc, index) => new { Uc = uc, Index = index })
+                        .Where(x => x.Uc.UcId > 0
+                            && x.Uc.Year == yearNumber
+                            && x.Uc.Semester.HasValue
+                            && x.Uc.Semester.Value >= 1
+                            && x.Uc.Semester.Value <= 10)
+                        .ToList();
+                    var semesters = yearRows
+                        .Select(x => x.Uc.Semester!.Value)
+                        .Distinct()
+                        .OrderBy(s => s)
+                        .ToList();
+                    var ucSum = yearRows.Sum(x => x.Uc.ValueECTS ?? 0);
+                    var planned = Model.Years[y].ECTSTotalYear ?? 60;
+
+                    <div class="border rounded-3 p-3 mb-3" data-year-card data-year-index="@y">
+                        <input type="hidden" name="Years[@y].StudyPlanYearId"
+                               value="@Model.Years[y].StudyPlanYearId" data-year-id />
+
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                            <div>
+                                <h4 class="h5 mb-1" data-year-title>@(yearNumber).º Ano</h4>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="badge text-bg-light">
+                                        Soma das UCs: <span data-year-uc-sum>@ucSum</span> ECTS
+                                    </span>
+                                    <span class="badge text-bg-secondary">
+                                        Total do ano: @planned ECTS
+                                    </span>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-remove-year>
+                                <i class="bi bi-trash me-1" aria-hidden="true"></i>
+                                Remover Ano
+                            </button>
+                        </div>
+
+                        <div class="row g-3 mt-1">
+                            <div class="col-sm-6 col-md-4">
+                                <label class="form-label fw-semibold" for="year-ects-@y">
+                                    ECTS Total do Ano
+                                </label>
+                                <input type="number"
+                                       id="year-ects-@y"
+                                       name="Years[@y].ECTSTotalYear"
+                                       value="@planned"
+                                       min="0" max="500"
+                                       class="form-control"
+                                       data-year-ects />
+                            </div>
+
+                            <div class="col-sm-6 col-md-4">
+                                <label class="form-label fw-semibold" for="year-min-@y">
+                                    ECTS Mínimo
+                                </label>
+                                <input type="number"
+                                       id="year-min-@y"
+                                       name="Years[@y].MinECTS"
+                                       value="@(Model.Years[y].MinECTS ?? 0)"
+                                       min="0" max="500"
+                                       class="form-control"
+                                       data-year-min />
+                            </div>
+
+                            <div class="col-12 col-md-4 d-flex align-items-end">
+                                <button type="button" class="btn btn-outline-primary" data-add-semester>
+                                    <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>
+                                    Adicionar Semestre
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning py-2 px-3 small mt-3 mb-0 @(ucSum == planned ? "d-none" : "")"
+                             data-year-mismatch role="alert">
+                            <i class="bi bi-exclamation-triangle me-1" aria-hidden="true"></i>
+                            A soma dos ECTS das UCs (<span data-mismatch-sum>@ucSum</span>)
+                            não coincide com o total do ano (<span data-mismatch-planned>@planned</span>).
+                            Esta diferença é apenas informativa e não impede guardar.
+                        </div>
+
+                        <div data-semester-container>
+                            @foreach (var semester in semesters) {
+                                var semesterRows = yearRows
+                                    .Where(x => x.Uc.Semester == semester)
+                                    .ToList();
+
+                                <div class="border rounded-3 p-3 mt-3"
+                                     data-semester-card data-semester="@semester">
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                        <select class="form-select form-select-sm w-auto"
+                                                data-semester-select
+                                                aria-label="Semestre do ano @(yearNumber)">
+                                            @for (var s = 1; s <= 10; s++) {
+                                                <option value="@s" selected="@(s == semester)">
+                                                    @(s).º Semestre
+                                                </option>
+                                            }
+                                        </select>
+
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                                data-remove-semester>
+                                            <i class="bi bi-trash me-1" aria-hidden="true"></i>
+                                            Remover Semestre
+                                        </button>
+                                    </div>
+
+                                    <div class="table-responsive mt-2">
+                                        <table class="table table-sm align-middle mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th scope="col">Unidade Curricular</th>
+                                                    <th scope="col" style="width: 9rem;">ECTS</th>
+                                                    <th scope="col" class="text-end" style="width: 7rem;">Remover</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody data-uc-body>
+                                                @foreach (var entry in semesterRows) {
+                                                    var i = entry.Index;
+
+                                                    <tr data-uc-row>
+                                                        <td>
+                                                            <input type="hidden" name="Ucs[@i].Year"
+                                                                   value="@entry.Uc.Year" data-uc-year />
+                                                            <input type="hidden" name="Ucs[@i].Semester"
+                                                                   value="@entry.Uc.Semester" data-uc-semester />
+
+                                                            <select name="Ucs[@i].UcId"
+                                                                    class="form-select form-select-sm"
+                                                                    data-uc-select>
+                                                                <option value="0">-- Selecione uma UC --</option>
+
+                                                                @foreach (var uc in UcOptions) {
+                                                                    <option value="@uc.UcId"
+                                                                            selected="@(uc.UcId == entry.Uc.UcId)">
+                                                                        @UcLabel(uc)
+                                                                    </option>
+                                                                }
+                                                            </select>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="number"
+                                                                   name="Ucs[@i].ValueECTS"
+                                                                   value="@(entry.Uc.ValueECTS ?? 0)"
+                                                                   min="0" max="500"
+                                                                   class="form-control form-control-sm"
+                                                                   data-uc-ects />
+                                                        </td>
+
+                                                        <td class="text-end">
+                                                            <button type="button"
+                                                                    class="btn btn-sm btn-outline-danger"
+                                                                    data-remove-uc
+                                                                    title="Remover UC"
+                                                                    aria-label="Remover UC">
+                                                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <button type="button" class="btn btn-sm btn-outline-primary mt-2"
+                                            data-add-uc>
+                                        <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>
+                                        Adicionar UC
+                                    </button>
+                                </div>
+                            }
+                        </div>
+
+                        <p class="text-muted small mt-2 mb-0 @(semesters.Count > 0 ? "d-none" : "")"
+                           data-empty-year>
+                            Sem semestres. Adicione um semestre para colocar UCs.
+                        </p>
+                    </div>
+                }
+            </div>
+
+            <p id="noYearsMessage"
+               class="text-muted mb-0 @(Model.Years.Count > 0 ? "d-none" : "")">
+                Ainda não existem anos. Adicione o primeiro ano.
+            </p>
+
+            @{
+                var outsideRows = Model.Ucs
+                    .Select((uc, index) => new { Uc = uc, Index = index })
+                    .Where(x => x.Uc.UcId > 0
+                        && (!x.Uc.Year.HasValue
+                            || x.Uc.Year.Value < 1
+                            || x.Uc.Year.Value > Model.Years.Count
+                            || !x.Uc.Semester.HasValue
+                            || x.Uc.Semester.Value < 1
+                            || x.Uc.Semester.Value > 10))
+                    .ToList();
+            }
+
+            @if (outsideRows.Count > 0) {
+                <div class="alert alert-danger mt-3" role="alert">
+                    <h4 class="h6 alert-heading">
+                        <i class="bi bi-exclamation-triangle me-1" aria-hidden="true"></i>
+                        Unidades curriculares fora da estrutura de anos
+                    </h4>
+
+                    <p class="mb-2">
+                        Estas unidades curriculares pertencem a anos que não fazem parte do plano.
+                        Remova-as ou recarregue a página antes de guardar.
+                    </p>
+
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Unidade Curricular</th>
+                                    <th scope="col" style="width: 9rem;">ECTS</th>
+                                    <th scope="col" class="text-end" style="width: 7rem;">Remover</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var entry in outsideRows) {
+                                    var i = entry.Index;
+
+                                    <tr data-uc-row>
+                                        <td>
+                                            <input type="hidden" name="Ucs[@i].Year"
+                                                   value="@entry.Uc.Year" data-uc-year />
+                                            <input type="hidden" name="Ucs[@i].Semester"
+                                                   value="@entry.Uc.Semester" data-uc-semester />
+
+                                            <select name="Ucs[@i].UcId"
+                                                    class="form-select form-select-sm"
+                                                    data-uc-select>
+                                                <option value="0">-- Selecione uma UC --</option>
+
+                                                @foreach (var uc in UcOptions) {
+                                                    <option value="@uc.UcId"
+                                                            selected="@(uc.UcId == entry.Uc.UcId)">
+                                                        @UcLabel(uc)
+                                                    </option>
+                                                }
+                                            </select>
+                                        </td>
+
+                                        <td>
+                                            <input type="number"
+                                                   name="Ucs[@i].ValueECTS"
+                                                   value="@(entry.Uc.ValueECTS ?? 0)"
+                                                   min="0" max="500"
+                                                   class="form-control form-control-sm"
+                                                   data-uc-ects />
+                                        </td>
+
+                                        <td class="text-end">
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    data-remove-uc
+                                                    title="Remover UC"
+                                                    aria-label="Remover UC">
+                                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+
+            <div class="card-footer bg-body px-0 pb-0 pt-4 d-flex flex-wrap gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                    @(Model.IsEdit ? "Guardar Alterações" : "Criar Plano de Estudos")
+                </button>
+
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>
+                    Voltar à Lista
+                </a>
+
+                @if (Model.IsEdit) {
+                    <a asp-action="Details" asp-route-id="@Model.StudyPlanId"
+                       class="btn btn-outline-secondary">
+                        <i class="bi bi-eye me-1" aria-hidden="true"></i>
+                        Ver Detalhes
+                    </a>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+<template id="yearCardTemplate">
+    <div class="border rounded-3 p-3 mb-3" data-year-card>
+        <input type="hidden" name="Years[__y__].StudyPlanYearId" value="0" data-year-id />
+
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+            <div>
+                <h4 class="h5 mb-1" data-year-title>__ano__.º Ano</h4>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge text-bg-light">
+                        Soma das UCs: <span data-year-uc-sum>0</span> ECTS
+                    </span>
+                    <span class="badge text-bg-secondary">Total do ano: 60 ECTS</span>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-sm btn-outline-danger" data-remove-year>
+                <i class="bi bi-trash me-1" aria-hidden="true"></i>
+                Remover Ano
+            </button>
+        </div>
+
+        <div class="row g-3 mt-1">
+            <div class="col-sm-6 col-md-4">
+                <label class="form-label fw-semibold">ECTS Total do Ano</label>
+                <input type="number" name="Years[__y__].ECTSTotalYear" value="60"
+                       min="0" max="500" class="form-control" data-year-ects />
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+                <label class="form-label fw-semibold">ECTS Mínimo</label>
+                <input type="number" name="Years[__y__].MinECTS" value="0"
+                       min="0" max="500" class="form-control" data-year-min />
+            </div>
+
+            <div class="col-12 col-md-4 d-flex align-items-end">
+                <button type="button" class="btn btn-outline-primary" data-add-semester>
+                    <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>
+                    Adicionar Semestre
+                </button>
+            </div>
+        </div>
+
+        <div class="alert alert-warning py-2 px-3 small mt-3 mb-0 d-none"
+             data-year-mismatch role="alert">
+            <i class="bi bi-exclamation-triangle me-1" aria-hidden="true"></i>
+            A soma dos ECTS das UCs (<span data-mismatch-sum>0</span>)
+            não coincide com o total do ano (<span data-mismatch-planned>60</span>).
+            Esta diferença é apenas informativa e não impede guardar.
+        </div>
+
+        <div data-semester-container></div>
+
+        <p class="text-muted small mt-2 mb-0" data-empty-year>
+            Sem semestres. Adicione um semestre para colocar UCs.
+        </p>
+    </div>
+</template>
+
+<template id="semesterCardTemplate">
+    <div class="border rounded-3 p-3 mt-3" data-semester-card data-semester="1">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <select class="form-select form-select-sm w-auto" data-semester-select aria-label="Semestre">
+            </select>
+
+            <button type="button" class="btn btn-sm btn-outline-danger" data-remove-semester>
+                <i class="bi bi-trash me-1" aria-hidden="true"></i>
+                Remover Semestre
+            </button>
+        </div>
+
+        <div class="table-responsive mt-2">
+            <table class="table table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Unidade Curricular</th>
+                        <th scope="col" style="width: 9rem;">ECTS</th>
+                        <th scope="col" class="text-end" style="width: 7rem;">Remover</th>
+                    </tr>
+                </thead>
+
+                <tbody data-uc-body></tbody>
+            </table>
+        </div>
+
+        <button type="button" class="btn btn-sm btn-outline-primary mt-2" data-add-uc>
+            <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>
+            Adicionar UC
+        </button>
+    </div>
+</template>
+
+<template id="ucRowTemplate">
+    <tr data-uc-row>
+        <td>
+            <input type="hidden" name="Ucs[__i__].Year" value="1" data-uc-year />
+            <input type="hidden" name="Ucs[__i__].Semester" value="1" data-uc-semester />
+
+            <select name="Ucs[__i__].UcId" class="form-select form-select-sm" data-uc-select>
+                <option value="0">-- Selecione uma UC --</option>
+
+                @foreach (var uc in UcOptions) {
+                    <option value="@uc.UcId">@UcLabel(uc)</option>
+                }
+            </select>
+        </td>
+
+        <td>
+            <input type="number" name="Ucs[__i__].ValueECTS" value="0"
+                   min="0" max="500" class="form-control form-control-sm" data-uc-ects />
+        </td>
+
+        <td class="text-end">
+            <button type="button" class="btn btn-sm btn-outline-danger"
+                    data-remove-uc title="Remover UC" aria-label="Remover UC">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+            </button>
+        </td>
+    </tr>
+</template>
+
+<script>
+    (function () {
+        const form = document.getElementById('studyPlanForm');
+        if (!form) return;
+
+        const yearContainer = document.getElementById('yearContainer');
+        const addYearBtn = document.getElementById('addYearBtn');
+        const noYearsMessage = document.getElementById('noYearsMessage');
+        const yearTemplate = document.getElementById('yearCardTemplate');
+        const semesterTemplate = document.getElementById('semesterCardTemplate');
+        const ucTemplate = document.getElementById('ucRowTemplate');
+
+        if (!yearContainer || !addYearBtn || !yearTemplate || !semesterTemplate || !ucTemplate) {
+            return;
+        }
+
+        const maxYears = 5;
+        const maxSemester = 10;
+
+        function yearCards() {
+            return Array.from(yearContainer.children)
+                .filter(function (child) { return child.matches('[data-year-card]'); });
+        }
+
+        function semesterCards(yearCard) {
+            return Array.from(yearCard.querySelectorAll('[data-semester-card]'));
+        }
+
+        function ucRows(yearCard) {
+            return Array.from(yearCard.querySelectorAll('tr[data-uc-row]'));
+        }
+
+        function allUcRows() {
+            return Array.from(document.querySelectorAll('tr[data-uc-row]'));
+        }
+
+        function usedSemesters(yearCard) {
+            const used = new Set();
+            semesterCards(yearCard).forEach(function (card) {
+                const value = parseInt(card.dataset.semester, 10);
+                if (!isNaN(value)) used.add(value);
+            });
+            return used;
+        }
+
+        function nextSemester(yearCard) {
+            const used = usedSemesters(yearCard);
+            for (let s = 1; s <= maxSemester; s++) {
+                if (!used.has(s)) return s;
+            }
+            return null;
+        }
+
+        function fillSemesterSelect(select, selected) {
+            select.innerHTML = '';
+            for (let s = 1; s <= maxSemester; s++) {
+                const option = document.createElement('option');
+                option.value = String(s);
+                option.textContent = s + '.º Semestre';
+                option.selected = s === selected;
+                select.appendChild(option);
+            }
+        }
+
+        function syncSemesterOptions(yearCard) {
+            const used = usedSemesters(yearCard);
+
+            semesterCards(yearCard).forEach(function (card) {
+                const own = parseInt(card.dataset.semester, 10);
+                const select = card.querySelector('[data-semester-select]');
+                if (!select) return;
+
+                Array.from(select.options).forEach(function (option) {
+                    const value = parseInt(option.value, 10);
+                    option.disabled = value !== own && used.has(value);
+                });
+            });
+        }
+
+        function syncUcOptions() {
+            const rows = allUcRows();
+            const selected = new Set();
+
+            rows.forEach(function (row) {
+                const select = row.querySelector('[data-uc-select]');
+                if (select && select.value !== '0') selected.add(select.value);
+            });
+
+            rows.forEach(function (row) {
+                const select = row.querySelector('[data-uc-select]');
+                if (!select) return;
+
+                const own = select.value;
+                Array.from(select.options).forEach(function (option) {
+                    if (option.value === '0') return;
+                    option.disabled = option.value !== own && selected.has(option.value);
+                });
+            });
+        }
+
+        function updateTotals() {
+            let planEcts = 0;
+            const years = yearCards();
+
+            years.forEach(function (yearCard) {
+                const ectsInput = yearCard.querySelector('[data-year-ects]');
+                const planned = ectsInput ? (parseInt(ectsInput.value, 10) || 0) : 0;
+                planEcts += planned;
+
+                let ucSum = 0;
+                ucRows(yearCard).forEach(function (row) {
+                    const select = row.querySelector('[data-uc-select]');
+                    if (!select || select.value === '0') return;
+
+                    const input = row.querySelector('[data-uc-ects]');
+                    ucSum += input ? (parseInt(input.value, 10) || 0) : 0;
+                });
+
+                const sumLabel = yearCard.querySelector('[data-year-uc-sum]');
+                if (sumLabel) sumLabel.textContent = ucSum;
+
+                const mismatch = yearCard.querySelector('[data-year-mismatch]');
+                if (mismatch) {
+                    mismatch.classList.toggle('d-none', ucSum === planned);
+
+                    const mismatchSum = yearCard.querySelector('[data-mismatch-sum]');
+                    const mismatchPlanned = yearCard.querySelector('[data-mismatch-planned]');
+                    if (mismatchSum) mismatchSum.textContent = ucSum;
+                    if (mismatchPlanned) mismatchPlanned.textContent = planned;
+                }
+            });
+
+            const yearsLabel = document.querySelector('[data-plan-years]');
+            const ectsLabel = document.querySelector('[data-plan-ects]');
+            if (yearsLabel) yearsLabel.textContent = years.length;
+            if (ectsLabel) ectsLabel.textContent = planEcts;
+        }
+
+        function updateYearButtons() {
+            const years = yearCards();
+            addYearBtn.disabled = years.length >= maxYears;
+
+            years.forEach(function (yearCard) {
+                const addSemester = yearCard.querySelector('[data-add-semester]');
+                if (addSemester) {
+                    addSemester.disabled = usedSemesters(yearCard).size >= maxSemester;
+                }
+            });
+        }
+
+        function reindex() {
+            let ucIndex = 0;
+            const placedRows = new Set();
+
+            yearCards().forEach(function (yearCard, y) {
+                yearCard.dataset.yearIndex = String(y);
+
+                const title = yearCard.querySelector('[data-year-title]');
+                if (title) title.textContent = (y + 1) + '.º Ano';
+
+                const id = yearCard.querySelector('[data-year-id]');
+                if (id) id.name = 'Years[' + y + '].StudyPlanYearId';
+
+                const ects = yearCard.querySelector('[data-year-ects]');
+                if (ects) ects.name = 'Years[' + y + '].ECTSTotalYear';
+
+                const min = yearCard.querySelector('[data-year-min]');
+                if (min) min.name = 'Years[' + y + '].MinECTS';
+
+                const emptyYear = yearCard.querySelector('[data-empty-year]');
+                if (emptyYear) {
+                    emptyYear.classList.toggle('d-none', semesterCards(yearCard).length > 0);
+                }
+
+                syncSemesterOptions(yearCard);
+
+                semesterCards(yearCard).forEach(function (semesterCard) {
+                    const semester = parseInt(semesterCard.dataset.semester, 10) || 1;
+
+                    semesterCard.querySelectorAll('tr[data-uc-row]').forEach(function (row) {
+                        placedRows.add(row);
+
+                        const yearInput = row.querySelector('[data-uc-year]');
+                        const semesterInput = row.querySelector('[data-uc-semester]');
+                        const select = row.querySelector('[data-uc-select]');
+                        const valueEcts = row.querySelector('[data-uc-ects]');
+
+                        if (yearInput) {
+                            yearInput.name = 'Ucs[' + ucIndex + '].Year';
+                            yearInput.value = String(y + 1);
+                        }
+
+                        if (semesterInput) {
+                            semesterInput.name = 'Ucs[' + ucIndex + '].Semester';
+                            semesterInput.value = String(semester);
+                        }
+
+                        if (select) select.name = 'Ucs[' + ucIndex + '].UcId';
+                        if (valueEcts) valueEcts.name = 'Ucs[' + ucIndex + '].ValueECTS';
+
+                        ucIndex++;
+                    });
+                });
+            });
+
+            allUcRows().forEach(function (row) {
+                if (placedRows.has(row)) return;
+
+                const yearInput = row.querySelector('[data-uc-year]');
+                const semesterInput = row.querySelector('[data-uc-semester]');
+                const select = row.querySelector('[data-uc-select]');
+                const valueEcts = row.querySelector('[data-uc-ects]');
+
+                if (yearInput) yearInput.name = 'Ucs[' + ucIndex + '].Year';
+                if (semesterInput) semesterInput.name = 'Ucs[' + ucIndex + '].Semester';
+                if (select) select.name = 'Ucs[' + ucIndex + '].UcId';
+                if (valueEcts) valueEcts.name = 'Ucs[' + ucIndex + '].ValueECTS';
+
+                ucIndex++;
+            });
+
+            if (noYearsMessage) {
+                noYearsMessage.classList.toggle('d-none', yearCards().length > 0);
+            }
+
+            updateYearButtons();
+            syncUcOptions();
+            updateTotals();
+        }
+
+        function addYear() {
+            if (yearCards().length >= maxYears) return;
+
+            const fragment = yearTemplate.content.cloneNode(true);
+            yearContainer.appendChild(fragment);
+            reindex();
+        }
+
+        function removeYear(yearCard) {
+            if (ucRows(yearCard).length > 0) {
+                const confirmed = window.confirm(
+                    'Este ano contém unidades curriculares. Ao removê-lo, essas UCs serão '
+                    + 'desassociadas do plano ao guardar. Continuar?');
+                if (!confirmed) return;
+            }
+
+            yearCard.remove();
+            reindex();
+        }
+
+        function addSemester(yearCard) {
+            const semester = nextSemester(yearCard);
+            if (semester === null) return;
+
+            const fragment = semesterTemplate.content.cloneNode(true);
+            const card = fragment.querySelector('[data-semester-card]');
+            card.dataset.semester = String(semester);
+
+            const select = card.querySelector('[data-semester-select]');
+            if (select) fillSemesterSelect(select, semester);
+
+            yearCard.querySelector('[data-semester-container]').appendChild(fragment);
+            reindex();
+        }
+
+        function removeSemester(semesterCard) {
+            if (semesterCard.querySelectorAll('tr[data-uc-row]').length > 0) {
+                const confirmed = window.confirm(
+                    'Este semestre contém unidades curriculares. Ao removê-lo, essas UCs serão '
+                    + 'desassociadas do plano ao guardar. Continuar?');
+                if (!confirmed) return;
+            }
+
+            semesterCard.remove();
+            reindex();
+        }
+
+        function addUc(semesterCard) {
+            const body = semesterCard.querySelector('[data-uc-body]');
+            if (!body) return;
+
+            const fragment = ucTemplate.content.cloneNode(true);
+            body.appendChild(fragment);
+            reindex();
+
+            const row = body.lastElementChild;
+            const select = row ? row.querySelector('[data-uc-select]') : null;
+            if (select) select.focus();
+        }
+
+        function removeUc(row) {
+            row.remove();
+            reindex();
+        }
+
+        addYearBtn.addEventListener('click', addYear);
+
+        form.addEventListener('click', function (event) {
+            const addSemesterBtn = event.target.closest('[data-add-semester]');
+            if (addSemesterBtn) {
+                addSemester(addSemesterBtn.closest('[data-year-card]'));
+                return;
+            }
+
+            const removeYearBtn = event.target.closest('[data-remove-year]');
+            if (removeYearBtn) {
+                removeYear(removeYearBtn.closest('[data-year-card]'));
+                return;
+            }
+
+            const removeSemesterBtn = event.target.closest('[data-remove-semester]');
+            if (removeSemesterBtn) {
+                removeSemester(removeSemesterBtn.closest('[data-semester-card]'));
+                return;
+            }
+
+            const addUcBtn = event.target.closest('[data-add-uc]');
+            if (addUcBtn) {
+                addUc(addUcBtn.closest('[data-semester-card]'));
+                return;
+            }
+
+            const removeUcBtn = event.target.closest('[data-remove-uc]');
+            if (removeUcBtn) {
+                removeUc(removeUcBtn.closest('tr[data-uc-row]'));
+            }
+        });
+
+        form.addEventListener('change', function (event) {
+            if (event.target.matches('[data-semester-select]')) {
+                const card = event.target.closest('[data-semester-card]');
+                const value = parseInt(event.target.value, 10);
+
+                if (card && !isNaN(value)) {
+                    card.dataset.semester = String(value);
+                    reindex();
+                }
+                return;
+            }
+
+            if (event.target.matches('[data-uc-select]')) {
+                syncUcOptions();
+                updateTotals();
+            }
+        });
+
+        form.addEventListener('input', function (event) {
+            if (event.target.matches('[data-year-ects], [data-year-min], [data-uc-ects]')) {
+                updateTotals();
+            }
+        });
+
+        form.addEventListener('submit', function () {
+            // Empty rows are only placeholders; remove them before posting and
+            // reindex so the server receives a contiguous Ucs[] list.
+            allUcRows().forEach(function (row) {
+                const select = row.querySelector('[data-uc-select]');
+                if (!select || select.value === '0') row.remove();
+            });
+
+            reindex();
+        });
+
+        reindex();
+    })();
+</script>

@@ -1,0 +1,20 @@
+@model UnivManagement.Models.AcademicManagement.StudyPlanFormModel
+
+@{
+    ViewData["Title"] = "Criar Plano de Estudos";
+}
+
+<div class="mb-4">
+    <h1 class="h2 mb-1">Criar Plano de Estudos</h1>
+    <p class="text-muted mb-0">
+        Defina os anos, semestres e unidades curriculares do novo plano.
+    </p>
+</div>
+
+<partial name="_Form" model="Model" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

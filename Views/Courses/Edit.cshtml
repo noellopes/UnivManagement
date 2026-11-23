@@ -1,0 +1,106 @@
+@model UnivManagement.Models.AcademicManagement.Course
+
+@{
+    ViewData["Title"] = "Editar Curso";
+}
+
+<div class="mb-4">
+    <h1 class="h2 mb-1">Editar Curso</h1>
+    <p class="text-muted mb-0">Atualize os dados do curso selecionado.</p>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-pencil-square me-2" aria-hidden="true"></i>
+            Dados do Curso
+        </h2>
+    </div>
+
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <input type="hidden" asp-for="CourseId" />
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Code" class="form-label"></label>
+                    <input asp-for="Code" class="form-control" />
+                    <span asp-validation-for="Code" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Acronym" class="form-label"></label>
+                    <input asp-for="Acronym" class="form-control" />
+                    <span asp-validation-for="Acronym" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="CreationDate" class="form-label"></label>
+                    <input asp-for="CreationDate" class="form-control" />
+                    <span asp-validation-for="CreationDate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="AcademicDegreeId" class="form-label"></label>
+                    <select asp-for="AcademicDegreeId" class="form-select" asp-items="ViewBag.AcademicDegrees">
+                        <option value="">-- Selecione o grau académico --</option>
+                    </select>
+                    <span asp-validation-for="AcademicDegreeId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="DocenteId" class="form-label">
+                        Diretor do Curso
+                        <span class="text-muted fw-normal">(opcional)</span>
+                    </label>
+                    <select asp-for="DocenteId" class="form-select" asp-items="ViewBag.Docentes">
+                        <option value="">-- Sem diretor atribuído --</option>
+                    </select>
+                    <span asp-validation-for="DocenteId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="CourseStateId" class="form-label"></label>
+                    <select asp-for="CourseStateId" class="form-select" asp-items="ViewBag.CourseStates">
+                        <option value="">-- Selecione o estado do curso --</option>
+                    </select>
+                    <span asp-validation-for="CourseStateId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex justify-content-end flex-wrap gap-2">
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                    Voltar à Lista
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                    Guardar Alterações
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -9,7 +9,7 @@
     <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
         <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
         @ViewBag.SuccessMessage
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
     </div>
 }
 
@@ -46,16 +46,70 @@
                 @Html.DisplayNameFor(model => model.Acronym)
             </dt>
             <dd class="col-sm-9">
-                <span class="badge text-bg-secondary">
-                    @Html.DisplayFor(model => model.Acronym)
-                </span>
+                @if (!string.IsNullOrWhiteSpace(Model.Acronym))
+                {
+                    <span class="badge text-bg-secondary">@Model.Acronym</span>
+                }
+                else
+                {
+                    <span class="text-muted">—</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.ValueECTS)
+            </dt>
+            <dd class="col-sm-9">
+                @Model.ValueECTS
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.NumHours)
+            </dt>
+            <dd class="col-sm-9">
+                @Model.NumHours
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Semester)
+            </dt>
+            <dd class="col-sm-9">
+                @(Model.Semester).º semestre
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Year)
+            </dt>
+            <dd class="col-sm-9">
+                @(Model.Year).º ano
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                Plano de Estudos
+            </dt>
+            <dd class="col-sm-9">
+                @if (Model.StudyPlan != null)
+                {
+                    <span class="badge text-bg-info">@Model.StudyPlan.Code</span>
+                }
+                else
+                {
+                    <span class="text-muted">Sem plano de estudos</span>
+                }
             </dd>
 
             <dt class="col-sm-3 text-muted">
                 @Html.DisplayNameFor(model => model.Description)
             </dt>
             <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Description)
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    @Model.Description
+                }
+                else
+                {
+                    <span class="text-muted">Sem descrição.</span>
+                }
             </dd>
         </dl>
     </div>

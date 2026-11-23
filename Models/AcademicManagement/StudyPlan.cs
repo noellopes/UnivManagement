@@ -1,71 +1,41 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace UnivManagement.Models.AcademicManagement;
 
-/*
-StudyPlan:
- * StudyPlanId       int
- * EctsTotal         int         (value between 120 and 180)
- * EctsTotalYear     int         (value between 50 and 60)
- * MinEctsYear2      int         (value between 30 and 60)
- * MinEctsYear3      int         (value between 60 and 120)
- * NumYears          int         (value between 2 and 3)
- * CreationDate      DateOnly
- * UseStartDate      int         (value between 2000 and 9999)
- * UseEndDate        int         (value between 2000 and 9999)
-*/
-
 /// <summary>
-/// Study Plan model class from Academic Management domain.
+/// Study plan model class from Academic Management domain.
 /// </summary>
 public class StudyPlan {
-    /* ID: */
-    [Display(Name = "ID")]
     public int StudyPlanId { get; set; }
 
-    /* TOTAL ECTS: */
     [Required(ErrorMessage = "O {0} é obrigatório.")]
-    [Range(120, 180, ErrorMessage = "O {0} deve estar entre {1} e {2}")]
+    [StringLength(6, MinimumLength = 1, ErrorMessage = "O {0} não pode ter mais de {1} caracteres.")]
+    [RegularExpression(@"^[A-Za-z0-9]{1,6}$", ErrorMessage = "O {0} deve conter entre 1 e 6 caracteres alfanuméricos.")]
+    [Display(Name = "Código")]
+    public string Code { get; set; } = string.Empty;
+
+    [Range(0, 500, ErrorMessage = "O {0} deve estar entre {1} e {2}.")]
     [Display(Name = "ECTS Total")]
-    public required int EctsTotal { get; set; }
+    public int EctsTotal { get; set; }
 
-    /* TOTAL ECTS PER YEAR: */
-    [Required(ErrorMessage = "O {0} é obrigatório.")]
-    [Range(50, 60, ErrorMessage = "O {0} deve estar entre {1} e {2}")]
-    [Display(Name = "ECTS Total por Ano")]
-    public required int EctsTotalYear { get; set; }
-
-    /* MIN ECTS TO PROGRESS TO THE 2º YEAR: */
-    [Required(ErrorMessage = "O {0} é obrigatório.")]
-    [Range(30, 60, ErrorMessage = "O {0} deve estar entre {1} e {2}")]
-    [Display(Name = "Min ECTS para 2º Ano")]
-    public required int MinEctsYear2 { get; set; }
-
-    /* MIN ECTS TO PROGRESS TO THE 3º YEAR: */
-    [Required(ErrorMessage = "O {0} é obrigatório.")]
-    [Range(60, 120, ErrorMessage = "O {0} deve estar entre {1} e {2}")]
-    [Display(Name = "Min ECTS para 3º Ano")]
-    public required int MinEctsYear3 { get; set; }
-
-    /* TOTAL NUMBER OF YEARS IN STUDY PLAN: */
-    [Required(ErrorMessage = "O {0} é obrigatório.")]
-    [Range(2, 3, ErrorMessage = "O {0} deve estar entre {1} e {2}")]
+    [Range(1, 5, ErrorMessage = "O {0} deve estar entre {1} e {2}.")]
     [Display(Name = "Número de Anos")]
-    public required int NumYears { get; set; }
+    public int NumYears { get; set; }
 
-    /* STUDY PLAN CREATION DATE: */
-    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [Required(ErrorMessage = "A {0} é obrigatória.")]
     [DataType(DataType.Date)]
     [Display(Name = "Data de Criação")]
-    public required DateOnly CreationDate { get; set; }
+    public DateOnly CreationDate { get; set; }
 
-    /* PLAN START USE DATES: */
-    [Range(2000, 9999, ErrorMessage = "Ano de início deve ter o máximo de 4 dígitos")]
-    [Display(Name = "Início Vigor")]
-    public int? UseStartDate { get; set; }
+    [Display(Name = "Início de Vigor")]
+    public int StartVigor { get; set; }
 
-    /* PLAN END USE DATES: */
-    [Range(2000, 9999, ErrorMessage = "Ano de fim deve ter o máximo de 4 dígitos")]
-    [Display(Name = "Fim Vigor")]
-    public int? UseEndDate { get; set; }
+    [Display(Name = "Fim de Vigor")]
+    public int EndVigor { get; set; }
+
+    [Range(1, int.MaxValue, ErrorMessage = "O {0} é obrigatório.")]
+    [Display(Name = "Curso")]
+    public int CourseId { get; set; }
+
+    public Course? Course { get; set; }
 }
