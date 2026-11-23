@@ -40,8 +40,17 @@
 
                         <div class="mb-3">
                             <label asp-for="ServiceRequestStatusId" class="form-label fw-semibold"></label>
-                            <select asp-for="ServiceRequestStatusId" asp-items="ViewBag.Statuses" class="form-select"></select>
-                            <span asp-validation-for="ServiceRequestStatusId" class="text-danger small"></span>
+                            @if (ViewBag.IsClosed == true)
+                            {
+                                <input value="@ViewBag.StatusName" class="form-control" disabled />
+                                <div class="form-text">This request is closed, so its status cannot change.</div>
+                            }
+                            else
+                            {
+                                <select asp-for="ServiceRequestStatusId" asp-items="ViewBag.Statuses" class="form-select"></select>
+                                <span asp-validation-for="ServiceRequestStatusId" class="text-danger small"></span>
+                                <div class="form-text">To cancel the request, use the Cancel request button in its details.</div>
+                            }
                         </div>
 
                         <div class="mb-3">

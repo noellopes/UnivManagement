@@ -114,6 +114,14 @@
                             Edit
                         </a>
 
+                        @if (Model?.IsClosed() != true)
+                        {
+                            <a asp-action="Cancel" asp-route-id="@Model?.ServiceRequestId" class="btn btn-warning">
+                                <i class="bi bi-x-circle me-1" aria-hidden="true"></i>
+                                Cancel request
+                            </a>
+                        }
+
                         <a asp-action="Delete" asp-route-id="@Model?.ServiceRequestId" class="btn btn-danger">
                             <i class="bi bi-trash" aria-hidden="true"></i>
                             Delete
