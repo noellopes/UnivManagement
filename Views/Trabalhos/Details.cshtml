@@ -12,25 +12,41 @@
         <dd class="col-sm-9">@Model.Titulo</dd>
 
         <dt class="col-sm-3">Descrição</dt>
-        <dd class="col-sm-9 text-break" style="white-space: pre-wrap;">@Model.Descricao</dd>
+        <dd class="col-sm-9 text-break"
+            style="white-space: pre-wrap;">@Model.Descricao</dd>
 
         <dt class="col-sm-3">Tipo de trabalho</dt>
-        <dd class="col-sm-9">@(Model.EIndividual ? "Individual" : "Em grupo")</dd>
+        <dd class="col-sm-9">
+            @(Model.EIndividual ? "Individual" : "Em grupo")
+        </dd>
 
         <dt class="col-sm-3">Data-limite de entrega</dt>
-        <dd class="col-sm-9">@Model.DataLimite.ToString("dd/MM/yyyy")</dd>
+        <dd class="col-sm-9">
+            @Model.DataLimite.ToString("dd/MM/yyyy")
+        </dd>
 
         <dt class="col-sm-3">Docente</dt>
-        <dd class="col-sm-9">@(Model.Docente?.Nome ?? $"ID {Model.DocenteId}")</dd>
+        <dd class="col-sm-9">
+            @(Model.Docente?.Nome ?? $"ID {Model.DocenteId}")
+        </dd>
 
         <dt class="col-sm-3">Unidade curricular</dt>
-        <dd class="col-sm-9">@(Model.UC?.Name ?? $"ID {Model.UcId}")</dd>
+        <dd class="col-sm-9">
+            @(Model.UC?.Name ?? $"ID {Model.UcId}")
+        </dd>
     </dl>
 
     <div class="d-flex gap-2">
-        <a asp-action="Edit" asp-route-id="@Model.TrabalhoId"
-           class="btn btn-primary">Editar</a>
-        <a asp-action="Index" class="btn btn-outline-secondary">Voltar à lista</a>
+        <a asp-action="Edit"
+           asp-route-id="@Model.TrabalhoId"
+           class="btn btn-primary">
+            Editar
+        </a>
+
+        <a asp-action="IndexDocente"
+           class="btn btn-outline-secondary">
+            Voltar à lista
+        </a>
     </div>
 
     @if (!Model.EIndividual)
@@ -40,20 +56,27 @@
 
             @if (TempData["GrupoCriado"] is string mensagemCriacao)
             {
-                <div class="alert alert-success" role="status">@mensagemCriacao</div>
+                <div class="alert alert-success" role="status">
+                    @mensagemCriacao
+                </div>
             }
 
             @if (TempData["GrupoEliminado"] is string mensagemEliminacao)
             {
-                <div class="alert alert-success" role="status">@mensagemEliminacao</div>
+                <div class="alert alert-success" role="status">
+                    @mensagemEliminacao
+                </div>
             }
 
             @if (TempData["GrupoErro"] is string erro)
             {
-                <div class="alert alert-danger" role="alert">@erro</div>
+                <div class="alert alert-danger" role="alert">
+                    @erro
+                </div>
             }
 
-            @if (ViewData["GruposTrabalho"] is IEnumerable<UnivManagement.Models.GrupoTrabalho> grupos
+            @if (ViewData["GruposTrabalho"]
+                is IEnumerable<UnivManagement.Models.GrupoTrabalho> grupos
                 && grupos.Any())
             {
                 <ul class="list-group mb-3">
@@ -61,6 +84,7 @@
                     {
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>@grupo.Nome</span>
+
                             <a asp-action="GerirMembros"
                                asp-route-grupoId="@grupo.GrupoTrabalhoId"
                                class="btn btn-sm btn-outline-primary">
@@ -72,19 +96,31 @@
             }
             else
             {
-                <p class="text-muted">Ainda não existem grupos neste trabalho.</p>
+                <p class="text-muted">
+                    Ainda não existem grupos neste trabalho.
+                </p>
             }
 
             <form asp-action="CriarGrupo" method="post">
-                <input type="hidden" name="trabalhoId" value="@Model.TrabalhoId" />
+                <input type="hidden"
+                       name="trabalhoId"
+                       value="@Model.TrabalhoId" />
 
                 <div class="mb-3">
-                    <label for="nomeGrupo" class="form-label">Nome do grupo</label>
-                    <input id="nomeGrupo" name="nome" class="form-control"
-                           maxlength="100" required />
+                    <label for="nomeGrupo" class="form-label">
+                        Nome do grupo
+                    </label>
+
+                    <input id="nomeGrupo"
+                           name="nome"
+                           class="form-control"
+                           maxlength="100"
+                           required />
                 </div>
 
-                <button type="submit" class="btn btn-primary">Criar grupo</button>
+                <button type="submit" class="btn btn-primary">
+                    Criar grupo
+                </button>
             </form>
         </section>
     }
