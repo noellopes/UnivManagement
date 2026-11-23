@@ -17,7 +17,6 @@ namespace UnivManagement.Data
             PopulateFuncionarios(db);
             PopulateDepartamentos(db);
 
-
             // Gestão de Cantina
             PopulateTiposRefeicao(db);
             PopulateRefeicoes(db);
@@ -113,6 +112,23 @@ namespace UnivManagement.Data
             };
 
             db.Funcionario.AddRange(funcionarios);
+            db.SaveChanges();
+        }
+
+        private static void PopulateDepartamentos(UniversityDbContext db)
+        {
+            // Ajuste para db.Departamento se o seu DbSet no DbContext estiver no singular
+            if (db.Departamentos.Any()) return;
+
+            var departamentos = new List<Departamento>
+            {
+                new Departamento { Nome = "Departamento de Informática" },
+                new Departamento { Nome = "Departamento de Engenharia" },
+                new Departamento { Nome = "Departamento de Gestão" },
+                new Departamento { Nome = "Departamento de Matemática" }
+            };
+
+            db.Departamentos.AddRange(departamentos);
             db.SaveChanges();
         }
 
