@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models.AccommodationManagement;
 using UnivManagement.Data;
+using UnivManagement.Models.AccommodationManagement;
 
-namespace UnivManagement.Controllers // Adicionado o namespace correto
+namespace UnivManagement.Controllers
 {
-    public class AccommodationContractsControllers : Controller // Corrigido o nome
+    public class AccommodationContractsController : Controller
     {
         private readonly UniversityDbContext _context;
 
-        public AccommodationContractsControllers(UniversityDbContext context)
+        public AccommodationContractsController(UniversityDbContext context)
         {
             _context = context;
         }
@@ -17,132 +18,119 @@ namespace UnivManagement.Controllers // Adicionado o namespace correto
         // GET: AccommodationContracts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AccommodationContract.ToListAsync());
+            var contracts = _context.AccommodationContract
+                .Include(c => c.Status);
+
+            return View(await contracts.ToListAsync());
         }
 
         // GET: AccommodationContracts/Details/5
-        public async Task<IActionResult> Details(int? id) // Corrigido de accommodationcontractid para id
+        public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var accommodationcontract = await _context.AccommodationContract
-                .FirstOrDefaultAsync(m => m.AccommodationContractId == id); // Corrigido
-            if (accommodationcontract == null)
-            {
-                return NotFound();
-            }
+            var accommodationContract = await _context.AccommodationContract
+                .Include(c => c.Status)
+                .FirstOrDefaultAsync(m => m.AccommodationContractId == id);
 
-            return View(accommodationcontract);
+            if (accommodationContract == null) return NotFound();
+
+            return View(accommodationContract);
         }
 
         // GET: AccommodationContracts/Create
         public IActionResult Create()
         {
+            ViewData["ContractStatusId"] = new SelectList(_context.ContractStatus, "ContractStatusId", "Name");
             return View();
         }
 
         // POST: AccommodationContracts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AccommodationContractId,StudentId,RoomAllocationId,SignatureDate,StartDate,EndDate,Status")] AccommodationContracts accommodationcontract)
+        public async Task<IActionResult> Create([Bind("AccommodationContractId,RoomAllocationId,StartDate,EndDate,MonthlyRent,Deposit,ContractStatusId,SignedDocumentId")] AccommodationContract accommodationContract)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(accommodationcontract);
+                _context.Add(accommodationContract);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(accommodationcontract);
+
+            ViewData["ContractStatusId"] = new SelectList(_context.ContractStatus, "ContractStatusId", "Name", accommodationContract.ContractStatusId);
+            return View(accommodationContract);
         }
 
         // GET: AccommodationContracts/Edit/5
-        public async Task<IActionResult> Edit(int? id) // Corrigido de accommodationcontractid para id
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var accommodationcontract = await _context.AccommodationContract.FindAsync(id); // Corrigido
-            if (accommodationcontract == null)
-            {
-                return NotFound();
-            }
-            return View(accommodationcontract);
+            var accommodationContract = await _context.AccommodationContract.FindAsync(id);
+            if (accommodationContract == null) return NotFound();
+
+            ViewData["ContractStatusId"] = new SelectList(_context.ContractStatus, "ContractStatusId", "Name", accommodationContract.ContractStatusId);
+            return View(accommodationContract);
         }
 
         // POST: AccommodationContracts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AccommodationContractId,StudentId,RoomAllocationId,SignatureDate,StartDate,EndDate,Status")] AccommodationContracts accommodationcontract) // Corrigido de int? accommodationcontractid para int id (no POST convém não ser nullable)
+        public async Task<IActionResult> Edit(int id, [Bind("AccommodationContractId,RoomAllocationId,StartDate,EndDate,MonthlyRent,Deposit,ContractStatusId,SignedDocumentId")] AccommodationContract accommodationContract)
         {
-            if (id != accommodationcontract.AccommodationContractId) // Corrigido
-            {
-                return NotFound();
-            }
+            if (id != accommodationContract.AccommodationContractId) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(accommodationcontract);
+                    _context.Update(accommodationContract);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccommodationContractExists(accommodationcontract.AccommodationContractId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!AccommodationContractExists(accommodationContract.AccommodationContractId)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(accommodationcontract);
+
+            ViewData["ContractStatusId"] = new SelectList(_context.ContractStatus, "ContractStatusId", "Name", accommodationContract.ContractStatusId);
+            return View(accommodationContract);
         }
 
         // GET: AccommodationContracts/Delete/5
-        public async Task<IActionResult> Delete(int? id) // Corrigido de accommodationcontractid para id
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var accommodationcontract = await _context.AccommodationContract
-                .FirstOrDefaultAsync(m => m.AccommodationContractId == id); // Corrigido
-            if (accommodationcontract == null)
-            {
-                return NotFound();
-            }
+            var accommodationContract = await _context.AccommodationContract
+                .Include(c => c.Status)
+                .FirstOrDefaultAsync(m => m.AccommodationContractId == id);
 
-            return View(accommodationcontract);
+            if (accommodationContract == null) return NotFound();
+
+            return View(accommodationContract);
         }
 
         // POST: AccommodationContracts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id) // Corrigido de int? accommodationcontractid para int id
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var accommodationcontract = await _context.AccommodationContract.FindAsync(id); // Corrigido
-            if (accommodationcontract != null)
+            var accommodationContract = await _context.AccommodationContract.FindAsync(id);
+            if (accommodationContract != null)
             {
-                _context.AccommodationContract.Remove(accommodationcontract);
+                _context.AccommodationContract.Remove(accommodationContract);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AccommodationContractExists(int id) // Corrigido
+        private bool AccommodationContractExists(int id)
         {
-            return _context.AccommodationContract.Any(e => e.AccommodationContractId == id); // Corrigido
+            return _context.AccommodationContract.Any(e => e.AccommodationContractId == id);
         }
     }
 }
