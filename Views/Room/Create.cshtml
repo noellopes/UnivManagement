@@ -1,72 +1,83 @@
 @model UnivManagement.Models.Room
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar Sala";
 }
 
-<h1>Create</h1>
+<div class="container py-4" style="max-width: 820px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">
+            <i class="bi bi-plus-square-fill text-primary me-2"></i>Criar Sala
+        </h2>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i>Voltar à Lista
+        </a>
+    </div>
 
-<h4>Room</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="NumeroSala" class="control-label"></label>
-                <input asp-for="NumeroSala" class="form-control" />
-                <span asp-validation-for="NumeroSala" class="text-danger"></span>
-            </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="NumeroSala" class="form-label fw-semibold"></label>
+                        <input asp-for="NumeroSala" class="form-control" placeholder="ex: Sala 101" />
+                        <span asp-validation-for="NumeroSala" class="text-danger small"></span>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="Piso" class="control-label"></label>
-                <input asp-for="Piso" class="form-control" />
-                <span asp-validation-for="Piso" class="text-danger"></span>
-            </div>
+                    <div class="col-md-6">
+                        <label asp-for="IdEdificio" class="form-label fw-semibold"></label>
+                        <select asp-for="IdEdificio" class="form-select" asp-items="ViewBag.IdEdificio">
+                            <option value="">-- Selecione o Edifício --</option>
+                        </select>
+                        <span asp-validation-for="IdEdificio" class="text-danger small"></span>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="Lotacao" class="control-label"></label>
-                <input asp-for="Lotacao" class="form-control" />
-                <span asp-validation-for="Lotacao" class="text-danger"></span>
-            </div>
+                    <div class="col-md-4">
+                        <label asp-for="Piso" class="form-label fw-semibold"></label>
+                        <input asp-for="Piso" type="number" class="form-control" placeholder="ex: 1" />
+                        <span asp-validation-for="Piso" class="text-danger small"></span>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-control" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
+                    <div class="col-md-4">
+                        <label asp-for="Lotacao" class="form-label fw-semibold"></label>
+                        <input asp-for="Lotacao" type="number" class="form-control" placeholder="ex: 40" />
+                        <span asp-validation-for="Lotacao" class="text-danger small"></span>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="IdEdificio" class="control-label"></label>
-                <input asp-for="IdEdificio" class="form-control" />
-                <span asp-validation-for="IdEdificio" class="text-danger"></span>
-            </div>
+                    <div class="col-md-4">
+                        <label asp-for="Estado" class="form-label fw-semibold"></label>
+                        <select asp-for="Estado" class="form-select">
+                            <option value="Ativa">Ativa</option>
+                            <option value="Manutenção">Manutenção</option>
+                            <option value="Inativa">Inativa</option>
+                        </select>
+                        <span asp-validation-for="Estado" class="text-danger small"></span>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="Edificio" class="control-label"></label>
-                <input asp-for="Edificio" class="form-control" />
-                <span asp-validation-for="Edificio" class="text-danger"></span>
-            </div>
+                    <div class="col-12">
+                        <label asp-for="IdTipoSala" class="form-label fw-semibold"></label>
+                        <select asp-for="IdTipoSala" class="form-select" asp-items="ViewBag.IdTipoSala">
+                            <option value="">-- Selecione o Tipo de Sala --</option>
+                        </select>
+                        <span asp-validation-for="IdTipoSala" class="text-danger small"></span>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="IdTipoSala" class="control-label"></label>
-                <input asp-for="IdTipoSala" class="form-control" />
-                <span asp-validation-for="IdTipoSala" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="TipoSala" class="control-label"></label>
-                <input asp-for="TipoSala" class="form-control" />
-                <span asp-validation-for="TipoSala" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                    <a asp-action="Index" class="btn btn-light border">Cancelar</a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-check-lg me-1"></i>Criar
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

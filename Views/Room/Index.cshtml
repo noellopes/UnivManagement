@@ -1,77 +1,89 @@
 @model IEnumerable<UnivManagement.Models.Room>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Salas";
 }
 
-<h1>Index</h1>
+<div class="container py-4" style="max-width: 1080px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-door-open-fill text-primary me-2"></i>Salas
+            </h2>
+            <p class="text-muted small mb-0">Gestão dos espaços físicos, lotação e estado operacional.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i>Nova Sala
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NumeroSala)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Piso)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lotacao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdEdificio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Edificio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdTipoSala)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TipoSala)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.NumeroSala)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Piso)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Lotacao)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdEdificio)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Edificio)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdTipoSala)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.TipoSala)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RoomId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RoomId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RoomId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">@Html.DisplayNameFor(model => model.NumeroSala)</th>
+                        <th>@Html.DisplayNameFor(model => model.Edificio)</th>
+                        <th class="text-center">@Html.DisplayNameFor(model => model.Piso)</th>
+                        <th>@Html.DisplayNameFor(model => model.TipoSala)</th>
+                        <th class="text-center">@Html.DisplayNameFor(model => model.Lotacao)</th>
+                        <th class="text-center">@Html.DisplayNameFor(model => model.Estado)</th>
+                        <th class="text-end pe-4">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-bold">@Html.DisplayFor(modelItem => item.NumeroSala)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Edificio!.NomeEdificio)</td>
+                                <td class="text-center">Piso @Html.DisplayFor(modelItem => item.Piso)</td>
+                                <td>
+                                    <span class="badge bg-light text-dark border">
+                                        @Html.DisplayFor(modelItem => item.TipoSala!.Designacao)
+                                    </span>
+                                </td>
+                                <td class="text-center">@Html.DisplayFor(modelItem => item.Lotacao) lug.</td>
+                                <td class="text-center">
+                                    @if (item.Estado == "Ativa")
+                                    {
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle">@item.Estado</span>
+                                    }
+                                    else if (item.Estado == "Manutenção")
+                                    {
+                                        <span class="badge bg-warning-subtle text-warning border border-warning-subtle">@item.Estado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle">@item.Estado</span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a asp-action="Details" asp-route-id="@item.RoomId" class="btn btn-outline-info" title="Detalhes">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.RoomId" class="btn btn-outline-warning" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.RoomId" class="btn btn-outline-danger" title="Eliminar">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">Nenhuma sala registada.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
