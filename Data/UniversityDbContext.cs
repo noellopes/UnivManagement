@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
+using UnivManagement.Models.AccommodationManagement;
 using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Data
@@ -161,9 +162,8 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;       
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
+        
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
@@ -175,5 +175,6 @@ namespace UnivManagement.Data {
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
+        
     }
 }
