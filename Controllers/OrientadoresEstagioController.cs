@@ -14,8 +14,13 @@ public class OrientadoresEstagioController : Controller
     }
 
     // GET: OrientadoresEstagio
-    public async Task<IActionResult> Index(int page = 1)
+    public async Task<IActionResult> Index(int page = 1, string? successMessage = null)
     {
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
+        }
+
         var orientadores = _context.OrientadoresEstagio
             .Include(o => o.Estagios)
             .OrderBy(o => o.OrientadorId);
@@ -27,7 +32,7 @@ public class OrientadoresEstagioController : Controller
     }
 
     // GET: OrientadoresEstagio/Details/5
-    public async Task<IActionResult> Details(int? orientadorId)
+    public async Task<IActionResult> Details(int? orientadorId, string? successMessage = null)
     {
         if (orientadorId == null)
         {
@@ -41,6 +46,11 @@ public class OrientadoresEstagioController : Controller
         if (orientadorestagio == null)
         {
             return NotFound();
+        }
+
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
         }
 
         return View(orientadorestagio);
@@ -65,7 +75,12 @@ public class OrientadoresEstagioController : Controller
             _context.Add(orientadorestagio);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details),
+                new
+                {
+                    orientadorId = orientadorestagio.OrientadorId,
+                    successMessage = "Orientador de estágio criado com sucesso."
+                });
         }
 
         return View(orientadorestagio);
@@ -125,7 +140,12 @@ public class OrientadoresEstagioController : Controller
                 }
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details),
+                new
+                {
+                    orientadorId = orientadorestagio.OrientadorId,
+                    successMessage = "Orientador de estágio atualizado com sucesso."
+                });
         }
 
         return View(orientadorestagio);
@@ -145,7 +165,11 @@ public class OrientadoresEstagioController : Controller
 
         if (orientadorestagio == null)
         {
-            return NotFound();
+            return RedirectToAction(nameof(Index),
+                new
+                {
+                    successMessage = "O orientador de estágio já tinha sido eliminado."
+                });
         }
 
         return View(orientadorestagio);
@@ -175,9 +199,19 @@ public class OrientadoresEstagioController : Controller
 
             _context.OrientadoresEstagio.Remove(orientadorestagio);
             await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index),
+                new
+                {
+                    successMessage = "Orientador de estágio eliminado com sucesso."
+                });
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index),
+            new
+            {
+                successMessage = "O orientador de estágio já tinha sido eliminado."
+            });
     }
 
     private bool OrientadorEstagioExists(int? orientadorId)
