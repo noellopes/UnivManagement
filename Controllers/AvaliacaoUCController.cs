@@ -109,28 +109,28 @@ public class AvaliacaoUCController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
         [Bind("AvaliacaoUCId,TipoAvaliacaoId,UcId,Tipo,Avaliacao,Data")]
-        AvaliacaoUC avaliacao)
+        AvaliacaoUC avaliacaouc)
     {
-        ValidarTipo(avaliacao.Tipo);
+        ValidarTipo(avaliacaouc.Tipo);
 
         if (ModelState.IsValid)
         {
-            _context.AvaliacoesUC.Add(avaliacao);
+            _context.AvaliacoesUC.Add(avaliacaouc);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(
                 nameof(IndexDocente),
-                new { epocaId = avaliacao.TipoAvaliacaoId }
+                new { epocaId = avaliacaouc.TipoAvaliacaoId }
             );
         }
 
         PreencherListas(
-            avaliacao.TipoAvaliacaoId,
-            avaliacao.Tipo,
-            avaliacao.UcId
+            avaliacaouc.TipoAvaliacaoId,
+            avaliacaouc.Tipo,
+            avaliacaouc.UcId
         );
 
-        return View(avaliacao);
+        return View(avaliacaouc);
     }
 
     // GET: AvaliacaoUC/Edit/5
@@ -272,9 +272,9 @@ public class AvaliacaoUCController : Controller
 
         // Tipos de avaliação
         ViewBag.Tipos = new SelectList(
-            new[] { "Frequência", "Exame", "Apresentação" },
-            tipoSelecionado
+            new[] { "Frequência", "Exame", "Apresentação" }
         );
+
 
         // Unidades Curriculares
         ViewBag.UnidadesCurriculares = new SelectList(
