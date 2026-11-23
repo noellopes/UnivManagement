@@ -1,0 +1,65 @@
+@model IEnumerable<UnivManagement.Models.RoomAllocation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AccommodationApplicationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.AccommodationApplicationId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.StudentId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.RoomId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Status)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RoomAllocationId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.RoomAllocationId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RoomAllocationId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

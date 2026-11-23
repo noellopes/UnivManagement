@@ -100,6 +100,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
+        public DbSet<UnivManagement.Models.RoomAllocation> RoomAllocation { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.Residence> Residence { get; set; } = default!;
         public DbSet<Refeicao> Refeicoes { get; set; }
         public DbSet<TipoRefeicao> TiposRefeicao { get; set; } = default!;
