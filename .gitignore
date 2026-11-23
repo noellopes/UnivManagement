@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Migrations
+/Data/SeedData.cs
+/Views/Shared/NotFound.cshtml
