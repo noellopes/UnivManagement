@@ -2,6 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Models.AcademicManagement;
 
+namespace UnivManagement.Data
+{
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
+    {
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
@@ -47,7 +54,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.Telephone)
                 .IsUnique();
-          
+
             // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
@@ -59,10 +66,42 @@ namespace UnivManagement.Data {
                 .IsUnique();
 
             // Room: número único por residência:
-            modelBuilder.Entity<Models.AccommodationManagement.Room>()
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
                 .HasIndex(r => new { r.ResidenceId, r.Number })
                 .IsUnique();
 
+            // Room: relações com RoomType e RoomStatus (sem apagar quartos em cascata):
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
+                .HasOne(r => r.RoomType)
+                .WithMany(t => t.Rooms)
+                .HasForeignKey(r => r.RoomTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
+                .HasOne(r => r.RoomStatus)
+                .WithMany(s => s.Rooms)
+                .HasForeignKey(r => r.RoomStatusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // RoomType: nome único:
+            modelBuilder.Entity<Models.AccommodationManagement.RoomType>()
+                .HasIndex(t => t.Name)
+                .IsUnique();
+
+            // RoomStatus: nome único:
+            modelBuilder.Entity<Models.AccommodationManagement.RoomStatus>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            // Seed dos valores que antes eram enums:
+            modelBuilder.Entity<Models.AccommodationManagement.RoomType>().HasData(
+                new Models.AccommodationManagement.RoomType { RoomTypeId = 1, Name = "Single" },
+                new Models.AccommodationManagement.RoomType { RoomTypeId = 2, Name = "Double" },
+                new Models.AccommodationManagement.RoomType { RoomTypeId = 3, Name = "Triple" });
+
+            modelBuilder.Entity<Models.AccommodationManagement.RoomStatus>().HasData(
+                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 1, Name = "Available" },
+                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 2, Name = "Maintenance" });
             // indica que o atributo Code é único na tabela Course:
             modelBuilder.Entity<Models.AcademicManagement.Course>()
                 .HasIndex(c => c.Code)
@@ -92,6 +131,7 @@ namespace UnivManagement.Data {
                 .IsUnique();
         }
 
+
         public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
@@ -100,6 +140,10 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
+
+        public DbSet<UnivManagement.Models.AccommodationManagement.Room1> Room { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.RoomType> RoomType { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.RoomStatus> RoomStatus { get; set; } = default!;
         public DbSet<UnivManagement.Models.RoomAllocation> RoomAllocation { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.Residence> Residence { get; set; } = default!;
         public DbSet<Refeicao> Refeicoes { get; set; }
