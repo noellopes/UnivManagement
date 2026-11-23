@@ -82,7 +82,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory> ApplicationStatusHistory { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationApplication> AccommodationApplication { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.Room> Room { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.Room> Room1 { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.SchoolCalendar> SchoolCalendar { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.Course> Course { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.InscrUC> InscrUC { get; set; } = default!;
@@ -103,7 +103,7 @@ namespace UnivManagement.Data {
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
-
+        public DbSet<Room> Room { get; set; } = default!;
         public DbSet<Building> Building { get; set; } = default!;
         public DbSet<RoomType> RoomType { get; set; } = default!;
     }

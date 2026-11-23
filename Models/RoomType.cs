@@ -10,7 +10,7 @@ namespace UnivManagement.Models
         [StringLength(50, ErrorMessage = "A {0} não pode exceder {1} caracteres.")]
         public required string Designacao { get; set; }
 
-        [Display(Name = "Requer Computadores")]
+        [Display(Name = "Tem Computadores")]
         public bool RequerComputadores { get; set; } = false;
     
     }
