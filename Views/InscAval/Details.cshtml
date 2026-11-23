@@ -1,0 +1,32 @@
+@model UnivManagement.Models.InscAval
+
+@{
+    ViewData["Title"] = "Detalhes da inscrição";
+}
+
+<h1>Detalhes da inscrição</h1>
+<hr />
+
+    <dl class="row">
+        <dt class="col-sm-3">Avaliação</dt>
+        <dd class="col-sm-9">@ViewBag.TextoAvaliacao</dd>
+
+        <dt class="col-sm-3">Inscrição na UC</dt>
+        <dd class="col-sm-9">@ViewBag.TextoInscricao</dd>
+
+        <dt class="col-sm-3">Pago</dt>
+        <dd class="col-sm-9">
+            @if (Model.Pago)
+            {
+                <span class="badge bg-success">Sim</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary">Não</span>
+            }
+        </dd>
+    </dl>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.InscAvalId" class="btn btn-warning">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
+</div>

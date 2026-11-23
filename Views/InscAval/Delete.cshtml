@@ -1,0 +1,34 @@
+@model UnivManagement.Models.InscAval
+
+@{
+    ViewData["Title"] = "Apagar inscrição";
+}
+
+<h1>Apagar inscrição</h1>
+<h4>Tem a certeza que quer apagar esta inscrição?</h4>
+<hr />
+
+    <dl class="row">
+        <dt class="col-sm-3">Avaliação</dt>
+        <dd class="col-sm-9">@ViewBag.TextoAvaliacao</dd>
+
+        <dt class="col-sm-3">Inscrição na UC</dt>
+        <dd class="col-sm-9">@ViewBag.TextoInscricao</dd>
+
+        <dt class="col-sm-3">Pago</dt>
+        <dd class="col-sm-9">
+            @if (Model.Pago)
+            {
+                <span class="badge bg-success">Sim</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary">Não</span>
+            }
+        </dd>
+    </dl>
+<form asp-action="Delete">
+    <input type="hidden" asp-for="InscAvalId" />
+    <input type="submit" value="Apagar" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

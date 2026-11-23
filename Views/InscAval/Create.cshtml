@@ -1,0 +1,40 @@
+@model UnivManagement.Models.InscAval
+
+@{
+    ViewData["Title"] = "Nova inscrição";
+}
+
+<h1>Nova inscrição em avaliação</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="AvaliacaoUCId" class="form-label"></label>
+                <select asp-for="AvaliacaoUCId" class="form-select" asp-items="ViewBag.AvaliacaoUCId">
+                    <option value="">-- Escolha a avaliação --</option>
+                </select>
+                <span asp-validation-for="AvaliacaoUCId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="InscrUcId" class="form-label"></label>
+                <select asp-for="InscrUcId" class="form-select" asp-items="ViewBag.InscrUcId">
+                    <option value="">-- Escolha a inscrição --</option>
+                </select>
+                <span asp-validation-for="InscrUcId" class="text-danger"></span>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Concluir</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
