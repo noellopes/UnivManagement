@@ -45,12 +45,13 @@ public class AccommodationApplicationsController : Controller
     // POST: ACCOMMODATIONAPPLICATIONS/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("AccommodationApplicationId,StudentId,AcademicYearId,Status,SubmittedAt,HasScholarshipPriority,PriorityCheckedAt,PriorityOverrideReason")] AccommodationApplication accommodationapplication)
+    public async Task<IActionResult> Create([Bind("AccommodationApplicationId,StudentId,AcademicYearId,SubmittedAt,HasScholarshipPriority,PriorityCheckedAt,PriorityOverrideReason")] AccommodationApplication accommodationapplication)
     {
         if (ModelState.IsValid)
         {
             _context.Add(accommodationapplication);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Candidatura criada com sucesso!";
             return RedirectToAction(nameof(Index));
         }
         return View(accommodationapplication);
@@ -75,7 +76,7 @@ public class AccommodationApplicationsController : Controller
     // POST: ACCOMMODATIONAPPLICATIONS/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("AccommodationApplicationId,StudentId,AcademicYearId,Status,SubmittedAt,HasScholarshipPriority,PriorityCheckedAt,PriorityOverrideReason")] AccommodationApplication accommodationapplication)
+    public async Task<IActionResult> Edit(int? id, [Bind("AccommodationApplicationId,StudentId,AcademicYearId,SubmittedAt,HasScholarshipPriority,PriorityCheckedAt,PriorityOverrideReason")] AccommodationApplication accommodationapplication)
     {
         if (id != accommodationapplication.AccommodationApplicationId)
         {
@@ -100,6 +101,7 @@ public class AccommodationApplicationsController : Controller
                     throw;
                 }
             }
+            TempData["SuccessMessage"] = "Candidatura atualizada com sucesso!";
             return RedirectToAction(nameof(Index));
         }
         return View(accommodationapplication);
@@ -135,6 +137,7 @@ public class AccommodationApplicationsController : Controller
         }
 
         await _context.SaveChangesAsync();
+        TempData["SuccessMessage"] = "Candidatura eliminada com sucesso!";
         return RedirectToAction(nameof(Index));
     }
 
