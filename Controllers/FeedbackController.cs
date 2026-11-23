@@ -15,8 +15,14 @@ namespace UnivManagement.Controllers
             _context = context;
         }
 
-        // GET: Feedback
-        public async Task<IActionResult> Index()
+        // GET: Feedback (mantido por compatibilidade, redireciona para a vista de Docente)
+        public IActionResult Index()
+        {
+            return RedirectToAction(nameof(IndexDocente));
+        }
+
+        // GET: Feedback/IndexDocente (Interface de gestão do Docente)
+        public async Task<IActionResult> IndexDocente()
         {
             var feedbacks = await _context.Feedback
                 .Include(f => f.Docente)
@@ -26,8 +32,40 @@ namespace UnivManagement.Controllers
             return View(feedbacks);
         }
 
-        // GET: Feedback/Details/5
+        // GET: Feedback/IndexAluno (Interface de consulta do Aluno - protótipo sem filtro por utilizador autenticado)
+        public async Task<IActionResult> IndexAluno()
+        {
+            var feedbacks = await _context.Feedback
+                .Include(f => f.Docente)
+                .Include(f => f.SubmissaoTrabalho)
+                .ToListAsync();
+
+            return View(feedbacks);
+        }
+
+        // GET: Feedback/Details/5 (Detalhes para o Docente)
         public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var feedback = await _context.Feedback
+                .Include(f => f.Docente)
+                .Include(f => f.SubmissaoTrabalho)
+                .FirstOrDefaultAsync(m => m.FeedbackId == id);
+
+            if (feedback == null)
+            {
+                return NotFound();
+            }
+
+            return View(feedback);
+        }
+
+        // GET: Feedback/DetailsAluno/5 (Detalhes apenas de leitura para o Aluno)
+        public async Task<IActionResult> DetailsAluno(int? id)
         {
             if (id == null)
             {
@@ -63,7 +101,7 @@ namespace UnivManagement.Controllers
             {
                 _context.Add(feedback);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexDocente));
             }
 
             PreencherListas(feedback.DocenteId, feedback.SubmissaoTrabalhoId);
@@ -116,7 +154,7 @@ namespace UnivManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexDocente));
             }
 
             PreencherListas(feedback.DocenteId, feedback.SubmissaoTrabalhoId);
@@ -156,7 +194,7 @@ namespace UnivManagement.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexDocente));
         }
 
         private bool FeedbackExists(int id)
