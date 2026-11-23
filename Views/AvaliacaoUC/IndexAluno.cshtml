@@ -23,8 +23,10 @@
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
-                        <th>Tipo de Avaliação</th>
+                        <th>Época</th>
                         <th>Unidade Curricular</th>
+                        <th>Tipo de Avaliação</th>
+                        <th>Avaliação</th>
                         <th>Data</th>
                         <th class="text-center">Ações</th>
                     </tr>
@@ -36,6 +38,8 @@
                         <tr>
                             <td>@item.TipoAvaliacao?.TipoProva</td>
                             <td>@item.UcId</td>
+                            <td>@item.Tipo</td>
+                            <td>@item.Avaliacao</td>
                             <td>@item.Data.ToString("dd/MM/yyyy")</td>
 
                             <td class="text-center">

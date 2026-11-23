@@ -1,36 +1,72 @@
 ﻿@model IEnumerable<UnivManagement.Models.AvaliacaoUC>
 
 @{
-    ViewData["Title"] = "Avaliações - Docente";
+    ViewData["Title"] = "Gestão de Avaliações";
 }
 
 <div class="container mt-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2>Gestão de Avaliações</h2>
-            <p class="text-muted">
-                Área do Docente - Criar, consultar e gerir avaliações.
-            </p>
+    <div class="mb-4">
+        <h2>Gestão de Avaliações</h2>
+        <p class="text-muted">
+            Área do Docente - Consulta e gestão das avaliações por época.
+        </p>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            Filtrar Avaliações
         </div>
 
-        <a asp-action="Create" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Nova Avaliação
+        <div class="card-body">
+            <form asp-action="IndexDocente" method="get">
+
+                <div class="row align-items-end">
+                    <div class="col-md-8">
+                        <label class="form-label">Época</label>
+
+                        <select name="epocaId"
+                                asp-items="ViewBag.Epocas"
+                                class="form-select">
+                            <option value="">Todas as épocas</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Filtrar
+                        </button>
+
+                        <a asp-action="IndexDocente"
+                           class="btn btn-secondary">
+                            Limpar
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Avaliações Registadas</h4>
+
+        <a asp-action="Create" class="btn btn-success">
+            Nova Avaliação
         </a>
     </div>
 
     <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            Avaliações Registadas
-        </div>
-
         <div class="card-body">
 
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
-                        <th>Tipo de Avaliação</th>
+                        <th>Época</th>
                         <th>Unidade Curricular</th>
+                        <th>Tipo de Avaliação</th>
+                        <th>Avaliação</th>
                         <th>Data</th>
                         <th class="text-center">Ações</th>
                     </tr>
@@ -42,19 +78,21 @@
                         <tr>
                             <td>@item.TipoAvaliacao?.TipoProva</td>
                             <td>@item.UcId</td>
+                            <td>@item.Tipo</td>
+                            <td>@item.Avaliacao</td>
                             <td>@item.Data.ToString("dd/MM/yyyy")</td>
 
                             <td class="text-center">
-                                <a asp-action="Edit"
-                                   asp-route-id="@item.AvaliacaoUCId"
-                                   class="btn btn-warning btn-sm">
-                                    Editar
-                                </a>
-
                                 <a asp-action="Details"
                                    asp-route-id="@item.AvaliacaoUCId"
                                    class="btn btn-info btn-sm">
                                     Detalhes
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.AvaliacaoUCId"
+                                   class="btn btn-warning btn-sm">
+                                    Editar
                                 </a>
 
                                 <a asp-action="Delete"
@@ -71,7 +109,8 @@
             @if (!Model.Any())
             {
                 <div class="alert alert-info text-center">
-                    Ainda não existem avaliações registadas.
+                    Ainda não existem avaliações registadas
+                    para a época selecionada.
                 </div>
             }
 

@@ -14,31 +14,36 @@
         </div>
 
         <div class="card-body">
-
             <dl class="row">
-                <dt class="col-sm-4">
-                    Tipo de Avaliação
-                </dt>
+
+                <dt class="col-sm-4">Época</dt>
                 <dd class="col-sm-8">
                     @Model.TipoAvaliacao?.TipoProva
                 </dd>
 
-                <dt class="col-sm-4">
-                    Unidade Curricular
-                </dt>
+                <dt class="col-sm-4">Unidade Curricular</dt>
                 <dd class="col-sm-8">
                     @Model.UcId
                 </dd>
 
-                <dt class="col-sm-4">
-                    Data da Avaliação
-                </dt>
+                <dt class="col-sm-4">Tipo de Avaliação</dt>
                 <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.Data)
+                    @Model.Tipo
                 </dd>
+
+                <dt class="col-sm-4">Avaliação</dt>
+                <dd class="col-sm-8">
+                    @Model.Avaliacao
+                </dd>
+
+                <dt class="col-sm-4">Data</dt>
+                <dd class="col-sm-8">
+                    @Model.Data.ToString("dd/MM/yyyy")
+                </dd>
+
             </dl>
 
-            <div class="d-flex gap-2 mt-4">
+            <div class="d-flex gap-2">
                 <a asp-action="Edit"
                    asp-route-id="@Model.AvaliacaoUCId"
                    class="btn btn-warning">
@@ -50,7 +55,6 @@
                     Voltar à Lista
                 </a>
             </div>
-
         </div>
     </div>
 </div>

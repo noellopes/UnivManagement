@@ -1,7 +1,7 @@
 ﻿@model UnivManagement.Models.AvaliacaoUC
 
 @{
-    ViewData["Title"] = "Detalhes da Avaliação";
+    ViewData["Title"] = "Detalhes da Avaliação - Aluno";
 }
 
 <div class="container mt-4">
@@ -9,16 +9,14 @@
     <h2 class="mb-4">Detalhes da Avaliação</h2>
 
     <div class="card shadow-sm">
-
         <div class="card-header bg-primary text-white">
-            Informações da Avaliação
+            Área do Aluno - Informações da Avaliação
         </div>
 
         <div class="card-body">
-
             <dl class="row">
 
-                <dt class="col-sm-4">Tipo de Avaliação</dt>
+                <dt class="col-sm-4">Época</dt>
                 <dd class="col-sm-8">
                     @Model.TipoAvaliacao?.TipoProva
                 </dd>
@@ -26,6 +24,16 @@
                 <dt class="col-sm-4">Unidade Curricular</dt>
                 <dd class="col-sm-8">
                     @Model.UcId
+                </dd>
+
+                <dt class="col-sm-4">Tipo de Avaliação</dt>
+                <dd class="col-sm-8">
+                    @Model.Tipo
+                </dd>
+
+                <dt class="col-sm-4">Avaliação</dt>
+                <dd class="col-sm-8">
+                    @Model.Avaliacao
                 </dd>
 
                 <dt class="col-sm-4">Data da Avaliação</dt>
