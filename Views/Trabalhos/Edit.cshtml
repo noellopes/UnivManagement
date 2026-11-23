@@ -7,8 +7,11 @@
 <div class="container py-4">
     <h1 class="h3 mb-4">Editar trabalho</h1>
 
-    <form asp-action="Edit" asp-route-id="@Model.TrabalhoId"
-          method="post" class="col-lg-8">
+    <form asp-action="Edit"
+          asp-route-id="@Model.TrabalhoId"
+          method="post"
+          class="col-lg-8">
+
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="TrabalhoId" />
 
@@ -20,48 +23,73 @@
 
         <div class="mb-3">
             <label asp-for="Descricao" class="form-label">Descrição</label>
-            <textarea asp-for="Descricao" class="form-control" rows="4"></textarea>
+            <textarea asp-for="Descricao"
+                      class="form-control"
+                      rows="4"></textarea>
             <span asp-validation-for="Descricao" class="text-danger"></span>
         </div>
 
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label asp-for="DocenteId" class="form-label">Docente</label>
-                <select asp-for="DocenteId" asp-items="ViewBag.Docentes"
-                        class="form-select" required>
+                <select asp-for="DocenteId"
+                        asp-items="ViewBag.Docentes"
+                        class="form-select"
+                        required>
                     <option value="">Seleciona um docente</option>
                 </select>
-                <span asp-validation-for="DocenteId" class="text-danger"></span>
+                <span asp-validation-for="DocenteId"
+                      class="text-danger"></span>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label asp-for="UcId" class="form-label">Unidade curricular</label>
-                <select asp-for="UcId" asp-items="ViewBag.Ucs"
-                        class="form-select" required>
+                <label asp-for="UcId" class="form-label">
+                    Unidade curricular
+                </label>
+                <select asp-for="UcId"
+                        asp-items="ViewBag.Ucs"
+                        class="form-select"
+                        required>
                     <option value="">Seleciona uma UC</option>
                 </select>
-                <span asp-validation-for="UcId" class="text-danger"></span>
+                <span asp-validation-for="UcId"
+                      class="text-danger"></span>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label asp-for="EIndividual" class="form-label">Tipo de trabalho</label>
+                <label asp-for="EIndividual" class="form-label">
+                    Tipo de trabalho
+                </label>
                 <select asp-for="EIndividual" class="form-select">
                     <option value="false">Em grupo</option>
                     <option value="true">Individual</option>
                 </select>
-                <span asp-validation-for="EIndividual" class="text-danger"></span>
+                <span asp-validation-for="EIndividual"
+                      class="text-danger"></span>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label asp-for="DataLimite" class="form-label">Data-limite de entrega</label>
-                <input asp-for="DataLimite" type="date" required class="form-control" />
-                <span asp-validation-for="DataLimite" class="text-danger"></span>
+                <label asp-for="DataLimite" class="form-label">
+                    Data-limite de entrega
+                </label>
+                <input asp-for="DataLimite"
+                       type="date"
+                       required
+                       class="form-control" />
+                <span asp-validation-for="DataLimite"
+                      class="text-danger"></span>
             </div>
         </div>
 
         <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">Guardar alterações</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">
+                Guardar alterações
+            </button>
+
+            <a asp-action="IndexDocente"
+               class="btn btn-outline-secondary">
+                Cancelar
+            </a>
         </div>
     </form>
 </div>
