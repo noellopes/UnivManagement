@@ -10,16 +10,22 @@
 
     <dl class="row">
         <dt class="col-sm-3">Avaliação</dt>
-        <dd class="col-sm-9">@Model.AvaliacaoUC?.TipoAvaliacao?.TipoProva - UC @Model.AvaliacaoUC?.UcId</dd>
-
-        <dt class="col-sm-3">Data da avaliação</dt>
-        <dd class="col-sm-9">@Model.AvaliacaoUC?.Data.ToString("dd/MM/yyyy")</dd>
+        <dd class="col-sm-9">@ViewBag.TextoAvaliacao</dd>
 
         <dt class="col-sm-3">Inscrição na UC</dt>
-        <dd class="col-sm-9">Nº @Model.InscrUcId</dd>
+        <dd class="col-sm-9">@ViewBag.TextoInscricao</dd>
 
         <dt class="col-sm-3">Pago</dt>
-        <dd class="col-sm-9">@(Model.Pago ? "Sim" : "Não")</dd>
+        <dd class="col-sm-9">
+            @if (Model.Pago)
+            {
+                <span class="badge bg-success">Sim</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary">Não</span>
+            }
+        </dd>
     </dl>
 <form asp-action="Delete">
     <input type="hidden" asp-for="InscAvalId" />
