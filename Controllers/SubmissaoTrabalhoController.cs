@@ -112,7 +112,7 @@ public class SubmissaoTrabalhoController : Controller
             _context.SubmissoesTrabalho.Add(submissao);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexAluno));
         }
 
         PreencherListas(
@@ -178,7 +178,7 @@ public class SubmissaoTrabalhoController : Controller
                 throw;
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexAluno));
         }
 
         PreencherListas(
@@ -225,7 +225,7 @@ public class SubmissaoTrabalhoController : Controller
             await _context.SaveChangesAsync();
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(IndexAluno));
     }
 
     // Preenche as listas dos formulários
