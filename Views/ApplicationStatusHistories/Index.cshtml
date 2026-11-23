@@ -1,47 +1,99 @@
 @model IEnumerable<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Application Status History";
+    int? filteredId = ViewBag.FilteredApplicationId as int?;
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="display-6 fw-normal mb-0">Status History</h1>
+        @if (filteredId.HasValue)
+        {
+            <small class="text-muted">Showing records for Application #@filteredId.Value</small>
+        }
+    </div>
+    <div class="d-flex gap-2">
+        @if (filteredId.HasValue)
+        {
+            <a asp-action="Index" class="btn btn-outline-secondary">View All</a>
+        }
+        <a asp-action="Create" asp-route-applicationId="@filteredId" class="btn btn-primary">
+            Record Status Change
+        </a>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AccommodationApplicationId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChangedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChangedBy)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.AccommodationApplicationId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.ChangedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.ChangedBy)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ApplicationStatusHistoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ApplicationStatusHistoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ApplicationStatusHistoryId">Delete</a>
-            </td>
-        </tr>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
-    </tbody>
-</table>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info shadow-sm">
+        There are no status history records yet.
+    </div>
+}
+else
+{
+    <div class="table-responsive rounded-3 shadow-sm border">
+        <table class="table table-striped table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.AccommodationApplicationId)</th>
+                    <th>@Html.DisplayNameFor(model => model.PossibleStatus)</th>
+                    <th>@Html.DisplayNameFor(model => model.ChangedAt)</th>
+                    <th>@Html.DisplayNameFor(model => model.ChangedBy)</th>
+                    <th>@Html.DisplayNameFor(model => model.Notes)</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var statusName = item.PossibleStatus?.Name ?? "Unknown";
+                    var badgeClass = statusName switch
+                    {
+                        "Submitted" => "bg-secondary",
+                        "UnderReview" or "Under Review" => "bg-warning text-dark",
+                        "Approved" => "bg-success",
+                        "Rejected" => "bg-danger",
+                        "Withdrawn" => "bg-dark",
+                        _ => "bg-info"
+                    };
+
+                    <tr>
+                        <td>
+                            <a asp-action="Index" asp-route-applicationId="@item.AccommodationApplicationId" class="fw-semibold text-decoration-none">
+                                Application #@item.AccommodationApplicationId
+                            </a>
+                        </td>
+                        <td>
+                            <span class="badge @badgeClass">@statusName</span>
+                        </td>
+                        <td>@item.ChangedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@item.ChangedBy</td>
+                        <td>@(string.IsNullOrWhiteSpace(item.Notes) ? "—" : item.Notes)</td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@item.ApplicationStatusHistoryId" class="btn btn-sm btn-outline-info">
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

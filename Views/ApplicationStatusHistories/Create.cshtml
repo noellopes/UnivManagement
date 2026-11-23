@@ -1,42 +1,56 @@
 @model UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Record Status Change";
 }
 
-<h1>Create</h1>
-
-<h4>ApplicationStatusHistory</h4>
+<h1>Record Status Change</h1>
+<p class="text-muted">This change will be recorded in the history and will automatically update the current status of the application.</p>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="AccommodationApplicationId" class="control-label"></label>
-                <input asp-for="AccommodationApplicationId" class="form-control" />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="AccommodationApplicationId" class="form-label"></label>
+                <select asp-for="AccommodationApplicationId" class="form-select" asp-items="ViewBag.AccommodationApplicationId">
+                    <option value="">-- Select an application --</option>
+                </select>
                 <span asp-validation-for="AccommodationApplicationId" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="ChangedAt" class="control-label"></label>
-                <input asp-for="ChangedAt" class="form-control" />
-                <span asp-validation-for="ChangedAt" class="text-danger"></span>
+            <div class="mb-3">
+                <label asp-for="PossibleStatusId" class="form-label"></label>
+                <select asp-for="PossibleStatusId" class="form-select" asp-items="ViewBag.PossibleStatusId">
+                    <option value="">-- Select the new status --</option>
+                </select>
+                <span asp-validation-for="PossibleStatusId" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="ChangedBy" class="control-label"></label>
-                <input asp-for="ChangedBy" class="form-control" />
+            <div class="mb-3">
+                <label asp-for="ChangedBy" class="form-label"></label>
+                <input asp-for="ChangedBy" class="form-control" placeholder="Name or email of the person responsible" />
                 <span asp-validation-for="ChangedBy" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="mb-3">
+                <label asp-for="Notes" class="form-label"></label>
+                <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Reason or notes for the status change (optional)"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save Change</button>
+                <a asp-action="Index" class="btn btn-secondary">Back to History</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

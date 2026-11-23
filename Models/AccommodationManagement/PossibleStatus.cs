@@ -11,5 +11,6 @@ public class PossibleStatus
     [StringLength(50, ErrorMessage = "O {0} não pode ter mais de {1} caracteres. | The {0} cannot be longer than {1} characters.")]
     [Display(Name = "Estado")]
     public string Name { get; set; } = string.Empty;
-}
 
+    public ICollection<ApplicationStatusHistory>? ApplicationStatusHistories { get; set; }
+}
