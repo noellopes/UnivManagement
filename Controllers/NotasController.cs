@@ -63,6 +63,12 @@ public class NotasController : Controller
         // Aprovado quando a nota e 9,5 ou mais
         novaNota.Aprovado = novaNota.Valor >= 9.5f;
 
+        // A data da nota nao pode ser antes do dia de hoje
+        if (novaNota.Data.Date < DateTime.Today)
+        {
+            ModelState.AddModelError("Data", "A data da nota não pode ser anterior à data de hoje.");
+        }
+
         // Verificar se o aluno ja tem nota nesta avaliacao
         if (_context.Notas.Any(n => n.AvaliacaoUCId == novaNota.AvaliacaoUCId && n.InscrUcId == novaNota.InscrUcId))
         {
