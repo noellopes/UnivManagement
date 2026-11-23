@@ -1,0 +1,161 @@
+﻿@{
+    ViewData["Title"] = "Accommodation Management";
+}
+
+<div class="container py-4">
+    <header class="text-center mb-5">
+        <i class="bi bi-houses fs-1 text-primary"></i>
+        <h1 class="display-5 fw-bold mt-2">Accommodation Management</h1>
+        <p class="lead text-body-secondary mb-0">
+            Manage residences, rooms, applications and allocations.
+        </p>
+    </header>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary-emphasis p-3">
+                        <i class="bi bi-building fs-2 lh-1"></i>
+                    </div>
+                    <h2 class="card-title h5 fw-semibold">Residences</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Manage the university residences.
+                    </p>
+                    <a asp-controller="Residences" asp-action="Index"
+                       class="btn btn-primary w-100">
+                        Manage Residences <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary-emphasis p-3">
+                        <i class="bi bi-door-open fs-2 lh-1"></i>
+                    </div>
+                    <h2 class="card-title h5 fw-semibold">Rooms</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Manage rooms, capacity, type and status.
+                    </p>
+                    <a asp-controller="Rooms" asp-action="Index"
+                       class="btn btn-primary w-100">
+                        Manage Rooms <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary-emphasis p-3">
+                        <i class="bi bi-file-earmark-text fs-2 lh-1"></i>
+                    </div>
+                    <h2 class="card-title h5 fw-semibold">Applications</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Review and manage accommodation applications.
+                    </p>
+                    <a asp-controller="AccommodationApplications" asp-action="Index"
+                       class="btn btn-primary w-100">
+                        Manage Applications <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary-emphasis p-3">
+                        <i class="bi bi-person-check fs-2 lh-1"></i>
+                    </div>
+                    <h2 class="card-title h5 fw-semibold">Room Allocations</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Manage the allocation of rooms to students.
+                    </p>
+                    <a asp-controller="RoomAllocations" asp-action="Index"
+                       class="btn btn-primary w-100">
+                        Manage Allocations <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary-emphasis p-3">
+                        <i class="bi bi-clock-history fs-2 lh-1"></i>
+                    </div>
+                    <h2 class="card-title h5 fw-semibold">Application History</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        View the history of application status changes.
+                    </p>
+                    <a asp-controller="ApplicationStatusHistories" asp-action="Index"
+                       class="btn btn-primary w-100">
+                        View History <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary-emphasis p-3">
+                        <i class="bi bi-file-earmark-check fs-2 lh-1"></i>
+                    </div>
+                    <h2 class="card-title h5 fw-semibold">Contracts</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Review and manage accommodation contracts.
+                    </p>
+                    <a asp-controller="AccommodationContracts" asp-action="Index"
+                       class="btn btn-primary w-100">
+                        Manage Contracts <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary-emphasis p-3">
+                        <i class="bi bi-cash-coin fs-2 lh-1"></i>
+                    </div>
+                    <h2 class="card-title h5 fw-semibold">Payments</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Review and manage accommodation payments.
+                    </p>
+                    <a asp-controller="AccommodationPayments" asp-action="Index"
+                       class="btn btn-primary w-100">
+                        Manage Payments <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary-emphasis p-3">
+                        <i class="bi bi-box-arrow-in-right fs-2 lh-1"></i>
+                    </div>
+                    <h2 class="card-title h5 fw-semibold">Stay Records</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        View student check-in and check-out records.
+                    </p>
+                    <a asp-controller="StayRecords" asp-action="Index"
+                       class="btn btn-primary w-100">
+                        Manage Stays <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
