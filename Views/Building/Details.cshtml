@@ -1,0 +1,98 @@
+
+@model UnivManagement.Models.Building
+
+@{
+    ViewData["Title"] = "Detalhes do Edifício";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            @if (ViewBag.SuccessMessage != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show"
+                     role="alert">
+
+                    <i class="bi bi-check-circle me-2"
+                       aria-hidden="true"></i>
+
+                    @ViewBag.SuccessMessage
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Fechar">
+                    </button>
+                </div>
+            }
+
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h3 class="mb-1">🏢 Detalhes do Edifício</h3>
+                    <p class="mb-0 opacity-75">
+                        Consulte as informações do edifício.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Título da secção -->
+                    <h5 class="fw-semibold mb-4">
+                        Informações do Edifício
+                    </h5>
+
+                    <div class="row g-3">
+
+                        <!-- Nome do Edifício -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted">
+                                @Html.DisplayNameFor(model => model.NomeEdificio)
+                            </label>
+
+                            <div class="form-control bg-light">
+                                @Html.DisplayFor(model => model.NomeEdificio)
+                            </div>
+                        </div>
+
+                        <!-- Localização -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted">
+                                @Html.DisplayNameFor(model => model.Localizacao)
+                            </label>
+
+                            <div class="form-control bg-light">
+                                @Html.DisplayFor(model => model.Localizacao)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Botões -->
+                    <div class="d-flex justify-content-between gap-2">
+
+                        <a asp-controller="Building"
+                           asp-action="Index"
+                           class="btn btn-outline-secondary px-4">
+                            ← Voltar
+                        </a>
+
+                        <a asp-controller="Building"
+                           asp-action="Edit"
+                           asp-route-id="@Model.BuildingId"
+                           class="btn btn-primary px-4">
+                            ✏️ Editar Edifício
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

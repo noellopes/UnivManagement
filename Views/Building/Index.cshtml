@@ -1,0 +1,198 @@
+
+@model IEnumerable<UnivManagement.Models.Building>
+
+@{
+    ViewData["Title"] = "Gestão de Edifícios";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+
+            @if (ViewBag.SuccessMessage != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show"
+                     role="alert">
+
+                    <i class="bi bi-check-circle me-2"
+                       aria-hidden="true"></i>
+
+                    @ViewBag.SuccessMessage
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Fechar">
+                    </button>
+                </div>
+            }
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show"
+                     role="alert">
+
+                    <i class="bi bi-exclamation-triangle me-2"
+                       aria-hidden="true"></i>
+
+                    @ViewBag.ErrorMessage
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Fechar">
+                    </button>
+                </div>
+            }
+
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+
+                    <h3 class="mb-1">
+                        🏢 Gestão de Edifícios
+                    </h3>
+
+                    <p class="mb-0 opacity-75">
+                        Consulte e faça a gestão dos edifícios da instituição.
+                    </p>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Título e botão de criação -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+
+                        <h5 class="fw-semibold mb-0">
+                            Lista de Edifícios
+                        </h5>
+
+                        <a asp-controller="Building"
+                           asp-action="Create"
+                           class="btn btn-primary px-4">
+
+                            <i class="bi bi-plus-circle me-2"></i>
+                            Novo Edifício
+
+                        </a>
+
+                    </div>
+
+                    @if (!Model.Any())
+                    {
+                        <div class="alert alert-info text-center mb-0"
+                             role="alert">
+
+                            <i class="bi bi-info-circle me-2"></i>
+                            Ainda não existem edifícios registados.
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+
+                            <table class="table table-hover align-middle">
+
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.NomeEdificio)
+                                        </th>
+
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Localizacao)
+                                        </th>
+
+                                        <th class="text-center">
+                                            Ações
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <!-- Nome do Edifício -->
+                                            <td class="fw-semibold">
+                                                @Html.DisplayFor(modelItem => item.NomeEdificio)
+                                            </td>
+
+                                            <!-- Localização -->
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Localizacao)
+                                            </td>
+
+                                            <!-- Botões -->
+                                            <td>
+                                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                                    <a asp-controller="Building"
+                                                       asp-action="Details"
+                                                       asp-route-id="@item.BuildingId"
+                                                       class="btn btn-outline-info btn-sm">
+
+                                                        <i class="bi bi-eye me-1"></i>
+                                                        Detalhes
+
+                                                    </a>
+
+                                                    <a asp-controller="Building"
+                                                       asp-action="Edit"
+                                                       asp-route-id="@item.BuildingId"
+                                                       class="btn btn-outline-primary btn-sm">
+
+                                                        <i class="bi bi-pencil me-1"></i>
+                                                        Editar
+
+                                                    </a>
+
+                                                    <a asp-controller="Building"
+                                                       asp-action="Delete"
+                                                       asp-route-id="@item.BuildingId"
+                                                       class="btn btn-outline-danger btn-sm">
+
+                                                        <i class="bi bi-trash me-1"></i>
+                                                        Eliminar
+
+                                                    </a>
+
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    }
+
+                    <hr class="my-4" />
+
+                    <!-- Voltar à Gestão de Horários -->
+                    <div class="d-flex justify-content-start">
+
+                        <a asp-controller="Scheduling"
+                           asp-action="Scheduling"
+                           class="btn btn-outline-secondary px-4">
+
+                            ← Voltar
+
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

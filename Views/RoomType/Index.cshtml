@@ -1,0 +1,211 @@
+
+@model IEnumerable<UnivManagement.Models.RoomType>
+
+@{
+    ViewData["Title"] = "Gestão de Tipos de Sala";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+
+            @if (ViewBag.SuccessMessage != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show"
+                     role="alert">
+
+                    <i class="bi bi-check-circle me-2"
+                       aria-hidden="true"></i>
+
+                    @ViewBag.SuccessMessage
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Fechar">
+                    </button>
+                </div>
+            }
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show"
+                     role="alert">
+
+                    <i class="bi bi-exclamation-triangle me-2"
+                       aria-hidden="true"></i>
+
+                    @ViewBag.ErrorMessage
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Fechar">
+                    </button>
+                </div>
+            }
+
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+
+                    <h3 class="mb-1">
+                        🏫 Gestão de Tipos de Sala
+                    </h3>
+
+                    <p class="mb-0 opacity-75">
+                        Consulte e faça a gestão dos diferentes tipos de sala.
+                    </p>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Título e botão criar -->
+                    <div class="d-flex justify-content-between align-items-center mb-4 gap-3 flex-wrap">
+
+                        <h5 class="fw-semibold mb-0">
+                            Lista de Tipos de Sala
+                        </h5>
+
+                        <a asp-controller="RoomType"
+                           asp-action="Create"
+                           class="btn btn-primary px-4">
+
+                            <i class="bi bi-plus-circle me-2"></i>
+                            Novo Tipo de Sala
+
+                        </a>
+
+                    </div>
+
+                    @if (!Model.Any())
+                    {
+                        <div class="alert alert-info text-center mb-0"
+                             role="alert">
+
+                            <i class="bi bi-info-circle me-2"></i>
+                            Ainda não existem tipos de sala registados.
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+
+                            <table class="table table-hover align-middle">
+
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Designacao)
+                                        </th>
+
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.RequerComputadores)
+                                        </th>
+
+                                        <th class="text-center">
+                                            Ações
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <!-- Designação -->
+                                            <td class="fw-semibold">
+                                                @Html.DisplayFor(modelItem => item.Designacao)
+                                            </td>
+
+                                            <!-- Requer Computadores -->
+                                            <td>
+                                                @if (item.RequerComputadores)
+                                                {
+                                                    <span class="badge bg-success px-3 py-2">
+                                                        <i class="bi bi-check-circle me-1"></i>
+                                                        Sim
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary px-3 py-2">
+                                                        <i class="bi bi-x-circle me-1"></i>
+                                                        Não
+                                                    </span>
+                                                }
+                                            </td>
+
+                                            <!-- Ações -->
+                                            <td>
+                                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                                    <a asp-controller="RoomType"
+                                                       asp-action="Details"
+                                                       asp-route-id="@item.RoomTypeId"
+                                                       class="btn btn-outline-info btn-sm">
+
+                                                        <i class="bi bi-eye me-1"></i>
+                                                        Detalhes
+
+                                                    </a>
+
+                                                    <a asp-controller="RoomType"
+                                                       asp-action="Edit"
+                                                       asp-route-id="@item.RoomTypeId"
+                                                       class="btn btn-outline-primary btn-sm">
+
+                                                        <i class="bi bi-pencil me-1"></i>
+                                                        Editar
+
+                                                    </a>
+
+                                                    <a asp-controller="RoomType"
+                                                       asp-action="Delete"
+                                                       asp-route-id="@item.RoomTypeId"
+                                                       class="btn btn-outline-danger btn-sm">
+
+                                                        <i class="bi bi-trash me-1"></i>
+                                                        Eliminar
+
+                                                    </a>
+
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    }
+
+                    <hr class="my-4" />
+
+                    <!-- Botão voltar -->
+                    <div class="d-flex justify-content-start">
+
+                        <a asp-controller="Scheduling"
+                           asp-action="Scheduling"
+                           class="btn btn-outline-secondary px-4">
+
+                            ← Voltar
+
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

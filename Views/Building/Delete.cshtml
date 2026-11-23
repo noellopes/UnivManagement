@@ -1,0 +1,111 @@
+
+@model UnivManagement.Models.Building
+
+@{
+    ViewData["Title"] = "Eliminar Edifício";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h3 class="mb-1">🗑️ Eliminar Edifício</h3>
+                    <p class="mb-0 opacity-75">
+                        Confirme os dados antes de eliminar o edifício.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Aviso de confirmação -->
+                    <div class="alert alert-warning" role="alert">
+                        <i class="bi bi-exclamation-triangle me-2"
+                           aria-hidden="true"></i>
+
+                        <strong>Atenção!</strong>
+                        Tem a certeza de que pretende eliminar este edifício?
+                        Esta operação não poderá ser anulada.
+
+                        <p class="mb-0 mt-2">
+                            Não será possível eliminar o edifício
+                            se possuir salas associadas.
+                        </p>
+                    </div>
+
+                    <!-- Informações do Edifício -->
+                    <h5 class="fw-semibold mb-4">
+                        Informações do Edifício
+                    </h5>
+
+                    <div class="row g-3">
+
+                        <!-- Nome do Edifício -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted">
+                                @Html.DisplayNameFor(model => model.NomeEdificio)
+                            </label>
+
+                            <div class="form-control bg-light">
+                                @Html.DisplayFor(model => model.NomeEdificio)
+                            </div>
+                        </div>
+
+                        <!-- Localização -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-muted">
+                                @Html.DisplayNameFor(model => model.Localizacao)
+                            </label>
+
+                            <div class="form-control bg-light">
+                                @Html.DisplayFor(model => model.Localizacao)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Formulário de eliminação -->
+                    <form asp-controller="Building"
+                          asp-action="Delete"
+                          asp-route-id="@Model.BuildingId"
+                          method="post">
+
+                        <!-- Identificador do edifício -->
+                        <input type="hidden" asp-for="BuildingId" />
+
+                        <div class="d-flex justify-content-between gap-2">
+
+                            <!-- Cancelar -->
+                            <a asp-controller="Building"
+                               asp-action="Details"
+                               asp-route-id="@Model.BuildingId"
+                               class="btn btn-outline-secondary px-4">
+
+                                ← Cancelar
+
+                            </a>
+
+                            <!-- Confirmar eliminação -->
+                            <button type="submit"
+                                    class="btn btn-danger px-4">
+
+                                <i class="bi bi-trash me-2"></i>
+                                Confirmar Eliminação
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

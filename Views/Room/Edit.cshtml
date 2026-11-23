@@ -1,0 +1,182 @@
+
+@model UnivManagement.Models.Room
+
+@{
+    ViewData["Title"] = "Editar Sala";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h3 class="mb-1">✏️ Editar Sala</h3>
+                    <p class="mb-0 opacity-75">
+                        Atualize as informações da sala.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-semibold mb-4">
+                        Informações da Sala
+                    </h5>
+
+                    <form asp-controller="Room"
+                          asp-action="Edit"
+                          asp-route-id="@Model.RoomId"
+                          method="post">
+
+                        <!-- Identificador da sala -->
+                        <input type="hidden" asp-for="RoomId" />
+
+                        <!-- Resumo dos erros -->
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="row g-3">
+
+                            <!-- Número da Sala -->
+                            <div class="col-md-6">
+                                <label asp-for="NumeroSala"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="NumeroSala"
+                                       class="form-control"
+                                       placeholder="Ex.: A101" />
+
+                                <span asp-validation-for="NumeroSala"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                            <!-- Piso -->
+                            <div class="col-md-6">
+                                <label asp-for="Piso"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="Piso"
+                                       class="form-control"
+                                       type="number" />
+
+                                <span asp-validation-for="Piso"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                            <!-- Lotação -->
+                            <div class="col-md-6">
+                                <label asp-for="Lotacao"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="Lotacao"
+                                       class="form-control"
+                                       type="number"
+                                       min="1"
+                                       max="500" />
+
+                                <span asp-validation-for="Lotacao"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                            <!-- Estado Operacional -->
+                            <div class="col-md-6">
+                                <label asp-for="Estado"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="Estado"
+                                       class="form-control"
+                                       placeholder="Ex.: Ativa" />
+
+                                <span asp-validation-for="Estado"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                            <!-- Edifício -->
+                            <div class="col-md-6">
+                                <label asp-for="IdEdificio"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <select asp-for="IdEdificio"
+                                        asp-items="ViewBag.IdEdificio"
+                                        class="form-select">
+
+                                    <option value="">
+                                        -- Selecione um edifício --
+                                    </option>
+
+                                </select>
+
+                                <span asp-validation-for="IdEdificio"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                            <!-- Tipo de Sala -->
+                            <div class="col-md-6">
+                                <label asp-for="IdTipoSala"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <select asp-for="IdTipoSala"
+                                        asp-items="ViewBag.IdTipoSala"
+                                        class="form-select">
+
+                                    <option value="">
+                                        -- Selecione um tipo de sala --
+                                    </option>
+
+                                </select>
+
+                                <span asp-validation-for="IdTipoSala"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Botões -->
+                        <div class="d-flex justify-content-between gap-2">
+
+                            <a asp-controller="Room"
+                               asp-action="Details"
+                               asp-route-id="@Model.RoomId"
+                               class="btn btn-outline-secondary px-4">
+                                ← Voltar
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+
+                                <i class="bi bi-check-circle me-2"></i>
+                                Guardar Alterações
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

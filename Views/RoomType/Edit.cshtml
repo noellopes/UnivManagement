@@ -1,0 +1,119 @@
+
+@model UnivManagement.Models.RoomType
+
+@{
+    ViewData["Title"] = "Editar Tipo de Sala";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h3 class="mb-1">✏️ Editar Tipo de Sala</h3>
+                    <p class="mb-0 opacity-75">
+                        Atualize as informações do tipo de sala.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Título da secção -->
+                    <h5 class="fw-semibold mb-4">
+                        Informações do Tipo de Sala
+                    </h5>
+
+                    <form asp-controller="RoomType"
+                          asp-action="Edit"
+                          asp-route-id="@Model.RoomTypeId"
+                          method="post">
+
+                        <!-- Identificador do Tipo de Sala -->
+                        <input type="hidden" asp-for="RoomTypeId" />
+
+                        <!-- Resumo dos erros -->
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="row g-3">
+
+                            <!-- Designação -->
+                            <div class="col-12">
+                                <label asp-for="Designacao"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="Designacao"
+                                       class="form-control"
+                                       placeholder="Ex.: Laboratório de Informática" />
+
+                                <span asp-validation-for="Designacao"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                            <!-- Requer Computadores -->
+                            <div class="col-12">
+
+                                <div class="form-check mt-2">
+
+                                    <input asp-for="RequerComputadores"
+                                           class="form-check-input" />
+
+                                    <label asp-for="RequerComputadores"
+                                           class="form-check-label fw-semibold">
+                                    </label>
+
+                                </div>
+
+                                <div class="form-text">
+                                    Selecione esta opção caso o tipo de sala
+                                    necessite de computadores.
+                                </div>
+
+                                <span asp-validation-for="RequerComputadores"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Botões -->
+                        <div class="d-flex justify-content-between gap-2">
+
+                            <a asp-controller="RoomType"
+                               asp-action="Details"
+                               asp-route-id="@Model.RoomTypeId"
+                               class="btn btn-outline-secondary px-4">
+                                ← Voltar
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+
+                                <i class="bi bi-check-circle me-2"></i>
+                                Guardar Alterações
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

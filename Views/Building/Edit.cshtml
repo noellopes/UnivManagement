@@ -1,0 +1,108 @@
+
+@model UnivManagement.Models.Building
+
+@{
+    ViewData["Title"] = "Editar Edifício";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h3 class="mb-1">✏️ Editar Edifício</h3>
+                    <p class="mb-0 opacity-75">
+                        Atualize as informações do edifício.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-semibold mb-4">
+                        Informações do Edifício
+                    </h5>
+
+                    <form asp-controller="Building"
+                          asp-action="Edit"
+                          asp-route-id="@Model.BuildingId"
+                          method="post">
+
+                        <!-- Identificador do edifício -->
+                        <input type="hidden" asp-for="BuildingId" />
+
+                        <!-- Resumo dos erros -->
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="row g-3">
+
+                            <!-- Nome do Edifício -->
+                            <div class="col-md-6">
+                                <label asp-for="NomeEdificio"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="NomeEdificio"
+                                       class="form-control"
+                                       placeholder="Ex.: Edifício Principal" />
+
+                                <span asp-validation-for="NomeEdificio"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                            <!-- Localização -->
+                            <div class="col-md-6">
+                                <label asp-for="Localizacao"
+                                       class="form-label fw-semibold">
+                                </label>
+
+                                <input asp-for="Localizacao"
+                                       class="form-control"
+                                       placeholder="Ex.: Campus da Guarda" />
+
+                                <span asp-validation-for="Localizacao"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Botões -->
+                        <div class="d-flex justify-content-between gap-2">
+
+                            <a asp-controller="Building"
+                               asp-action="Details"
+                               asp-route-id="@Model.BuildingId"
+                               class="btn btn-outline-secondary px-4">
+                                ← Voltar
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+
+                                <i class="bi bi-check-circle me-2"></i>
+                                Guardar Alterações
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

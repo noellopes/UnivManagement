@@ -1,0 +1,247 @@
+﻿@{
+    ViewData["Title"] = "Gestão de Horários e Salas";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h3 class="mb-1">🏫 Gestão de Horários e Salas</h3>
+                    <p class="mb-0 opacity-75">
+                        Faça a gestão dos espaços físicos, horários e reservas da instituição.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- GESTÃO DE ESPAÇOS -->
+                    <h5 class="fw-semibold mb-3">
+                        <i class="bi bi-building me-2"></i>
+                        Gestão de Espaços
+                    </h5>
+
+                    <div class="row g-4 mb-4">
+
+                        <!-- Edifícios -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card h-100 border shadow-sm rounded-4">
+                                <div class="card-body p-4 d-flex flex-column">
+
+                                    <div class="mb-3 text-primary">
+                                        <i class="bi bi-buildings fs-1"></i>
+                                    </div>
+
+                                    <h5 class="card-title fw-semibold">
+                                        Edifícios
+                                    </h5>
+
+                                    <p class="card-text text-muted">
+                                        Consulte, crie, edite e faça a gestão
+                                        dos edifícios da instituição.
+                                    </p>
+
+                                    <a asp-controller="Building"
+                                       asp-action="Index"
+                                       class="btn btn-outline-primary w-100 mt-auto">
+
+                                        <i class="bi bi-building me-2"></i>
+                                        Gerir Edifícios
+
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Salas -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card h-100 border shadow-sm rounded-4">
+                                <div class="card-body p-4 d-flex flex-column">
+
+                                    <div class="mb-3 text-primary">
+                                        <i class="bi bi-door-open fs-1"></i>
+                                    </div>
+
+                                    <h5 class="card-title fw-semibold">
+                                        Salas
+                                    </h5>
+
+                                    <p class="card-text text-muted">
+                                        Consulte e faça a gestão das salas,
+                                        lotações e estados operacionais.
+                                    </p>
+
+                                    <a asp-controller="Room"
+                                       asp-action="Index"
+                                       class="btn btn-outline-primary w-100 mt-auto">
+
+                                        <i class="bi bi-door-open me-2"></i>
+                                        Gerir Salas
+
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tipos de Sala -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card h-100 border shadow-sm rounded-4">
+                                <div class="card-body p-4 d-flex flex-column">
+
+                                    <div class="mb-3 text-primary">
+                                        <i class="bi bi-grid-3x3-gap fs-1"></i>
+                                    </div>
+
+                                    <h5 class="card-title fw-semibold">
+                                        Tipos de Sala
+                                    </h5>
+
+                                    <p class="card-text text-muted">
+                                        Configure os diferentes tipos de sala
+                                        e os respetivos requisitos.
+                                    </p>
+
+                                    <a asp-controller="RoomType"
+                                       asp-action="Index"
+                                       class="btn btn-outline-primary w-100 mt-auto">
+
+                                        <i class="bi bi-grid-3x3-gap me-2"></i>
+                                        Gerir Tipos de Sala
+
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- HORÁRIOS E RESERVAS -->
+                    <h5 class="fw-semibold mb-3">
+                        <i class="bi bi-calendar-week me-2"></i>
+                        Horários e Reservas
+                    </h5>
+
+                    <div class="row g-4">
+
+                        <!-- Reservas de Sala -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card h-100 border shadow-sm rounded-4">
+                                <div class="card-body p-4 d-flex flex-column">
+
+                                    <div class="mb-3 text-primary">
+                                        <i class="bi bi-calendar-check fs-1"></i>
+                                    </div>
+
+                                    <h5 class="card-title fw-semibold">
+                                        Reservas de Sala
+                                    </h5>
+
+                                    <p class="card-text text-muted">
+                                        Crie, consulte, edite e faça a gestão
+                                        das reservas de salas.
+                                    </p>
+
+                                    <a asp-controller="ReservaSala"
+                                       asp-action="Index"
+                                       class="btn btn-outline-primary w-100 mt-auto">
+
+                                        <i class="bi bi-calendar-check me-2"></i>
+                                        Gerir Reservas
+
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Horários -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card h-100 border shadow-sm rounded-4">
+                                <div class="card-body p-4 d-flex flex-column">
+
+                                    <div class="mb-3 text-primary">
+                                        <i class="bi bi-calendar3 fs-1"></i>
+                                    </div>
+
+                                    <h5 class="card-title fw-semibold">
+                                        Horários
+                                    </h5>
+
+                                    <p class="card-text text-muted">
+                                        Consulte e faça a gestão dos horários
+                                        das atividades letivas, turmas e aulas.
+                                    </p>
+
+                                    <button type="button"
+                                            class="btn btn-outline-secondary w-100 mt-auto"
+                                            onclick="alert('Gestão de Horários em desenvolvimento')">
+
+                                        <i class="bi bi-calendar3 me-2"></i>
+                                        Gerir Horários
+
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Horário de Atendimento -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card h-100 border shadow-sm rounded-4">
+                                <div class="card-body p-4 d-flex flex-column">
+
+                                    <div class="mb-3 text-primary">
+                                        <i class="bi bi-person-workspace fs-1"></i>
+                                    </div>
+
+                                    <h5 class="card-title fw-semibold">
+                                        Horário de Atendimento
+                                    </h5>
+
+                                    <p class="card-text text-muted">
+                                        Consulte e faça a gestão dos horários
+                                        de atendimento dos docentes aos alunos.
+                                    </p>
+
+                                    <button type="button"
+                                            class="btn btn-outline-secondary w-100 mt-auto"
+                                            disabled>
+
+                                        <i class="bi bi-clock-history me-2"></i>
+                                        Em Desenvolvimento
+
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Voltar -->
+                    <div class="d-flex justify-content-start">
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           class="btn btn-outline-secondary px-4">
+
+                            ← Voltar ao Início
+
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

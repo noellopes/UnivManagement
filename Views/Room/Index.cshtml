@@ -1,0 +1,173 @@
+
+@model IEnumerable<UnivManagement.Models.Room>
+
+@{
+    ViewData["Title"] = "Gestão de Salas";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+
+            @if (ViewBag.SuccessMessage != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                    @ViewBag.SuccessMessage
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Fechar">
+                    </button>
+                </div>
+            }
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>
+                    @ViewBag.ErrorMessage
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Fechar">
+                    </button>
+                </div>
+            }
+
+            <div class="card border-0 shadow rounded-4">
+
+                <!-- Cabeçalho -->
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h3 class="mb-1">🏫 Gestão de Salas</h3>
+                    <p class="mb-0 opacity-75">
+                        Consulte e faça a gestão das salas disponíveis.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Botão criar -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-semibold mb-0">
+                            Lista de Salas
+                        </h5>
+
+                        <a asp-controller="Room"
+                           asp-action="Create"
+                           class="btn btn-primary px-4">
+                            <i class="bi bi-plus-circle me-2"></i>
+                            Nova Sala
+                        </a>
+                    </div>
+
+                    @if (!Model.Any())
+                    {
+                        <div class="alert alert-info text-center mb-0" role="alert">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Ainda não existem salas registadas.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Número da Sala</th>
+                                        <th>Piso</th>
+                                        <th>Lotação</th>
+                                        <th>Estado</th>
+                                        <th>Edifício</th>
+                                        <th>Tipo de Sala</th>
+                                        <th class="text-center">Ações</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="fw-semibold">
+                                                @item.NumeroSala
+                                            </td>
+
+                                            <td>
+                                                @item.Piso
+                                            </td>
+
+                                            <td>
+                                                @item.Lotacao
+                                            </td>
+
+                                            <td>
+                                                <span class="badge bg-secondary px-3 py-2">
+                                                    @item.Estado
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                @(item.Edificio?.NomeEdificio ?? "Não definido")
+                                            </td>
+
+                                            <td>
+                                                @(item.TipoSala?.Designacao ?? "Não definido")
+                                            </td>
+
+                                            <td>
+                                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                                    <a asp-controller="Room"
+                                                       asp-action="Details"
+                                                       asp-route-id="@item.RoomId"
+                                                       class="btn btn-outline-info btn-sm">
+                                                        <i class="bi bi-eye me-1"></i>
+                                                        Detalhes
+                                                    </a>
+
+                                                    <a asp-controller="Room"
+                                                       asp-action="Edit"
+                                                       asp-route-id="@item.RoomId"
+                                                       class="btn btn-outline-primary btn-sm">
+                                                        <i class="bi bi-pencil me-1"></i>
+                                                        Editar
+                                                    </a>
+
+                                                    <a asp-controller="Room"
+                                                       asp-action="Delete"
+                                                       asp-route-id="@item.RoomId"
+                                                       class="btn btn-outline-danger btn-sm">
+                                                        <i class="bi bi-trash me-1"></i>
+                                                        Eliminar
+                                                    </a>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    }
+
+                    <hr class="my-4" />
+
+                    <!-- Botão voltar -->
+                    <div class="d-flex justify-content-start">
+                        <a asp-controller="Scheduling"
+                           asp-action="Scheduling"
+                           class="btn btn-outline-secondary px-4">
+                            ← Voltar
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
