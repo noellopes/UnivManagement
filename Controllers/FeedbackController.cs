@@ -15,35 +15,37 @@ namespace UnivManagement.Controllers
             _context = context;
         }
 
-        // GET: Feedback (mantido por compatibilidade, redireciona para a vista de Docente)
+        // GET: Feedback
         public IActionResult Index()
         {
             return RedirectToAction(nameof(IndexDocente));
         }
 
-        // GET: Feedback/IndexDocente (Interface de gestão do Docente)
+        // GET: Feedback/IndexDocente
         public async Task<IActionResult> IndexDocente()
         {
             var feedbacks = await _context.Feedback
                 .Include(f => f.Docente)
                 .Include(f => f.SubmissaoTrabalho)
+                    .ThenInclude(s => s!.Trabalho)
                 .ToListAsync();
 
             return View(feedbacks);
         }
 
-        // GET: Feedback/IndexAluno (Interface de consulta do Aluno - protótipo sem filtro por utilizador autenticado)
+        // GET: Feedback/IndexAluno
         public async Task<IActionResult> IndexAluno()
         {
             var feedbacks = await _context.Feedback
                 .Include(f => f.Docente)
                 .Include(f => f.SubmissaoTrabalho)
+                    .ThenInclude(s => s!.Trabalho)
                 .ToListAsync();
 
             return View(feedbacks);
         }
 
-        // GET: Feedback/Details/5 (Detalhes para o Docente)
+        // GET: Feedback/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -54,6 +56,7 @@ namespace UnivManagement.Controllers
             var feedback = await _context.Feedback
                 .Include(f => f.Docente)
                 .Include(f => f.SubmissaoTrabalho)
+                    .ThenInclude(s => s!.Trabalho)
                 .FirstOrDefaultAsync(m => m.FeedbackId == id);
 
             if (feedback == null)
@@ -64,7 +67,7 @@ namespace UnivManagement.Controllers
             return View(feedback);
         }
 
-        // GET: Feedback/DetailsAluno/5 (Detalhes apenas de leitura para o Aluno)
+        // GET: Feedback/DetailsAluno/5
         public async Task<IActionResult> DetailsAluno(int? id)
         {
             if (id == null)
@@ -75,6 +78,7 @@ namespace UnivManagement.Controllers
             var feedback = await _context.Feedback
                 .Include(f => f.Docente)
                 .Include(f => f.SubmissaoTrabalho)
+                    .ThenInclude(s => s!.Trabalho)
                 .FirstOrDefaultAsync(m => m.FeedbackId == id);
 
             if (feedback == null)
@@ -172,6 +176,7 @@ namespace UnivManagement.Controllers
             var feedback = await _context.Feedback
                 .Include(f => f.Docente)
                 .Include(f => f.SubmissaoTrabalho)
+                    .ThenInclude(s => s!.Trabalho)
                 .FirstOrDefaultAsync(m => m.FeedbackId == id);
 
             if (feedback == null)
@@ -205,7 +210,17 @@ namespace UnivManagement.Controllers
         private void PreencherListas(int? docenteEscolhido = null, int? submissaoEscolhida = null)
         {
             ViewBag.Docentes = new SelectList(_context.Set<Docente>(), "DocenteId", "Nome", docenteEscolhido);
-            ViewBag.Submissoes = new SelectList(_context.Set<SubmissaoTrabalho>(), "SubmissaoTrabalhoId", "CaminhoFicheiro", submissaoEscolhida);
+
+            var submissoes = _context.Set<SubmissaoTrabalho>()
+                .Include(s => s.Trabalho)
+                .Select(s => new
+                {
+                    s.SubmissaoTrabalhoId,
+                    Texto = s.Trabalho != null ? s.Trabalho.Titulo : s.CaminhoFicheiro
+                })
+                .ToList();
+
+            ViewBag.Submissoes = new SelectList(submissoes, "SubmissaoTrabalhoId", "Texto", submissaoEscolhida);
         }
     }
 }
