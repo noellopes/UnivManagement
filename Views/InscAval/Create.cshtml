@@ -4,7 +4,7 @@
     ViewData["Title"] = "Nova inscrição";
 }
 
-<h1>Nova inscrição</h1>
+<h1>Nova inscrição em avaliação</h1>
 <hr />
 
 <div class="row">
@@ -28,12 +28,8 @@
                 <span asp-validation-for="InscrUcId" class="text-danger"></span>
             </div>
 
-            <div class="mb-3 form-check">
-                <input asp-for="Pago" class="form-check-input" />
-                <label asp-for="Pago" class="form-check-label"></label>
-            </div>
 
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary">Concluir</button>
             <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
