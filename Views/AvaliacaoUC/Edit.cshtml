@@ -14,6 +14,7 @@
         </div>
 
         <div class="card-body">
+
             <form asp-action="Edit" method="post">
 
                 <div asp-validation-summary="ModelOnly"
@@ -27,7 +28,7 @@
                     <select asp-for="TipoAvaliacaoId"
                             asp-items="ViewBag.TiposAvaliacao"
                             class="form-select">
-                        <option value="">-- Selecionar Tipo de Avaliação --</option>
+                        <option value="">-- Selecionar Época --</option>
                     </select>
 
                     <span asp-validation-for="TipoAvaliacaoId"
@@ -37,9 +38,37 @@
                 <div class="mb-3">
                     <label asp-for="UcId" class="form-label"></label>
 
-                    <input asp-for="UcId" class="form-control" />
+                    <select asp-for="UcId"
+                            asp-items="ViewBag.UnidadesCurriculares"
+                            class="form-select">
+                        <option value="">-- Selecionar Unidade Curricular --</option>
+                    </select>
 
                     <span asp-validation-for="UcId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Tipo" class="form-label"></label>
+
+                    <select asp-for="Tipo"
+                            asp-items="ViewBag.Tipos"
+                            class="form-select">
+                        <option value="">-- Selecionar Tipo de Avaliação --</option>
+                    </select>
+
+                    <span asp-validation-for="Tipo"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Avaliacao" class="form-label"></label>
+
+                    <input asp-for="Avaliacao"
+                           class="form-control"
+                           placeholder="Nome da avaliação" />
+
+                    <span asp-validation-for="Avaliacao"
                           class="text-danger"></span>
                 </div>
 
@@ -57,12 +86,14 @@
                         Guardar Alterações
                     </button>
 
-                    <a asp-action="IndexDocente" class="btn btn-secondary">
+                    <a asp-action="IndexDocente"
+                       class="btn btn-secondary">
                         Cancelar
                     </a>
                 </div>
 
             </form>
+
         </div>
     </div>
 </div>

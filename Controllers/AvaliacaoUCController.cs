@@ -124,7 +124,11 @@ public class AvaliacaoUCController : Controller
             );
         }
 
-        PreencherListas(avaliacao.TipoAvaliacaoId, avaliacao.Tipo);
+        PreencherListas(
+            avaliacao.TipoAvaliacaoId,
+            avaliacao.Tipo,
+            avaliacao.UcId
+        );
 
         return View(avaliacao);
     }
@@ -144,7 +148,11 @@ public class AvaliacaoUCController : Controller
             return NotFound();
         }
 
-        PreencherListas(avaliacao.TipoAvaliacaoId, avaliacao.Tipo);
+        PreencherListas(
+            avaliacao.TipoAvaliacaoId,
+            avaliacao.Tipo,
+            avaliacao.UcId
+        );
 
         return View(avaliacao);
     }
@@ -187,7 +195,11 @@ public class AvaliacaoUCController : Controller
             );
         }
 
-        PreencherListas(avaliacao.TipoAvaliacaoId, avaliacao.Tipo);
+        PreencherListas(
+            avaliacao.TipoAvaliacaoId,
+            avaliacao.Tipo,
+            avaliacao.UcId
+        );
 
         return View(avaliacao);
     }
@@ -226,7 +238,7 @@ public class AvaliacaoUCController : Controller
             return NotFound();
         }
 
-        // Impede eliminar avaliações com notas associadas
+        // Impede eliminar avaliações que já tenham notas associadas
         if (await _context.Notas.AnyAsync(n => n.AvaliacaoUCId == id))
         {
             ViewBag.Erro =
@@ -247,8 +259,10 @@ public class AvaliacaoUCController : Controller
     // Preenche as listas dos formulários
     private void PreencherListas(
         int? epocaId = null,
-        string? tipoSelecionado = null)
+        string? tipoSelecionado = null,
+        int? ucId = null)
     {
+        // Épocas
         ViewBag.TiposAvaliacao = new SelectList(
             _context.TiposAvaliacao,
             "TipoAvaliacaoId",
@@ -256,13 +270,22 @@ public class AvaliacaoUCController : Controller
             epocaId
         );
 
+        // Tipos de avaliação
         ViewBag.Tipos = new SelectList(
             new[] { "Frequência", "Exame", "Apresentação" },
             tipoSelecionado
         );
+
+        // Unidades Curriculares
+        ViewBag.UnidadesCurriculares = new SelectList(
+            _context.UC,
+            "UcId",
+            "Name",
+            ucId
+        );
     }
 
-    // Valida os três tipos de avaliação permitidos
+    // Valida os tipos de avaliação permitidos
     private void ValidarTipo(string? tipo)
     {
         string[] tiposPermitidos =
@@ -281,7 +304,7 @@ public class AvaliacaoUCController : Controller
         }
     }
 
-    // Verifica se a avaliação existe
+    // Verifica se uma avaliação existe
     private bool AvaliacaoUCExists(int id)
     {
         return _context.AvaliacoesUC
