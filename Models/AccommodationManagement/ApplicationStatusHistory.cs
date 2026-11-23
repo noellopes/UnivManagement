@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace UnivManagement.Models.AccommodationManagement;
 
@@ -10,7 +10,6 @@ public class ApplicationStatusHistory
     [Display(Name = "Application")]
     public int AccommodationApplicationId { get; set; }
 
-    [Display(Name = "Application")]
     public AccommodationApplication? AccommodationApplication { get; set; }
 
     [Required(ErrorMessage = "The status is required.")]
