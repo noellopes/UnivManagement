@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models;
-using UnivManagement.Data;
-using UnivManagement.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using global::UnivManagement.Models;
 
 namespace UnivManagement.Data
 {
@@ -10,22 +11,6 @@ namespace UnivManagement.Data
         internal static void Populate(UniversityDbContext? db)
         {
             if (db == null) throw new ArgumentNullException(nameof(db));
-namespace UnivManagement.Models
-{
-    public static class SeedData
-    {
-        public static void Populate(IServiceProvider serviceProvider)
-        {
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<UniversityDbContext>();
-
-                // 1. Verifica se já existem departamentos na base de dados
-                if (context.Departamentos != null && context.Departamentos.Any())
-                {
-                    return; // Se já houver dados, não faz nada para evitar duplicações
-                }
 
             PopulateFuncoesDocentes(db);
             PopulateServicosFuncionarios(db);
@@ -39,7 +24,7 @@ namespace UnivManagement.Models
             var funcoes = new List<FuncaoDocente>
             {
                 new FuncaoDocente { Nome = "Professor Catedrático" },
-                new FuncaoDocente { Nome = "Professor Coordenador" }, // Corrigido o espaço no final
+                new FuncaoDocente { Nome = "Professor Coordenador" },
                 new FuncaoDocente { Nome = "Professor Auxiliar" },
                 new FuncaoDocente { Nome = "Assistente" },
                 new FuncaoDocente { Nome = "Monitor" }
@@ -53,7 +38,8 @@ namespace UnivManagement.Models
         {
             if (db.ServicoFuncionario.Any()) return;
 
-            var servicos = new List<ServicoFuncionario> {
+            var servicos = new List<ServicoFuncionario>
+            {
                 new ServicoFuncionario { Nome = "Recursos Humanos", Ativo = true },
                 new ServicoFuncionario { Nome = "Serviços Académicos", Ativo = true },
                 new ServicoFuncionario { Nome = "Tecnologias de Informação", Ativo = true },
@@ -69,19 +55,14 @@ namespace UnivManagement.Models
             if (db.Funcionario.Any()) return;
 
             var servicoPadrao = db.ServicoFuncionario.First();
-                // 2. Adiciona os registos estáticos iniciais
-                context.Departamentos.AddRange(
-                    new Departamento { Nome = "Informática" },
-                    new Departamento { Nome = "Matemática" },
-                    new Departamento { Nome = "Gestão" }
-                );
 
             var servicoRH = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Recursos Humanos") ?? servicoPadrao;
             var servicoAcad = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Serviços Académicos") ?? servicoPadrao;
             var servicoTI = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Tecnologias de Informação") ?? servicoPadrao;
             var servicoFin = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Gestão Financeira") ?? servicoPadrao;
 
-            var funcionarios = new List<Funcionario> {
+            var funcionarios = new List<Funcionario>
+            {
                 new Funcionario {
                     Nome = "Ana Maria Silva",
                     Nif = "234567890",
@@ -126,9 +107,6 @@ namespace UnivManagement.Models
 
             db.Funcionario.AddRange(funcionarios);
             db.SaveChanges();
-                // 3. Guarda as alterações na base de dados
-                context.SaveChanges();
-            }
         }
     }
 }
