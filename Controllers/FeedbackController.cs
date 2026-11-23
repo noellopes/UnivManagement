@@ -16,11 +16,30 @@ namespace UnivManagement.Controllers
         }
 
         // GET: Feedback
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
+        {
+            return RedirectToAction(nameof(IndexDocente));
+        }
+
+        // GET: Feedback/IndexDocente
+        public async Task<IActionResult> IndexDocente()
         {
             var feedbacks = await _context.Feedback
                 .Include(f => f.Docente)
                 .Include(f => f.SubmissaoTrabalho)
+                    .ThenInclude(s => s!.Trabalho)
+                .ToListAsync();
+
+            return View(feedbacks);
+        }
+
+        // GET: Feedback/IndexAluno
+        public async Task<IActionResult> IndexAluno()
+        {
+            var feedbacks = await _context.Feedback
+                .Include(f => f.Docente)
+                .Include(f => f.SubmissaoTrabalho)
+                    .ThenInclude(s => s!.Trabalho)
                 .ToListAsync();
 
             return View(feedbacks);
@@ -37,6 +56,29 @@ namespace UnivManagement.Controllers
             var feedback = await _context.Feedback
                 .Include(f => f.Docente)
                 .Include(f => f.SubmissaoTrabalho)
+                    .ThenInclude(s => s!.Trabalho)
+                .FirstOrDefaultAsync(m => m.FeedbackId == id);
+
+            if (feedback == null)
+            {
+                return NotFound();
+            }
+
+            return View(feedback);
+        }
+
+        // GET: Feedback/DetailsAluno/5
+        public async Task<IActionResult> DetailsAluno(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var feedback = await _context.Feedback
+                .Include(f => f.Docente)
+                .Include(f => f.SubmissaoTrabalho)
+                    .ThenInclude(s => s!.Trabalho)
                 .FirstOrDefaultAsync(m => m.FeedbackId == id);
 
             if (feedback == null)
@@ -63,7 +105,7 @@ namespace UnivManagement.Controllers
             {
                 _context.Add(feedback);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexDocente));
             }
 
             PreencherListas(feedback.DocenteId, feedback.SubmissaoTrabalhoId);
@@ -116,7 +158,7 @@ namespace UnivManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexDocente));
             }
 
             PreencherListas(feedback.DocenteId, feedback.SubmissaoTrabalhoId);
@@ -134,6 +176,7 @@ namespace UnivManagement.Controllers
             var feedback = await _context.Feedback
                 .Include(f => f.Docente)
                 .Include(f => f.SubmissaoTrabalho)
+                    .ThenInclude(s => s!.Trabalho)
                 .FirstOrDefaultAsync(m => m.FeedbackId == id);
 
             if (feedback == null)
@@ -156,7 +199,7 @@ namespace UnivManagement.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexDocente));
         }
 
         private bool FeedbackExists(int id)
@@ -167,7 +210,17 @@ namespace UnivManagement.Controllers
         private void PreencherListas(int? docenteEscolhido = null, int? submissaoEscolhida = null)
         {
             ViewBag.Docentes = new SelectList(_context.Set<Docente>(), "DocenteId", "Nome", docenteEscolhido);
-            ViewBag.Submissoes = new SelectList(_context.Set<SubmissaoTrabalho>(), "SubmissaoTrabalhoId", "CaminhoFicheiro", submissaoEscolhida);
+
+            var submissoes = _context.Set<SubmissaoTrabalho>()
+                .Include(s => s.Trabalho)
+                .Select(s => new
+                {
+                    s.SubmissaoTrabalhoId,
+                    Texto = s.Trabalho != null ? s.Trabalho.Titulo : s.CaminhoFicheiro
+                })
+                .ToList();
+
+            ViewBag.Submissoes = new SelectList(submissoes, "SubmissaoTrabalhoId", "Texto", submissaoEscolhida);
         }
     }
 }

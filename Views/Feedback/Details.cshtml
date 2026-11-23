@@ -11,10 +11,10 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SubmissaoTrabalhoId)
+            Trabalho
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SubmissaoTrabalhoId)
+            @Model.SubmissaoTrabalho?.Trabalho?.Titulo
         </dd>
 
         <dt class="col-sm-2">
@@ -49,5 +49,5 @@
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.FeedbackId" class="btn btn-warning">Editar</a> |
-    <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
+    <a asp-action="IndexDocente" class="btn btn-secondary">Voltar à Lista</a>
 </div>

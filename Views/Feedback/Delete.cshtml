@@ -12,10 +12,10 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SubmissaoTrabalhoId)
+            Trabalho
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SubmissaoTrabalhoId)
+            @Model.SubmissaoTrabalho?.Trabalho?.Titulo
         </dd>
 
         <dt class="col-sm-2">
@@ -50,6 +50,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="FeedbackId" />
         <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
+        <a asp-action="IndexDocente" class="btn btn-secondary">Voltar à Lista</a>
     </form>
 </div>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<UnivManagement.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Gestão de Feedback (Docente)";
+}
+
+<h1>Gestão de Feedback</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Criar Novo Feedback</a>
+</p>
+
+@if (!Model.Any())
+{
+    <p>Ainda não há feedbacks registados.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Trabalho
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocenteId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataFeedback)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nota)
+                </th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.SubmissaoTrabalho?.Trabalho?.Titulo
+                    </td>
+                    <td>
+                        @item.Docente?.Nome
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataFeedback)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nota)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-warning">Editar</a> |
+                        <a asp-action="Details" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-info">Detalhes</a> |
+                        <a asp-action="Delete" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
