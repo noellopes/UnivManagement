@@ -6,6 +6,11 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<UnivManagement.Models.Room>()
+    .ToTable("SalasAula");
+
+            modelBuilder.Entity<UnivManagement.Models.Session>()
+                .HasKey(s => s.ClassSessionId);
 
             // ServiceRequestType: two request types cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestType>()
@@ -104,5 +109,11 @@ namespace UnivManagement.Data {
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
+        public DbSet<UnivManagement.Models.ReservaSala> Reserva { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Room> SalasAula { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Building> Building { get; set; } = default!;
+        public DbSet<UnivManagement.Models.RoomType> RoomType { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Session> ClassSession { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Group> ClassGroup { get; set; } = default!;
     }
 }
