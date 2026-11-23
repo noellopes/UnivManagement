@@ -1,0 +1,31 @@
+@model UnivManagement.Models.Convidado
+
+@{
+    ViewData["Title"] = "Apagar convidado";
+}
+
+<h1>Apagar convidado</h1>
+<h4 class="text-danger">Tem a certeza de que quer apagar este convidado?</h4>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nome)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Nome)</dd>
+
+    <dt class="col-sm-3">NIF</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Nif)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Email)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Telefone)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Telefone)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Ativo)</dt>
+    <dd class="col-sm-9">@(Model.Ativo ? "Sim" : "Não")</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.ConvidadoId">
+    <button type="submit" class="btn btn-danger">Apagar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
