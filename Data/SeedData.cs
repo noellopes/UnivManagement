@@ -12,6 +12,12 @@ namespace UnivManagement.Data
             PopulateFuncoesDocentes(db);
             PopulateServicosFuncionarios(db);
             PopulateFuncionarios(db);
+
+
+            // Gestão de Cantina
+            PopulateTiposRefeicao(db);
+            PopulateRefeicoes(db);
+            PopulateConvidados(db);
         }
 
         private static void PopulateFuncoesDocentes(UniversityDbContext db)
@@ -101,6 +107,49 @@ namespace UnivManagement.Data
             };
 
             db.Funcionario.AddRange(funcionarios);
+            db.SaveChanges();
+        }
+
+        private static void PopulateTiposRefeicao(UniversityDbContext db)
+        {
+            if (db.TiposRefeicao.Any()) return;
+
+            db.TiposRefeicao.AddRange(
+                new TipoRefeicao { Nome = "Carne" },
+                new TipoRefeicao { Nome = "Peixe" },
+                new TipoRefeicao { Nome = "Vegetariano" }
+            );
+            db.SaveChanges();
+        }
+
+        private static void PopulateRefeicoes(UniversityDbContext db)
+        {
+            if (db.Refeicoes.Any()) return;
+
+            var carne = db.TiposRefeicao.First(t => t.Nome == "Carne");
+            var peixe = db.TiposRefeicao.First(t => t.Nome == "Peixe");
+            var vegetariano = db.TiposRefeicao.First(t => t.Nome == "Vegetariano");
+
+            db.Refeicoes.AddRange(
+                new Refeicao { Nome = "Bitoque", Preco = 3.50m, TipoRefeicaoId = carne.TipoRefeicaoId },
+                new Refeicao { Nome = "Frango assado", Preco = 3.90m, TipoRefeicaoId = carne.TipoRefeicaoId },
+                new Refeicao { Nome = "Bacalhau à Brás", Preco = 4.20m, TipoRefeicaoId = peixe.TipoRefeicaoId },
+                new Refeicao { Nome = "Salmão grelhado", Preco = 4.50m, TipoRefeicaoId = peixe.TipoRefeicaoId },
+                new Refeicao { Nome = "Lasanha de legumes", Preco = 3.20m, TipoRefeicaoId = vegetariano.TipoRefeicaoId },
+                new Refeicao { Nome = "Caril de grão", Preco = 4.00m, TipoRefeicaoId = vegetariano.TipoRefeicaoId }
+            );
+            db.SaveChanges();
+        }
+
+        private static void PopulateConvidados(UniversityDbContext db)
+        {
+            if (db.Convidado.Any()) return;
+
+            db.Convidado.AddRange(
+                new Convidado { Nome = "Marta Isabel Lopes", Nif = "312456789", Email = "marta.lopes@exemplo.pt", Telefone = "913456789", Ativo = true },
+                new Convidado { Nome = "Rui Miguel Carvalho", Nif = "323567891", Email = "rui.carvalho@exemplo.pt", Telefone = "926789123", Ativo = true },
+                new Convidado { Nome = "Sofia Alexandra Pires", Nif = "334678912", Email = "sofia.pires@exemplo.pt", Telefone = "937891234", Ativo = false }
+            );
             db.SaveChanges();
         }
     }
