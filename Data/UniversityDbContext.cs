@@ -79,14 +79,7 @@ namespace UnivManagement.Data {
                 new Models.AccommodationManagement.ContractStatus { ContractStatusId = 2, Name = "Ativo" },
                 new Models.AccommodationManagement.ContractStatus { ContractStatusId = 3, Name = "Terminado" },
                 new Models.AccommodationManagement.ContractStatus { ContractStatusId = 4, Name = "Expirado" });
-        }
 
-        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.ContractStatus> ContractStatus { get; set; } = default!;
-
-        public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
             // Room: número único por residência:
             modelBuilder.Entity<Models.AccommodationManagement.Room>()
                 .HasIndex(r => new { r.ResidenceId, r.Number })
@@ -114,6 +107,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<InscrUC>()
                 .Property(i => i.Grade)
                 .HasPrecision(4, 2);
+
             // Evita duplicações na tabela CourseStudyPlanYear:
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
@@ -133,6 +127,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AccommodationManagement.StayRecord> StayRecord { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationPayment> AccommodationPayment { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.ContractStatus> ContractStatus { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory> ApplicationStatusHistory { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationApplication> AccommodationApplication { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.Room> Room { get; set; } = default!;
@@ -145,7 +140,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;       
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
