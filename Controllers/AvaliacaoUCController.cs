@@ -106,7 +106,7 @@ public class AvaliacaoUCController : Controller
             _context.AvaliacoesUC.Add(avaliacaouc);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexDocente));
         }
 
         ViewBag.TiposAvaliacao = new SelectList(
@@ -173,7 +173,7 @@ public class AvaliacaoUCController : Controller
                 throw;
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexDocente));
         }
 
         ViewBag.TiposAvaliacao = new SelectList(
@@ -231,7 +231,7 @@ public class AvaliacaoUCController : Controller
             await _context.SaveChangesAsync();
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(IndexDocente));
     }
 
     // Verifica se uma avaliação existe
