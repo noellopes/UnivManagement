@@ -1,0 +1,50 @@
+﻿@model UnivManagement.Models.SubmissaoTrabalho
+
+@{
+    ViewData["Title"] = "Detalhes da Submissão - Docente";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Detalhes da Submissão</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            Área do Docente - Informações da Entrega
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Trabalho</dt>
+                <dd class="col-sm-8">
+                    @Model.Trabalho?.Titulo
+                </dd>
+
+                <dt class="col-sm-4">Aluno responsável</dt>
+                <dd class="col-sm-8">
+                    @Model.StudentId
+                </dd>
+
+                <dt class="col-sm-4">Grupo de trabalho</dt>
+                <dd class="col-sm-8">
+                    @(Model.GrupoTrabalho?.Nome ?? "Individual")
+                </dd>
+
+                <dt class="col-sm-4">Data de Entrega</dt>
+                <dd class="col-sm-8">
+                    @Model.DataEntrega.ToString("dd/MM/yyyy")
+                </dd>
+
+                <dt class="col-sm-4">Ficheiro entregue</dt>
+                <dd class="col-sm-8">
+                    @Model.CaminhoFicheiro
+                </dd>
+            </dl>
+
+            <a asp-action="IndexDocente"
+               class="btn btn-secondary">
+                Voltar à Lista
+            </a>
+        </div>
+    </div>
+</div>

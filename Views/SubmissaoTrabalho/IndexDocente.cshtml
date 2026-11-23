@@ -1,0 +1,68 @@
+﻿@model IEnumerable<UnivManagement.Models.SubmissaoTrabalho>
+
+@{
+    ViewData["Title"] = "Submissões - Docente";
+}
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>Submissões de Trabalhos</h2>
+        <p class="text-muted">
+            Área do Docente - Consulta das entregas realizadas pelos alunos.
+        </p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            Trabalhos Submetidos
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Trabalho</th>
+                        <th>Aluno responsável</th>
+                        <th>Grupo</th>
+                        <th>Data de Entrega</th>
+                        <th>Ficheiro</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Trabalho?.Titulo</td>
+                            <td>@item.StudentId</td>
+                            <td>
+                                @(item.GrupoTrabalho?.Nome ?? "Individual")
+                            </td>
+                            <td>@item.DataEntrega.ToString("dd/MM/yyyy")</td>
+                            <td>@item.CaminhoFicheiro</td>
+
+                            <td class="text-center">
+                                <a asp-action="DetailsDocente"
+                                   asp-route-id="@item.SubmissaoTrabalhoId"
+                                   class="btn btn-info btn-sm">
+                                    Consultar
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center">
+                    Ainda não existem trabalhos submetidos.
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
