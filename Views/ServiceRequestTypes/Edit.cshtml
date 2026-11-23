@@ -1,0 +1,49 @@
+@model ServiceRequestType
+
+@{
+    ViewData["Title"] = "Edit request type";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Back to request types
+    </a>
+
+    <header class="my-4">
+        <h1 class="display-6">Edit request type</h1>
+        <p class="text-body-secondary">
+            The new name is shown in every request of this type.
+        </p>
+    </header>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="ServiceRequestTypeId" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
