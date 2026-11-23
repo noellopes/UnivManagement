@@ -1,0 +1,62 @@
+﻿@model IEnumerable<UnivManagement.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Feedback Recebido (Aluno)";
+}
+
+<h1>Feedback Recebido</h1>
+
+@if (!Model.Any())
+{
+    <p>Ainda não existem feedbacks disponíveis para consulta.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubmissaoTrabalhoId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocenteId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataFeedback)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descricao)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nota)
+                </th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubmissaoTrabalhoId)
+                    </td>
+                    <td>
+                        @item.Docente?.Nome
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataFeedback)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nota)
+                    </td>
+                    <td>
+                        <a asp-action="DetailsAluno" asp-route-id="@item.FeedbackId" class="btn btn-sm btn-info">Consultar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
