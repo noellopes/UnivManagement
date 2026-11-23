@@ -82,10 +82,10 @@
                             <div class="flex-grow-1">
                                 <!-- Entidade Prato -->
                                 <div class="crud-group-item d-flex justify-content-between align-items-center">
-                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-primary"></i> Pratos</span>
+                                <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-primary"></i> Refeições</span>
                                     <div class="btn-group btn-group-sm">
-                                        <a asp-controller="Prato" asp-action="Index" class="btn btn-outline-primary" title="Listar / Gerir"><i class="bi bi-list"></i></a>
-                                        <a asp-controller="Prato" asp-action="Create" class="btn btn-primary" title="Adicionar Novo"><i class="bi bi-plus-lg"></i> Novo</a>
+                                    <a asp-controller="Refeicoes" asp-action="Index" class="btn btn-outline-primary" title="Listar / Gerir"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="Refeicoes" asp-action="Create" class="btn btn-primary" title="Adicionar Novo"><i class="bi bi-plus-lg"></i> Novo</a>
                                     </div>
                                 </div>
                                 <!-- Entidade Ementa -->
@@ -100,19 +100,20 @@
                                 <div class="crud-group-item d-flex justify-content-between align-items-center">
                                     <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-primary"></i> Tipos de Refeição</span>
                                     <div class="btn-group btn-group-sm">
-                                        <a asp-controller="TipoRefeicao" asp-action="Index" class="btn btn-outline-primary" title="Listar / Gerir"><i class="bi bi-list"></i></a>
-                                        <a asp-controller="TipoRefeicao" asp-action="Create" class="btn btn-primary" title="Adicionar Novo"><i class="bi bi-plus-lg"></i> Novo</a>
+                                        <a asp-controller="TiposRefeicao" asp-action="Index" class="btn btn-outline-primary" title="Listar / Gerir"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="TiposRefeicao" asp-action="Create" class="btn btn-primary" title="Adicionar Novo"><i class="bi bi-plus-lg"></i> Novo</a>
                                     </div>
                                 </div>
-                                <!-- Entidade EmentaPratos -->
+                            <!-- Entidade EmentaPratos -->
+                                <!--
                                 <div class="crud-group-item d-flex justify-content-between align-items-center mb-0">
-                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-primary"></i> Associação de Pratos</span>
+                                <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-primary"></i> Associação de Pratos</span>
                                 <div class="btn-group btn-group-sm">
                                     <a asp-controller="TipoRefeicao" asp-action="Index" class="btn btn-outline-primary" title="Listar / Gerir"><i class="bi bi-list"></i></a>
                                     <a asp-controller="TipoRefeicao" asp-action="Create" class="btn btn-primary" title="Adicionar Novo"><i class="bi bi-plus-lg"></i> Associar</a>
                                 </div>
                                 </div>
-
+                                -->
                             </div>
                         </div>
                     </div>
@@ -225,8 +226,8 @@
                                 <div class="crud-group-item d-flex justify-content-between align-items-center mb-0">
                                     <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-info"></i> Convidados</span>
                                     <div class="btn-group btn-group-sm">
-                                        <a asp-controller="Convidado" asp-action="Index" class="btn btn-outline-info" title="Gerir Convidados"><i class="bi bi-list"></i></a>
-                                        <a asp-controller="Convidado" asp-action="Create" class="btn btn-info text-white" title="Adicionar Convidado"><i class="bi bi-plus-lg"></i> Novo</a>
+                                        <a asp-controller="Convidados" asp-action="Index" class="btn btn-outline-info" title="Gerir Convidados"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="Convidados" asp-action="Create" class="btn btn-info text-white" title="Adicionar Convidado"><i class="bi bi-plus-lg"></i> Novo</a>
                                     </div>
                                 </div>
 
