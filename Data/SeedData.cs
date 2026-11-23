@@ -10,8 +10,9 @@ namespace UnivManagement.Data
                 throw new ArgumentNullException(nameof(db));
 
             PopulateTipos(db);
-            
             PopulateAutores(db);
+            PopulateObras(db);
+            
         }
 
         private static void PopulateTipos(UniversityDbContext db)
@@ -26,9 +27,9 @@ namespace UnivManagement.Data
                 "Relatório"
             };
 
-            foreach( var nome in nomesTipos)
+            foreach (var nome in nomesTipos)
             {
-                if(!db.Tipos.Any(t => t.NomeTipo == nome))
+                if (!db.Tipos.Any(t => t.NomeTipo == nome))
                 {
                     db.Tipos.Add(new TipoObra
                     {
@@ -40,101 +41,212 @@ namespace UnivManagement.Data
             db.SaveChanges();
         }
 
-        
+
 
         private static void PopulateAutores(UniversityDbContext db)
         {
-            if (db.Autores.Any())
-                return;
-
-            var autores = new List<Autor>
+            var nomesAutores = new[]
             {
-                new Autor { Nome = "Robert C. Martin" },
-                new Autor { Nome = "Erich Gamma" },
-                new Autor { Nome = "Brian W. Kernighan" },
-                new Autor { Nome = "Joshua Bloch" },
-                new Autor { Nome = "Thomas H. Cormen" }
+                "Robert C. Martin",
+                "Erich Gamma",
+                "Richard Helm",
+                "Ralph Johnson",
+                "John Vlissides",
+                "Brian W. Kernighan",
+                "Dennis M. Ritchie",
+                "Joshua Bloch",
+                "Thomas H. Cormen",
+                "Charles E. Leiserson",
+                "Ronald L. Rivest",
+                "Clifford Stein",
+                "IEEE Computer Society",
+                "Biblioteca Universitária"
             };
 
-            db.Autores.AddRange(autores);
-            if (db == null) throw new ArgumentNullException(nameof(db));
-
-            PopulateFuncionarios(db);
-        }
-
-        private static void PopulateFuncionarios(UniversityDbContext db)
-        {
-            // 1. Garantir que existem Serviços na BD
-            if (!db.ServicoFuncionario.Any())
+            foreach (var nome in nomesAutores)
             {
-                var servicos = new List<ServicoFuncionario> {
-                    new ServicoFuncionario { Nome = "Recursos Humanos", Ativo = true },
-                    new ServicoFuncionario { Nome = "Serviços Académicos", Ativo = true },
-                    new ServicoFuncionario { Nome = "Tecnologias de Informação", Ativo = true },
-                    new ServicoFuncionario { Nome = "Gestão Financeira", Ativo = true }
-                };
-
-                db.ServicoFuncionario.AddRange(servicos);
-                db.SaveChanges();
+                if (!db.Autores.Any(a => a.Nome == nome))
+                {
+                    db.Autores.Add(new Autor
+                    {
+                        Nome = nome
+                    });
+                }
             }
 
-            // 2. Se a tabela Funcionario já tiver registos, não faz nada
-            if (db.Funcionario.Any()) return;
+            db.SaveChanges();
+        }
 
-            // Obter os serviços da BD (ou o primeiro disponível como fallback seguro)
-            var servicoPadrao = db.ServicoFuncionario.First();
+        private static void PopulateObras(UniversityDbContext db)
+        {
+            if (db.Obras.Any())
+                return;
 
-            var servicoRH = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Recursos Humanos") ?? servicoPadrao;
-            var servicoAcad = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Serviços Académicos") ?? servicoPadrao;
-            var servicoTI = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Tecnologias de Informação") ?? servicoPadrao;
-            var servicoFin = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Gestão Financeira") ?? servicoPadrao;
+            var tipos = db.Tipos.ToDictionary(
+                t => t.NomeTipo,
+                t => t.TipoObraId
+            );
 
-            // 3. Adicionar lista de Funcionários iniciais
-            var funcionarios = new List<Funcionario> {
-                new Funcionario {
-                    Nome = "Ana Maria Silva",
-                    Nif = "234567890",
-                    Email = "ana.silva@upg.pt",
-                    Telefone = "912345678",
-                    Ativo = true,
-                    DataAdmissao = new DateTime(2020, 3, 15),
-                    Morada = "Av. são bento, 12, Guarda",
-                    ServicoFuncionarioId = servicoRH.ServicoFuncionarioId
+            var autores = db.Autores.ToDictionary(
+                a => a.Nome,
+                a => a.AutorId
+            );
+
+            var obras = new List<Obra>
+            {
+                new Obra
+                {
+                    Titulo = "Clean Code",
+                    ISBN_ISSN = "9780132350884",
+                    TipoObraId = tipos["Livro Técnico"],
+                    ValorMulta = 2.50,
+                    ObrasAutores = new List<ObraAutor>
+                    {
+                        new ObraAutor
+                        {
+                            AutorId = autores["Robert C. Martin"]
+                        }
+                    }
                 },
-                new Funcionario {
-                    Nome = "Carlos Alberto Santos",
-                    Nif = "245678901",
-                    Email = "carlos.santos@upg.pt",
-                    Telefone = "934567890",
-                    Ativo = true,
-                    DataAdmissao = new DateTime(2018, 9, 1),
-                    Morada = "Rua Direita, 45, Guarda",
-                    ServicoFuncionarioId = servicoTI.ServicoFuncionarioId
+
+                new Obra
+                {
+                    Titulo = "Design Patterns",
+                    ISBN_ISSN = "9780201633610",
+                    TipoObraId = tipos["Livro Técnico"],
+                    ValorMulta = 3.00,
+                    ObrasAutores = new List<ObraAutor>
+                    {
+                        new ObraAutor
+                        {
+                            AutorId = autores["Erich Gamma"]
+                        },
+                        new ObraAutor
+                        {
+                            AutorId = autores["Richard Helm"]
+                        },
+                        new ObraAutor
+                        {
+                            AutorId = autores["Ralph Johnson"]
+                        },
+                        new ObraAutor
+                        {
+                            AutorId = autores["John Vlissides"]
+                        }
+                    }
                 },
-                new Funcionario {
-                    Nome = "Beatriz Rocha",
-                    Nif = "256789012",
-                    Email = "beatriz.rocha@upg.pt",
-                    Telefone = "965432109",
-                    Ativo = true,
-                    DataAdmissao = new DateTime(2021, 1, 10),
-                    Morada = "Rua Duque de bragança, 8, Guarda",
-                    ServicoFuncionarioId = servicoAcad.ServicoFuncionarioId
+
+                new Obra
+                {
+                    Titulo = "The C Programming Language",
+                    ISBN_ISSN = "9780131103627",
+                    TipoObraId = tipos["Manual"],
+                    ValorMulta = 1.50,
+                    ObrasAutores = new List<ObraAutor>
+                    {
+                        new ObraAutor
+                        {
+                            AutorId = autores["Brian W. Kernighan"]
+                        },
+                        new ObraAutor
+                        {
+                            AutorId = autores["Dennis M. Ritchie"]
+                        }
+                    }
                 },
-                new Funcionario {
-                    Nome = "João Pedro Ferreira",
-                    Nif = "267890123",
-                    Email = "joao.ferreira@upg.pt",
-                    Telefone = "921122334",
-                    Ativo = false,
-                    DataAdmissao = new DateTime(2019, 6, 20),
-                    Morada = "Paiva couceiro, 102, Guarda",
-                    ServicoFuncionarioId = servicoFin.ServicoFuncionarioId
+
+                new Obra
+                {
+                    Titulo = "Effective Java",
+                    ISBN_ISSN = "9780134685991",
+                    TipoObraId = tipos["Livro Técnico"],
+                    ValorMulta = 2.00,
+                    ObrasAutores = new List<ObraAutor>
+                    {
+                        new ObraAutor
+                        {
+                            AutorId = autores["Joshua Bloch"]
+                        }
+                    }
+                },
+
+                new Obra
+                {
+                    Titulo = "Introduction to Algorithms",
+                    ISBN_ISSN = "9780262033848",
+                    TipoObraId = tipos["Livro Técnico"],
+                    ValorMulta = 3.50,
+                    ObrasAutores = new List<ObraAutor>
+                    {
+                        new ObraAutor
+                        {
+                            AutorId = autores["Thomas H. Cormen"]
+                        },
+                        new ObraAutor
+                        {
+                            AutorId = autores["Charles E. Leiserson"]
+                        },
+                        new ObraAutor
+                        {
+                            AutorId = autores["Ronald L. Rivest"]
+                        },
+                        new ObraAutor
+                        {
+                            AutorId = autores["Clifford Stein"]
+                        }
+                    }
+                },
+
+                new Obra
+                {
+                    Titulo = "IEEE Software",
+                    ISBN_ISSN = "07407459",
+                    TipoObraId = tipos["Revista"],
+                    ValorMulta = 1.00,
+                    ObrasAutores = new List<ObraAutor>
+                    {
+                        new ObraAutor
+                        {
+                            AutorId = autores["IEEE Computer Society"]
+                        }
+                    }
+                },
+
+                new Obra
+                {
+                    Titulo = "Regulamento da Biblioteca",
+                    ISBN_ISSN = null,
+                    TipoObraId = tipos["Documento"],
+                    ValorMulta = 0.50,
+                    ObrasAutores = new List<ObraAutor>
+                    {
+                        new ObraAutor
+                        {
+                            AutorId = autores["Biblioteca Universitária"]
+                        }
+                    }
+                },
+
+                new Obra
+                {
+                    Titulo = "Relatório Anual da Biblioteca 2026",
+                    ISBN_ISSN = null,
+                    TipoObraId = tipos["Relatório"],
+                    ValorMulta = 0.00,
+                    ObrasAutores = new List<ObraAutor>
+                    {
+                        new ObraAutor
+                        {
+                            AutorId = autores["Biblioteca Universitária"]
+                        }
+                    }
                 }
             };
 
-            db.Funcionario.AddRange(funcionarios);
+            db.Obras.AddRange(obras);
             db.SaveChanges();
         }
     }
-}
+};
+
+        
