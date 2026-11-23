@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
 using UnivManagement.Models;
+using UnivManagement.ViewModels;
 
 public class OrientadoresEstagioController : Controller
 {
@@ -13,11 +14,16 @@ public class OrientadoresEstagioController : Controller
     }
 
     // GET: OrientadoresEstagio
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
-        return View(await _context.OrientadoresEstagio
+        var orientadores = _context.OrientadoresEstagio
             .Include(o => o.Estagios)
-            .ToListAsync());
+            .OrderBy(o => o.OrientadorId);
+
+        var queryOptions =
+            await QueryOptions<OrientadorEstagio>.CreateAsync(orientadores, page);
+
+        return View(queryOptions);
     }
 
     // GET: OrientadoresEstagio/Details/5
