@@ -1,0 +1,72 @@
+@model UnivManagement.Models.AccommodationManagement.AccommodationContract
+
+@{
+    ViewData["Title"] = "Criar Contrato";
+}
+
+<h1>Criar Contrato</h1>
+
+<h4>Contrato de Alojamento</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="RoomAllocationId" class="control-label"></label>
+                <input asp-for="RoomAllocationId" class="form-control" />
+                <span asp-validation-for="RoomAllocationId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MonthlyRent" class="control-label"></label>
+                <input asp-for="MonthlyRent" class="form-control" />
+                <span asp-validation-for="MonthlyRent" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Deposit" class="control-label"></label>
+                <input asp-for="Deposit" class="form-control" />
+                <span asp-validation-for="Deposit" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ContractStatusId" class="control-label"></label>
+                <select asp-for="ContractStatusId" class="form-control" asp-items="ViewBag.ContractStatusId">
+                    <option value="">-- Selecione o Estado --</option>
+                </select>
+                <span asp-validation-for="ContractStatusId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="SignedDocumentId" class="control-label"></label>
+                <input asp-for="SignedDocumentId" class="form-control" />
+                <span asp-validation-for="SignedDocumentId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Criar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
