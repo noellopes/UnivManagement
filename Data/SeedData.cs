@@ -1,4 +1,4 @@
-﻿using UnivManagement.Models;
+using UnivManagement.Models;
 
 namespace UnivManagement.Data
 {
@@ -6,6 +6,57 @@ namespace UnivManagement.Data
     {
         internal static void Populate(UniversityDbContext? db)
         {
+            if (db == null)
+                throw new ArgumentNullException(nameof(db));
+
+            PopulateTipos(db);
+            
+            PopulateAutores(db);
+        }
+
+        private static void PopulateTipos(UniversityDbContext db)
+        {
+
+            var nomesTipos = new[]
+            {
+                "Livro Técnico",
+                "Manual",
+                "Revista",
+                "Documento",
+                "Relatório"
+            };
+
+            foreach( var nome in nomesTipos)
+            {
+                if(!db.Tipos.Any(t => t.NomeTipo == nome))
+                {
+                    db.Tipos.Add(new TipoObra
+                    {
+                        NomeTipo = nome
+                    });
+                }
+            }
+
+            db.SaveChanges();
+        }
+
+        
+
+        private static void PopulateAutores(UniversityDbContext db)
+        {
+            if (db.Autores.Any())
+                return;
+
+            var autores = new List<Autor>
+            {
+                new Autor { Nome = "Robert C. Martin" },
+                new Autor { Nome = "Erich Gamma" },
+                new Autor { Nome = "Brian W. Kernighan" },
+                new Autor { Nome = "Joshua Bloch" },
+                new Autor { Nome = "Thomas H. Cormen" }
+            };
+
+            db.Autores.AddRange(autores);
             if (db == null) throw new ArgumentNullException(nameof(db));
 
             PopulateFuncionarios(db);

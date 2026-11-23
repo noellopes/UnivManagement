@@ -1,0 +1,170 @@
+@model UnivManagement.Models.Obra
+
+@{
+    ViewData["Title"] = "Eliminar Obra";
+}
+
+<div class="container mt-4 mb-5">
+
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-2">
+            🗑️ Eliminar Obra
+        </h1>
+
+        <p class="text-muted mb-0">
+            Confirma a eliminação da obra selecionada.
+        </p>
+    </div>
+
+    <!-- Aviso de eliminação -->
+    <div class="alert alert-danger d-flex align-items-start gap-3 mb-4"
+         role="alert">
+
+        <span class="fs-4">⚠️</span>
+
+        <div>
+            <h5 class="alert-heading fw-bold">
+                Atenção! Esta ação é irreversível.
+            </h5>
+
+            <p class="mb-0">
+                Tens a certeza de que pretendes eliminar esta obra?
+                Confirma os dados apresentados abaixo antes de continuar.
+            </p>
+        </div>
+    </div>
+
+    <!-- Cartão com os dados da obra -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+
+        <div class="card-header bg-white p-4">
+            <h4 class="fw-bold mb-2">
+                📚 @Model.Titulo
+            </h4>
+
+            <p class="text-muted mb-0">
+                Obra selecionada para eliminação
+            </p>
+        </div>
+
+        <div class="card-body p-4">
+
+            <h5 class="fw-semibold mb-4">
+                Informações da Obra
+            </h5>
+
+            <div class="row g-4">
+
+                <!-- ISBN -->
+                <div class="col-md-6">
+                    <div class="text-muted fw-semibold mb-2">
+                        ISBN/ISSN
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3">
+                        @Model.ISBN_ISSN
+                    </div>
+                </div>
+
+                <!-- Título -->
+                <div class="col-md-6">
+                    <div class="text-muted fw-semibold mb-2">
+                        Título
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3">
+                        @Model.Titulo
+                    </div>
+                </div>
+
+                <!-- Tipo -->
+                <div class="col-md-6">
+                    <div class="text-muted fw-semibold mb-2">
+                        Tipo
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3">
+                        <span class="badge bg-info text-dark">
+                            @Model.Tipo?.NomeTipo
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Valor da Multa -->
+                <div class="col-md-6">
+                    <div class="text-muted fw-semibold mb-2">
+                        Valor da Multa
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3">
+                        <span class="fw-bold text-danger">
+                            @Model.ValorMulta.ToString("F2") €
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Autores -->
+                <div class="col-12">
+                    <div class="text-muted fw-semibold mb-2">
+                        Autores
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3">
+
+                        @if (Model.ObrasAutores.Any())
+                        {
+                            <span class="fw-medium">
+                                @string.Join(", ",
+                                    Model.ObrasAutores
+                                        .Where(oa => oa.Autor != null)
+                                        .Select(oa => oa.Autor!.Nome))
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-muted fst-italic">
+                                Sem autores associados
+                            </span>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Formulário de eliminação -->
+            <hr class="my-4" />
+
+            <form asp-action="Delete"
+                  asp-route-id="@Model.ObraId"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="ObraId" />
+
+                <div class="d-flex gap-2 flex-wrap">
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        🗑️ Eliminar Obra
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        ← Cancelar
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-outline-primary">
+                        🏠 Voltar ao Início
+                    </a>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
