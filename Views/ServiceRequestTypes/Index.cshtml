@@ -1,0 +1,74 @@
+@model IEnumerable<ServiceRequestType>
+
+@{
+    ViewData["Title"] = "Request types";
+
+    var requestCounts = ViewData["RequestCounts"] as Dictionary<int, int> ?? new();
+}
+
+<div class="container py-4">
+    <a asp-controller="AdministrativeServices" asp-action="Index" class="link-secondary text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Requests and Administrative Services
+    </a>
+
+    <header class="d-flex flex-wrap justify-content-between align-items-center my-4">
+        <div>
+            <h1 class="display-6 mb-0">Request types</h1>
+            <p class="text-body-secondary mb-0">Kinds of request that can be submitted to the administrative services.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> New type
+        </a>
+    </header>
+
+    @if (TempData["Message"] != null) {
+        <div class="alert alert-success" role="alert">@TempData["Message"]</div>
+    }
+
+    @if (!Model.Any()) {
+        <div class="alert alert-info" role="alert">
+            <p>There are no request types yet. Requests cannot be submitted until at least one type exists.</p>
+            <form asp-action="CreateDefaults" method="post" class="mb-0">
+                <button type="submit" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-magic"></i> Add the usual types
+                </button>
+                <span class="small text-body-secondary ms-2">Certificate, official document, student support, maintenance and other.</span>
+            </form>
+        </div>
+    } else {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Name)</th>
+                        <th>@Html.DisplayNameFor(m => m.Description)</th>
+                        <th class="text-end">Requests</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model) {
+                        int count = requestCounts.GetValueOrDefault(item.ServiceRequestTypeId);
+                        <tr>
+                            <td class="fw-semibold">@item.Name</td>
+                            <td class="text-body-secondary">@(item.Description ?? "—")</td>
+                            <td class="text-end">
+                                <a asp-controller="ServiceRequests" asp-action="Index" asp-route-type="@item.ServiceRequestTypeId">@count</a>
+                            </td>
+                            <td class="text-end text-nowrap">
+                                <a asp-action="Edit" asp-route-id="@item.ServiceRequestTypeId"
+                                   class="btn btn-sm btn-outline-primary" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.ServiceRequestTypeId"
+                                   class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
