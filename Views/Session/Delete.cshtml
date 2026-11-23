@@ -5,7 +5,7 @@
 }
 
 <div class="container mt-4" style="max-width: 720px;">
-  
+
     <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
         <div>
             <h1 class="h2 fw-bold text-dark mb-1">Eliminar Aula</h1>
@@ -58,10 +58,10 @@
                 <hr class="my-2 text-light-emphasis" />
 
                 <dt class="col-sm-4 text-muted fw-semibold">
-                    @Html.DisplayNameFor(model => model.Group)
+                    Turma
                 </dt>
                 <dd class="col-sm-8 fw-semibold text-dark mb-0">
-                    @Html.DisplayFor(model => model.Group)
+                    @Html.DisplayFor(model => model.Group.NomeTurma)
                 </dd>
 
                 <hr class="my-2 text-light-emphasis" />
@@ -85,14 +85,17 @@
                 <hr class="my-2 text-light-emphasis" />
 
                 <dt class="col-sm-4 text-muted fw-semibold">
-                    @Html.DisplayNameFor(model => model.Ativo)
+                    Estado
                 </dt>
                 <dd class="col-sm-8 text-dark mb-0">
-                    @if (Model != null && Model.Ativo) {
+                    @if (Model != null && Model.Ativo)
+                    {
                         <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1">
                             Ativo
                         </span>
-                    } else {
+                    }
+                    else
+                    {
                         <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3 py-1">
                             Inativo
                         </span>
@@ -101,7 +104,7 @@
             </dl>
 
             <form asp-action="Delete" class="mt-4 pt-3 border-top">
-                <input type="hidden" asp-for="ClassSessionId" />
+                <input type="hidden" asp-for="SessionId" />
                 <div class="d-flex align-items-center gap-2">
                     <button type="submit" class="btn btn-danger px-4 shadow-sm">
                         <i class="bi bi-trash me-1"></i> Confirmar Eliminação

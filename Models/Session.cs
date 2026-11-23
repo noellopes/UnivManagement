@@ -7,12 +7,12 @@ namespace UnivManagement.Models
     [Table("ClassSession")]
     public class Session
     {
-        public int ClassSessionId { get; set; }
+        public int SessionId { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique o {0}.")]
         [StringLength(20, ErrorMessage = "O {0} não pode exceder {1} caracteres.")]
         [Display(Name = "Dia da Semana")]
-        public string DiaSemana { get; set; }
+        public required string DiaSemana { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique a {0}.")]
         [DataType(DataType.Time)]
@@ -36,7 +36,7 @@ namespace UnivManagement.Models
         [Display(Name = "Sala")]
         public int IdSala { get; set; }
 
-        [ForeignKey("IdSala")]
+        //[ForeignKey("IdSala")]
         //public Room? Room { get; set; }
 
         [Required(ErrorMessage = "Por favor, selecione a {0}.")]
