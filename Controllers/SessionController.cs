@@ -18,7 +18,11 @@ namespace UnivManagement.Controllers
         // GET: SESSIONS
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ClassSession.Include(s => s.Group).ToListAsync());
+            return View(await _context.ClassSession
+                .Include(s => s.Group)
+                .Include(s => s.Course)
+                .Include(s => s.AcademicYear)
+                .ToListAsync());
         }
 
         // GET: SESSIONS/Details/5
@@ -33,6 +37,8 @@ namespace UnivManagement.Controllers
 
             var session = await _context.ClassSession
                 .Include(s => s.Group)
+                .Include(s => s.Course)
+                .Include(s => s.AcademicYear)
                 .FirstOrDefaultAsync(m => m.SessionId == SessionId);
 
             if (session == null)
@@ -47,14 +53,14 @@ namespace UnivManagement.Controllers
         // GET: SESSIONS/Create
         public IActionResult Create()
         {
-            ViewData["IdTurma"] = new SelectList(_context.ClassGroup, "GroupId", "NomeTurma");
+            CarregarDropdowns();
             return View();
         }
 
         // POST: SESSIONS/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SessionId,DiaSemana,HoraInicio,HoraFim,TipoAula,Ativo,IdSala,IdTurma")] Session session)
+        public async Task<IActionResult> Create([Bind("SessionId,DiaSemana,HoraInicio,HoraFim,TipoAula,Ativo,IdSala,IdTurma,CourseId,AcademicYearId,Semestre")] Session session)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +71,7 @@ namespace UnivManagement.Controllers
                 return RedirectToAction(nameof(Details), new { SessionId = session.SessionId });
             }
 
-            ViewData["IdTurma"] = new SelectList(_context.ClassGroup, "GroupId", "NomeTurma", session.IdTurma);
+            CarregarDropdowns(session);
             return View(session);
         }
 
@@ -86,14 +92,14 @@ namespace UnivManagement.Controllers
                 return View("NotFound");
             }
 
-            ViewData["IdTurma"] = new SelectList(_context.ClassGroup, "GroupId", "NomeTurma", session.IdTurma);
+            CarregarDropdowns(session);
             return View(session);
         }
 
         // POST: SESSIONS/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int SessionId, [Bind("SessionId,DiaSemana,HoraInicio,HoraFim,TipoAula,Ativo,IdSala,IdTurma")] Session session)
+        public async Task<IActionResult> Edit(int SessionId, [Bind("SessionId,DiaSemana,HoraInicio,HoraFim,TipoAula,Ativo,IdSala,IdTurma,CourseId,AcademicYearId,Semestre")] Session session)
         {
             if (SessionId != session.SessionId)
             {
@@ -124,7 +130,7 @@ namespace UnivManagement.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["IdTurma"] = new SelectList(_context.ClassGroup, "GroupId", "NomeTurma", session.IdTurma);
+            CarregarDropdowns(session);
             return View(session);
         }
 
@@ -140,6 +146,8 @@ namespace UnivManagement.Controllers
 
             var session = await _context.ClassSession
                 .Include(s => s.Group)
+                .Include(s => s.Course)
+                .Include(s => s.AcademicYear)
                 .FirstOrDefaultAsync(m => m.SessionId == SessionId);
 
             if (session == null)
@@ -168,6 +176,21 @@ namespace UnivManagement.Controllers
 
             TempData["SuccessMessage"] = "Sessão eliminada com sucesso!";
             return RedirectToAction(nameof(Index));
+        }
+
+        private void CarregarDropdowns(Session? session = null)
+        {
+            var anosLetivos = _context.AcademicYear
+                .Select(a => new
+                {
+                    a.AcademicYearId,
+                    Descricao = a.StartYear + "/" + a.EndYear
+                })
+                .ToList();
+
+            ViewData["CourseId"] = new SelectList(_context.Course, "CourseId", "Name", session?.CourseId);
+            ViewData["AcademicYearId"] = new SelectList(anosLetivos, "AcademicYearId", "Descricao", session?.AcademicYearId);
+            ViewData["IdTurma"] = new SelectList(_context.ClassGroup, "GroupId", "NomeTurma", session?.IdTurma);
         }
 
         private bool SessionExists(int? sessionId)

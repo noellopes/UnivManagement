@@ -101,6 +101,10 @@
                         </span>
                     }
                 </dd>
+                <dt class="col-sm-4 text-muted fw-semibold">Ano Letivo</dt>
+                <dd class="col-sm-8 text-dark mb-0">
+                    @(Model.AcademicYear != null ? $"{Model.AcademicYear.StartYear}/{Model.AcademicYear.EndYear}" : "-")
+                </dd>
             </dl>
 
             <form asp-action="Delete" class="mt-4 pt-3 border-top">

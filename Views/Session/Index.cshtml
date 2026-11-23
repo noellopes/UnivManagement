@@ -42,6 +42,9 @@
                             <th class="text-center">
                                 @Html.DisplayNameFor(model => model.IdSala)
                             </th>
+                            <th class="text-center">Curso</th>
+                            <th class="text-center">Ano Letivo</th>
+                            <th class="text-center">Semestre</th>
                             <th class="text-center">
                                 Estado
                             </th>
@@ -72,6 +75,17 @@
                                 </td>
                                 <td class="text-center text-muted">
                                     @Html.DisplayFor(model => item.IdSala)
+                                </td>
+                                <td class="text-center text-dark">
+                                    @(item.Course?.Name ?? "Sem Curso")
+                                </td>
+                                <td class="text-center text-muted">
+                                    @(item.AcademicYear != null ? $"{item.AcademicYear.StartYear}/{item.AcademicYear.EndYear}" : "-")
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-light text-dark border">
+                                        @(item.Semestre)º Semestre
+                                    </span>
                                 </td>
                                 <td class="text-center">
                                     @if (item.Ativo)

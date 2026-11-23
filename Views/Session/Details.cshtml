@@ -102,6 +102,10 @@
                         </span>
                     }
                 </dd>
+                <dt class="col-sm-4 text-muted fw-semibold">Ano Letivo</dt>
+                <dd class="col-sm-8 text-dark mb-0">
+                    @(Model.AcademicYear != null ? $"{Model.AcademicYear.StartYear}/{Model.AcademicYear.EndYear}" : "-")
+                </dd>
             </dl>
 
             <div class="d-flex align-items-center gap-2 mt-4 pt-3 border-top">
