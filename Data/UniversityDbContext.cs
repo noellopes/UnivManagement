@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
-        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
@@ -86,11 +85,12 @@ namespace UnivManagement.Data {
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
         }
-      
+
+        public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
-
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
