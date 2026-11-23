@@ -79,7 +79,8 @@ namespace UnivManagement.Data {
                 new Models.AccommodationManagement.ContractStatus { ContractStatusId = 2, Name = "Ativo" },
                 new Models.AccommodationManagement.ContractStatus { ContractStatusId = 3, Name = "Terminado" },
                 new Models.AccommodationManagement.ContractStatus { ContractStatusId = 4, Name = "Expirado" });
-        }
+        
+        
 
             // Room: número único por residência:
             modelBuilder.Entity<Models.AccommodationManagement.Room>()
