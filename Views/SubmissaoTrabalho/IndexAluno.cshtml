@@ -1,0 +1,80 @@
+﻿@model IEnumerable<UnivManagement.Models.SubmissaoTrabalho>
+
+@{
+    ViewData["Title"] = "Submissões - Aluno";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>As Minhas Submissões</h2>
+            <p class="text-muted">
+                Área do Aluno - Consulta e entrega de trabalhos.
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary">
+            Nova Submissão
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            Trabalhos Submetidos
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Trabalho</th>
+                        <th>Aluno responsável</th>
+                        <th>Grupo</th>
+                        <th>Data de Entrega</th>
+                        <th>Ficheiro</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Trabalho?.Titulo</td>
+                            <td>@item.StudentId</td>
+                            <td>
+                                @(item.GrupoTrabalho?.Nome ?? "Individual")
+                            </td>
+                            <td>@item.DataEntrega.ToString("dd/MM/yyyy")</td>
+                            <td>@item.CaminhoFicheiro</td>
+
+                            <td class="text-center">
+                                <a asp-action="Details"
+                                   asp-route-id="@item.SubmissaoTrabalhoId"
+                                   class="btn btn-info btn-sm">
+                                    Consultar
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.SubmissaoTrabalhoId"
+                                   class="btn btn-warning btn-sm">
+                                    Editar
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center">
+                    Ainda não existem submissões registadas.
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
