@@ -1,0 +1,15 @@
+﻿@model List<UnivManagement.Models.DocenteQuadro>
+@{
+    ViewData["Title"] = "Professores";
+}
+
+<h1>Professores</h1>
+<p><a asp-action="Index">← Cursos</a></p>
+<p class="text-muted">Escolha um professor para ver as aulas e gerar o horário de atendimento.</p>
+
+<div class="list-group">
+    @foreach (var d in Model)
+    {
+        <a class="list-group-item list-group-item-action" asp-action="Professor" asp-route-docenteid="@d.DocenteId">@d.Nome</a>
+    }
+</div>
