@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
 using UnivManagement.Models;
 using UnivManagement.Models.AcademicManagement;
+using UnivManagement.Services;
 
 namespace UnivManagement.Controllers
 {
@@ -24,8 +25,97 @@ namespace UnivManagement.Controllers
             var atendimentos = _context.HorarioAtendimento
                 .Include(a => a.Docente)
                 .Include(a => a.Departamento)
-                .Include(a => a.AnoLetivo);
+                .Include(a => a.AnoLetivo)
+                .OrderBy(a => a.DiaSemana)
+                .ThenBy(a => a.HoraInicio);
             return View(await atendimentos.ToListAsync());
+        }
+
+        // POST: HorarioAtendimento/Gerar
+        // Gera o atendimento de cada docente: 1/3 das horas de aula, num espaco livre
+        // do docente e dos alunos dos cursos onde ele leciona. Repetir substitui o anterior.
+        [HttpPost("HorarioAtendimento/Gerar")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Gerar(int semestre = 1)
+        {
+            if (semestre != 1 && semestre != 2)
+            {
+                semestre = 1;
+            }
+
+            var ano = await _context.Set<AcademicYear>()
+                .OrderByDescending(a => a.StartYear)
+                .FirstOrDefaultAsync();
+            var departamento = await _context.Set<Departamento>()
+                .OrderBy(d => d.DepartamentoId)
+                .FirstOrDefaultAsync();
+
+            if (ano == null || departamento == null)
+            {
+                TempData["Erro"] = "Faltam dados de base: é preciso haver pelo menos um ano letivo e um departamento.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // DE ONDE VEM O HORARIO DE AULAS: hoje exemplos.
+            // Quando a Aula entrar no master, trocar so esta linha por outra IFonteAulas.
+            IFonteAulas fonte = new FonteAulasExemplo(_context);
+            var docentes = await fonte.ObterDocentesAsync(semestre);
+
+            if (docentes.Count == 0)
+            {
+                TempData["Erro"] = "Não há docentes com aulas para gerar atendimento.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var gerados = 0;
+            var semEspaco = new List<string>();
+
+            foreach (var d in docentes)
+            {
+                // repetir a geracao: apaga o atendimento anterior deste docente e semestre
+                var antigos = _context.HorarioAtendimento.Where(a =>
+                    a.DocenteId == d.DocenteId &&
+                    a.AcademicYearId == ano.AcademicYearId &&
+                    a.Semestre == semestre);
+                _context.HorarioAtendimento.RemoveRange(antigos);
+
+                var minutosAula = d.AulasDoDocente.Sum(a => (int)(a.Fim - a.Inicio).TotalMinutes);
+                var ocupados = d.AulasDoDocente.Concat(d.AulasDosAlunos);
+                var intervalo = GeradorAtendimento.ProcurarIntervalo(minutosAula, ocupados);
+
+                if (intervalo == null)
+                {
+                    semEspaco.Add(d.Nome);
+                    continue;
+                }
+
+                _context.HorarioAtendimento.Add(new HorarioAtendimento
+                {
+                    Semestre = semestre,
+                    DiaSemana = intervalo.Dia,
+                    HoraInicio = TimeOnly.FromTimeSpan(intervalo.Inicio),
+                    HoraFim = TimeOnly.FromTimeSpan(intervalo.Fim),
+                    Modalidade = "Presencial",
+                    RequerMarcacao = false,
+                    Estado = "Provisório",
+                    Observacoes = "Gabinete: " + d.Gabinete,
+                    DocenteId = d.DocenteId,
+                    DepartamentoId = departamento.DepartamentoId,
+                    AcademicYearId = ano.AcademicYearId
+                });
+                gerados++;
+            }
+
+            await _context.SaveChangesAsync();
+
+            var mensagem = $"Atendimentos gerados: {gerados}.";
+            if (semEspaco.Count > 0)
+            {
+                mensagem += " Sem espaço livre para: " + string.Join(", ", semEspaco) + ".";
+            }
+
+            TempData["Mensagem"] = mensagem;
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: HorarioAtendimento/Details/5
@@ -169,7 +259,7 @@ namespace UnivManagement.Controllers
             return _context.HorarioAtendimento.Any(e => e.AtendimentoId == atendimentoid);
         }
 
-
+        // Listas para os <select> (sem DbSet no contexto: usa-se Set<T>())
         private void CarregarListas(HorarioAtendimento? atendimento = null)
         {
             ViewData["DocenteId"] = new SelectList(
@@ -179,7 +269,9 @@ namespace UnivManagement.Controllers
                 _context.Set<Departamento>(), "DepartamentoId", "Nome", atendimento?.DepartamentoId);
 
             ViewData["AcademicYearId"] = new SelectList(
-                _context.Set<AcademicYear>(), "AcademicYearId", "AcademicYearId", atendimento?.AcademicYearId);
+                _context.Set<AcademicYear>()
+                    .Select(a => new { a.AcademicYearId, Texto = a.StartYear + "/" + a.EndYear }),
+                "AcademicYearId", "Texto", atendimento?.AcademicYearId);
         }
     }
 }
