@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
 using UnivManagement.Models;
+using UnivManagement.ViewModels;
 
 public class EstagiosController : Controller
 {
@@ -53,20 +54,23 @@ public class EstagiosController : Controller
     }
 
     // GET: Estagios
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
-        var estagios = await _context.Estagios
+        var estagios = _context.Estagios
             .Include(e => e.Student)
             .Include(e => e.Empresa)
-            .ToListAsync();
+            .OrderBy(e => e.EstagioId);
 
-        foreach (var estagio in estagios)
+        var queryOptions =
+            await QueryOptions<Estagio>.CreateAsync(estagios, page);
+
+        foreach (var estagio in queryOptions.Items)
         {
             estagio.Estado = CalcularEstado(
                 estagio.DataInicio, estagio.DataFim);
         }
 
-        return View(estagios);
+        return View(queryOptions);
     }
 
     // GET: Estagios/Details/5
