@@ -13,6 +13,12 @@
         + Adicionar estado
     </a>
 </div>
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-@ViewBag.SuccessType" role="alert">
+        @ViewBag.SuccessMessage
+    </div>
+}
 
 <div class="card shadow-sm" style="border-top: 4px solid #e8a33d;">
     <div class="card-body">

@@ -14,8 +14,10 @@ public class EstadoPossivelController : Controller
     }
 
     // GET: ESTADOPOSSIVELS
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? successMessage, string? successType)
     {
+        ViewBag.SuccessMessage = successMessage;
+        ViewBag.SuccessType = successType;
         return View(await _context.EstadoPossivel.ToListAsync());
     }
 
@@ -50,11 +52,21 @@ public class EstadoPossivelController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("EstadoPossivelId,NomeEstado,Descricao")] EstadoPossivel estadopossivel)
     {
+        if (_context.EstadoPossivel.Any(e => e.NomeEstado == estadopossivel.NomeEstado))
+        {
+            ViewBag.Erro = "Já existe um estado com este nome.";
+            return View(estadopossivel);
+        }
+
         if (ModelState.IsValid)
         {
             _context.Add(estadopossivel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new
+            {
+                successMessage = "Estado criado com sucesso.",
+                successType = "success"
+            });
         }
         return View(estadopossivel);
     }
@@ -87,6 +99,13 @@ public class EstadoPossivelController : Controller
             return NotFound();
         }
 
+        if (_context.EstadoPossivel.Any(e => e.NomeEstado == estadopossivel.NomeEstado
+                                          && e.EstadoPossivelId != estadopossivel.EstadoPossivelId))
+        {
+            ViewBag.Erro = "Já existe um estado com este nome.";
+            return View(estadopossivel);
+        }
+
         if (ModelState.IsValid)
         {
             try
@@ -105,7 +124,11 @@ public class EstadoPossivelController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new
+            {
+                successMessage = "Estado atualizado com sucesso.",
+                successType = "warning"
+            });
         }
         return View(estadopossivel);
     }
@@ -140,7 +163,11 @@ public class EstadoPossivelController : Controller
         }
 
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new
+        {
+            successMessage = "Estado eliminado com sucesso.",
+            successType = "danger"
+        });
     }
 
     private bool EstadoPossivelExists(int id)

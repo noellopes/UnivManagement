@@ -16,6 +16,12 @@
 
         <div class="card shadow-sm" style="border-top: 4px solid #e8a33d;">
             <div class="card-body">
+                @if (ViewBag.Erro != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Erro
+                    </div>
+                }
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
