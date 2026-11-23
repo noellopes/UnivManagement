@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Painel do Docente — Avaliações e Trabalhos";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a asp-controller="Avaliacoes_Menu" asp-action="Index" class="text-decoration-none text-secondary">
+            <i class="bi bi-arrow-left"></i> Escolher Perfil
+        </a>
+        <span class="badge bg-primary fs-6">
+            <i class="bi bi-person-workspace me-1"></i> Perfil: Docente
+        </span>
+    </div>
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-normal">Painel do Docente</h1>
+        <p class="text-muted fs-5">Gestão de avaliações, trabalhos, grupos, notas e feedback das submissões.</p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- 1. Diogo: Avaliações e Submissões (Docente) -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">
+                        <i class="bi bi-clipboard-check me-2 text-primary"></i>Avaliações e Submissões
+                    </h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        Criar, editar e eliminar avaliações e consultar todas as submissões entregues pelos estudantes.
+                    </p>
+                    <div class="col-12">
+                        <a asp-controller="AvaliacaoUC" asp-action="IndexDocente" class="btn btn-outline-primary w-100 mt-3">
+                            Gerir Avaliações
+                        </a>
+                        <a asp-controller="SubmissaoTrabalho" asp-action="IndexDocente" class="btn btn-outline-primary w-100 mt-3">
+                            Consultar Submissões
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Vasco: Notas e Exames -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">
+                        <i class="bi bi-award me-2 text-primary"></i>Notas e Exames
+                    </h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        Registar e consultar exames realizados e as respetivas notas finais dos alunos.
+                    </p>
+                    <a asp-controller="Notas" asp-action="Index" class="btn btn-outline-primary w-100 mt-3">
+                        Gerir Notas e Exames
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Joel: Trabalhos e Grupos -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">
+                        <i class="bi bi-people me-2 text-primary"></i>Trabalhos e Grupos
+                    </h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        Criar e gerir enunciados de trabalhos práticos e a constituição dos grupos de trabalho.
+                    </p>
+                    <a asp-controller="Trabalhos" asp-action="Index" class="btn btn-outline-primary w-100 mt-3">
+                        Gerir Trabalhos e Grupos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. João: Feedback e Critérios -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">
+                        <i class="bi bi-chat-square-text me-2 text-primary"></i>Feedback e Critérios
+                    </h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        Definir critérios de avaliação das UCs e registar, editar ou consultar feedback das submissões.
+                    </p>
+                    <a asp-controller="CriterioAvaliacao" asp-action="Index" class="btn btn-outline-primary w-100 mt-3">
+                        Critérios de Avaliação
+                    </a>
+                    <a asp-controller="Feedback" asp-action="Index" class="btn btn-outline-primary w-100 mt-3">
+                        Gerir Feedback
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
