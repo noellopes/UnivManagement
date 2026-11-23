@@ -43,6 +43,26 @@ public class AvaliacaoUCController : Controller
         return View(avaliacoes);
     }
 
+    // GET: AvaliacaoUC/DetailsAluno/5
+    public async Task<IActionResult> DetailsAluno(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var avaliacao = await _context.AvaliacoesUC
+            .Include(a => a.TipoAvaliacao)
+            .FirstOrDefaultAsync(a => a.AvaliacaoUCId == id);
+
+        if (avaliacao == null)
+        {
+            return NotFound();
+        }
+
+        return View(avaliacao);
+    }
+
     // GET: AvaliacaoUC/Details/5
     public async Task<IActionResult> Details(int? id)
     {
