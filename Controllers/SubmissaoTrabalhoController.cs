@@ -37,6 +37,18 @@ public class SubmissaoTrabalhoController : Controller
         return View(submissoes);
     }
 
+    // GET: SubmissaoTrabalho/IndexAluno
+    public async Task<IActionResult> IndexAluno()
+    {
+        var submissoes = await _context.SubmissoesTrabalho
+            .Include(s => s.Trabalho)
+            .Include(s => s.Student)
+            .Include(s => s.GrupoTrabalho)
+            .ToListAsync();
+
+        return View(submissoes);
+    }
+
     // GET: SubmissaoTrabalho/DetailsDocente/5
     public async Task<IActionResult> DetailsDocente(int? id)
     {
