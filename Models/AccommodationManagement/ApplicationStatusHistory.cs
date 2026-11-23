@@ -15,7 +15,10 @@ public class ApplicationStatusHistory
 
     [Required(ErrorMessage = "The status is required.")]
     [Display(Name = "Status")]
-    public ApplicationStatus Status { get; set; }
+    public int PossibleStatusId { get; set; }
+
+    [Display(Name = "Status")]
+    public PossibleStatus? PossibleStatus { get; set; }
 
     [Display(Name = "Changed At")]
     public DateTime ChangedAt { get; set; } = DateTime.Now;

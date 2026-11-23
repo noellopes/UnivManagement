@@ -1,5 +1,4 @@
 @model UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory
-@using UnivManagement.Models.AccommodationManagement
 
 @{
     ViewData["Title"] = "Record Status Change";
@@ -23,11 +22,11 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="Status" class="form-label"></label>
-                <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<ApplicationStatus>()">
+                <label asp-for="PossibleStatusId" class="form-label"></label>
+                <select asp-for="PossibleStatusId" class="form-select" asp-items="ViewBag.PossibleStatusId">
                     <option value="">-- Select the new status --</option>
                 </select>
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <span asp-validation-for="PossibleStatusId" class="text-danger"></span>
             </div>
 
             <div class="mb-3">

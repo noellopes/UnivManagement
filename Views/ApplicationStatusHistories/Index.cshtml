@@ -1,5 +1,4 @@
 @model IEnumerable<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory>
-@using UnivManagement.Models.AccommodationManagement
 
 @{
     ViewData["Title"] = "Application Status History";
@@ -54,7 +53,7 @@ else
             <thead class="table-light">
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.AccommodationApplicationId)</th>
-                    <th>@Html.DisplayNameFor(model => model.Status)</th>
+                    <th>@Html.DisplayNameFor(model => model.PossibleStatus)</th>
                     <th>@Html.DisplayNameFor(model => model.ChangedAt)</th>
                     <th>@Html.DisplayNameFor(model => model.ChangedBy)</th>
                     <th>@Html.DisplayNameFor(model => model.Notes)</th>
@@ -64,13 +63,14 @@ else
             <tbody>
                 @foreach (var item in Model)
                 {
-                    var badgeClass = item.Status switch
+                    var statusName = item.PossibleStatus?.Name ?? "Unknown";
+                    var badgeClass = statusName switch
                     {
-                        ApplicationStatus.Submitted => "bg-secondary",
-                        ApplicationStatus.UnderReview => "bg-warning text-dark",
-                        ApplicationStatus.Approved => "bg-success",
-                        ApplicationStatus.Rejected => "bg-danger",
-                        ApplicationStatus.Withdrawn => "bg-dark",
+                        "Submitted" => "bg-secondary",
+                        "UnderReview" or "Under Review" => "bg-warning text-dark",
+                        "Approved" => "bg-success",
+                        "Rejected" => "bg-danger",
+                        "Withdrawn" => "bg-dark",
                         _ => "bg-info"
                     };
 
@@ -81,7 +81,7 @@ else
                             </a>
                         </td>
                         <td>
-                            <span class="badge @badgeClass">@item.Status</span>
+                            <span class="badge @badgeClass">@statusName</span>
                         </td>
                         <td>@item.ChangedAt.ToString("dd/MM/yyyy HH:mm")</td>
                         <td>@item.ChangedBy</td>

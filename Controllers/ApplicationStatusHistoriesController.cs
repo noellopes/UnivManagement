@@ -20,6 +20,7 @@ public class ApplicationStatusHistoriesController : Controller
     {
         var query = _context.ApplicationStatusHistory
             .Include(h => h.AccommodationApplication)
+            .Include(h => h.PossibleStatus)
             .AsQueryable();
 
         if (applicationId.HasValue)
@@ -45,6 +46,7 @@ public class ApplicationStatusHistoriesController : Controller
 
         var history = await _context.ApplicationStatusHistory
             .Include(h => h.AccommodationApplication)
+            .Include(h => h.PossibleStatus)
             .FirstOrDefaultAsync(m => m.ApplicationStatusHistoryId == id);
 
         if (history == null)
@@ -52,13 +54,22 @@ public class ApplicationStatusHistoriesController : Controller
             return NotFound();
         }
 
+        var latestStatus = await _context.ApplicationStatusHistory
+            .Include(h => h.PossibleStatus)
+            .Where(h => h.AccommodationApplicationId == history.AccommodationApplicationId)
+            .OrderByDescending(h => h.ChangedAt)
+            .Select(h => h.PossibleStatus != null ? h.PossibleStatus.Name : "Unknown")
+            .FirstOrDefaultAsync();
+
+        ViewBag.CurrentApplicationStatus = latestStatus ?? "No status recorded";
+
         return View(history);
     }
 
     // GET: ApplicationStatusHistories/Create
     public IActionResult Create(int? applicationId)
     {
-        PopulateApplicationsDropDown(applicationId);
+        PopulateDropDowns(applicationId);
 
         var model = new ApplicationStatusHistory
         {
@@ -77,49 +88,69 @@ public class ApplicationStatusHistoriesController : Controller
     // POST: ApplicationStatusHistories/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("AccommodationApplicationId,Status,ChangedBy,Notes")] ApplicationStatusHistory history)
+    public async Task<IActionResult> Create([Bind("AccommodationApplicationId,PossibleStatusId,ChangedBy,Notes")] ApplicationStatusHistory history)
     {
         var application = await _context.AccommodationApplication
             .FirstOrDefaultAsync(a => a.AccommodationApplicationId == history.AccommodationApplicationId);
+
+        var selectedStatus = await _context.PossibleStatus
+            .FirstOrDefaultAsync(s => s.PossibleStatusId == history.PossibleStatusId);
 
         if (application == null)
         {
             ModelState.AddModelError("AccommodationApplicationId", "The selected application does not exist.");
         }
-        else if (application.Status == history.Status)
+        else
         {
-            ModelState.AddModelError("Status", $"The application is already in the '{history.Status}' status.");
+            var currentStatusId = await _context.ApplicationStatusHistory
+                .Where(h => h.AccommodationApplicationId == history.AccommodationApplicationId)
+                .OrderByDescending(h => h.ChangedAt)
+                .Select(h => (int?)h.PossibleStatusId)
+                .FirstOrDefaultAsync();
+
+            if (currentStatusId == history.PossibleStatusId)
+            {
+                ModelState.AddModelError("PossibleStatusId", $"The application is already in the '{selectedStatus?.Name}' status.");
+            }
         }
 
         if (ModelState.IsValid && application != null)
         {
             history.ChangedAt = DateTime.Now;
-
-            // Synchronize the current status on the AccommodationApplication record
-            application.Status = history.Status;
-            _context.Update(application);
             _context.Add(history);
 
             await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = $"Application #{application.AccommodationApplicationId} status updated to {history.Status}.";
+            TempData["SuccessMessage"] = $"Application #{application.AccommodationApplicationId} status updated to {selectedStatus?.Name}.";
             return RedirectToAction(nameof(Index), new { applicationId = application.AccommodationApplicationId });
         }
 
-        PopulateApplicationsDropDown(history.AccommodationApplicationId);
+        PopulateDropDowns(history.AccommodationApplicationId, history.PossibleStatusId);
         return View(history);
     }
 
-    private void PopulateApplicationsDropDown(int? selectedApplicationId = null)
+    private void PopulateDropDowns(int? selectedApplicationId = null, int? selectedStatusId = null)
     {
         var applications = _context.AccommodationApplication
             .OrderByDescending(a => a.AccommodationApplicationId)
             .Select(a => new
             {
                 a.AccommodationApplicationId,
-                Description = $"Application #{a.AccommodationApplicationId} (Student ID: {a.StudentId} | Current status: {a.Status})"
+                a.StudentId,
+                CurrentStatus = _context.ApplicationStatusHistory
+                    .Where(h => h.AccommodationApplicationId == a.AccommodationApplicationId)
+                    .OrderByDescending(h => h.ChangedAt)
+                    .Select(h => h.PossibleStatus != null ? h.PossibleStatus.Name : "Unknown")
+                    .FirstOrDefault() ?? "No status"
+            })
+            .ToList()
+            .Select(a => new
+            {
+                a.AccommodationApplicationId,
+                Description = $"Application #{a.AccommodationApplicationId} (Student ID: {a.StudentId} | Current status: {a.CurrentStatus})"
             })
             .ToList();
 
         ViewBag.AccommodationApplicationId = new SelectList(applications, "AccommodationApplicationId", "Description", selectedApplicationId);
+        ViewBag.PossibleStatusId = new SelectList(_context.PossibleStatus.OrderBy(s => s.Name), "PossibleStatusId", "Name", selectedStatusId);
     }
 }
