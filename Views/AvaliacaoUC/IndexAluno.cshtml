@@ -1,0 +1,62 @@
+﻿@model IEnumerable<UnivManagement.Models.AvaliacaoUC>
+
+@{
+    ViewData["Title"] = "Avaliações - Aluno";
+}
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2>As Minhas Avaliações</h2>
+        <p class="text-muted">
+            Área do Aluno - Consulta de avaliações e respetivas datas.
+        </p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            Calendário de Avaliações
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Tipo de Avaliação</th>
+                        <th>Unidade Curricular</th>
+                        <th>Data</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TipoAvaliacao?.TipoProva</td>
+                            <td>@item.UcId</td>
+                            <td>@item.Data.ToString("dd/MM/yyyy")</td>
+
+                            <td class="text-center">
+                                <a asp-action="Details"
+                                   asp-route-id="@item.AvaliacaoUCId"
+                                   class="btn btn-info btn-sm">
+                                    Consultar
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center">
+                    Ainda não existem avaliações disponíveis.
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

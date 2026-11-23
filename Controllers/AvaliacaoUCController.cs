@@ -23,6 +23,26 @@ public class AvaliacaoUCController : Controller
         return View(avaliacoes);
     }
 
+    // GET: AvaliacaoUC/IndexDocente
+    public async Task<IActionResult> IndexDocente()
+    {
+        var avaliacoes = await _context.AvaliacoesUC
+            .Include(a => a.TipoAvaliacao)
+            .ToListAsync();
+
+        return View(avaliacoes);
+    }
+
+    // GET: AvaliacaoUC/IndexAluno
+    public async Task<IActionResult> IndexAluno()
+    {
+        var avaliacoes = await _context.AvaliacoesUC
+            .Include(a => a.TipoAvaliacao)
+            .ToListAsync();
+
+        return View(avaliacoes);
+    }
+
     // GET: AvaliacaoUC/Details/5
     public async Task<IActionResult> Details(int? id)
     {
