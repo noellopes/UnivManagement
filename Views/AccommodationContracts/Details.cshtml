@@ -1,59 +1,41 @@
 @model UnivManagement.Models.AccommodationManagement.AccommodationContract
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Contrato";
 }
 
-<h1>Details</h1>
+<h1>Detalhes do Contrato</h1>
 
 <div>
-    <h4>AccommodationContract</h4>
+    <h4>Contrato de Alojamento</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StudentId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StudentId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RoomAllocationId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RoomAllocationId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SignatureDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SignatureDate)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.RoomAllocationId)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.RoomAllocationId)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.StartDate)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.StartDate)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EndDate)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.EndDate)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MonthlyRent)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.MonthlyRent)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Deposit)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Deposit)</dd>
+
+        <dt class="col-sm-3">Renda Total Estimada</dt>
+        <dd class="col-sm-9">@Model.CalculateTotalRent().ToString("C")</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ContractStatusId)</dt>
+        <dd class="col-sm-9">@(Model.Status?.Name ?? Model.ContractStatusId.ToString())</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SignedDocumentId)</dt>
+        <dd class="col-sm-9">@(Model.SignedDocumentId?.ToString() ?? "Sem documento associado")</dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.AccommodationContractId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.AccommodationContractId" class="btn btn-warning">Editar</a> |
+    <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
 </div>

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using UnivManagement.Models.AccommodationManagement;
 using UnivManagement.Data;
+using UnivManagement.Models.AccommodationManagement;
 
 namespace UnivManagement.Controllers
 {
@@ -14,95 +15,116 @@ namespace UnivManagement.Controllers
             _context = context;
         }
 
+        // GET: AccommodationContracts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AccommodationContract.ToListAsync());
+            var contracts = _context.AccommodationContract
+                .Include(c => c.Status);
+
+            return View(await contracts.ToListAsync());
         }
 
+        // GET: AccommodationContracts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
 
-            var accommodationcontract = await _context.AccommodationContract
+            var accommodationContract = await _context.AccommodationContract
+                .Include(c => c.Status)
                 .FirstOrDefaultAsync(m => m.AccommodationContractId == id);
-            if (accommodationcontract == null) return NotFound();
 
-            return View(accommodationcontract);
+            if (accommodationContract == null) return NotFound();
+
+            return View(accommodationContract);
         }
 
+        // GET: AccommodationContracts/Create
         public IActionResult Create()
         {
+            ViewData["ContractStatusId"] = new SelectList(_context.ContractStatus, "ContractStatusId", "Name");
             return View();
         }
 
+        // POST: AccommodationContracts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AccommodationContractId,StudentId,RoomAllocationId,SignatureDate,StartDate,EndDate,Status")] AccommodationContract accommodationcontract)
+        public async Task<IActionResult> Create([Bind("AccommodationContractId,RoomAllocationId,StartDate,EndDate,MonthlyRent,Deposit,ContractStatusId,SignedDocumentId")] AccommodationContract accommodationContract)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(accommodationcontract);
+                _context.Add(accommodationContract);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(accommodationcontract);
+
+            ViewData["ContractStatusId"] = new SelectList(_context.ContractStatus, "ContractStatusId", "Name", accommodationContract.ContractStatusId);
+            return View(accommodationContract);
         }
 
+        // GET: AccommodationContracts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
-            var accommodationcontract = await _context.AccommodationContract.FindAsync(id);
-            if (accommodationcontract == null) return NotFound();
+            var accommodationContract = await _context.AccommodationContract.FindAsync(id);
+            if (accommodationContract == null) return NotFound();
 
-            return View(accommodationcontract);
+            ViewData["ContractStatusId"] = new SelectList(_context.ContractStatus, "ContractStatusId", "Name", accommodationContract.ContractStatusId);
+            return View(accommodationContract);
         }
 
+        // POST: AccommodationContracts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AccommodationContractId,StudentId,RoomAllocationId,SignatureDate,StartDate,EndDate,Status")] AccommodationContract accommodationcontract)
+        public async Task<IActionResult> Edit(int id, [Bind("AccommodationContractId,RoomAllocationId,StartDate,EndDate,MonthlyRent,Deposit,ContractStatusId,SignedDocumentId")] AccommodationContract accommodationContract)
         {
-            if (id != accommodationcontract.AccommodationContractId) return NotFound();
+            if (id != accommodationContract.AccommodationContractId) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(accommodationcontract);
+                    _context.Update(accommodationContract);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccommodationContractExists(accommodationcontract.AccommodationContractId)) return NotFound();
+                    if (!AccommodationContractExists(accommodationContract.AccommodationContractId)) return NotFound();
                     else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(accommodationcontract);
+
+            ViewData["ContractStatusId"] = new SelectList(_context.ContractStatus, "ContractStatusId", "Name", accommodationContract.ContractStatusId);
+            return View(accommodationContract);
         }
 
+        // GET: AccommodationContracts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
 
-            var accommodationcontract = await _context.AccommodationContract
+            var accommodationContract = await _context.AccommodationContract
+                .Include(c => c.Status)
                 .FirstOrDefaultAsync(m => m.AccommodationContractId == id);
-            if (accommodationcontract == null) return NotFound();
 
-            return View(accommodationcontract);
+            if (accommodationContract == null) return NotFound();
+
+            return View(accommodationContract);
         }
 
+        // POST: AccommodationContracts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var accommodationcontract = await _context.AccommodationContract.FindAsync(id);
-            if (accommodationcontract != null)
+            var accommodationContract = await _context.AccommodationContract.FindAsync(id);
+            if (accommodationContract != null)
             {
-                _context.AccommodationContract.Remove(accommodationcontract);
+                _context.AccommodationContract.Remove(accommodationContract);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
