@@ -7,12 +7,8 @@ namespace UnivManagement.Data
 {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
     {
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-namespace UnivManagement.Data {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
             // ServiceRequestType: two request types cannot have the same name
@@ -103,6 +99,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AccommodationManagement.RoomStatus>().HasData(
                 new Models.AccommodationManagement.RoomStatus { RoomStatusId = 1, Name = "Available" },
                 new Models.AccommodationManagement.RoomStatus { RoomStatusId = 2, Name = "Maintenance" });
+
             // indica que o atributo Code é único na tabela Course:
             modelBuilder.Entity<Models.AcademicManagement.Course>()
                 .HasIndex(c => c.Code)
@@ -132,7 +129,6 @@ namespace UnivManagement.Data {
                 .IsUnique();
         }
 
-
         public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
@@ -154,7 +150,8 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory> ApplicationStatusHistory { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationApplication> AccommodationApplication { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.Room> Room { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.PossibleStatus> PossibleStatus { get; set; } = default!;
+
         public DbSet<UnivManagement.Models.AcademicManagement.SchoolCalendar> SchoolCalendar { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.Course> Course { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.InscrUC> InscrUC { get; set; } = default!;
@@ -163,7 +160,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
-        
+
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
@@ -175,6 +172,5 @@ namespace UnivManagement.Data {
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
-        
     }
 }
