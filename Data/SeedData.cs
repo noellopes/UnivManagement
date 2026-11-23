@@ -15,6 +15,7 @@ namespace UnivManagement.Data
             PopulateFuncoesDocentes(db);
             PopulateServicosFuncionarios(db);
             PopulateFuncionarios(db);
+            PopulateDepartamentos(db);
         }
 
         private static void PopulateFuncoesDocentes(UniversityDbContext db)
@@ -106,6 +107,23 @@ namespace UnivManagement.Data
             };
 
             db.Funcionario.AddRange(funcionarios);
+            db.SaveChanges();
+        }
+
+        private static void PopulateDepartamentos(UniversityDbContext db)
+        {
+            // Ajuste o nome da propriedade no DbSet se no seu DbContext for "Departamento" em vez de "Departamentos"
+            if (db.Departamentos.Any()) return;
+
+            var departamentos = new List<Departamento>
+            {
+                new Departamento { Nome = "Departamento de Informática" },
+                new Departamento { Nome = "Departamento de Engenharia" },
+                new Departamento { Nome = "Departamento de Gestão" },
+                new Departamento { Nome = "Departamento de Matemática" }
+            };
+
+            db.Departamentos.AddRange(departamentos);
             db.SaveChanges();
         }
     }
