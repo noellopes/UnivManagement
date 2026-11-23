@@ -127,6 +127,11 @@ namespace UnivManagement.Data
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
+
+            foreach (var fk in modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>().Metadata.GetForeignKeys())
+            {
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
 
         public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
