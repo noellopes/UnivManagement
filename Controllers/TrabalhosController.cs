@@ -14,15 +14,21 @@ public class TrabalhosController : Controller
         _context = context;
     }
 
-    // Mantém a listagem existente.
     public async Task<IActionResult> Index(string? tipo, string? pesquisa)
     {
         var trabalhos = await CarregarTrabalhosAsync(tipo, pesquisa);
         return View(trabalhos);
     }
 
-    // Listagem da interface do docente.
     public async Task<IActionResult> IndexDocente(
+        string? tipo,
+        string? pesquisa)
+    {
+        var trabalhos = await CarregarTrabalhosAsync(tipo, pesquisa);
+        return View(trabalhos);
+    }
+
+    public async Task<IActionResult> IndexAluno(
         string? tipo,
         string? pesquisa)
     {
@@ -58,6 +64,62 @@ public class TrabalhosController : Controller
         }
 
         return View(trabalho);
+    }
+
+    public async Task<IActionResult> DetailsAluno(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var trabalho = await _context.Trabalhos
+            .AsNoTracking()
+            .Include(t => t.Docente)
+            .Include(t => t.UC)
+            .FirstOrDefaultAsync(t => t.TrabalhoId == id);
+
+        if (trabalho == null)
+        {
+            return NotFound();
+        }
+
+        if (!trabalho.EIndividual)
+        {
+            ViewBag.Grupos = await _context.GruposTrabalho
+                .AsNoTracking()
+                .Where(g => g.TrabalhoId == trabalho.TrabalhoId)
+                .OrderBy(g => g.Nome)
+                .ToListAsync();
+        }
+
+        return View(trabalho);
+    }
+
+    // Consulta dos membros, sem opções de administração.
+    [HttpGet]
+    public async Task<IActionResult> ConsultarMembrosAluno(int grupoId)
+    {
+        var grupo = await _context.GruposTrabalho
+            .AsNoTracking()
+            .Include(g => g.Trabalho)
+            .FirstOrDefaultAsync(g => g.GrupoTrabalhoId == grupoId);
+
+        if (grupo == null ||
+            grupo.Trabalho == null ||
+            grupo.Trabalho.EIndividual)
+        {
+            return NotFound();
+        }
+
+        ViewBag.Membros = await _context.GruposTrabalhoMembros
+            .AsNoTracking()
+            .Include(m => m.Student)
+            .Where(m => m.GrupoTrabalhoId == grupoId)
+            .OrderBy(m => m.Student == null ? "" : m.Student.Name)
+            .ToListAsync();
+
+        return View(grupo);
     }
 
     [HttpGet]
@@ -472,11 +534,10 @@ public class TrabalhosController : Controller
         string? tipo,
         string? pesquisa)
     {
-        var trabalhos = _context.Trabalhos
+        IQueryable<Trabalho> trabalhos = _context.Trabalhos
             .AsNoTracking()
             .Include(t => t.Docente)
-            .Include(t => t.UC)
-            .Where(t => true);
+            .Include(t => t.UC);
 
         if (tipo == "individual")
         {

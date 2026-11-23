@@ -1,0 +1,45 @@
+﻿@model UnivManagement.Models.GrupoTrabalho
+
+@{
+    ViewData["Title"] = "Consultar grupo";
+}
+
+<div class="container py-4">
+    <h1 class="h3 mb-2">@Model.Nome</h1>
+
+    <p class="text-body-secondary">
+        Trabalho: @Model.Trabalho?.Titulo
+    </p>
+
+    <h2 class="h5 mt-4">Membros do grupo</h2>
+
+    @if (ViewBag.Membros != null && ViewBag.Membros.Count > 0)
+    {
+        <ul class="list-group mb-4">
+            @foreach (var membro in ViewBag.Membros)
+            {
+                <li class="list-group-item">
+                    @if (membro.Student != null)
+                    {
+                        <span>
+                            @membro.Student.Name
+                            (@membro.Student.NumStudent)
+                        </span>
+                    }
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-body-secondary">
+            Este grupo ainda não tem membros.
+        </p>
+    }
+
+    <a asp-action="DetailsAluno"
+       asp-route-id="@Model.TrabalhoId"
+       class="btn btn-outline-secondary">
+        Voltar ao trabalho
+    </a>
+</div>

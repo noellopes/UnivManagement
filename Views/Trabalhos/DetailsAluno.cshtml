@@ -42,8 +42,14 @@
                 <ul class="list-group">
                     @foreach (var grupo in ViewBag.Grupos)
                     {
-                        <li class="list-group-item">
-                            @grupo.Nome
+                        <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <span>@grupo.Nome</span>
+
+                            <a asp-action="ConsultarMembrosAluno"
+                               asp-route-grupoId="@grupo.GrupoTrabalhoId"
+                               class="btn btn-sm btn-outline-primary">
+                                Consultar membros
+                            </a>
                         </li>
                     }
                 </ul>
