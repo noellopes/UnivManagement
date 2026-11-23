@@ -4,6 +4,19 @@
     ViewData["Title"] = "Detalhes do Estágio";
 }
 
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+        @ViewBag.SuccessMessage
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Fechar">
+        </button>
+    </div>
+}
+
 <h2>Detalhes do Estágio</h2>
 
 <hr />
