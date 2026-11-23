@@ -24,13 +24,27 @@ public class AvaliacaoUCController : Controller
     }
 
     // GET: AvaliacaoUC/IndexDocente
-    public async Task<IActionResult> IndexDocente()
+    public async Task<IActionResult> IndexDocente(int? epocaId)
     {
-        var avaliacoes = await _context.AvaliacoesUC
+        var avaliacoes = _context.AvaliacoesUC
             .Include(a => a.TipoAvaliacao)
-            .ToListAsync();
+            .AsQueryable();
 
-        return View(avaliacoes);
+        if (epocaId.HasValue)
+        {
+            avaliacoes = avaliacoes.Where(
+                a => a.TipoAvaliacaoId == epocaId.Value
+            );
+        }
+
+        ViewBag.Epocas = new SelectList(
+            _context.TiposAvaliacao,
+            "TipoAvaliacaoId",
+            "TipoProva",
+            epocaId
+        );
+
+        return View(await avaliacoes.ToListAsync());
     }
 
     // GET: AvaliacaoUC/IndexAluno
@@ -71,27 +85,22 @@ public class AvaliacaoUCController : Controller
             return NotFound();
         }
 
-        var avaliacaouc = await _context.AvaliacoesUC
+        var avaliacao = await _context.AvaliacoesUC
             .Include(a => a.TipoAvaliacao)
             .FirstOrDefaultAsync(a => a.AvaliacaoUCId == id);
 
-        if (avaliacaouc == null)
+        if (avaliacao == null)
         {
             return NotFound();
         }
 
-        return View(avaliacaouc);
+        return View(avaliacao);
     }
 
     // GET: AvaliacaoUC/Create
-    public IActionResult Create()
+    public IActionResult Create(int? epocaId)
     {
-        ViewBag.TiposAvaliacao = new SelectList(
-            _context.TiposAvaliacao,
-            "TipoAvaliacaoId",
-            "TipoProva"
-        );
-
+        PreencherListas(epocaId);
         return View();
     }
 
@@ -99,24 +108,25 @@ public class AvaliacaoUCController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("AvaliacaoUCId,TipoAvaliacaoId,UcId,Data")] AvaliacaoUC avaliacaouc)
+        [Bind("AvaliacaoUCId,TipoAvaliacaoId,UcId,Tipo,Avaliacao,Data")]
+        AvaliacaoUC avaliacao)
     {
+        ValidarTipo(avaliacao.Tipo);
+
         if (ModelState.IsValid)
         {
-            _context.AvaliacoesUC.Add(avaliacaouc);
+            _context.AvaliacoesUC.Add(avaliacao);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(IndexDocente));
+            return RedirectToAction(
+                nameof(IndexDocente),
+                new { epocaId = avaliacao.TipoAvaliacaoId }
+            );
         }
 
-        ViewBag.TiposAvaliacao = new SelectList(
-            _context.TiposAvaliacao,
-            "TipoAvaliacaoId",
-            "TipoProva",
-            avaliacaouc.TipoAvaliacaoId
-        );
+        PreencherListas(avaliacao.TipoAvaliacaoId, avaliacao.Tipo);
 
-        return View(avaliacaouc);
+        return View(avaliacao);
     }
 
     // GET: AvaliacaoUC/Edit/5
@@ -127,21 +137,16 @@ public class AvaliacaoUCController : Controller
             return NotFound();
         }
 
-        var avaliacaouc = await _context.AvaliacoesUC.FindAsync(id);
+        var avaliacao = await _context.AvaliacoesUC.FindAsync(id);
 
-        if (avaliacaouc == null)
+        if (avaliacao == null)
         {
             return NotFound();
         }
 
-        ViewBag.TiposAvaliacao = new SelectList(
-            _context.TiposAvaliacao,
-            "TipoAvaliacaoId",
-            "TipoProva",
-            avaliacaouc.TipoAvaliacaoId
-        );
+        PreencherListas(avaliacao.TipoAvaliacaoId, avaliacao.Tipo);
 
-        return View(avaliacaouc);
+        return View(avaliacao);
     }
 
     // POST: AvaliacaoUC/Edit/5
@@ -149,23 +154,26 @@ public class AvaliacaoUCController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
         int id,
-        [Bind("AvaliacaoUCId,TipoAvaliacaoId,UcId,Data")] AvaliacaoUC avaliacaouc)
+        [Bind("AvaliacaoUCId,TipoAvaliacaoId,UcId,Tipo,Avaliacao,Data")]
+        AvaliacaoUC avaliacao)
     {
-        if (id != avaliacaouc.AvaliacaoUCId)
+        if (id != avaliacao.AvaliacaoUCId)
         {
             return NotFound();
         }
+
+        ValidarTipo(avaliacao.Tipo);
 
         if (ModelState.IsValid)
         {
             try
             {
-                _context.Update(avaliacaouc);
+                _context.AvaliacoesUC.Update(avaliacao);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AvaliacaoUCExists(avaliacaouc.AvaliacaoUCId))
+                if (!AvaliacaoUCExists(avaliacao.AvaliacaoUCId))
                 {
                     return NotFound();
                 }
@@ -173,17 +181,15 @@ public class AvaliacaoUCController : Controller
                 throw;
             }
 
-            return RedirectToAction(nameof(IndexDocente));
+            return RedirectToAction(
+                nameof(IndexDocente),
+                new { epocaId = avaliacao.TipoAvaliacaoId }
+            );
         }
 
-        ViewBag.TiposAvaliacao = new SelectList(
-            _context.TiposAvaliacao,
-            "TipoAvaliacaoId",
-            "TipoProva",
-            avaliacaouc.TipoAvaliacaoId
-        );
+        PreencherListas(avaliacao.TipoAvaliacaoId, avaliacao.Tipo);
 
-        return View(avaliacaouc);
+        return View(avaliacao);
     }
 
     // GET: AvaliacaoUC/Delete/5
@@ -194,16 +200,16 @@ public class AvaliacaoUCController : Controller
             return NotFound();
         }
 
-        var avaliacaouc = await _context.AvaliacoesUC
+        var avaliacao = await _context.AvaliacoesUC
             .Include(a => a.TipoAvaliacao)
             .FirstOrDefaultAsync(a => a.AvaliacaoUCId == id);
 
-        if (avaliacaouc == null)
+        if (avaliacao == null)
         {
             return NotFound();
         }
 
-        return View(avaliacaouc);
+        return View(avaliacao);
     }
 
     // POST: AvaliacaoUC/Delete/5
@@ -211,30 +217,71 @@ public class AvaliacaoUCController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        // Impede apagar avaliações que já têm notas associadas
-        if (_context.Notas.Any(n => n.AvaliacaoUCId == id))
+        var avaliacao = await _context.AvaliacoesUC
+            .Include(a => a.TipoAvaliacao)
+            .FirstOrDefaultAsync(a => a.AvaliacaoUCId == id);
+
+        if (avaliacao == null)
         {
-            ViewBag.Erro = "Não pode apagar esta avaliação porque existem notas associadas.";
-
-            var avaliacao = await _context.AvaliacoesUC
-                .Include(a => a.TipoAvaliacao)
-                .FirstOrDefaultAsync(a => a.AvaliacaoUCId == id);
-
-            return View(avaliacao);
+            return NotFound();
         }
 
-        var avaliacaouc = await _context.AvaliacoesUC.FindAsync(id);
-
-        if (avaliacaouc != null)
+        // Impede eliminar avaliações com notas associadas
+        if (await _context.Notas.AnyAsync(n => n.AvaliacaoUCId == id))
         {
-            _context.AvaliacoesUC.Remove(avaliacaouc);
-            await _context.SaveChangesAsync();
+            ViewBag.Erro =
+                "Não pode eliminar esta avaliação porque existem notas associadas.";
+
+            return View("Delete", avaliacao);
         }
 
-        return RedirectToAction(nameof(IndexDocente));
+        _context.AvaliacoesUC.Remove(avaliacao);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(
+            nameof(IndexDocente),
+            new { epocaId = avaliacao.TipoAvaliacaoId }
+        );
     }
 
-    // Verifica se uma avaliação existe
+    // Preenche as listas dos formulários
+    private void PreencherListas(
+        int? epocaId = null,
+        string? tipoSelecionado = null)
+    {
+        ViewBag.TiposAvaliacao = new SelectList(
+            _context.TiposAvaliacao,
+            "TipoAvaliacaoId",
+            "TipoProva",
+            epocaId
+        );
+
+        ViewBag.Tipos = new SelectList(
+            new[] { "Frequência", "Exame", "Apresentação" },
+            tipoSelecionado
+        );
+    }
+
+    // Valida os três tipos de avaliação permitidos
+    private void ValidarTipo(string? tipo)
+    {
+        string[] tiposPermitidos =
+        {
+            "Frequência",
+            "Exame",
+            "Apresentação"
+        };
+
+        if (!tiposPermitidos.Contains(tipo))
+        {
+            ModelState.AddModelError(
+                nameof(AvaliacaoUC.Tipo),
+                "Selecione um tipo de avaliação válido."
+            );
+        }
+    }
+
+    // Verifica se a avaliação existe
     private bool AvaliacaoUCExists(int id)
     {
         return _context.AvaliacoesUC
