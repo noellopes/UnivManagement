@@ -22,7 +22,7 @@ namespace UnivManagement.Models
 
         [Required(ErrorMessage = "Por favor, indique a {0}.")]
         [Display(Name = "Avaliação")]
-        public required string Designacao { get; set; }
+        public required string Avaliacao { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique a {0}.")]
         [DataType(DataType.Date)]
