@@ -121,25 +121,6 @@ namespace UnivManagement.Data
                 db.SaveChanges();
             }
 
-            // Inserir as avaliações de cada UC
-            if (!db.AvaliacoesUC.Any())
-            {
-                var tiposAvaliacao = db.TiposAvaliacao.ToList();
-                var continua = tiposAvaliacao.FirstOrDefault(t => t.TipoProva == "Avaliação Contínua") ?? tiposAvaliacao.First();
-                var normal = tiposAvaliacao.FirstOrDefault(t => t.TipoProva == "Exame Normal") ?? tiposAvaliacao.First();
-                var recurso = tiposAvaliacao.FirstOrDefault(t => t.TipoProva == "Exame de Recurso") ?? tiposAvaliacao.First();
-
-                foreach (var uc in ucs)
-                {
-                    db.AvaliacoesUC.AddRange(
-                        new AvaliacaoUC { TipoAvaliacaoId = continua.TipoAvaliacaoId, UcId = uc.UcId, Data = new DateTime(2026, 12, 18) },
-                        new AvaliacaoUC { TipoAvaliacaoId = normal.TipoAvaliacaoId, UcId = uc.UcId, Data = new DateTime(2027, 1, 18) },
-                        new AvaliacaoUC { TipoAvaliacaoId = recurso.TipoAvaliacaoId, UcId = uc.UcId, Data = new DateTime(2027, 2, 8) }
-                    );
-                }
-
-                db.SaveChanges();
-            }
 
             // Inserir os docentes
             if (!db.Set<Docente>().Any())
