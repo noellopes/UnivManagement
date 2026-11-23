@@ -10,26 +10,25 @@ namespace UnivManagement.Data
             if (db == null)
                 throw new ArgumentNullException(nameof(db));
 
-            // Inserir os tipos de avaliação
-            if (!db.TiposAvaliacao.Any())
-            {
-                db.TiposAvaliacao.AddRange(
-                    new TipoAvaliacao
-                    {
-                        TipoProva = "Avaliação Contínua"
-                    },
-                    new TipoAvaliacao
-                    {
-                        TipoProva = "Exame Época Normal"
-                    },
-                    new TipoAvaliacao
-                    {
-                        TipoProva = "Exame Época de Recurso"
-                    }
-                );
+            string[] tipos = {
+                "Avaliação Contínua",
+                "Exame Normal",
+                "Exame de Recurso",
+                "Exame Época Especial"
+            };
 
-                db.SaveChanges();
+            foreach (var tipo in tipos)
+            {
+                if (!db.TiposAvaliacao.Any(t => t.TipoProva == tipo))
+                {
+                    db.TiposAvaliacao.Add(new TipoAvaliacao
+                    {
+                        TipoProva = tipo
+                    });
+                }
             }
+
+            db.SaveChanges();
         }
     }
 }
