@@ -50,10 +50,16 @@ public class TipoDocumentoController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("TipoDocumentoId,NomeTipo,Obrigatorio")] TipoDocumento tipodocumento)
     {
+        if (await _context.TipoDocumento.AnyAsync(t => t.NomeTipo == tipodocumento.NomeTipo))
+        {
+            ModelState.AddModelError(nameof(TipoDocumento.NomeTipo), "Já existe um tipo de documento com este nome.");
+        }
         if (ModelState.IsValid)
         {
             _context.Add(tipodocumento);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Tipo de documento criado com sucesso.";
+            TempData["MessageType"] = "success";
             return RedirectToAction(nameof(Index));
         }
         return View(tipodocumento);
@@ -86,6 +92,12 @@ public class TipoDocumentoController : Controller
         {
             return NotFound();
         }
+        if (await _context.TipoDocumento.AnyAsync(t =>
+        t.NomeTipo == tipodocumento.NomeTipo &&
+        t.TipoDocumentoId != tipodocumento.TipoDocumentoId))
+        {
+            ModelState.AddModelError(nameof(TipoDocumento.NomeTipo), "Já existe um tipo de documento com este nome.");
+        }
 
         if (ModelState.IsValid)
         {
@@ -105,6 +117,8 @@ public class TipoDocumentoController : Controller
                     throw;
                 }
             }
+            TempData["SuccessMessage"] = "Tipo de documento atualizado com sucesso.";
+            TempData["MessageType"] = "warning";
             return RedirectToAction(nameof(Index));
         }
         return View(tipodocumento);
@@ -140,6 +154,8 @@ public class TipoDocumentoController : Controller
         }
 
         await _context.SaveChangesAsync();
+        TempData["SuccessMessage"] = "Tipo de documento eliminado com sucesso.";
+        TempData["MessageType"] = "danger";
         return RedirectToAction(nameof(Index));
     }
 

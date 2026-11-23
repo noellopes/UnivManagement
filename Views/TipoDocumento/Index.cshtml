@@ -8,8 +8,15 @@
     <h1 class="mb-0">Gerir tipos de documento</h1>
     <a asp-action="Create" class="btn btn-warning">+ Adicionar tipo de documento</a>
 </div>
-
-<div class="table-responsive shadow-sm rounded">
+@if (TempData["SuccessMessage"] != null)
+{
+    var tipo = TempData["MessageType"]?.ToString() ?? "success";
+    <div class="alert alert-@tipo alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+<div class="table-responsive shadow-sm rounded" style="border-top: 2px solid #e8a33d;">
     <table class="table table-hover align-middle mb-0">
         <thead class="table-light">
         <tr>
