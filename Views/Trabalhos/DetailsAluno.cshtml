@@ -1,0 +1,70 @@
+﻿@model UnivManagement.Models.Trabalho
+
+@{
+    ViewData["Title"] = "Consultar trabalho";
+}
+
+<div class="container py-4">
+    <h1 class="h3 mb-4">Detalhes do trabalho</h1>
+
+    <dl class="row">
+        <dt class="col-sm-3">Título</dt>
+        <dd class="col-sm-9">@Model.Titulo</dd>
+
+        <dt class="col-sm-3">Descrição</dt>
+        <dd class="col-sm-9 text-break"
+            style="white-space: pre-wrap;">@Model.Descricao</dd>
+
+        <dt class="col-sm-3">Tipo de trabalho</dt>
+        <dd class="col-sm-9">
+            @(Model.EIndividual ? "Individual" : "Em grupo")
+        </dd>
+
+        <dt class="col-sm-3">Data-limite de entrega</dt>
+        <dd class="col-sm-9">
+            @Model.DataLimite.ToString("dd/MM/yyyy")
+        </dd>
+
+        <dt class="col-sm-3">Docente</dt>
+        <dd class="col-sm-9">@Model.Docente?.Nome</dd>
+
+        <dt class="col-sm-3">Unidade curricular</dt>
+        <dd class="col-sm-9">@Model.UC?.Name</dd>
+    </dl>
+
+    @if (!Model.EIndividual)
+    {
+        <section class="mt-4 mb-4">
+            <h2 class="h5">Grupos do trabalho</h2>
+
+            @if (ViewBag.Grupos != null && ViewBag.Grupos.Count > 0)
+            {
+                <ul class="list-group">
+                    @foreach (var grupo in ViewBag.Grupos)
+                    {
+                        <li class="list-group-item d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <span>@grupo.Nome</span>
+
+                            <a asp-action="ConsultarMembrosAluno"
+                               asp-route-grupoId="@grupo.GrupoTrabalhoId"
+                               class="btn btn-sm btn-outline-primary">
+                                Consultar membros
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-body-secondary">
+                    Ainda não existem grupos neste trabalho.
+                </p>
+            }
+        </section>
+    }
+
+    <a asp-action="IndexAluno"
+       class="btn btn-outline-secondary">
+        Voltar aos trabalhos
+    </a>
+</div>

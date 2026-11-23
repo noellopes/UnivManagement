@@ -16,13 +16,18 @@
         <dd class="col-sm-9">@Model.Titulo</dd>
 
         <dt class="col-sm-3">Descrição</dt>
-        <dd class="col-sm-9 text-break" style="white-space: pre-wrap;">@Model.Descricao</dd>
+        <dd class="col-sm-9 text-break"
+            style="white-space: pre-wrap;">@Model.Descricao</dd>
 
         <dt class="col-sm-3">Tipo de trabalho</dt>
-        <dd class="col-sm-9">@(Model.EIndividual ? "Individual" : "Em grupo")</dd>
+        <dd class="col-sm-9">
+            @(Model.EIndividual ? "Individual" : "Em grupo")
+        </dd>
 
         <dt class="col-sm-3">Data-limite de entrega</dt>
-        <dd class="col-sm-9">@Model.DataLimite.ToString("dd/MM/yyyy")</dd>
+        <dd class="col-sm-9">
+            @Model.DataLimite.ToString("dd/MM/yyyy")
+        </dd>
 
         <dt class="col-sm-3">ID do docente</dt>
         <dd class="col-sm-9">@Model.DocenteId</dd>
@@ -31,9 +36,18 @@
         <dd class="col-sm-9">@Model.UcId</dd>
     </dl>
 
-    <form asp-action="Delete" asp-route-id="@Model.TrabalhoId"
-          method="post" class="d-flex gap-2">
-        <button type="submit" class="btn btn-danger">Eliminar</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+    <form asp-action="Delete"
+          asp-route-id="@Model.TrabalhoId"
+          method="post"
+          class="d-flex gap-2">
+
+        <button type="submit" class="btn btn-danger">
+            Eliminar
+        </button>
+
+        <a asp-action="IndexDocente"
+           class="btn btn-outline-secondary">
+            Cancelar
+        </a>
     </form>
 </div>
