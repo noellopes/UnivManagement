@@ -68,6 +68,12 @@ public class InscAvalController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("AvaliacaoUCId,InscrUcId")] InscAval novaInscAval)
     {
+        // Verificar se o aluno ja esta inscrito nesta avaliacao
+        if (_context.InscAval.Any(i => i.AvaliacaoUCId == novaInscAval.AvaliacaoUCId && i.InscrUcId == novaInscAval.InscrUcId))
+        {
+            ModelState.AddModelError("InscrUcId", "Este aluno já está inscrito nesta avaliação.");
+        }
+
         if (ModelState.IsValid)
         {
             novaInscAval.Pago = false;
@@ -108,6 +114,12 @@ public class InscAvalController : Controller
         if (id != inscAvalEditada.InscAvalId)
         {
             return NotFound();
+        }
+
+        // Verificar se o aluno ja tem outra inscricao nesta avaliacao
+        if (_context.InscAval.Any(i => i.AvaliacaoUCId == inscAvalEditada.AvaliacaoUCId && i.InscrUcId == inscAvalEditada.InscrUcId && i.InscAvalId != inscAvalEditada.InscAvalId))
+        {
+            ModelState.AddModelError("InscrUcId", "Este aluno já está inscrito nesta avaliação.");
         }
 
         if (ModelState.IsValid)

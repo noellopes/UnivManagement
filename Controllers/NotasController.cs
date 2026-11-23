@@ -63,6 +63,12 @@ public class NotasController : Controller
         // Aprovado quando a nota e 9,5 ou mais
         novaNota.Aprovado = novaNota.Valor >= 9.5f;
 
+        // Verificar se o aluno ja tem nota nesta avaliacao
+        if (_context.Notas.Any(n => n.AvaliacaoUCId == novaNota.AvaliacaoUCId && n.InscrUcId == novaNota.InscrUcId))
+        {
+            ModelState.AddModelError("InscrUcId", "Este aluno já tem uma nota nesta avaliação.");
+        }
+
         if (ModelState.IsValid)
         {
             _context.Notas.Add(novaNota);
@@ -106,6 +112,12 @@ public class NotasController : Controller
 
         // Aprovado quando a nota e 9,5 ou mais
         notaEditada.Aprovado = notaEditada.Valor >= 9.5f;
+
+        // Verificar se o aluno ja tem outra nota nesta avaliacao
+        if (_context.Notas.Any(n => n.AvaliacaoUCId == notaEditada.AvaliacaoUCId && n.InscrUcId == notaEditada.InscrUcId && n.NotaId != notaEditada.NotaId))
+        {
+            ModelState.AddModelError("InscrUcId", "Este aluno já tem uma nota nesta avaliação.");
+        }
 
         if (ModelState.IsValid)
         {
