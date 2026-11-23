@@ -1,0 +1,41 @@
+@model UnivManagement.Models.AccommodationManagement.AccommodationContract
+
+@{
+    ViewData["Title"] = "Eliminar Contrato";
+}
+
+<h1>Eliminar Contrato</h1>
+
+<h3>Tem a certeza que pretende eliminar este contrato?</h3>
+<div>
+    <h4>Contrato de Alojamento</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.RoomAllocationId)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.RoomAllocationId)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.StartDate)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.StartDate)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EndDate)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.EndDate)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MonthlyRent)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.MonthlyRent)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Deposit)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Deposit)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ContractStatusId)</dt>
+        <dd class="col-sm-9">@(Model.Status?.Name ?? Model.ContractStatusId.ToString())</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SignedDocumentId)</dt>
+        <dd class="col-sm-9">@(Model.SignedDocumentId?.ToString() ?? "Sem documento associado")</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="AccommodationContractId" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
+    </form>
+</div>

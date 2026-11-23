@@ -1,0 +1,47 @@
+@model IEnumerable<UnivManagement.Models.AccommodationManagement.AccommodationContract>
+
+@{
+    ViewData["Title"] = "Contratos de Alojamento";
+}
+
+<h1>Contratos de Alojamento</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Novo Contrato</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.RoomAllocationId)</th>
+            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+            <th>@Html.DisplayNameFor(model => model.EndDate)</th>
+            <th>@Html.DisplayNameFor(model => model.MonthlyRent)</th>
+            <th>@Html.DisplayNameFor(model => model.Deposit)</th>
+            <th>Renda Total</th>
+            <th>@Html.DisplayNameFor(model => model.ContractStatusId)</th>
+            <th>@Html.DisplayNameFor(model => model.SignedDocumentId)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.RoomAllocationId)</td>
+                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.MonthlyRent)</td>
+                <td>@Html.DisplayFor(modelItem => item.Deposit)</td>
+                <td>@item.CalculateTotalRent().ToString("C")</td>
+                <td>@(item.Status?.Name ?? item.ContractStatusId.ToString())</td>
+                <td>@(item.SignedDocumentId?.ToString() ?? "-")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AccommodationContractId">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.AccommodationContractId">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AccommodationContractId">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
