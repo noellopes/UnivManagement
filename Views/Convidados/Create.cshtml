@@ -1,0 +1,59 @@
+@model UnivManagement.Models.Convidado
+
+@{
+    ViewData["Title"] = "Criar convidado";
+
+    // Um convidado novo começa ativo (como no modelo: Ativo = true).
+    // Se o formulário voltar com erros, mantém a escolha feita.
+    var ativo = Model?.Ativo ?? true;
+}
+
+<h1>Criar convidado</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Nome" class="form-label"></label>
+                <input asp-for="Nome" class="form-control" placeholder="Ex: Ana Silva" />
+                <span asp-validation-for="Nome" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Nif" class="form-label">NIF</label>
+                <input asp-for="Nif" class="form-control" placeholder="Ex: 123456789" />
+                <span asp-validation-for="Nif" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="Ex: ana.silva@exemplo.pt" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Telefone" class="form-label"></label>
+                <input asp-for="Telefone" class="form-control" placeholder="Ex: 912345678" />
+                <span asp-validation-for="Telefone" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" name="Ativo" id="Ativo" value="true" class="form-check-input" @(ativo ? "checked" : "") />
+                <input type="hidden" name="Ativo" value="false" />
+                <label for="Ativo" class="form-check-label">Ativo</label>
+            </div>
+
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
