@@ -105,10 +105,6 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<InscrUC>()
                 .Property(i => i.Grade)
                 .HasPrecision(4, 2);
-            // Evita duplicações na tabela CourseStudyPlanYear:
-            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
-                .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
-                .IsUnique();
         }
 
         public DbSet<Obra> Obras { get; set; } = default!;
@@ -145,9 +141,10 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+
+        
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;       
+        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;  
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
