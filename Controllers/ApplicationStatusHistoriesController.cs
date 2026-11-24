@@ -54,15 +54,6 @@ public class ApplicationStatusHistoriesController : Controller
             return NotFound();
         }
 
-        var latestStatus = await _context.ApplicationStatusHistory
-            .Include(h => h.PossibleStatus)
-            .Where(h => h.AccommodationApplicationId == history.AccommodationApplicationId)
-            .OrderByDescending(h => h.ChangedAt)
-            .Select(h => h.PossibleStatus != null ? h.PossibleStatus.Name : "Unknown")
-            .FirstOrDefaultAsync();
-
-        ViewBag.CurrentApplicationStatus = latestStatus ?? "No status recorded";
-
         return View(history);
     }
 
@@ -126,6 +117,22 @@ public class ApplicationStatusHistoriesController : Controller
 
         PopulateDropDowns(history.AccommodationApplicationId, history.PossibleStatusId);
         return View(history);
+    }
+
+    // POST: ApplicationStatusHistories/Delete/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var history = await _context.ApplicationStatusHistory.FindAsync(id);
+        if (history != null)
+        {
+            _context.ApplicationStatusHistory.Remove(history);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Status history record deleted successfully.";
+        }
+
+        return RedirectToAction(nameof(Index));
     }
 
     private void PopulateDropDowns(int? selectedApplicationId = null, int? selectedStatusId = null)
