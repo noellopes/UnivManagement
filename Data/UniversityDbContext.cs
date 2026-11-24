@@ -55,6 +55,14 @@ namespace UnivManagement.Data
         {
             base.OnModelCreating(modelBuilder);
 
+
+            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
+    .HasOne(cspy => cspy.Course)
+    .WithMany()
+    .HasForeignKey(cspy => cspy.CourseId)
+    .OnDelete(DeleteBehavior.NoAction);
+
+            // ServiceRequestType: two request types cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestType>()
                 .HasIndex(type => type.Name)
                 .IsUnique();
