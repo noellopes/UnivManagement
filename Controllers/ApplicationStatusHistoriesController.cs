@@ -119,10 +119,31 @@ public class ApplicationStatusHistoriesController : Controller
         return View(history);
     }
 
+    // GET: ApplicationStatusHistories/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var history = await _context.ApplicationStatusHistory
+            .Include(h => h.AccommodationApplication)
+            .Include(h => h.PossibleStatus)
+            .FirstOrDefaultAsync(m => m.ApplicationStatusHistoryId == id);
+
+        if (history == null)
+        {
+            return NotFound();
+        }
+
+        return View(history);
+    }
+
     // POST: ApplicationStatusHistories/Delete/5
-    [HttpPost]
+    [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var history = await _context.ApplicationStatusHistory.FindAsync(id);
         if (history != null)
