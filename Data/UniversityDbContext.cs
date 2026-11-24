@@ -89,7 +89,10 @@ namespace UnivManagement.Data
                 .HasIndex(r => r.Name)
                 .IsUnique();
 
-            // Room: número único por residência:
+            // Room: chave primária e número único por residência:
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
+                .HasKey(r => r.RoomId);
+
             modelBuilder.Entity<Models.AccommodationManagement.Room1>()
                 .HasIndex(r => new { r.ResidenceId, r.Number })
                 .IsUnique();

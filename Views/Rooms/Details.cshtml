@@ -1,0 +1,187 @@
+@model UnivManagement.Models.AccommodationManagement.Room1
+
+@{
+    ViewData["Title"] = "Detalhes do Room";
+
+    bool isMaintenance =
+        (Model.RoomStatus?.Name?.Contains("Mainten", StringComparison.OrdinalIgnoreCase) ?? false) ||
+        (Model.RoomStatus?.Name?.Contains("Manuten", StringComparison.OrdinalIgnoreCase) ?? false) ||
+        Model.RoomStatusId == 4 ||
+        Model.RoomStatusId == 2;
+
+    bool isFull = !isMaintenance && Model.Capacity > 0 && Model.CurrentOccupancy >= Model.Capacity;
+    bool isPartiallyOccupied = !isMaintenance && Model.CurrentOccupancy > 0 && Model.CurrentOccupancy < Model.Capacity;
+
+    string statusText;
+    string badgeClass;
+
+    if (isMaintenance)
+    {
+        statusText = "Manutenção";
+        badgeClass = "status-maintenance";
+    }
+    else if (isFull)
+    {
+        statusText = "Cheio";
+        badgeClass = "status-full";
+    }
+    else if (isPartiallyOccupied)
+    {
+        statusText = "Ocupado";
+        badgeClass = "status-occupied";
+    }
+    else
+    {
+        statusText = "Livre";
+        badgeClass = "status-free";
+    }
+}
+
+<style>
+    .details-room-wrapper {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.5rem;
+    }
+
+    .details-room-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .details-room-header h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #111827;
+        margin: 0;
+    }
+
+    .details-room-card {
+        max-width: 780px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 1.5rem 1.75rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .details-room-card h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 1.25rem;
+    }
+
+    .detail-row {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #eef0f2;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .detail-row:last-of-type {
+        border-bottom: 0;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #4b5563;
+        font-size: 0.92rem;
+    }
+
+    .detail-value {
+        color: #111827;
+        font-size: 0.95rem;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.65rem;
+        border-radius: 0.375rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .status-free {
+        background-color: #198754;
+        color: #ffffff;
+    }
+
+    .status-occupied {
+        background-color: #ffc107;
+        color: #111827;
+    }
+
+    .status-full {
+        background-color: #dc3545;
+        color: #ffffff;
+    }
+
+    .status-maintenance {
+        background-color: #0d6efd;
+        color: #ffffff;
+    }
+
+    .details-actions-row {
+        display: flex;
+        gap: 0.6rem;
+        margin-top: 1.5rem;
+    }
+</style>
+
+<div class="details-room-wrapper">
+    <div class="details-room-header">
+        <h1>@ViewData["Title"]</h1>
+        <a asp-action="Index" class="btn btn-outline-secondary">Voltar à Lista</a>
+    </div>
+
+    <div class="details-room-card">
+        <h2>Informação do Room</h2>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.ResidenceId)</span>
+            <span class="detail-value">Residência #@Model.ResidenceId</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.Number)</span>
+            <span class="detail-value">@Model.Number</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.Floor)</span>
+            <span class="detail-value">Piso @Model.Floor</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.CurrentOccupancy)</span>
+            <span class="detail-value">@Model.CurrentOccupancy / @Model.Capacity</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.Capacity)</span>
+            <span class="detail-value">@Model.Capacity @(Model.Capacity == 1 ? "pessoa" : "pessoas")</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.RoomTypeId)</span>
+            <span class="detail-value">@(Model.RoomType?.Name ?? $"Tipo #{Model.RoomTypeId}")</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.RoomStatusId)</span>
+            <span class="detail-value"><span class="status-badge @badgeClass">@statusText</span></span>
+        </div>
+
+        <div class="details-actions-row">
+            <a asp-action="Edit" asp-route-id="@Model.RoomId" class="btn btn-primary">Editar</a>
+            <a asp-action="Index" class="btn btn-light border">Voltar à Lista</a>
+        </div>
+    </div>
+</div>
