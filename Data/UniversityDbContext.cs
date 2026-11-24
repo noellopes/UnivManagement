@@ -71,6 +71,9 @@ namespace UnivManagement.Data
             modelBuilder.Entity<Models.AccommodationManagement.RoomStatus>().HasData(
                 new Models.AccommodationManagement.RoomStatus { RoomStatusId = 1, Name = "Available" },
                 new Models.AccommodationManagement.RoomStatus { RoomStatusId = 2, Name = "Maintenance" });
+
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
+            .HasKey(r => r.RoomId);
         }
 
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;

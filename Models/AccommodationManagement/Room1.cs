@@ -2,6 +2,7 @@
 
 namespace UnivManagement.Models.AccommodationManagement;
 
+
 public class Room1
 {
     public int RoomId { get; set; }
@@ -16,6 +17,10 @@ public class Room1
 
     [Display(Name = "Piso")]
     public int Floor { get; set; }
+
+    [Range(0, 6, ErrorMessage = "A {0} deve estar entre {1} e {2}.")]
+    [Display(Name = "Ocupação Atual")]
+    public int CurrentOccupancy { get; set; }
 
     [Range(1, 6, ErrorMessage = "A {0} deve estar entre {1} e {2}.")]
     [Display(Name = "Capacidade")]
