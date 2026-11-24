@@ -16,12 +16,39 @@ public class RoomsController : Controller
     }
 
     // GET: Rooms
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? residenceFilter)
     {
-        var rooms = _context.Room
+        var allRooms = await _context.Room
             .Include(r => r.RoomType)
-            .Include(r => r.RoomStatus);
-        return View(await rooms.ToListAsync());
+            .Include(r => r.RoomStatus)
+            .OrderBy(r => r.ResidenceId)
+            .ThenBy(r => r.Floor)
+            .ThenBy(r => r.Number)
+            .ToListAsync();
+
+        var residences = allRooms
+            .Where(r => r.ResidenceId > 0)
+            .Select(r => r.ResidenceId)
+            .Distinct()
+            .OrderBy(id => id)
+            .Select(id => new { Id = id, Name = $"Residência #{id}" })
+            .ToList();
+
+        ViewBag.Residences = new SelectList(residences, "Id", "Name", residenceFilter);
+
+        var filteredRooms = residenceFilter.HasValue
+            ? allRooms.Where(r => r.ResidenceId == residenceFilter.Value).ToList()
+            : allRooms;
+
+        ViewBag.TotalRooms = filteredRooms.Count;
+        ViewBag.FreeRooms = filteredRooms.Count(r =>
+            r.RoomStatus?.Name is "Available" or "Livre");
+        ViewBag.OccupiedRooms = filteredRooms.Count(r =>
+            r.CurrentOccupancy > 0 || r.RoomStatus?.Name is "Occupied" or "Ocupado");
+        ViewBag.MaintenanceRooms = filteredRooms.Count(r =>
+            r.RoomStatus?.Name is "Maintenance" or "Em Manutenção");
+
+        return View(filteredRooms);
     }
 
     // GET: Rooms/Details/5
@@ -45,24 +72,33 @@ public class RoomsController : Controller
     }
 
     // GET: Rooms/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        LoadDropdowns();
-        return View();
+        await PopulateDropdownsAsync();
+        return View(new Room1
+        {
+            Number = string.Empty,
+            Floor = 1,
+            CurrentOccupancy = 0,
+            Capacity = 1
+        });
     }
 
     // POST: Rooms/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("RoomId,ResidenceId,Number,Floor,Capacity,RoomTypeId,RoomStatusId")] Room1 room)
+    public async Task<IActionResult> Create([Bind("RoomId,ResidenceId,Number,Floor,CurrentOccupancy,Capacity,RoomTypeId,RoomStatusId")] Room1 room)
     {
+        ValidateOccupancy(room);
+
         if (ModelState.IsValid)
         {
             _context.Add(room);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        LoadDropdowns(room);
+
+        await PopulateDropdownsAsync(room);
         return View(room);
     }
 
@@ -79,19 +115,22 @@ public class RoomsController : Controller
         {
             return NotFound();
         }
-        LoadDropdowns(room);
+
+        await PopulateDropdownsAsync(room);
         return View(room);
     }
 
     // POST: Rooms/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("RoomId,ResidenceId,Number,Floor,Capacity,RoomTypeId,RoomStatusId")] Room1 room)
+    public async Task<IActionResult> Edit(int id, [Bind("RoomId,ResidenceId,Number,Floor,CurrentOccupancy,Capacity,RoomTypeId,RoomStatusId")] Room1 room)
     {
         if (id != room.RoomId)
         {
             return NotFound();
         }
+
+        ValidateOccupancy(room);
 
         if (ModelState.IsValid)
         {
@@ -113,7 +152,8 @@ public class RoomsController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        LoadDropdowns(room);
+
+        await PopulateDropdownsAsync(room);
         return View(room);
     }
 
@@ -157,9 +197,31 @@ public class RoomsController : Controller
         return _context.Room.Any(e => e.RoomId == id);
     }
 
-    private void LoadDropdowns(Room1? room = null)
+    private void ValidateOccupancy(Room1 room)
     {
-        ViewData["RoomTypeId"] = new SelectList(_context.RoomType, "RoomTypeId", "Name", room?.RoomTypeId);
-        ViewData["RoomStatusId"] = new SelectList(_context.RoomStatus, "RoomStatusId", "Name", room?.RoomStatusId);
+        if (room.CurrentOccupancy < 0)
+        {
+            ModelState.AddModelError(nameof(room.CurrentOccupancy), "A ocupação atual não pode ser negativa.");
+        }
+
+        if (room.CurrentOccupancy > room.Capacity)
+        {
+            ModelState.AddModelError(nameof(room.CurrentOccupancy), "A ocupação atual não pode ser superior à capacidade.");
+        }
+    }
+
+    private async Task PopulateDropdownsAsync(Room1? room = null)
+    {
+        ViewData["RoomTypeId"] = new SelectList(
+            await _context.RoomType.OrderBy(t => t.RoomTypeId).ToListAsync(),
+            "RoomTypeId",
+            "Name",
+            room?.RoomTypeId);
+
+        ViewData["RoomStatusId"] = new SelectList(
+            await _context.RoomStatus.OrderBy(s => s.RoomStatusId).ToListAsync(),
+            "RoomStatusId",
+            "Name",
+            room?.RoomStatusId);
     }
 }

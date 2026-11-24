@@ -69,8 +69,18 @@ namespace UnivManagement.Data
                 new Models.AccommodationManagement.RoomType { RoomTypeId = 3, Name = "Triple" });
 
             modelBuilder.Entity<Models.AccommodationManagement.RoomStatus>().HasData(
-                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 1, Name = "Available" },
-                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 2, Name = "Maintenance" });
+    new Models.AccommodationManagement.RoomStatus { RoomStatusId = 1, Name = "Livre" },
+    new Models.AccommodationManagement.RoomStatus { RoomStatusId = 2, Name = "Ocupado" },
+    new Models.AccommodationManagement.RoomStatus { RoomStatusId = 3, Name = "Cheio" },
+    new Models.AccommodationManagement.RoomStatus { RoomStatusId = 4, Name = "Em Manutenção" });
+
+            // Room: chave primária e número único por residência:
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
+                .HasKey(r => r.RoomId);
+
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
+                .HasIndex(r => new { r.ResidenceId, r.Number })
+                .IsUnique();
         }
 
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
