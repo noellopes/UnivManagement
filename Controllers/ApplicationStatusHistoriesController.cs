@@ -81,27 +81,36 @@ public class ApplicationStatusHistoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("AccommodationApplicationId,PossibleStatusId,ChangedBy,Notes")] ApplicationStatusHistory history)
     {
-        var application = await _context.AccommodationApplication
-            .FirstOrDefaultAsync(a => a.AccommodationApplicationId == history.AccommodationApplicationId);
+        AccommodationApplication? application = null;
+        PossibleStatus? selectedStatus = null;
 
-        var selectedStatus = await _context.PossibleStatus
-            .FirstOrDefaultAsync(s => s.PossibleStatusId == history.PossibleStatusId);
-
-        if (application == null)
+        if (history.PossibleStatusId.HasValue)
         {
-            ModelState.AddModelError("AccommodationApplicationId", "The selected application does not exist.");
+            selectedStatus = await _context.PossibleStatus
+                .FirstOrDefaultAsync(s => s.PossibleStatusId == history.PossibleStatusId.Value);
         }
-        else
-        {
-            var currentStatusId = await _context.ApplicationStatusHistory
-                .Where(h => h.AccommodationApplicationId == history.AccommodationApplicationId)
-                .OrderByDescending(h => h.ChangedAt)
-                .Select(h => (int?)h.PossibleStatusId)
-                .FirstOrDefaultAsync();
 
-            if (currentStatusId == history.PossibleStatusId)
+        if (history.AccommodationApplicationId.HasValue)
+        {
+            application = await _context.AccommodationApplication
+                .FirstOrDefaultAsync(a => a.AccommodationApplicationId == history.AccommodationApplicationId.Value);
+
+            if (application == null)
             {
-                ModelState.AddModelError("PossibleStatusId", $"The application is already in the '{selectedStatus?.Name}' status.");
+                ModelState.AddModelError("AccommodationApplicationId", "The selected application does not exist.");
+            }
+            else if (history.PossibleStatusId.HasValue)
+            {
+                var currentStatusId = await _context.ApplicationStatusHistory
+                    .Where(h => h.AccommodationApplicationId == history.AccommodationApplicationId.Value)
+                    .OrderByDescending(h => h.ChangedAt)
+                    .Select(h => h.PossibleStatusId)
+                    .FirstOrDefaultAsync();
+
+                if (currentStatusId == history.PossibleStatusId.Value)
+                {
+                    ModelState.AddModelError("PossibleStatusId", $"The application is already in the '{selectedStatus?.Name}' status.");
+                }
             }
         }
 
