@@ -16,6 +16,20 @@
 
     bool isFiltered = !string.IsNullOrEmpty(currentSearch) || currentStatus != null || currentType != null
         || currentPriority != null || onlyOverdue;
+
+    var paging = ViewData["Paging"] as ServiceRequestPagingInfo
+        ?? new ServiceRequestPagingInfo { CurrentPage = 1, PageSize = Math.Max(1, Model.Count()), TotalItems = Model.Count() };
+
+    // Route values of the current filters, so the page links keep them
+    Dictionary<string, string> PageRoute(int page) {
+        var route = new Dictionary<string, string> { ["page"] = page.ToString() };
+        if (!string.IsNullOrEmpty(currentSearch)) route["search"] = currentSearch;
+        if (currentStatus != null) route["status"] = currentStatus;
+        if (currentType != null) route["type"] = currentType;
+        if (currentPriority != null) route["priority"] = currentPriority;
+        if (onlyOverdue) route["overdue"] = "true";
+        return route;
+    }
 }
 
 <div class="container py-4">
@@ -70,7 +84,7 @@
 
     @if (isFiltered) {
         <p class="text-body-secondary">
-            @Model.Count() result(s) for the selected filters.
+            @paging.TotalItems result(s) for the selected filters.
             <a asp-action="Index">Clear filters</a>
         </p>
     }
@@ -143,6 +157,45 @@
                     }
                 </tbody>
             </table>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <p class="text-body-secondary small mb-0">
+                Showing @paging.FirstItem to @paging.LastItem of @paging.TotalItems request(s)
+            </p>
+
+            @if (paging.TotalPages > 1) {
+                <nav aria-label="Request pages">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item @(paging.HasPreviousPage ? null : "disabled")">
+                            <a class="page-link" asp-action="Index" asp-all-route-data="PageRoute(paging.CurrentPage - 1)"
+                               aria-label="Previous page">&laquo;</a>
+                        </li>
+                        @if (paging.VisiblePages().First() > 1) {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Index" asp-all-route-data="PageRoute(1)">1</a>
+                            </li>
+                            <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                        }
+                        @foreach (int pageNumber in paging.VisiblePages()) {
+                            <li class="page-item @(pageNumber == paging.CurrentPage ? "active" : null)"
+                                aria-current="@(pageNumber == paging.CurrentPage ? "page" : null)">
+                                <a class="page-link" asp-action="Index" asp-all-route-data="PageRoute(pageNumber)">@pageNumber</a>
+                            </li>
+                        }
+                        @if (paging.VisiblePages().Last() < paging.TotalPages) {
+                            <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Index" asp-all-route-data="PageRoute(paging.TotalPages)">@paging.TotalPages</a>
+                            </li>
+                        }
+                        <li class="page-item @(paging.HasNextPage ? null : "disabled")">
+                            <a class="page-link" asp-action="Index" asp-all-route-data="PageRoute(paging.CurrentPage + 1)"
+                               aria-label="Next page">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            }
         </div>
     }
 </div>
