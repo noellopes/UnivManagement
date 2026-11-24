@@ -1,65 +1,96 @@
+@using UnivManagement.Models.AccommodationManagement
 @model IEnumerable<UnivManagement.Models.AccommodationManagement.AccommodationPayment>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Accommodation Payments";
 }
 
-<h1>Index</h1>
+<div class="container py-4">
+    <header class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="h2 fw-bold mb-1">
+                <i class="bi bi-cash-coin text-primary me-2"></i>Accommodation Payments
+            </h1>
+            <p class="text-body-secondary mb-0">Review and manage accommodation payments.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> New Payment
+        </a>
+    </header>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AccommodationContractId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaidAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaidAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.AccommodationContractId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DueDate)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PaidAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PaidAt)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Status)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AccommodationPaymentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AccommodationPaymentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AccommodationPaymentId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Contract</th>
+                        <th>Due Date</th>
+                        <th class="text-end">Amount</th>
+                        <th class="text-end">Paid Amount</th>
+                        <th>Paid At</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var badge = item.Status == PaymentStatus.Paid ? "text-bg-success"
+                                  : item.Status == PaymentStatus.Overdue ? "text-bg-danger"
+                                  : "text-bg-warning";
+
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.AccommodationContractId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.DueDate)</td>
+                            <td class="text-end">@Html.DisplayFor(modelItem => item.Amount)</td>
+                            <td class="text-end">@Html.DisplayFor(modelItem => item.PaidAmount)</td>
+                            <td>
+                                @if (item.PaidAt != null)
+                                {
+                                    @Html.DisplayFor(modelItem => item.PaidAt)
+                                }
+                                else
+                                {
+                                    <span class="text-body-secondary">&mdash;</span>
+                                }
+                            </td>
+                            <td><span class="badge @badge">@Html.DisplayFor(modelItem => item.Status)</span></td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a asp-action="Details" asp-route-id="@item.AccommodationPaymentId"
+                                       class="btn btn-outline-secondary" title="Details" aria-label="Details">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.AccommodationPaymentId"
+                                       class="btn btn-outline-primary" title="Edit" aria-label="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.AccommodationPaymentId"
+                                       class="btn btn-outline-danger" title="Delete" aria-label="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-body-secondary py-5">
+                                <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                No payments found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="Accommodation" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Back to Accommodation Management
+        </a>
+    </div>
+</div>
