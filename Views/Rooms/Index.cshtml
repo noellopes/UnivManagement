@@ -1,65 +1,333 @@
-@model IEnumerable<UnivManagement.Models.AccommodationManagement.Room>
+@model IEnumerable<UnivManagement.Models.AccommodationManagement.Room1>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quartos (Rooms)";
+    var roomsList = Model?.ToList() ?? new List<UnivManagement.Models.AccommodationManagement.Room1>();
+
+    int totalRooms = ViewBag.TotalRooms ?? roomsList.Count;
+    int freeRooms = ViewBag.FreeRooms ?? roomsList.Count(r => r.CurrentOccupancy == 0 && (r.RoomStatus?.Name is "Available" or "Livre" or null));
+    int occupiedRooms = ViewBag.OccupiedRooms ?? roomsList.Count(r => r.CurrentOccupancy > 0 || (r.RoomStatus?.Name is "Occupied" or "Ocupado"));
+    int maintenanceRooms = ViewBag.MaintenanceRooms ?? roomsList.Count(r => r.RoomStatus?.Name is "Maintenance" or "Em Manutenção");
 }
 
-<h1>Index</h1>
+<style>
+    .rooms-wrapper {
+        max-width: 1220px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2rem;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ResidenceId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Number)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Floor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.ResidenceId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Number)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Floor)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Capacity)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Status)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RoomId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RoomId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RoomId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .rooms-top-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .rooms-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #111827;
+        margin: 0;
+    }
+
+    .residence-filter-group {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        background-color: #ffffff;
+        overflow: hidden;
+    }
+
+    .residence-filter-prefix {
+        background-color: #f8f9fa;
+        color: #374151;
+        font-size: 0.9rem;
+        padding: 0.45rem 0.75rem;
+        border-right: 1px solid #ced4da;
+        white-space: nowrap;
+    }
+
+    .residence-filter-select {
+        border: 0;
+        background-color: #ffffff;
+        color: #111827;
+        font-size: 0.9rem;
+        padding: 0.45rem 2rem 0.45rem 0.75rem;
+        min-width: 210px;
+    }
+
+    .residence-filter-select:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .summary-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 0.9rem 1rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        height: 100%;
+    }
+
+    .summary-left {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+    }
+
+    .summary-icon-box {
+        width: 44px;
+        height: 44px;
+        border-radius: 0.375rem;
+        background-color: #e9ecef;
+        color: #4b5563;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .summary-title {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 0.15rem;
+    }
+
+    .summary-count {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #111827;
+        line-height: 1.1;
+    }
+
+    .summary-tag {
+        font-size: 0.85rem;
+        color: #374151;
+        font-weight: 500;
+        white-space: nowrap;
+        margin-left: 0.5rem;
+    }
+
+    .rooms-table-card {
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        margin-top: 1.25rem;
+        overflow: hidden;
+    }
+
+    .rooms-table-card .table {
+        margin-bottom: 0;
+    }
+
+    .rooms-table-card .table thead th {
+        background-color: #f3f4f6;
+        color: #1f2937;
+        font-weight: 600;
+        font-size: 0.92rem;
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid #e5e7eb;
+        white-space: nowrap;
+    }
+
+    .rooms-table-card .table tbody td {
+        padding: 0.85rem 1rem;
+        color: #1f2937;
+        font-size: 0.92rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #eef0f2;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.65rem;
+        border-radius: 0.375rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #ffffff;
+        white-space: nowrap;
+    }
+
+    .status-free {
+        background-color: #198754;
+    }
+
+    .status-occupied {
+        background-color: #b02a37;
+    }
+
+    .status-maintenance {
+        background-color: #e09f1f;
+    }
+
+    .action-btn-outline {
+        border: 1px solid #cbd5e1;
+        color: #334155;
+        background-color: #ffffff;
+        font-size: 0.82rem;
+        padding: 0.28rem 0.65rem;
+        border-radius: 0.3rem;
+        text-decoration: none;
+    }
+
+    .action-btn-outline:hover {
+        background-color: #f8fafc;
+        color: #0f172a;
+    }
+
+    .rooms-table-footer {
+        padding: 0.85rem 1rem;
+        color: #6b7280;
+        font-size: 0.88rem;
+        background-color: #ffffff;
+    }
+
+    .new-room-btn-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1.1rem;
+    }
+</style>
+
+<div class="rooms-wrapper">
+    <div class="rooms-top-bar">
+        <h1 class="rooms-title">@ViewData["Title"]</h1>
+
+        <form method="get" asp-action="Index" class="residence-filter-group">
+            <span class="residence-filter-prefix">Residência</span>
+            <select name="residenceFilter"
+                    asp-items="ViewBag.Residences"
+                    class="residence-filter-select"
+                    onchange="this.form.submit()">
+                <option value="">Todas as Residências</option>
+            </select>
+        </form>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="summary-card">
+                <div class="summary-left">
+                    <div class="summary-icon-box">Q</div>
+                    <div>
+                        <div class="summary-title">Total de Quartos</div>
+                        <div class="summary-count">@totalRooms</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="summary-card">
+                <div class="summary-left">
+                    <div class="summary-icon-box">&#10003;</div>
+                    <div>
+                        <div class="summary-title">Quartos Livres</div>
+                        <div class="summary-count">@freeRooms</div>
+                    </div>
+                </div>
+                <span class="summary-tag">Livres</span>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="summary-card">
+                <div class="summary-left">
+                    <div class="summary-icon-box">&#9201;</div>
+                    <div>
+                        <div class="summary-title">Quartos Ocupados</div>
+                        <div class="summary-count">@occupiedRooms</div>
+                    </div>
+                </div>
+                <span class="summary-tag">Ocupado</span>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="summary-card">
+                <div class="summary-left">
+                    <div class="summary-icon-box">&#9874;</div>
+                    <div>
+                        <div class="summary-title">Quartos em Manutenção</div>
+                        <div class="summary-count">@maintenanceRooms</div>
+                    </div>
+                </div>
+                <span class="summary-tag">Manutenção</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="rooms-table-card">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Residência</th>
+                        <th>Número</th>
+                        <th>Piso</th>
+                        <th>Ocupação Atual</th>
+                        <th>Capacidade</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th class="text-end"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!roomsList.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                Não existem quartos registados.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in roomsList)
+                        {
+                            var statusText = item.RoomStatus?.Name ?? (item.RoomStatusId == 2 ? "Em Manutenção" : item.CurrentOccupancy > 0 ? "Ocupado" : "Livre");
+                            var badgeClass = statusText.Contains("Manuten", StringComparison.OrdinalIgnoreCase)
+                                ? "status-maintenance"
+                                : (statusText.Contains("Ocup", StringComparison.OrdinalIgnoreCase) || item.CurrentOccupancy > 0
+                                    ? "status-occupied"
+                                    : "status-free");
+
+                            <tr>
+                                <td>Residência #@item.ResidenceId</td>
+                                <td>@item.Number</td>
+                                <td>Piso @item.Floor</td>
+                                <td>@item.CurrentOccupancy</td>
+                                <td>@item.Capacity @(item.Capacity == 1 ? "pessoa" : "pessoas")</td>
+                                <td>@(item.RoomType?.Name ?? $"Tipo #{item.RoomTypeId}")</td>
+                                <td><span class="status-badge @badgeClass">@statusText</span></td>
+                                <td class="text-end">
+                                    <a asp-action="Edit" asp-route-id="@item.RoomId" class="action-btn-outline">Editar</a>
+                                    <a asp-action="Details" asp-route-id="@item.RoomId" class="action-btn-outline">Detalhes</a>
+                                    <a asp-action="Delete" asp-route-id="@item.RoomId" class="action-btn-outline">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="rooms-table-footer">
+            A mostrar @(roomsList.Any() ? 1 : 0) a @roomsList.Count de @totalRooms registos
+        </div>
+    </div>
+
+    <div class="new-room-btn-row">
+        <a asp-action="Create" class="btn btn-primary">+ Novo Quarto</a>
+    </div>
+</div>

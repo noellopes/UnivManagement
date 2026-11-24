@@ -43,5 +43,8 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
 
         public DbSet<UnivManagement.Models.AccommodationManagement.Room1> Room { get; set; } = default!;
+
+        public DbSet<UnivManagement.Models.AccommodationManagement.RoomType> RoomType { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.RoomStatus> RoomStatus { get; set; } = default!;
     }
 }

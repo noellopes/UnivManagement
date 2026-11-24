@@ -1,59 +1,152 @@
-@model UnivManagement.Models.AccommodationManagement.Room
+@model UnivManagement.Models.AccommodationManagement.Room1
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Quarto (Room)";
+    var statusText = Model.RoomStatus?.Name ?? (Model.RoomStatusId == 2 ? "Em Manutenção" : Model.CurrentOccupancy > 0 ? "Ocupado" : "Livre");
+    var badgeClass = statusText.Contains("Manuten", StringComparison.OrdinalIgnoreCase)
+        ? "status-maintenance"
+        : (statusText.Contains("Ocup", StringComparison.OrdinalIgnoreCase) || Model.CurrentOccupancy > 0
+            ? "status-occupied"
+            : "status-free");
 }
 
-<h1>Details</h1>
+<style>
+    .details-room-wrapper {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.5rem;
+    }
 
-<div>
-    <h4>Room</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ResidenceId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ResidenceId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Number)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Number)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Floor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Floor)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Capacity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Capacity)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.RoomId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    .details-room-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+        .details-room-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+        }
+
+    .details-room-card {
+        max-width: 780px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 1.5rem 1.75rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+        .details-room-card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1.25rem;
+        }
+
+    .detail-row {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #eef0f2;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+        .detail-row:last-of-type {
+            border-bottom: 0;
+        }
+
+    .detail-label {
+        font-weight: 600;
+        color: #4b5563;
+        font-size: 0.92rem;
+    }
+
+    .detail-value {
+        color: #111827;
+        font-size: 0.95rem;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.65rem;
+        border-radius: 0.375rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .status-free {
+        background-color: #198754;
+    }
+
+    .status-occupied {
+        background-color: #b02a37;
+    }
+
+    .status-maintenance {
+        background-color: #e09f1f;
+    }
+
+    .details-actions-row {
+        display: flex;
+        gap: 0.6rem;
+        margin-top: 1.5rem;
+    }
+</style>
+
+<div class="details-room-wrapper">
+    <div class="details-room-header">
+        <h1>@ViewData["Title"]</h1>
+        <a asp-action="Index" class="btn btn-outline-secondary">Voltar à Lista</a>
+    </div>
+
+    <div class="details-room-card">
+        <h2>Informação do Quarto</h2>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.ResidenceId)</span>
+            <span class="detail-value">Residência #@Model.ResidenceId</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.Number)</span>
+            <span class="detail-value">@Model.Number</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.Floor)</span>
+            <span class="detail-value">Piso @Model.Floor</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.CurrentOccupancy)</span>
+            <span class="detail-value">@Model.CurrentOccupancy</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.Capacity)</span>
+            <span class="detail-value">@Model.Capacity @(Model.Capacity == 1 ? "pessoa" : "pessoas")</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.RoomTypeId)</span>
+            <span class="detail-value">@(Model.RoomType?.Name ?? $"Tipo #{Model.RoomTypeId}")</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">@Html.DisplayNameFor(model => model.RoomStatusId)</span>
+            <span class="detail-value"><span class="status-badge @badgeClass">@statusText</span></span>
+        </div>
+
+        <div class="details-actions-row">
+            <a asp-action="Edit" asp-route-id="@Model.RoomId" class="btn btn-primary">Editar</a>
+            <a asp-action="Index" class="btn btn-light border">Voltar à Lista</a>
+        </div>
+    </div>
 </div>
