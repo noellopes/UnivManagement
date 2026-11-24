@@ -6,16 +6,16 @@ public class ApplicationStatusHistory
 {
     public int ApplicationStatusHistoryId { get; set; }
 
-    [Required(ErrorMessage = "The application is required.")]
+    [Required(ErrorMessage = "The Application is required.")]
     [Display(Name = "Application")]
-    public int AccommodationApplicationId { get; set; }
+    public int? AccommodationApplicationId { get; set; }
 
     [Display(Name = "Application")]
     public AccommodationApplication? AccommodationApplication { get; set; }
 
-    [Required(ErrorMessage = "The status is required.")]
+    [Required(ErrorMessage = "The Status is required.")]
     [Display(Name = "Status")]
-    public int PossibleStatusId { get; set; }
+    public int? PossibleStatusId { get; set; }
 
     [Display(Name = "Status")]
     public PossibleStatus? PossibleStatus { get; set; }
