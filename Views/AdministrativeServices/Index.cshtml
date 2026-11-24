@@ -107,7 +107,20 @@
                         Manage the services that can be requested, with their type and processing days.
                     </p>
                     <a asp-controller="ServiceRequestCatalogItems" asp-action="Index" class="btn btn-outline-primary w-100">
-                        Manage services
+                      Manage services</a>
+                    <h2 class="card-title h5"><i class="bi bi-list-check"></i> Statuses</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Define the steps a request goes through, from submitted to resolved.
+                    </p>
+                    <a asp-controller="ServiceRequestStatuses" asp-action="Index" class="btn btn-outline-primary w-100">
+                        Open
+                    </a>
+                    <h2 class="card-title h5"><i class="bi bi-flag"></i> Priorities</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        Define how fast each request has to be answered: the priority levels and their response days.
+                    </p>
+                    <a asp-controller="ServiceRequestPriorities" asp-action="Index" class="btn btn-outline-primary w-100">
+                        Manage priorities
                     </a>
                 </div>
             </div>
