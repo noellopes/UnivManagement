@@ -13,6 +13,8 @@ namespace UnivManagement.Data
 
             PopulateStudents(db);
             PopulateEmpresas(db);
+            PopulateAreas(db);
+            PopulateOfertas(db);
             PopulateOrientadores(db);
             PopulateEstagios(db);
         }
@@ -190,6 +192,76 @@ namespace UnivManagement.Data
                     Contacto = "securebyte@example.com"
                 }
             });
+
+            db.SaveChanges();
+        }
+
+        private static void PopulateAreas(UniversityDbContext db)
+        {
+            var areas = db.Area.ToList();
+            var empresas = db.Empresas.ToList();
+
+            foreach (var empresa in empresas)
+            {
+                if (!areas.Any(a => a.Nome == empresa.Setor))
+                {
+                    Area area = new Area
+                    {
+                        Nome = empresa.Setor,
+                        Descricao = "Área de atividade relacionada com " + empresa.Setor
+                    };
+
+                    db.Area.Add(area);
+                    areas.Add(area);
+                }
+            }
+
+            db.SaveChanges();
+        }
+
+        private static void PopulateOfertas(UniversityDbContext db)
+        {
+            var empresas = db.Empresas.OrderBy(e => e.IdEmpresa).ToList();
+            var ofertas = db.Ofertas.ToList();
+
+            string[] titulos =
+            {
+                "Desenvolvimento de aplicações Web",
+                "Manutenção de sistemas informáticos",
+                "Desenvolvimento de aplicações móveis",
+                "Análise e tratamento de dados",
+                "Otimização de sistemas informáticos",
+                "Configuração de redes informáticas",
+                "Desenvolvimento de bases de dados",
+                "Automação de processos industriais",
+                "Desenvolvimento de interfaces gráficas",
+                "Implementação de sistemas de segurança"
+            };
+
+            for (int i = 0; i < empresas.Count && i < titulos.Length; i++)
+            {
+                Empresa empresa = empresas[i];
+                string titulo = titulos[i];
+
+                if (!ofertas.Any(o => o.IdEmpresa == empresa.IdEmpresa && o.Titulo == titulo))
+                {
+                    Oferta oferta = new Oferta
+                    {
+                        IdEmpresa = empresa.IdEmpresa,
+                        Titulo = titulo,
+                        Descricao = "Estágio na área de " + empresa.Setor + " na empresa " + empresa.Nome,
+                        Tipo = "Estágio",
+                        Localizacao = empresa.Localizacao,
+                        Requisitos = "Conhecimentos na área de " + empresa.Setor,
+                        Remuneracao = 750 + i * 50,
+                        DataLimite = DateTime.Today.AddDays(60 + i * 7),
+                        Estado = "Aberta"
+                    };
+
+                    db.Ofertas.Add(oferta);
+                    ofertas.Add(oferta);
+                }
+            }
 
             db.SaveChanges();
         }

@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UnivManagement.Data;
 
 #nullable disable
 
-namespace UnivManagement.Migrations
+namespace UnivManagement.Data.Migrations.University
 {
     [DbContext(typeof(UniversityDbContext))]
-    [Migration("20261116132800_IntegrarEstagios")]
-    partial class IntegrarEstagios
+    partial class UniversityDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -621,6 +618,29 @@ namespace UnivManagement.Migrations
                     b.ToTable("AntigosAlunos");
                 });
 
+            modelBuilder.Entity("UnivManagement.Models.Area", b =>
+                {
+                    b.Property<int>("AreaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AreaId"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("AreaId");
+
+                    b.ToTable("Area");
+                });
+
             modelBuilder.Entity("UnivManagement.Models.Avaliacao", b =>
                 {
                     b.Property<int>("IdAvaliacao")
@@ -841,11 +861,11 @@ namespace UnivManagement.Migrations
 
             modelBuilder.Entity("UnivManagement.Models.Estagio", b =>
                 {
-                    b.Property<int>("IdEstagio")
+                    b.Property<int>("EstagioId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstagio"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EstagioId"));
 
                     b.Property<DateTime>("DataFim")
                         .HasColumnType("datetime2");
@@ -860,13 +880,13 @@ namespace UnivManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GestorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdEmpresa")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdGestor")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdOrientador")
+                    b.Property<int?>("OrientadorId")
                         .HasColumnType("int");
 
                     b.Property<string>("PlanoTrabalhos")
@@ -876,13 +896,13 @@ namespace UnivManagement.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
-                    b.HasKey("IdEstagio");
+                    b.HasKey("EstagioId");
+
+                    b.HasIndex("GestorId");
 
                     b.HasIndex("IdEmpresa");
 
-                    b.HasIndex("IdGestor");
-
-                    b.HasIndex("IdOrientador");
+                    b.HasIndex("OrientadorId");
 
                     b.HasIndex("StudentId");
 
@@ -964,11 +984,11 @@ namespace UnivManagement.Migrations
 
             modelBuilder.Entity("UnivManagement.Models.OrientadorEstagio", b =>
                 {
-                    b.Property<int>("IdOrientador")
+                    b.Property<int>("OrientadorId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOrientador"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrientadorId"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -978,11 +998,7 @@ namespace UnivManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdOrientador");
+                    b.HasKey("OrientadorId");
 
                     b.ToTable("OrientadoresEstagio");
                 });
@@ -1275,19 +1291,19 @@ namespace UnivManagement.Migrations
 
             modelBuilder.Entity("UnivManagement.Models.Estagio", b =>
                 {
+                    b.HasOne("UnivManagement.Models.GestorEstagio", "GestorEstagio")
+                        .WithMany("Estagios")
+                        .HasForeignKey("GestorId");
+
                     b.HasOne("UnivManagement.Models.Empresa", "Empresa")
                         .WithMany()
                         .HasForeignKey("IdEmpresa")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UnivManagement.Models.GestorEstagio", "GestorEstagio")
-                        .WithMany("Estagios")
-                        .HasForeignKey("IdGestor");
-
                     b.HasOne("UnivManagement.Models.OrientadorEstagio", "OrientadorEstagio")
                         .WithMany("Estagios")
-                        .HasForeignKey("IdOrientador");
+                        .HasForeignKey("OrientadorId");
 
                     b.HasOne("UnivManagement.Models.AcademicManagement.Student", "Student")
                         .WithMany()

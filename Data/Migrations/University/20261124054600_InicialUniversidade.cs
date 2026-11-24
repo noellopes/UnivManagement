@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace UnivManagement.Migrations
+namespace UnivManagement.Data.Migrations.University
 {
     /// <inheritdoc />
     public partial class InicialUniversidade : Migration
@@ -113,6 +113,20 @@ namespace UnivManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Area",
+                columns: table => new
+                {
+                    AreaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Area", x => x.AreaId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Docente",
                 columns: table => new
                 {
@@ -208,15 +222,14 @@ namespace UnivManagement.Migrations
                 name: "OrientadoresEstagio",
                 columns: table => new
                 {
-                    IdOrientador = table.Column<int>(type: "int", nullable: false)
+                    OrientadorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrientadoresEstagio", x => x.IdOrientador);
+                    table.PrimaryKey("PK_OrientadoresEstagio", x => x.OrientadorId);
                 });
 
             migrationBuilder.CreateTable(
@@ -533,6 +546,49 @@ namespace UnivManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Estagios",
+                columns: table => new
+                {
+                    EstagioId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DataFim = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Duracao = table.Column<int>(type: "int", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PlanoTrabalhos = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    IdEmpresa = table.Column<int>(type: "int", nullable: false),
+                    GestorId = table.Column<int>(type: "int", nullable: true),
+                    OrientadorId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Estagios", x => x.EstagioId);
+                    table.ForeignKey(
+                        name: "FK_Estagios_Empresas_IdEmpresa",
+                        column: x => x.IdEmpresa,
+                        principalTable: "Empresas",
+                        principalColumn: "IdEmpresa",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Estagios_GestoresEstagio_GestorId",
+                        column: x => x.GestorId,
+                        principalTable: "GestoresEstagio",
+                        principalColumn: "IdGestor");
+                    table.ForeignKey(
+                        name: "FK_Estagios_OrientadoresEstagio_OrientadorId",
+                        column: x => x.OrientadorId,
+                        principalTable: "OrientadoresEstagio",
+                        principalColumn: "OrientadorId");
+                    table.ForeignKey(
+                        name: "FK_Estagios_Student_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Student",
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Course",
                 columns: table => new
                 {
@@ -563,50 +619,6 @@ namespace UnivManagement.Migrations
                         principalTable: "SchoolCalendar",
                         principalColumn: "SchoolCalendarId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Estagios",
-                columns: table => new
-                {
-                    IdEstagio = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DataInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DataFim = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Duracao = table.Column<int>(type: "int", nullable: false),
-                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PlanoTrabalhos = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdAluno = table.Column<int>(type: "int", nullable: false),
-                    IdEmpregador = table.Column<int>(type: "int", nullable: false),
-                    IdGestor = table.Column<int>(type: "int", nullable: false),
-                    IdOrientador = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Estagios", x => x.IdEstagio);
-                    table.ForeignKey(
-                        name: "FK_Estagios_AntigosAlunos_IdAluno",
-                        column: x => x.IdAluno,
-                        principalTable: "AntigosAlunos",
-                        principalColumn: "IdAluno",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Estagios_Empregadores_IdEmpregador",
-                        column: x => x.IdEmpregador,
-                        principalTable: "Empregadores",
-                        principalColumn: "IdEmpregador",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Estagios_GestoresEstagio_IdGestor",
-                        column: x => x.IdGestor,
-                        principalTable: "GestoresEstagio",
-                        principalColumn: "IdGestor",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Estagios_OrientadoresEstagio_IdOrientador",
-                        column: x => x.IdOrientador,
-                        principalTable: "OrientadoresEstagio",
-                        principalColumn: "IdOrientador");
                 });
 
             migrationBuilder.CreateTable(
@@ -657,13 +669,13 @@ namespace UnivManagement.Migrations
                         name: "FK_Avaliacoes_Estagios_IdEstagio",
                         column: x => x.IdEstagio,
                         principalTable: "Estagios",
-                        principalColumn: "IdEstagio",
+                        principalColumn: "EstagioId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Avaliacoes_OrientadoresEstagio_IdOrientador",
                         column: x => x.IdOrientador,
                         principalTable: "OrientadoresEstagio",
-                        principalColumn: "IdOrientador",
+                        principalColumn: "OrientadorId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -685,7 +697,7 @@ namespace UnivManagement.Migrations
                         name: "FK_RelatoriosEstagio_Estagios_IdEstagio",
                         column: x => x.IdEstagio,
                         principalTable: "Estagios",
-                        principalColumn: "IdEstagio",
+                        principalColumn: "EstagioId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -737,24 +749,24 @@ namespace UnivManagement.Migrations
                 column: "IdEmpresa");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Estagios_IdAluno",
+                name: "IX_Estagios_GestorId",
                 table: "Estagios",
-                column: "IdAluno");
+                column: "GestorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Estagios_IdEmpregador",
+                name: "IX_Estagios_IdEmpresa",
                 table: "Estagios",
-                column: "IdEmpregador");
+                column: "IdEmpresa");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Estagios_IdGestor",
+                name: "IX_Estagios_OrientadorId",
                 table: "Estagios",
-                column: "IdGestor");
+                column: "OrientadorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Estagios_IdOrientador",
+                name: "IX_Estagios_StudentId",
                 table: "Estagios",
-                column: "IdOrientador");
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ofertas_IdEmpresa",
@@ -846,6 +858,9 @@ namespace UnivManagement.Migrations
                 name: "ApplicationStatusHistory");
 
             migrationBuilder.DropTable(
+                name: "Area");
+
+            migrationBuilder.DropTable(
                 name: "Avaliacoes");
 
             migrationBuilder.DropTable(
@@ -856,6 +871,9 @@ namespace UnivManagement.Migrations
 
             migrationBuilder.DropTable(
                 name: "Course");
+
+            migrationBuilder.DropTable(
+                name: "Empregadores");
 
             migrationBuilder.DropTable(
                 name: "InscrCourse");
@@ -882,9 +900,6 @@ namespace UnivManagement.Migrations
                 name: "StayRecord");
 
             migrationBuilder.DropTable(
-                name: "Student");
-
-            migrationBuilder.DropTable(
                 name: "StudyPlan");
 
             migrationBuilder.DropTable(
@@ -895,6 +910,9 @@ namespace UnivManagement.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ofertas");
+
+            migrationBuilder.DropTable(
+                name: "AntigosAlunos");
 
             migrationBuilder.DropTable(
                 name: "Docente");
@@ -915,10 +933,7 @@ namespace UnivManagement.Migrations
                 name: "AcademicYear");
 
             migrationBuilder.DropTable(
-                name: "AntigosAlunos");
-
-            migrationBuilder.DropTable(
-                name: "Empregadores");
+                name: "Empresas");
 
             migrationBuilder.DropTable(
                 name: "GestoresEstagio");
@@ -927,7 +942,7 @@ namespace UnivManagement.Migrations
                 name: "OrientadoresEstagio");
 
             migrationBuilder.DropTable(
-                name: "Empresas");
+                name: "Student");
         }
     }
 }

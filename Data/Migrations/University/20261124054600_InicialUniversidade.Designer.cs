@@ -9,11 +9,11 @@ using UnivManagement.Data;
 
 #nullable disable
 
-namespace UnivManagement.Migrations
+namespace UnivManagement.Data.Migrations.University
 {
     [DbContext(typeof(UniversityDbContext))]
-    [Migration("20261116153034_RemoverPasswordOrientador")]
-    partial class RemoverPasswordOrientador
+    [Migration("20261124054600_InicialUniversidade")]
+    partial class InicialUniversidade
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -619,6 +619,29 @@ namespace UnivManagement.Migrations
                     b.HasKey("IdAluno");
 
                     b.ToTable("AntigosAlunos");
+                });
+
+            modelBuilder.Entity("UnivManagement.Models.Area", b =>
+                {
+                    b.Property<int>("AreaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AreaId"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("AreaId");
+
+                    b.ToTable("Area");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.Avaliacao", b =>
