@@ -1,26 +1,26 @@
 @model UnivManagement.Models.AccommodationManagement.PossibleStatus
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Possible Status";
 }
 
-<h1>Delete</h1>
+<h1>Delete Possible Status</h1>
+<p class="text-danger">Are you sure you want to delete this status?</p>
+<hr />
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>UnivManagement.Models.AccommodationManagement.PossibleStatus</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="PossibleStatusId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
-</div>
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+</dl>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="PossibleStatusId" />
+    <div class="d-flex gap-2 mt-3">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
