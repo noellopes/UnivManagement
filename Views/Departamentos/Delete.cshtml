@@ -1,0 +1,24 @@
+@model UnivManagement.Models.Departamento
+
+@{
+    ViewData["Title"] = "Apagar departamento";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 text-danger mb-3">Apagar departamento</h1>
+                <p>Tem a certeza de que quer apagar <strong>@Model.Nome</strong>? Esta ação não pode ser desfeita.</p>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="DepartamentoId" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger">Apagar</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

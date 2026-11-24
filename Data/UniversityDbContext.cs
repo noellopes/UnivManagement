@@ -7,6 +7,11 @@ namespace UnivManagement.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
+            // Biblioteca: impedir associações duplicadas entre obras e autores
+            modelBuilder.Entity<ObraAutor>()
+                .HasIndex(la => new { la.ObraId, la.AutorId })
+                .IsUnique();
+
             // ServiceRequestType: two request types cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestType>()
                 .HasIndex(t => t.Name)
@@ -27,6 +32,26 @@ namespace UnivManagement.Data {
                 .HasOne(r => r.Status)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // ServiceRequestCatalogItem: two services cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
+            // ServiceRequestCatalogItem: a type that is used by a service cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
+                .HasOne(c => c.Type)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+            // ServiceRequestPriority: two priorities cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
+            // ServiceRequestPriority: two priorities cannot have the same level
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Level)
+                .IsUnique();
 
             // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
@@ -82,15 +107,26 @@ namespace UnivManagement.Data {
                 .HasPrecision(4, 2);
         }
 
+        public DbSet<Obra> Obras { get; set; } = default!;
+        public DbSet<TipoObra> Tipos { get; set;  } = default!;
+        public DbSet<Exemplar> Exemplares { get; set; } = default!;
+        public DbSet<Autor> Autores { get; set; } = default!;
+        public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;     
+        public DbSet<UnivManagement.Models.ReservaSala> Reserva { get; set; } = default!;
         public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestAssignment> ServiceRequestAssignments { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestComment> ServiceRequestComments { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestCatalogItem> ServiceRequestCatalogItems { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestPriority> ServiceRequestPriorities { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
         public DbSet<Refeicao> Refeicoes { get; set; }
+        public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<TipoRefeicao> TiposRefeicao { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.StayRecord> StayRecord { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationPayment> AccommodationPayment { get; set; } = default!;
