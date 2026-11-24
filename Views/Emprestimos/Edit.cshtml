@@ -1,52 +1,57 @@
 @model UnivManagement.Models.Emprestimo
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Empréstimo";
 }
 
-<h1>Edit</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-secondary text-white py-3">
+                    <h4 class="mb-0">Editar Empréstimo #@Model.EmprestimoId</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" asp-route-emprestimoid="@Model.EmprestimoId">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <input type="hidden" asp-for="EmprestimoId" />
 
-<h4>Emprestimo</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="EmprestimoId" />
-            <div class="form-group">
-                <label asp-for="dataEmprestimo" class="control-label"></label>
-                <input asp-for="dataEmprestimo" class="form-control" />
-                <span asp-validation-for="dataEmprestimo" class="text-danger"></span>
+                        <div class="form-group mb-3">
+                            <label asp-for="dataEmprestimo" class="control-label font-weight-bold">Data de Empréstimo</label>
+                            <input asp-for="dataEmprestimo" class="form-control" type="date" />
+                            <span asp-validation-for="dataEmprestimo" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="dataDevolucao" class="control-label font-weight-bold">Data de Devolução</label>
+                            <input asp-for="dataDevolucao" class="form-control" type="date" />
+                            <span asp-validation-for="dataDevolucao" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="estado" class="control-label font-weight-bold">Estado</label>
+                            <select asp-for="estado" class="form-control">
+                                <option value="Ativo">Ativo</option>
+                                <option value="Devolvido">Devolvido</option>
+                            </select>
+                            <span asp-validation-for="estado" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="ExemplarId" class="control-label font-weight-bold">Exemplar</label>
+                            <select asp-for="ExemplarId" class="form-control" asp-items="ViewBag.ExemplarId"></select>
+                            <span asp-validation-for="ExemplarId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                            <input type="submit" value="Guardar Alterações" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="dataDevolucao" class="control-label"></label>
-                <input asp-for="dataDevolucao" class="form-control" />
-                <span asp-validation-for="dataDevolucao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="estado" class="control-label"></label>
-                <input asp-for="estado" class="form-control" />
-                <span asp-validation-for="estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ExemplarId" class="control-label"></label>
-                <input asp-for="ExemplarId" class="form-control" />
-                <span asp-validation-for="ExemplarId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Exemplar" class="control-label"></label>
-                <input asp-for="Exemplar" class="form-control" />
-                <span asp-validation-for="Exemplar" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -1,52 +1,44 @@
 @model UnivManagement.Models.Emprestimo
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Empréstimo";
 }
 
-<h1>Details</h1>
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0">Detalhes do Empréstimo #@Model.EmprestimoId</h4>
+        </div>
+        <div class="card-body p-4">
+            <dl class="row mb-0">
+                <dt class="col-sm-3 text-muted">Data de Empréstimo</dt>
+                <dd class="col-sm-9 font-weight-bold">@Model.dataEmprestimo.ToString("dd/MM/yyyy")</dd>
 
-<div>
-    <h4>Emprestimo</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.dataEmprestimo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.dataEmprestimo)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.dataDevolucao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.dataDevolucao)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.estado)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExemplarId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExemplarId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Exemplar)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Exemplar)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.EmprestimoId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                <dt class="col-sm-3 text-muted">Data de Devolução</dt>
+                <dd class="col-sm-9 font-weight-bold">@Model.dataDevolucao.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3 text-muted">Estado</dt>
+                <dd class="col-sm-9">
+                    @if (Model.estado == "Ativo")
+                    {
+                        <span class="badge bg-warning text-dark px-3 py-2">Ativo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success px-3 py-2">@Model.estado</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3 text-muted">ID do Exemplar</dt>
+                <dd class="col-sm-9">#@Model.ExemplarId</dd>
+
+                <dt class="col-sm-3 text-muted">Código do Exemplar</dt>
+                <dd class="col-sm-9">@(Model.Exemplar?.Codigo ?? "N/D")</dd>
+            </dl>
+        </div>
+        <div class="card-footer bg-light px-4 py-3 d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-outline-secondary">Voltar à Lista</a>
+            <a asp-action="Edit" asp-route-emprestimoid="@Model.EmprestimoId" class="btn btn-primary">Editar</a>
+        </div>
+    </div>
 </div>

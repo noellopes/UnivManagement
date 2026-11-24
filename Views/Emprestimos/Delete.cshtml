@@ -1,58 +1,41 @@
 @model UnivManagement.Models.Emprestimo
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Empréstimo";
 }
 
-<h1>Delete</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger shadow-sm">
+                <div class="card-header bg-danger text-white py-3">
+                    <h4 class="mb-0">Confirmação de Eliminação</h4>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-danger font-weight-bold">Tem a certeza de que pretende eliminar este registo de empréstimo?</p>
+                    <hr />
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-muted">ID Empréstimo</dt>
+                        <dd class="col-sm-8">#@Model.EmprestimoId</dd>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>UnivManagement.Models.Emprestimo</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.dataEmprestimo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.dataEmprestimo)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.dataDevolucao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.dataDevolucao)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.estado)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExemplarId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExemplarId)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Exemplar)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Exemplar)
-        </dd>
-    </dl>
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="EmprestimoId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+                        <dt class="col-sm-4 text-muted">Data Empréstimo</dt>
+                        <dd class="col-sm-8">@Model.dataEmprestimo.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-4 text-muted">Estado</dt>
+                        <dd class="col-sm-8">@Model.estado</dd>
+
+                        <dt class="col-sm-4 text-muted">Exemplar</dt>
+                        <dd class="col-sm-8">#@Model.ExemplarId (@(Model.Exemplar?.Codigo ?? "N/D"))</dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-light px-4 py-3 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                    <form asp-action="Delete" asp-route-emprestimoid="@Model.EmprestimoId" method="post">
+                        <input type="hidden" asp-for="EmprestimoId" />
+                        <input type="submit" value="Confirmar Eliminação" class="btn btn-danger" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
