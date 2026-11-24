@@ -19,6 +19,7 @@ public class RoomController : Controller
         return View(await _context.Room.ToListAsync());
     }
 
+
     // GET: ROOMS/Details/5
     [HttpGet("Room/Details/{RoomId}")]
 
