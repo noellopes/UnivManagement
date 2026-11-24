@@ -1,0 +1,99 @@
+@model IEnumerable<UnivManagement.Models.ServicoFuncionario>
+
+@{
+    ViewData["Title"] = "Serviços de Funcionários";
+}
+
+<!-- Incluir Bootstrap Icons caso ainda não esteja no _Layout.cshtml -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="container py-4">
+    <!-- Cabeçalho -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-primary mb-1">
+                <i class="bi bi-briefcase-fill me-2"></i>Serviços de Funcionários
+            </h2>
+            <p class="text-muted mb-0">Gestão dos serviços associados aos funcionários da instituição</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary rounded-pill px-4 shadow-sm">
+            <i class="bi bi-plus-circle me-1"></i> Criar Novo Serviço
+        </a>
+    </div>
+
+    <!-- Cartão Contentor da Tabela -->
+    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light border-bottom">
+                        <tr>
+                            <th class="ps-4">
+                                <i class="bi bi-tag-fill me-1 text-secondary"></i> @Html.DisplayNameFor(model => model.Nome)
+                            </th>
+                            <th class="text-center">
+                                <i class="bi bi-toggle-on me-1 text-secondary"></i> Estado
+                            </th>
+                            <th class="text-center">
+                                <i class="bi bi-calendar-event me-1 text-secondary"></i> @Html.DisplayNameFor(model => model.DataCriacao)
+                            </th>
+                            <th class="text-center pe-4">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4 fw-semibold text-dark">
+                                        @Html.DisplayFor(modelItem => item.Nome)
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.Ativo)
+                                        {
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">
+                                                <i class="bi bi-check-circle-fill me-1"></i> Ativo
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3 py-2">
+                                                <i class="bi bi-x-circle-fill me-1"></i> Inativo
+                                            </span>
+                                        }
+                                    </td>
+                                    <td class="text-center text-muted">
+                                        @item.DataCriacao.ToString("dd/MM/yyyy HH:mm")
+                                    </td>
+                                    <td class="text-center pe-4">
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Edit" asp-route-id="@item.ServicoFuncionarioId" class="btn btn-sm btn-outline-warning" title="Editar">
+                                                <i class="bi bi-pencil-fill"></i> <span class="d-none d-md-inline ms-1">Editar</span>
+                                            </a>
+                                            <a asp-action="Details" asp-route-id="@item.ServicoFuncionarioId" class="btn btn-sm btn-outline-info" title="Detalhes">
+                                                <i class="bi bi-info-circle-fill"></i> <span class="d-none d-md-inline ms-1">Detalhes</span>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.ServicoFuncionarioId" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                <i class="bi bi-trash-fill"></i> <span class="d-none d-md-inline ms-1">Apagar</span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-5">
+                                    <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
+                                    Nenhum serviço de funcionário registado até ao momento.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
