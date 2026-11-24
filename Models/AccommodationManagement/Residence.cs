@@ -15,10 +15,10 @@ public class Residence
     [Display(Name = "Address")]
     public required string Address { get; set; }
 
-    [Required(ErrorMessage = "The {0} is required.")]
-    [Range(1, 300, ErrorMessage = "The {0} must be between {1} and {2}.")]
+    [Required(ErrorMessage = "The Capacity (Beds) is required.")]
+    [Range(1, 5000, ErrorMessage = "Capacity must be at least 1 bed.")]
     [Display(Name = "Capacity (Beds)")]
-    public int Capacity { get; set; }
+    public int? Capacity { get; set; }
 
     [Display(Name = "Active")]
     public bool IsActive { get; set; } = true;
