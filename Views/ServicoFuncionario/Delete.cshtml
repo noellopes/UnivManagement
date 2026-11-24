@@ -5,8 +5,6 @@
 }
 
 
-
-<div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
 
@@ -78,62 +76,21 @@
                         </dl>
                     </div>
 
-                    <!-- Botões de Ação na Página -->
+                <form asp-action="Delete">
                     <div class="d-flex justify-content-between align-items-center gap-2">
                         <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
                             <i class="bi bi-arrow-left me-1"></i> Cancelar
                         </a>
-                        <!-- Botão que abre a Janela Modal -->
-                        <button type="button" class="btn btn-danger bg-gradient rounded-pill px-4 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#modalConfirmacaoDelete">
-                            <i class="bi bi-trash-fill me-1"></i> Eliminar Serviço
+                        <button type="submit" class="btn btn-danger bg-gradient rounded-pill px-4 shadow-sm fw-bold">
+                            <i class="bi bi-trash-fill me-1"></i> Confirmar Eliminação
                         </button>
                     </div>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<!-- JANELA MODAL DE CONFIRMAÇÃO -->
-<div class="modal fade" id="modalConfirmacaoDelete" tabindex="-1" aria-labelledby="modalConfirmacaoDeleteLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow rounded-4 overflow-hidden">
-
-            <!-- Cabeçalho da Modal -->
-            <div class="modal-header bg-danger text-white py-3">
-                <h5 class="modal-title fw-bold" id="modalConfirmacaoDeleteLabel">
-                    <i class="bi bi-exclamation-octagon-fill me-2"></i> Confirmar Ação Irreversível
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
-            </div>
-
-            <!-- Corpo da Modal -->
-            <div class="modal-body p-4 text-center">
-                <div class="text-danger mb-3">
-                    <i class="bi bi-trash3-fill display-1"></i>
-                </div>
-                <h4 class="fw-bold text-dark mb-2">Tem a certeza?</h4>
-                <p class="text-muted mb-0">
-                    Está prestes a apagar permanentemente o serviço <strong>"@Model?.Nome"</strong>. Esta ação não poderá ser anulada.
-                </p>
-            </div>
-
-            <!-- Rodapé da Modal com o Formulário -->
-            <div class="modal-footer bg-light border-0 justify-content-center p-3 gap-2">
-                <button type="button" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle me-1"></i> Cancelar
-                </button>
-
-                <form asp-action="Delete" class="m-0">
-                    <input type="hidden" asp-for="ServicoFuncionarioId" />
-                    <button type="submit" class="btn btn-danger bg-gradient rounded-pill px-4 fw-bold shadow-sm">
-                        <i class="bi bi-check-circle-fill me-1"></i> Sim, Eliminar
-                    </button>
                 </form>
+
+                </div>
             </div>
 
-        </div>
+        </div> 
     </div>
-</div>
+
+
