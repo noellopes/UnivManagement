@@ -95,7 +95,8 @@ namespace UnivManagement.Data {
         public DbSet<TipoObra> Tipos { get; set;  } = default!;
         public DbSet<Exemplar> Exemplares { get; set; } = default!;
         public DbSet<Autor> Autores { get; set; } = default!;
-        public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;
+        public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;     
+        public DbSet<UnivManagement.Models.ReservaSala> Reserva { get; set; } = default!;
         public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
