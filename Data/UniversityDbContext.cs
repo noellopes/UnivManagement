@@ -1,109 +1,121 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
+using Models = global::UnivManagement.Models;
 
-namespace UnivManagement.Data {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
-        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+namespace UnivManagement.Data
+{
+    public class UniversityDbContext(
+        DbContextOptions<UniversityDbContext> options) : DbContext(options)
+    {
+        public DbSet<Convidado> Convidado { get; set; } = default!;
+
+        public DbSet<Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
+        public DbSet<Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
+        public DbSet<Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+
+        public DbSet<Models.AcademicManagement.Student> Student { get; set; } = default!;
+        public DbSet<Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
+        public DbSet<Models.AcademicManagement.UC> UC { get; set; } = default!;
+        public DbSet<Models.AcademicManagement.SchoolCalendar> SchoolCalendar { get; set; } = default!;
+        public DbSet<Models.AcademicManagement.Course> Course { get; set; } = default!;
+        public DbSet<Models.AcademicManagement.InscrUC> InscrUC { get; set; } = default!;
+        public DbSet<Models.AcademicManagement.InscrCourse> InscrCourse { get; set; } = default!;
+        public DbSet<Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
+        public DbSet<Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
+        public DbSet<Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
+
+        public DbSet<Refeicao> Refeicoes { get; set; } = default!;
+        public DbSet<TipoRefeicao> TiposRefeicao { get; set; } = default!;
+
+        public DbSet<Models.AccommodationManagement.StayRecord> StayRecord { get; set; } = default!;
+        public DbSet<Models.AccommodationManagement.AccommodationPayment> AccommodationPayment { get; set; } = default!;
+        public DbSet<Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
+        public DbSet<Models.AccommodationManagement.ApplicationStatusHistory> ApplicationStatusHistory { get; set; } = default!;
+        public DbSet<Models.AccommodationManagement.AccommodationApplication> AccommodationApplication { get; set; } = default!;
+        public DbSet<Models.AccommodationManagement.Room> Room { get; set; } = default!;
+
+        public DbSet<Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+
+        public DbSet<AntigoAluno> AntigosAlunos { get; set; } = default!;
+        public DbSet<Carreira> Carreiras { get; set; } = default!;
+        public DbSet<Empresa> Empresas { get; set; } = default!;
+        public DbSet<Empregador> Empregadores { get; set; } = default!;
+        public DbSet<Oferta> Ofertas { get; set; } = default!;
+        public DbSet<Candidatura> Candidaturas { get; set; } = default!;
+        public DbSet<Estagio> Estagios { get; set; } = default!;
+        public DbSet<GestorEstagio> GestoresEstagio { get; set; } = default!;
+        public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; } = default!;
+        public DbSet<Avaliacao> Avaliacoes { get; set; } = default!;
+        public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; } = default!;
+
+        public DbSet<TipoCandidatura> TipoCandidatura { get; set; } = default!;
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             base.OnModelCreating(modelBuilder);
 
-            // ServiceRequestType: two request types cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestType>()
-                .HasIndex(t => t.Name)
+                .HasIndex(type => type.Name)
                 .IsUnique();
 
-            // ServiceRequestStatus: two statuses cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestStatus>()
-                .HasIndex(s => s.Name)
+                .HasIndex(status => status.Name)
                 .IsUnique();
 
-            // ServiceRequest: a type or status that is used by a request cannot be deleted
             modelBuilder.Entity<Models.ServiceRequest>()
-                .HasOne(r => r.Type)
+                .HasOne(request => request.Type)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Models.ServiceRequest>()
-                .HasOne(r => r.Status)
+                .HasOne(request => request.Status)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
-                .HasIndex(u => u.NumStudent)
+                .HasIndex(student => student.NumStudent)
                 .IsUnique();
 
-            // Student: atributo NIF é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
-                .HasIndex(u => u.NIF)
+                .HasIndex(student => student.NIF)
                 .IsUnique();
 
-            // Student: atributo Email é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
-                .HasIndex(u => u.Email)
+                .HasIndex(student => student.Email)
                 .IsUnique();
 
-            // Student: atributo Telephone é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
-                .HasIndex(u => u.Telephone)
+                .HasIndex(student => student.Telephone)
                 .IsUnique();
-          
-            // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
+
             modelBuilder.Entity<Models.AcademicManagement.UC>()
-                .HasIndex(u => u.Code)
+                .HasIndex(uc => uc.Code)
                 .IsUnique();
 
-            // Room: número único por residência:
             modelBuilder.Entity<Models.AccommodationManagement.Room>()
-                .HasIndex(r => new { r.ResidenceId, r.Number })
+                .HasIndex(room => new { room.ResidenceId, room.Number })
                 .IsUnique();
 
-            // indica que o atributo Code é único na tabela Course:
             modelBuilder.Entity<Models.AcademicManagement.Course>()
-                .HasIndex(c => c.Code)
+                .HasIndex(course => course.Code)
                 .IsUnique();
 
-            // Evita duplicações na tabela CourseStudyPlanYear:
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
-                .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
+                .HasIndex(item => new
+                {
+                    item.CourseId,
+                    item.StudyPlanId,
+                    item.AcademicYearId
+                })
                 .IsUnique();
-        }
-      
-        public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
-        public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
-        public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
 
-        public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
-        public DbSet<Refeicao> Refeicoes { get; set; }
-        public DbSet<TipoRefeicao> TiposRefeicao { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.StayRecord> StayRecord { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationPayment> AccommodationPayment { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory> ApplicationStatusHistory { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationApplication> AccommodationApplication { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.Room> Room { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.SchoolCalendar> SchoolCalendar { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.Course> Course { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.InscrUC> InscrUC { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.InscrCourse> InscrCourse { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
-        public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
-        
-        public DbSet<AntigoAluno> AntigosAlunos { get; set; }
-        public DbSet<Carreira> Carreiras { get; set; }
-        public DbSet<Empresa> Empresas { get; set; }
-        public DbSet<Empregador> Empregadores { get; set; }
-        public DbSet<Oferta> Ofertas { get; set; }
-        public DbSet<Candidatura> Candidaturas { get; set; }
-        public DbSet<Estagio> Estagios { get; set; }
-        public DbSet<GestorEstagio> GestoresEstagio { get; set; }
-        public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
-        public DbSet<Avaliacao> Avaliacoes { get; set; }
-        public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
-        public DbSet<TipoCandidatura> TipoCandidatura { get; set; } = default!;
+            // Avoid SQL Server multiple cascade paths.
+            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
+                .HasOne(item => item.Course)
+                .WithMany()
+                .HasForeignKey(item => item.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 }
