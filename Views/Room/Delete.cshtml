@@ -1,0 +1,54 @@
+@model UnivManagement.Models.Room
+
+@{
+    ViewData["Title"] = "Eliminar Sala";
+}
+
+<div class="container py-4" style="max-width: 720px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-danger mb-0">
+            <i class="bi bi-trash-fill me-2"></i>Eliminar Sala
+        </h2>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i>Voltar à Lista
+        </a>
+    </div>
+
+
+    <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+        <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+        <div>Tem a certeza que pretende eliminar esta sala? Esta ação não pode ser revertida.</div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <dl class="row mb-0">
+                <dt class="col-sm-4 text-muted">@Html.DisplayNameFor(model => model.NumeroSala)</dt>
+                <dd class="col-sm-8 fw-bold">@Html.DisplayFor(model => model.NumeroSala)</dd>
+
+                <dt class="col-sm-4 text-muted mt-2">@Html.DisplayNameFor(model => model.Edificio)</dt>
+                <dd class="col-sm-8 mt-2">@Html.DisplayFor(model => model.Edificio!.NomeEdificio)</dd>
+
+                <dt class="col-sm-4 text-muted mt-2">@Html.DisplayNameFor(model => model.Piso)</dt>
+                <dd class="col-sm-8 mt-2">Piso @Html.DisplayFor(model => model.Piso)</dd>
+
+                <dt class="col-sm-4 text-muted mt-2">@Html.DisplayNameFor(model => model.TipoSala)</dt>
+                <dd class="col-sm-8 mt-2">@Html.DisplayFor(model => model.TipoSala!.Designacao)</dd>
+
+                <dt class="col-sm-4 text-muted mt-2">@Html.DisplayNameFor(model => model.Lotacao)</dt>
+                <dd class="col-sm-8 mt-2">@Html.DisplayFor(model => model.Lotacao) lugares</dd>
+
+                <dt class="col-sm-4 text-muted mt-2">@Html.DisplayNameFor(model => model.Estado)</dt>
+                <dd class="col-sm-8 mt-2">@Html.DisplayFor(model => model.Estado)</dd>
+            </dl>
+
+            <form asp-action="Delete" method="post" class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                <input type="hidden" asp-for="RoomId" />
+                <a asp-action="Index" class="btn btn-light border">Cancelar</a>
+                <button type="submit" class="btn btn-danger px-4">
+                    <i class="bi bi-trash me-1"></i>Eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
