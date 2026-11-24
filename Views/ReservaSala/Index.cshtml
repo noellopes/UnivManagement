@@ -1,65 +1,191 @@
 @model IEnumerable<UnivManagement.Models.ReservaSala>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Reservas de Salas";
 }
 
-<h1>Index</h1>
+<div class="container-fluid px-4 py-5">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Responsavel)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Motivo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataFim)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SalaFk)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Responsavel)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Motivo)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DataInicio)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DataFim)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.SalaFk)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ReservaSalaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ReservaSalaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ReservaSalaId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="card border-0 shadow rounded-4 overflow-hidden">
+
+        <!-- Cabeçalho -->
+        <div class="card-header bg-primary text-white p-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+
+                <div>
+                    <h3 class="mb-1">📅 Reservas de Salas</h3>
+                    <p class="mb-0 opacity-75">
+                        Consulte e faça a gestão das reservas de salas.
+                    </p>
+                </div>
+
+                <a asp-action="Create"
+                   class="btn btn-light fw-semibold px-4">
+                    + Nova Reserva
+                </a>
+
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+
+            <!-- Título e quantidade -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-semibold mb-0">
+                    Lista de Reservas
+                </h5>
+
+                <span class="badge bg-primary rounded-pill px-3 py-2">
+                    @Model.Count() reservas
+                </span>
+            </div>
+
+            <!-- Tabela -->
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th class="py-3">
+                                @Html.DisplayNameFor(model => model.Responsavel)
+                            </th>
+
+                            <th class="py-3">
+                                @Html.DisplayNameFor(model => model.Motivo)
+                            </th>
+
+                            <th class="py-3">
+                                @Html.DisplayNameFor(model => model.DataInicio)
+                            </th>
+
+                            <th class="py-3">
+                                @Html.DisplayNameFor(model => model.DataFim)
+                            </th>
+
+                            <th class="py-3">
+                                @Html.DisplayNameFor(model => model.Estado)
+                            </th>
+
+                            <th class="py-3">
+                                @Html.DisplayNameFor(model => model.SalaFk)
+                            </th>
+
+                            <th class="py-3 text-end">
+                                Ações
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <!-- Responsável -->
+                                <td class="fw-semibold">
+                                    @Html.DisplayFor(model => item.Responsavel)
+                                </td>
+
+                                <!-- Motivo -->
+                                <td>
+                                    @Html.DisplayFor(model => item.Motivo)
+                                </td>
+
+                                <!-- Data Início -->
+                                <td class="text-nowrap">
+                                    @Html.DisplayFor(model => item.DataInicio)
+                                </td>
+
+                                <!-- Data Fim -->
+                                <td class="text-nowrap">
+                                    @Html.DisplayFor(model => item.DataFim)
+                                </td>
+
+                                <!-- Estado -->
+                                <td>
+                                    @{
+                                        var estado = item.Estado?.ToString() ?? "";
+                                        var estadoNormalizado = estado.Trim().ToLowerInvariant();
+
+                                        var badgeClass = estadoNormalizado switch
+                                        {
+                                            "aprovado" or "aprovada" or "confirmado" or "confirmada" => "bg-success",
+                                            "pendente" => "bg-warning text-dark",
+                                            "rejeitado" or "rejeitada" or "cancelado" or "cancelada" => "bg-danger",
+                                            _ => "bg-secondary"
+                                        };
+                                    }
+
+                                    <span class="badge @badgeClass px-3 py-2">
+                                        @estado
+                                    </span>
+                                </td>
+
+                                <!-- Sala -->
+                                <td>
+                                    <span class="badge bg-light text-dark border px-3 py-2">
+                                        @Html.DisplayFor(model => item.SalaFk)
+                                    </span>
+                                </td>
+
+                                <!-- Ações -->
+                                <td>
+                                    <div class="d-flex justify-content-end gap-2">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.ReservaSalaId"
+                                           class="btn btn-sm btn-outline-info"
+                                           title="Ver detalhes">
+                                            👁️
+                                        </a>
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.ReservaSalaId"
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="Editar reserva">
+                                            ✏️
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.ReservaSalaId"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="Eliminar reserva">
+                                            🗑️
+                                        </a>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Sem reservas -->
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <div class="fs-1 mb-3">📭</div>
+
+                    <h5 class="fw-semibold">
+                        Ainda não existem reservas
+                    </h5>
+
+                    <p class="text-muted">
+                        Comece por criar uma nova reserva de sala.
+                    </p>
+
+                    <a asp-action="Create"
+                       class="btn btn-primary px-4">
+                        + Criar Reserva
+                    </a>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
