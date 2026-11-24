@@ -1,0 +1,71 @@
+@model IEnumerable<ServiceRequestStatus>
+
+@{
+    ViewData["Title"] = "Request statuses";
+}
+
+<div class="container py-4">
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+            @ViewBag.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <a asp-controller="AdministrativeServices" asp-action="Index" class="link-secondary text-decoration-none">
+        Back to Requests and Administrative Services
+    </a>
+
+    <header class="d-flex flex-wrap justify-content-between align-items-center my-4">
+        <div>
+            <h1 class="display-6 mb-0">Request statuses</h1>
+            <p class="text-body-secondary mb-0">The steps a request goes through.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>New status</a>
+    </header>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.DisplayOrder)</th>
+                        <th>@Html.DisplayNameFor(model => model.Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                        <th>@Html.DisplayNameFor(model => model.IsFinal)</th>
+                        <th>@Html.DisplayNameFor(model => model.RequiresNote)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.DisplayOrder)</td>
+                            <td><span class="badge text-bg-@item.Color">@item.Name</span></td>
+                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IsFinal)</td>
+                            <td>@Html.DisplayFor(modelItem => item.RequiresNote)</td>
+                            <td class="text-end text-nowrap">
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Status actions">
+                                    <a asp-action="Details" asp-route-id="@item.ServiceRequestStatusId" class="btn btn-outline-secondary" title="Details"><i class="bi bi-eye-fill"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.ServiceRequestStatusId" class="btn btn-outline-secondary" title="Edit"><i class="bi bi-pencil-fill"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.ServiceRequestStatusId" class="btn btn-outline-danger" title="Delete"><i class="bi bi-trash-fill"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            There are no statuses yet. Create the first one.
+        </div>
+    }
+</div>
