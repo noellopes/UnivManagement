@@ -12,6 +12,7 @@ namespace UnivManagement.Data
         public DbSet<Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<TipoDocumento> TipoDocumento { get; set; } = default!;
 
         public DbSet<Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
@@ -25,6 +26,7 @@ namespace UnivManagement.Data
         public DbSet<Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
 
         public DbSet<Refeicao> Refeicoes { get; set; } = default!;
+        public DbSet<TipoBolsa> TipoBolsa { get; set; } = default!;
         public DbSet<TipoRefeicao> TiposRefeicao { get; set; } = default!;
 
         public DbSet<Models.AccommodationManagement.StayRecord> StayRecord { get; set; } = default!;
