@@ -1,36 +1,49 @@
 @model UnivManagement.Models.RoomType
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar Tipo de Sala";
 }
 
-<h1>Create</h1>
+<div class="container py-4" style="max-width: 720px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">
+            <i class="bi bi-plus-square-fill text-primary me-2"></i>Criar Tipo de Sala
+        </h2>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i>Voltar à Lista
+        </a>
+    </div>
 
-<h4>RoomType</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="Designacao" class="control-label"></label>
-                <input asp-for="Designacao" class="form-control" />
-                <span asp-validation-for="Designacao" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="Designacao" class="form-label fw-semibold"></label>
+                    <input asp-for="Designacao" class="form-control" placeholder="ex: Laboratório de Informática" />
+                    <span asp-validation-for="Designacao" class="text-danger small"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="RequerComputadores" class="control-label"></label>
-                <input asp-for="RequerComputadores" class="form-check-input" />
-                <span asp-validation-for="RequerComputadores" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="form-check form-switch mb-4">
+                    <input asp-for="RequerComputadores" class="form-check-input" />
+                    <label asp-for="RequerComputadores" class="form-check-label fw-semibold"></label>
+                    <span asp-validation-for="RequerComputadores" class="text-danger small d-block"></span>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                    <a asp-action="Index" class="btn btn-light border">Cancelar</a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-check-lg me-1"></i>Criar
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

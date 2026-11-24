@@ -1,41 +1,77 @@
 @model IEnumerable<UnivManagement.Models.RoomType>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tipos de Sala";
 }
 
-<h1>Index</h1>
+<div class="container py-4" style="max-width: 960px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-tags-fill text-primary me-2"></i>Tipos de Sala
+            </h2>
+            <p class="text-muted small mb-0">Gestão das categorias e requisitos técnicos das salas.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i>Novo Tipo de Sala
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Designacao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RequerComputadores)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Designacao)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.RequerComputadores)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RoomTypeId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RoomTypeId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RoomTypeId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">@Html.DisplayNameFor(model => model.Designacao)</th>
+                        <th class="text-center">@Html.DisplayNameFor(model => model.RequerComputadores)</th>
+                        <th class="text-end pe-4">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-semibold">@Html.DisplayFor(modelItem => item.Designacao)</td>
+                                <td class="text-center">
+                                    @if (item.RequerComputadores)
+                                    {
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle">
+                                            <i class="bi bi-pc-display me-1"></i>Sim
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
+                                            Não
+                                        </span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a asp-action="Details" asp-route-id="@item.RoomTypeId" class="btn btn-outline-info" title="Detalhes">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.RoomTypeId" class="btn btn-outline-warning" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.RoomTypeId" class="btn btn-outline-danger" title="Eliminar">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-4">Nenhum tipo de sala registado.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
