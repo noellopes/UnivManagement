@@ -1,13 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using UnivManagement.Models;
+using UnivManagement.Models.AcademicManagement;
 
-namespace UnivManagement.Data
-{
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
-    {
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+namespace UnivManagement.Data {
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
+
+            // ServiceRequestType: two request types cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestType>()
+                .HasIndex(t => t.Name)
+                .IsUnique();
+
+            // ServiceRequestStatus: two statuses cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestStatus>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            // ServiceRequest: a type or status that is used by a request cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequest>()
+                .HasOne(r => r.Type)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.ServiceRequest>()
+                .HasOne(r => r.Status)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
