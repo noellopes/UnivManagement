@@ -1,22 +1,26 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnivManagement.Models;
 
 namespace UnivManagement.Data
 {
     public class SeedData
     {
-        public static void Populate(UniversityDbContext? dbContext)
+        public static void Populate(UniversityDbContext? db)
         {
-            if (dbContext == null)
-                throw new ArgumentNullException(nameof(dbContext));
+            if (db == null)
+                throw new ArgumentNullException(nameof(db));
 
-            PopulateTipoCandidaturas(dbContext);
-            PopulateTipoDocumento(dbContext);
-            PopulateTipoBolsa(dbContext);
+            PopulateTipoCandidaturas(db);
+            PopulateTipoDocumento(db);
+            PopulateTipoBolsa(db);
+            PopulateEstadoPossivel(db);
         }
 
-        private static void PopulateTipoDocumento(UniversityDbContext dbContext)
+        private static void PopulateTipoDocumento(UniversityDbContext db)
         {
-            var tiposDocumento = new List<TipoDocumento>
+            var tipos = new List<TipoDocumento>
             {
                 new TipoDocumento { NomeTipo = "Cartão de Cidadão", Obrigatorio = true },
                 new TipoDocumento { NomeTipo = "Comprovativo de Matrícula", Obrigatorio = true },
@@ -29,19 +33,19 @@ namespace UnivManagement.Data
                 new TipoDocumento { NomeTipo = "Certificado de Habilitações", Obrigatorio = false }
             };
 
-            var existentes = dbContext.TipoDocumento
+            var existentes = db.TipoDocumento
                 .Select(t => t.NomeTipo)
                 .ToHashSet();
 
-            var novos = tiposDocumento
+            var novos = tipos
                 .Where(t => !existentes.Contains(t.NomeTipo))
                 .ToList();
 
-            if (novos.Count > 0)
-            {
-                dbContext.TipoDocumento.AddRange(novos);
-                dbContext.SaveChanges();
-            }
+            if (novos.Count == 0)
+                return;
+
+            db.TipoDocumento.AddRange(novos);
+            db.SaveChanges();
         }
 
         private static void PopulateTipoCandidaturas(UniversityDbContext db)
@@ -87,9 +91,9 @@ namespace UnivManagement.Data
             db.SaveChanges();
         }
 
-        private static void PopulateTipoBolsa(UniversityDbContext dbContext)
+        private static void PopulateTipoBolsa(UniversityDbContext db)
         {
-            var tiposBolsa = new List<TipoBolsa>
+            var tipos = new List<TipoBolsa>
             {
                 new TipoBolsa
                 {
@@ -183,19 +187,62 @@ namespace UnivManagement.Data
                 }
             };
 
-            var existentes = dbContext.TipoBolsa
+            var existentes = db.TipoBolsa
                 .Select(t => t.Nome)
                 .ToHashSet();
 
-            var novos = tiposBolsa
+            var novos = tipos
                 .Where(t => !existentes.Contains(t.Nome))
                 .ToList();
 
-            if (novos.Count > 0)
+            if (novos.Count == 0)
+                return;
+
+            db.TipoBolsa.AddRange(novos);
+            db.SaveChanges();
+        }
+
+        private static void PopulateEstadoPossivel(UniversityDbContext db)
+        {
+            if (db.EstadoPossivel.Any())
+                return;
+
+            var estados = new List<EstadoPossivel>
             {
-                dbContext.TipoBolsa.AddRange(novos);
-                dbContext.SaveChanges();
-            }
+                new EstadoPossivel
+                {
+                    NomeEstado = "Submetida",
+                    Descricao = "A candidatura foi submetida pelo estudante e aguarda análise."
+                },
+                new EstadoPossivel
+                {
+                    NomeEstado = "Em análise",
+                    Descricao = "A candidatura está a ser analisada por um técnico dos serviços de ação social."
+                },
+                new EstadoPossivel
+                {
+                    NomeEstado = "A aguardar documentos",
+                    Descricao = "Foram pedidos documentos em falta ou correções ao estudante."
+                },
+                new EstadoPossivel
+                {
+                    NomeEstado = "Aprovada",
+                    Descricao = "A candidatura cumpre os critérios de elegibilidade e a bolsa foi atribuída."
+                },
+                new EstadoPossivel
+                {
+                    NomeEstado = "Rejeitada",
+                    Descricao = "A candidatura não cumpre os critérios de elegibilidade."
+                },
+                new EstadoPossivel
+                {
+                    NomeEstado = "Cancelada",
+                    Descricao = "A candidatura foi cancelada pelo estudante ou anulada pelos serviços."
+                }
+            };
+
+            db.EstadoPossivel.AddRange(estados);
+            db.SaveChanges();
         }
     }
 }

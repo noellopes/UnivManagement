@@ -58,6 +58,7 @@ namespace UnivManagement.Data
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; } = default!;
         public DbSet<Avaliacao> Avaliacoes { get; set; } = default!;
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; } = default!;
+        public DbSet<EstadoPossivel> EstadoPossivel { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
