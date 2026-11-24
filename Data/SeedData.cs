@@ -9,11 +9,35 @@ namespace UnivManagement.Data
         {
             if (db == null) throw new ArgumentNullException(nameof(db));
 
+            PopulateServicosFuncionarios(db);
             PopulateServiceRequestTypes(db);
             PopulateServiceRequestCatalogItems(db);
             PopulateServiceRequestStatuses(db);
             PopulateServiceRequestPriorities(db);
             PopulateFuncionarios(db);
+        }
+      
+        private static void PopulateServicosFuncionarios(UniversityDbContext db)
+        {
+            if (db.ServicoFuncionario.Any()) return;
+
+            var servicos = new List<ServicoFuncionario>
+            {
+                new ServicoFuncionario { Nome = "Recursos Humanos", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Serviços Académicos", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Tecnologias de Informação", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Contabilidade e Finanças", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Manutenção e Instalações", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Biblioteca e Documentação", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Ação Social e Apoio ao Estudante", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Relações Internacionais e Mobilidade", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Comunicação e Imagem", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Gabinete Jurídico", Ativo = true, DataCriacao = DateTime.Now }
+            };
+
+            db.ServicoFuncionario.AddRange(servicos);
+
+            db.SaveChanges();
         }
 
         internal static void PopulateServiceRequestTypes(UniversityDbContext? db) {
