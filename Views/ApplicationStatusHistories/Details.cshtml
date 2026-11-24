@@ -1,38 +1,57 @@
 @model UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Status History Record Details";
+    var statusName = Model.PossibleStatus?.Name ?? "Unknown";
+    var badgeClass = statusName switch
+    {
+        "Submitted" => "bg-secondary",
+        "UnderReview" or "Under Review" => "bg-warning text-dark",
+        "Approved" => "bg-success",
+        "Rejected" => "bg-danger",
+        "Withdrawn" => "bg-dark",
+        _ => "bg-info"
+    };
 }
 
-<h1>Details</h1>
+<h1>Status Change Details</h1>
+<hr />
 
-<div>
-    <h4>ApplicationStatusHistory</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AccommodationApplicationId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AccommodationApplicationId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ChangedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ChangedAt)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ChangedBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ChangedBy)
-        </dd>
-    </dl>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AccommodationApplicationId)</dt>
+            <dd class="col-sm-9">Application #@Model.AccommodationApplicationId</dd>
+
+            @if (Model.AccommodationApplication != null)
+            {
+                <dt class="col-sm-3">Student ID</dt>
+                <dd class="col-sm-9">@Model.AccommodationApplication.StudentId</dd>
+            }
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PossibleStatus)</dt>
+            <dd class="col-sm-9">
+                <span class="badge @badgeClass">@statusName</span>
+            </dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ChangedAt)</dt>
+            <dd class="col-sm-9">@Model.ChangedAt.ToString("dd/MM/yyyy HH:mm:ss")</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ChangedBy)</dt>
+            <dd class="col-sm-9">@Model.ChangedBy</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Notes)</dt>
+            <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Notes) ? "No notes provided." : Model.Notes)</dd>
+        </dl>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ApplicationStatusHistoryId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="d-flex gap-2">
+    <a asp-action="Index" asp-route-applicationId="@Model.AccommodationApplicationId" class="btn btn-outline-primary">
+        View History for this Application
+    </a>
+    <a asp-action="Index" class="btn btn-secondary">Back to Full List</a>
+    <a asp-action="Delete" asp-route-id="@Model.ApplicationStatusHistoryId" class="btn btn-outline-danger">
+        Delete
+    </a>
 </div>

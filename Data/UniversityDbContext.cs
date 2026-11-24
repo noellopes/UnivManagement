@@ -2,9 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Models.AcademicManagement;
 
-namespace UnivManagement.Data {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+namespace UnivManagement.Data
+{
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
+    {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             base.OnModelCreating(modelBuilder);
 
             // Biblioteca: impedir associações duplicadas entre obras e autores
@@ -72,7 +75,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.Telephone)
                 .IsUnique();
-          
+
             // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
@@ -105,6 +108,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<InscrUC>()
                 .Property(i => i.Grade)
                 .HasPrecision(4, 2);
+
             // Evita duplicações na tabela CourseStudyPlanYear:
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
@@ -135,6 +139,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AccommodationManagement.StayRecord> StayRecord { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationPayment> AccommodationPayment { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.PossibleStatus> PossibleStatus { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory> ApplicationStatusHistory { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationApplication> AccommodationApplication { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.Room> Room { get; set; } = default!;
@@ -147,7 +152,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;       
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
