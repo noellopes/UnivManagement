@@ -33,6 +33,16 @@ namespace UnivManagement.Data {
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // ServiceRequestCatalogItem: two services cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
+            // ServiceRequestCatalogItem: a type that is used by a service cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
+                .HasOne(c => c.Type)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
             // ServiceRequestPriority: two priorities cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestPriority>()
                 .HasIndex(p => p.Name)
@@ -112,6 +122,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestCatalogItem> ServiceRequestCatalogItems { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestPriority> ServiceRequestPriorities { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
