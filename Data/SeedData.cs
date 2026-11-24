@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models.AcademicManagement;
+using UnivManagement.Models;
 
 namespace UnivManagement.Data
 {
@@ -11,7 +12,8 @@ namespace UnivManagement.Data
 
             PopulateCourseStates(db);
             PopulateAcademicDegrees(db);
-            
+            PopulateFuncionarios(db);
+
         }
 
         private static void PopulateCourseStates(UniversityDbContext dbContext)
@@ -20,11 +22,11 @@ namespace UnivManagement.Data
 
             var courseStates = new List<CourseState>
             {
-                new CourseState { Name = "DRAFT",     Description = "Curso em preparação, ainda não publicado." },
-                new CourseState { Name = "ACTIVE",    Description = "Curso a decorrer normalmente." },
-                new CourseState { Name = "SUSPENDED", Description = "Curso temporariamente suspenso." },
-                new CourseState { Name = "CONCLUDED", Description = "Curso terminado, sem novas inscrições." },
-                new CourseState { Name = "ARCHIVED",  Description = "Curso arquivado historicamente." }
+                new CourseState { Name = "draft",     Description = "Curso em preparação, ainda não publicado." },
+                new CourseState { Name = "active",    Description = "Curso a decorrer normalmente." },
+                new CourseState { Name = "suspended", Description = "Curso temporariamente suspenso." },
+                new CourseState { Name = "concluded", Description = "Curso terminado, sem novas inscrições." },
+                new CourseState { Name = "archived",  Description = "Curso arquivado historicamente." }
             };
 
             dbContext.CourseState.AddRange(courseStates);
@@ -37,16 +39,16 @@ namespace UnivManagement.Data
 
             var academicDegrees = new List<AcademicDegree>
             {
-                new AcademicDegree { Name = "Licenciatura",  Description = "Grau de licenciado (3–4 anos)." },
-                new AcademicDegree { Name = "Mestrado",      Description = "Grau de mestre (2 anos)." },
-                new AcademicDegree { Name = "Doutoramento",  Description = "Grau de doutor." },
-                new AcademicDegree { Name = "Pós-Graduação", Description = "Especialização pós-licenciatura." },
-                new AcademicDegree { Name = "CTeSP",         Description = "Curso Técnico Superior Profissional." }
+                new AcademicDegree { Name = "CTeSP", Level=5, Description = "Curso Técnico Superior Profissional." },
+                new AcademicDegree { Name = "Licenciatura", Level=6, Description = "Grau de licenciado (3–4 anos)." },
+                new AcademicDegree { Name = "Mestrado",  Level=7,    Description = "Grau de mestre (2 anos)." },
+                new AcademicDegree { Name = "Doutoramento",  Level=8,  Description = "Grau de doutor." }
+                
             };
 
             dbContext.AcademicDegree.AddRange(academicDegrees);
             dbContext.SaveChanges();
-            PopulateFuncionarios(db);
+            
         }
 
         private static void PopulateFuncionarios(UniversityDbContext db)

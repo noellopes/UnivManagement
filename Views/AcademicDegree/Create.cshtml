@@ -42,6 +42,18 @@
                     </div>
 
                     <div class="mb-4">
+                        <label asp-for="Level"
+                               class="form-label fw-semibold"></label>
+
+                        <input asp-for="Level"
+                               class="form-control"
+                               placeholder="Indique o nível do grau académico" />
+
+                        <span asp-validation-for="Level"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
                         <label asp-for="Description"
                                class="form-label fw-semibold"></label>
 

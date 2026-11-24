@@ -58,7 +58,7 @@ public class AcademicDegreeController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("AcademicDegreeId,Name,Description")] AcademicDegree academicdegree)
+    public async Task<IActionResult> Create([Bind("AcademicDegreeId,Name, Level, Description")] AcademicDegree academicdegree)
     {
         if (ModelState.IsValid)
         {
@@ -90,7 +90,7 @@ public class AcademicDegreeController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("AcademicDegreeId,Name,Description")] AcademicDegree academicdegree)
+    public async Task<IActionResult> Edit(int? id, [Bind("AcademicDegreeId,Name, Level,Description")] AcademicDegree academicdegree)
     {
         if (id != academicdegree.AcademicDegreeId)
         {
