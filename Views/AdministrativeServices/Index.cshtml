@@ -83,6 +83,21 @@
         <div class="col">
             <div class="card h-100 shadow-sm">
                 <div class="card-body d-flex flex-column">
+                    <h2 class="card-title h5"><i class="bi bi-journal-bookmark"></i> Service catalog</h2>
+                    <p class="card-text text-body-secondary flex-grow-1">
+                        See the services offered, their processing time, and the documents each one needs.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <a asp-controller="ServiceRequestCatalogItems" asp-action="Index" class="btn btn-outline-primary w-100">Browse</a>
+                        <a asp-controller="ServiceRequestCatalogItems" asp-action="Create" class="btn btn-primary w-100">New service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
                     <h2 class="card-title h5"><i class="bi bi-tags"></i> Requests by type</h2>
                     <p class="card-text text-body-secondary">
                         Certificates, official documents, student support, maintenance and other requests.

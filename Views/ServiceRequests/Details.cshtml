@@ -10,7 +10,10 @@
     </a>
 
     <header class="my-4">
-        <h1 class="display-6">Request details</h1>
+        <h1 class="display-6">
+            Request details
+            <span class="text-body-secondary fs-4">#@Model.ServiceRequestId</span>
+        </h1>
     </header>
 
     @if (TempData["Message"] != null) {
@@ -30,6 +33,22 @@
 
                         <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Description)</dt>
                         <dd class="col-sm-9" style="white-space: pre-line">@(Model.Description ?? "—")</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CatalogItem)</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.CatalogItem == null) {
+                                <span class="text-body-secondary">Not in the catalog</span>
+                            } else {
+                                <a asp-controller="ServiceRequestCatalogItems" asp-action="Details"
+                                   asp-route-id="@Model.CatalogItem.ServiceRequestCatalogItemId">@Model.CatalogItem.Name</a>
+                                @if (!Model.CatalogItem.IsActive) {
+                                    <span class="badge text-bg-secondary ms-1">Unavailable</span>
+                                }
+                                <small class="text-body-secondary d-block">
+                                    Processing time: @Model.CatalogItem.ProcessingDays day(s)
+                                </small>
+                            }
+                        </dd>
 
                         <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Type)</dt>
                         <dd class="col-sm-9">@Model.Type?.Name</dd>
@@ -70,6 +89,13 @@
                     </dl>
                 </div>
             </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.CatalogItem?.RequiredDocuments)) {
+                <div class="alert alert-light border mt-4 mb-0" role="note">
+                    <h2 class="h6"><i class="bi bi-paperclip"></i> Documents needed for this service</h2>
+                    <p class="mb-0 small" style="white-space: pre-line">@Model.CatalogItem.RequiredDocuments</p>
+                </div>
+            }
 
             <div class="mt-4">
                 <a asp-action="Edit" asp-route-id="@Model.ServiceRequestId" class="btn btn-primary">Edit</a>
