@@ -6,17 +6,11 @@
 
 <h1>Accommodation Applications</h1>
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-action="Create" class="btn btn-primary">Create New Application</a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Menu</a>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary mb-3">Create New Application</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -25,6 +19,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AcademicYearId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SubmittedAt)
@@ -50,6 +47,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(model => item.AcademicYearId)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Status)
                 </td>
                 <td>
                     @Html.DisplayFor(model => item.SubmittedAt)
