@@ -27,9 +27,6 @@
             {
                 <dt class="col-sm-3">Student ID</dt>
                 <dd class="col-sm-9">@Model.AccommodationApplication.StudentId</dd>
-
-                <dt class="col-sm-3">Current Application Status</dt>
-                <dd class="col-sm-9">@ViewBag.CurrentApplicationStatus</dd>
             }
 
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PossibleStatus)</dt>
@@ -54,4 +51,7 @@
         View History for this Application
     </a>
     <a asp-action="Index" class="btn btn-secondary">Back to Full List</a>
+    <a asp-action="Delete" asp-route-id="@Model.ApplicationStatusHistoryId" class="btn btn-outline-danger">
+        Delete
+    </a>
 </div>
