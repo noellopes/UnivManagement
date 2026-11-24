@@ -33,6 +33,22 @@ namespace UnivManagement.Data {
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // ServiceRequestHistory: the history belongs to its request and is deleted with it
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.ServiceRequest)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ServiceRequestHistory: a status that appears in the history cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.OldStatus)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.NewStatus)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
             // ServiceRequestCatalogItem: two services cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
                 .HasIndex(c => c.Name)
@@ -118,6 +134,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestHistory> ServiceRequestHistories { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestAssignment> ServiceRequestAssignments { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestComment> ServiceRequestComments { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestCatalogItem> ServiceRequestCatalogItems { get; set; } = default!;
@@ -140,9 +157,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.InscrCourse> InscrCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
-        public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-
-        
+        public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;       
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;  
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
