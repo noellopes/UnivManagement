@@ -1,0 +1,83 @@
+@model ServiceRequestStatus
+
+@{
+    ViewData["Title"] = "Edit status";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to statuses</a>
+
+    <header class="my-4">
+        <h1 class="display-6">Edit status</h1>
+    </header>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="ServiceRequestStatusId" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DisplayOrder" class="form-label"></label>
+                    <input asp-for="DisplayOrder" class="form-control" min="1" max="99" placeholder="Position in the list (1 to 99)" />
+                    <span asp-validation-for="DisplayOrder" class="text-danger small"></span>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="IsFinal" class="form-check-input" />
+                    <label asp-for="IsFinal" class="form-check-label"></label>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="RequiresNote" class="form-check-input" />
+                    <label asp-for="RequiresNote" class="form-check-label"></label>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Color" class="form-label"></label>
+                    <select asp-for="Color" class="form-select">
+                        <option value="">Choose a colour</option>
+                        <option value="primary">Primary (blue)</option>
+                        <option value="secondary">Secondary (grey)</option>
+                        <option value="success">Success (green)</option>
+                        <option value="danger">Danger (red)</option>
+                        <option value="warning">Warning (yellow)</option>
+                        <option value="info">Info (light blue)</option>
+                        <option value="dark">Dark (black)</option>
+                    </select>
+                    <span asp-validation-for="Color" class="text-danger small"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1" aria-hidden="true"></i>Save</button>
+                    <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Back to list</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
