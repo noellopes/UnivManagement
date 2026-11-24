@@ -19,7 +19,7 @@
         </p>
     </header>
 
-    <div class="row row-cols-2 row-cols-md-4 g-3 mb-5 text-center">
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 g-3 mb-5 text-center">
         <div class="col">
             <div class="border rounded p-3 h-100">
                 <div class="fs-2 fw-semibold">@Model.TotalRequests</div>
@@ -39,9 +39,24 @@
             </div>
         </div>
         <div class="col">
+            <a asp-controller="ServiceRequests" asp-action="Index" asp-route-overdue="true"
+               class="border rounded p-3 h-100 d-block text-decoration-none @(Model.OverdueRequests > 0 ? "border-danger" : null)">
+                <div class="fs-2 fw-semibold text-danger">@Model.OverdueRequests</div>
+                <div class="text-body-secondary"><i class="bi bi-alarm"></i> Overdue</div>
+            </a>
+        </div>
+        <div class="col">
             <div class="border rounded p-3 h-100">
                 <div class="fs-2 fw-semibold text-success">@Model.ClosedRequests</div>
                 <div class="text-body-secondary"><i class="bi bi-check2-circle"></i> Closed</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border rounded p-3 h-100">
+                <div class="fs-2 fw-semibold">
+                    @(Model.AverageDaysToClose?.ToString("0.0") ?? "—")
+                </div>
+                <div class="text-body-secondary"><i class="bi bi-stopwatch"></i> Avg. days to close</div>
             </div>
         </div>
     </div>
@@ -131,15 +146,76 @@
                 <div class="card-body d-flex flex-column">
                     <h2 class="card-title h5"><i class="bi bi-sliders"></i> Settings</h2>
                     <p class="card-text text-body-secondary flex-grow-1">
-                        Define the request types and the statuses a request goes through, with their rules.
+                        Define the request types, the statuses a request goes through and the priorities with their response times.
                     </p>
                     <div class="d-flex gap-2">
                         <a asp-controller="ServiceRequestTypes" asp-action="Index" class="btn btn-outline-primary w-100">Types</a>
                         <a asp-controller="ServiceRequestStatuses" asp-action="Index" class="btn btn-outline-primary w-100">Statuses</a>
+                        <a asp-controller="ServiceRequestPriorities" asp-action="Index" class="btn btn-outline-primary w-100">Priorities</a>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="row g-4 mt-4">
+        <section class="col-lg-7">
+            <h2 class="h4 mb-3"><i class="bi bi-alarm"></i> Overdue requests</h2>
+
+            @if (!Model.OverdueList.Any()) {
+                <div class="alert alert-success" role="alert">
+                    <i class="bi bi-check2-circle"></i> All open requests are within their due date.
+                </div>
+            } else {
+                <div class="list-group shadow-sm">
+                    @foreach (var request in Model.OverdueList) {
+                        <a asp-controller="ServiceRequests" asp-action="Details" asp-route-id="@request.ServiceRequestId"
+                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <span class="fw-semibold">@request.Title</span>
+                                <small class="text-danger d-block">
+                                    Due @request.DueDate!.Value.ToString("yyyy-MM-dd")
+                                    (@((DateTime.Today - request.DueDate.Value.Date).Days) day(s) late)
+                                </small>
+                            </span>
+                            <partial name="~/Views/ServiceRequests/_ServiceRequestPriorityBadge.cshtml" model="request.Priority" />
+                        </a>
+                    }
+                </div>
+                @if (Model.OverdueRequests > Model.OverdueList.Count) {
+                    <a asp-controller="ServiceRequests" asp-action="Index" asp-route-overdue="true" class="d-inline-block mt-2">
+                        See all @Model.OverdueRequests overdue requests
+                    </a>
+                }
+            }
+        </section>
+
+        <section class="col-lg-5">
+            <h2 class="h4 mb-3"><i class="bi bi-flag"></i> Open requests by priority</h2>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    @if (!Model.OpenRequestsByPriority.Any()) {
+                        <p class="text-body-secondary mb-0">No priorities yet.</p>
+                    }
+                    @foreach (var (priority, count) in Model.OpenRequestsByPriority) {
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between small">
+                                <a asp-controller="ServiceRequests" asp-action="Index" asp-route-priority="@priority.ServiceRequestPriorityId"
+                                   class="text-decoration-none">
+                                    @priority.Name <span class="text-body-secondary">(@priority.ResponseDays day(s))</span>
+                                </a>
+                                <span>@count</span>
+                            </div>
+                            <div class="progress" role="progressbar" aria-label="@priority.Name"
+                                 aria-valuenow="@Model.PercentOfOpen(count)" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: @Model.PercentOfOpen(count)%"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
     </div>
 
     <section class="mt-5">
