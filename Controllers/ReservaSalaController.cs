@@ -21,7 +21,9 @@ public class ReservaSalaController : Controller
 
     // GET: RESERVASALAS/Details/5
     [HttpGet("ReservaSala/Details/{ReservaSalaId}")]
-    public async Task<IActionResult> Details(int? reservasalaid)
+    public async Task<IActionResult> Details(
+    int? reservasalaid,
+    string? successMessage = null)
     {
         if (reservasalaid == null)
         {
@@ -32,7 +34,12 @@ public class ReservaSalaController : Controller
             .FirstOrDefaultAsync(m => m.ReservaSalaId == reservasalaid);
         if (reservasala == null)
         {
-            return NotFound();
+            return View("NotFound");
+        }
+
+        if (successMessage != null)
+        {
+            ViewBag.SuccessMessage = successMessage;
         }
 
         return View(reservasala);
@@ -55,7 +62,14 @@ public class ReservaSalaController : Controller
         {
             _context.Add(reservasala);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+                nameof(Details),
+                new
+                {
+        ReservaSalaId = reservasala.ReservaSalaId,
+        successMessage = "Reserva de sala criada com sucesso!"
+    }
+);
         }
         return View(reservasala);
     }
@@ -107,7 +121,14 @@ public class ReservaSalaController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+                nameof(Details),
+                new
+                {
+        ReservaSalaId = reservasala.ReservaSalaId,
+        successMessage = "Reserva de sala atualizada com sucesso!"
+    }
+);
         }
         return View(reservasala);
     }

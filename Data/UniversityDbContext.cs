@@ -37,6 +37,22 @@ namespace UnivManagement.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // ServiceRequestHistory: the history belongs to its request and is deleted with it
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.ServiceRequest)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ServiceRequestHistory: a status that appears in the history cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.OldStatus)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.NewStatus)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
             // ServiceRequestCatalogItem: two services cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
                 .HasIndex(c => c.Name)
@@ -130,6 +146,10 @@ namespace UnivManagement.Data
                 .HasIndex(s => s.Name)
                 .IsUnique();
 
+            // CourseState: Name do tipo curso é único
+            modelBuilder.Entity<Models.AcademicManagement.CourseState>()
+                .HasIndex(cs => cs.Name)
+                .IsUnique();
             // StateInscrUc: cada estado de uma inscrição de UC é unico
             modelBuilder.Entity<StateInscrUc>()
                 .HasIndex(s => s.Name)
@@ -142,10 +162,6 @@ namespace UnivManagement.Data
             modelBuilder.Entity<InscrUC>()
                 .Property(i => i.Grade)
                 .HasPrecision(4, 2);
-            // Evita duplicações na tabela CourseStudyPlanYear:
-            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
-                .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
-                .IsUnique();
         }
 
         public DbSet<Obra> Obras { get; set; } = default!;
@@ -159,6 +175,7 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestHistory> ServiceRequestHistories { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestAssignment> ServiceRequestAssignments { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestComment> ServiceRequestComments { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestCatalogItem> ServiceRequestCatalogItems { get; set; } = default!;
@@ -184,9 +201,9 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;     
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;       
+        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;  
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
