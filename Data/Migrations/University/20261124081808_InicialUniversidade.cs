@@ -81,23 +81,6 @@ namespace UnivManagement.Data.Migrations.University
                 });
 
             migrationBuilder.CreateTable(
-                name: "AntigosAlunos",
-                columns: table => new
-                {
-                    IdAluno = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Curso = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SituacaoProfissional = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AntigosAlunos", x => x.IdAluno);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ApplicationStatusHistory",
                 columns: table => new
                 {
@@ -439,30 +422,6 @@ namespace UnivManagement.Data.Migrations.University
                 });
 
             migrationBuilder.CreateTable(
-                name: "Carreiras",
-                columns: table => new
-                {
-                    IdCarreira = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CargoAtual = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmpresaAtual = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Competencias = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Certificacoes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HistoricoProfissional = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdAluno = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Carreiras", x => x.IdCarreira);
-                    table.ForeignKey(
-                        name: "FK_Carreiras_AntigosAlunos_IdAluno",
-                        column: x => x.IdAluno,
-                        principalTable: "AntigosAlunos",
-                        principalColumn: "IdAluno",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Empregadores",
                 columns: table => new
                 {
@@ -543,6 +502,30 @@ namespace UnivManagement.Data.Migrations.University
                         principalTable: "ServiceRequestTypes",
                         principalColumn: "ServiceRequestTypeId",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Carreiras",
+                columns: table => new
+                {
+                    IdCarreira = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CargoAtual = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmpresaAtual = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Competencias = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Certificacoes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HistoricoProfissional = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdAluno = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carreiras", x => x.IdCarreira);
+                    table.ForeignKey(
+                        name: "FK_Carreiras_Student_IdAluno",
+                        column: x => x.IdAluno,
+                        principalTable: "Student",
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -637,16 +620,16 @@ namespace UnivManagement.Data.Migrations.University
                 {
                     table.PrimaryKey("PK_Candidaturas", x => x.IdCandidatura);
                     table.ForeignKey(
-                        name: "FK_Candidaturas_AntigosAlunos_IdAluno",
-                        column: x => x.IdAluno,
-                        principalTable: "AntigosAlunos",
-                        principalColumn: "IdAluno",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Candidaturas_Ofertas_IdOferta",
                         column: x => x.IdOferta,
                         principalTable: "Ofertas",
                         principalColumn: "IdOferta",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Candidaturas_Student_IdAluno",
+                        column: x => x.IdAluno,
+                        principalTable: "Student",
+                        principalColumn: "StudentId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -724,8 +707,7 @@ namespace UnivManagement.Data.Migrations.University
             migrationBuilder.CreateIndex(
                 name: "IX_Carreiras_IdAluno",
                 table: "Carreiras",
-                column: "IdAluno",
-                unique: true);
+                column: "IdAluno");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Course_Code",
@@ -910,9 +892,6 @@ namespace UnivManagement.Data.Migrations.University
 
             migrationBuilder.DropTable(
                 name: "Ofertas");
-
-            migrationBuilder.DropTable(
-                name: "AntigosAlunos");
 
             migrationBuilder.DropTable(
                 name: "Docente");
