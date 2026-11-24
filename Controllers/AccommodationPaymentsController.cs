@@ -20,15 +20,15 @@ public class AccommodationPaymentsController : Controller
     }
 
     // GET: ACCOMMODATIONPAYMENTS/Details/5
-    public async Task<IActionResult> Details(int? accommodationpaymentid)
+    public async Task<IActionResult> Details(int? id)
     {
-        if (accommodationpaymentid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var accommodationpayment = await _context.AccommodationPayment
-            .FirstOrDefaultAsync(m => m.AccommodationPaymentId == accommodationpaymentid);
+            .FirstOrDefaultAsync(m => m.AccommodationPaymentId == id);
         if (accommodationpayment == null)
         {
             return NotFound();
@@ -60,14 +60,14 @@ public class AccommodationPaymentsController : Controller
     }
 
     // GET: ACCOMMODATIONPAYMENTS/Edit/5
-    public async Task<IActionResult> Edit(int? accommodationpaymentid)
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (accommodationpaymentid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var accommodationpayment = await _context.AccommodationPayment.FindAsync(accommodationpaymentid);
+        var accommodationpayment = await _context.AccommodationPayment.FindAsync(id);
         if (accommodationpayment == null)
         {
             return NotFound();
@@ -80,9 +80,9 @@ public class AccommodationPaymentsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? accommodationpaymentid, [Bind("AccommodationPaymentId,AccommodationContractId,DueDate,Amount,PaidAmount,PaidAt,Status")] AccommodationPayment accommodationpayment)
+    public async Task<IActionResult> Edit(int? id, [Bind("AccommodationPaymentId,AccommodationContractId,DueDate,Amount,PaidAmount,PaidAt,Status")] AccommodationPayment accommodationpayment)
     {
-        if (accommodationpaymentid != accommodationpayment.AccommodationPaymentId)
+        if (id != accommodationpayment.AccommodationPaymentId)
         {
             return NotFound();
         }
@@ -111,15 +111,15 @@ public class AccommodationPaymentsController : Controller
     }
 
     // GET: ACCOMMODATIONPAYMENTS/Delete/5
-    public async Task<IActionResult> Delete(int? accommodationpaymentid)
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (accommodationpaymentid == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var accommodationpayment = await _context.AccommodationPayment
-            .FirstOrDefaultAsync(m => m.AccommodationPaymentId == accommodationpaymentid);
+            .FirstOrDefaultAsync(m => m.AccommodationPaymentId == id);
         if (accommodationpayment == null)
         {
             return NotFound();
@@ -131,9 +131,9 @@ public class AccommodationPaymentsController : Controller
     // POST: ACCOMMODATIONPAYMENTS/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? accommodationpaymentid)
+    public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var accommodationpayment = await _context.AccommodationPayment.FindAsync(accommodationpaymentid);
+        var accommodationpayment = await _context.AccommodationPayment.FindAsync(id);
         if (accommodationpayment != null)
         {
             _context.AccommodationPayment.Remove(accommodationpayment);
@@ -143,8 +143,8 @@ public class AccommodationPaymentsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool AccommodationPaymentExists(int? accommodationpaymentid)
+    private bool AccommodationPaymentExists(int? id)
     {
-        return _context.AccommodationPayment.Any(e => e.AccommodationPaymentId == accommodationpaymentid);
+        return _context.AccommodationPayment.Any(e => e.AccommodationPaymentId == id);
     }
 }
