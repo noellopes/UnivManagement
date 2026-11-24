@@ -27,16 +27,16 @@ namespace UnivManagement.Models
 
         // relacao com edificio
         [Display(Name = "Edifício")]
-        public int IdEdificio { get; set; }
+        public int BuildingId { get; set; }
 
-        [ForeignKey("IdEdificio")]
+        [ForeignKey("BuildingId")]
         public Building? Edificio { get; set; }
 
         // relacao tipo de sala
         [Display(Name = "Tipo de Sala")]
-        public int IdTipoSala { get; set; }
+        public int RoomTypeId { get; set; }
 
-        [ForeignKey("IdTipoSala")]
+        [ForeignKey("RoomTypeId")]
         public RoomType? TipoSala { get; set; }
 
     }
