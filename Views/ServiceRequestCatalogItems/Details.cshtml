@@ -1,0 +1,60 @@
+@model ServiceRequestCatalogItem
+
+@{
+    ViewData["Title"] = "Service details";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to the service catalog</a>
+
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+            @ViewBag.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <header class="my-4">
+        <h1 class="display-6">Service details</h1>
+    </header>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+
+                <dt class="col-sm-3">Type</dt>
+                <dd class="col-sm-9">@Model.Type?.Name</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                <dt class="col-sm-3">Processing days</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ProcessingDays)</dd>
+
+                <dt class="col-sm-3">Required documents</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.RequiredDocuments)</dd>
+
+                <dt class="col-sm-3">Active</dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge text-bg-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge text-bg-secondary">No</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.ServiceRequestCatalogItemId" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+    </div>
+</div>
