@@ -109,6 +109,10 @@ namespace UnivManagement.Data {
                 .HasIndex(s => s.Name)
                 .IsUnique();
 
+            // CourseState: Name do tipo curso é único
+            modelBuilder.Entity<Models.AcademicManagement.CourseState>()
+                .HasIndex(cs => cs.Name)
+                .IsUnique();
             // StateInscrUc: cada estado de uma inscrição de UC é unico
             modelBuilder.Entity<StateInscrUc>()
                 .HasIndex(s => s.Name)
@@ -157,7 +161,8 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.InscrCourse> InscrCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
-        public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;       
+        public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;     
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;  
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
