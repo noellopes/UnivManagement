@@ -20,7 +20,7 @@ public class RoomController : Controller
     }
 
     // GET: ROOMS/Details/5
-    [HttpGet("RoomController/Details/{RoomControllerId}")]
+    [HttpGet("Room/Details/{RoomId}")]
 
     public async Task<IActionResult> Details(int? roomid)
     {
@@ -62,7 +62,7 @@ public class RoomController : Controller
     }
 
     // GET: ROOMS/Edit/5
-    [HttpGet("RoomController/Edit/{RoomControllerId}")]
+    [HttpGet("Room/Edit/{RoomId}")]
     public async Task<IActionResult> Edit(int? roomid)
     {
         if (roomid == null)
@@ -114,7 +114,7 @@ public class RoomController : Controller
     }
 
     // GET: ROOMS/Delete/5
-    [HttpGet("RoomController/Delete/{RoomControllerId}")]
+    [HttpGet("Room/Delete/{RoomId}")]   
     public async Task<IActionResult> Delete(int? roomid)
     {
         if (roomid == null)
