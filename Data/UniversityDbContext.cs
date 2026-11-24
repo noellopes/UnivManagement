@@ -56,17 +56,19 @@ namespace UnivManagement.Data
                 .IsUnique();
 
             modelBuilder.Entity<Models.AccommodationManagement.ContractStatus>().HasData(
-                new Models.AccommodationManagement.ContractStatus { ContractStatusId = 1, Name = "Pendente" },
-                new Models.AccommodationManagement.ContractStatus { ContractStatusId = 2, Name = "Ativo" },
-                new Models.AccommodationManagement.ContractStatus { ContractStatusId = 3, Name = "Terminado" },
-                new Models.AccommodationManagement.ContractStatus { ContractStatusId = 4, Name = "Expirado" });
+    new Models.AccommodationManagement.ContractStatus { ContractStatusId = 1, Name = "Pendente" },
+    new Models.AccommodationManagement.ContractStatus { ContractStatusId = 2, Name = "Ativo" },
+    new Models.AccommodationManagement.ContractStatus { ContractStatusId = 3, Name = "Cancelado" },
+    new Models.AccommodationManagement.ContractStatus { ContractStatusId = 4, Name = "Expirado" });
         }
 
-        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.ContractStatus> ContractStatus { get; set; } = default!;
+        
 
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
+
+        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.ContractStatus> ContractStatus { get; set; } = default!;
     }
 }
