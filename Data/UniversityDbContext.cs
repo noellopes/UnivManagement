@@ -125,10 +125,6 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<InscrUC>()
                 .Property(i => i.Grade)
                 .HasPrecision(4, 2);
-            // Evita duplicações na tabela CourseStudyPlanYear:
-            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
-                .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
-                .IsUnique();
 
             // ApplicationStatusHistory: prevent deleting an application that already has status history
             modelBuilder.Entity<Models.AccommodationManagement.ApplicationStatusHistory>()
