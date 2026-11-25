@@ -1,13 +1,12 @@
 @model UnivManagement.Models.AccommodationManagement.StayRecord
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Reisto";
 }
 
-<h1>Details</h1>
+<h1>Detalhes do Registo</h1>
 
 <div>
-    <h4>StayRecord</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -46,7 +45,7 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.StayRecordId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.StayRecordId" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
 </div>
