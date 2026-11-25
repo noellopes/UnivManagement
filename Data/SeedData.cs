@@ -53,6 +53,8 @@ namespace UnivManagement.Data
                 new ServiceRequestType { Name = "Maintenance", Description = "Report a problem in a building, room or equipment." },
                 new ServiceRequestType { Name = "Other" }
             );
+
+            db.SaveChanges();
         }
 
         private static void PopulateServiceRequestCatalogItems(UniversityDbContext db)
