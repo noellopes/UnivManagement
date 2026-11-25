@@ -2,36 +2,69 @@
     ViewData["Title"] = "Técnico Não Encontrado";
 }
 
-<div class="py-4">
-    <div class="alert alert-danger border-0 shadow-sm rounded-4 p-4 d-flex align-items-start gap-3"
-         role="alert">
+<div class="container py-5 d-flex align-items-center justify-content-center"
+     style="min-height: 70vh;">
 
-        <div class="bg-danger-subtle text-danger rounded-3 p-3 flex-shrink-0">
-            <i class="bi bi-person-badge fs-3" aria-hidden="true"></i>
-        </div>
+    <div class="card border-0 shadow-sm rounded-4 text-center w-100"
+         style="max-width: 650px; border-top: 5px solid #F0A52B !important;">
 
-        <div class="flex-grow-1">
-            <h4 class="alert-heading fs-5 fw-semibold mb-2">
-                Não foi possível encontrar o técnico
-            </h4>
+        <div class="card-body p-4 p-md-5">
 
-            <p class="mb-3">
-                O técnico selecionado não foi encontrado. Pode ter sido
-                eliminado ou já não estar disponível.
+            <!-- Error Icon -->
+            <div class="mb-4">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center"
+                     style="width: 110px; height: 110px; background-color: #FFF3D6;">
+
+                    <i class="bi bi-person-badge-fill"
+                       style="font-size: 3.5rem; color: #F0A52B;"
+                       aria-hidden="true"></i>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <h1 class="display-3 fw-bold mb-2" style="color: #2F506F;">
+                404
+            </h1>
+
+            <h2 class="h3 fw-bold mb-3" style="color: #2F506F;">
+                Técnico Não Encontrado
+            </h2>
+
+            <p class="text-muted mx-auto mb-4" style="max-width: 450px;">
+                O técnico selecionado não foi encontrado.
+                Pode ter sido eliminado ou já não está disponível.
             </p>
 
-            <hr class="border-danger opacity-25">
+            <hr class="my-4 opacity-25">
 
-            <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
-                <a asp-action="Index"
-                   class="btn btn-primary">
-                    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+            <!-- Navigation Buttons -->
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+
+                <a asp-controller="Tecnicoes"
+                   asp-action="Index"
+                   class="btn text-white px-4 py-2 shadow-sm"
+                   style="background-color: #2F506F;">
+
+                    <i class="bi bi-arrow-left me-2"></i>
                     Voltar aos Técnicos
                 </a>
-                <span class="text-body-secondary small">
-                    Volte à lista de técnicos para continuar.
-                </span>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary px-4 py-2">
+
+                    <i class="bi bi-house me-2"></i>
+                    Página Inicial
+                </a>
+
             </div>
+
+            <!-- Information -->
+            <p class="small text-muted mt-4 mb-0">
+                <i class="bi bi-info-circle me-1"></i>
+                Volte à lista de técnicos para continuar.
+            </p>
+
         </div>
     </div>
 </div>

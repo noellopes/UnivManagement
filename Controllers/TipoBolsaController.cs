@@ -23,14 +23,14 @@ public class TipoBolsaController : Controller
     {
         if (id == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var tipobolsa = await _context.TipoBolsa
             .FirstOrDefaultAsync(m => m.TipoBolsaId == id);
         if (tipobolsa == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         return View(tipobolsa);
@@ -63,13 +63,13 @@ public class TipoBolsaController : Controller
     {
         if (id == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var tipobolsa = await _context.TipoBolsa.FindAsync(id);
         if (tipobolsa == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
         return View(tipobolsa);
     }
@@ -97,7 +97,7 @@ public class TipoBolsaController : Controller
             {
                 if (!TipoBolsaExists(tipobolsa.TipoBolsaId))
                 {
-                    return NotFound();
+                    return View("NotFound");
                 }
                 else
                 {
@@ -114,14 +114,14 @@ public class TipoBolsaController : Controller
     {
         if (id == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var tipobolsa = await _context.TipoBolsa
             .FirstOrDefaultAsync(m => m.TipoBolsaId == id);
         if (tipobolsa == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         return View(tipobolsa);

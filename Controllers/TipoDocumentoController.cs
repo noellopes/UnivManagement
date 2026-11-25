@@ -24,14 +24,14 @@ public class TipoDocumentoController : Controller
     {
         if (id == null)
         {
-            return NotFound();
+             return View("NotFound");
         }
 
         var tipodocumento = await _context.TipoDocumento
             .FirstOrDefaultAsync(m => m.TipoDocumentoId == id);
         if (tipodocumento == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         return View(tipodocumento);
@@ -70,13 +70,14 @@ public class TipoDocumentoController : Controller
     {
         if (id == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var tipodocumento = await _context.TipoDocumento.FindAsync(id);
         if (tipodocumento == null)
         {
-            return NotFound();
+            return View("NotFound");
+
         }
         return View(tipodocumento);
     }
@@ -110,7 +111,8 @@ public class TipoDocumentoController : Controller
             {
                 if (!TipoDocumentoExists(tipodocumento.TipoDocumentoId))
                 {
-                    return NotFound();
+                    return View("NotFound");
+
                 }
                 else
                 {
@@ -136,7 +138,8 @@ public class TipoDocumentoController : Controller
             .FirstOrDefaultAsync(m => m.TipoDocumentoId == id);
         if (tipodocumento == null)
         {
-            return NotFound();
+            return View("NotFound");
+
         }
 
         return View(tipodocumento);

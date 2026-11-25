@@ -26,14 +26,14 @@ public class EstadoPossivelController : Controller
     {
         if (id == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var estadopossivel = await _context.EstadoPossivel
             .FirstOrDefaultAsync(m => m.EstadoPossivelId == id);
         if (estadopossivel == null)
         {
-            return NotFound();
+             return View("NotFound");
         }
 
         return View(estadopossivel);
@@ -76,13 +76,13 @@ public class EstadoPossivelController : Controller
     {
         if (id == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var estadopossivel = await _context.EstadoPossivel.FindAsync(id);
         if (estadopossivel == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
         return View(estadopossivel);
     }
@@ -96,7 +96,7 @@ public class EstadoPossivelController : Controller
     {
         if (id != estadopossivel.EstadoPossivelId)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         if (_context.EstadoPossivel.Any(e => e.NomeEstado == estadopossivel.NomeEstado
@@ -117,7 +117,7 @@ public class EstadoPossivelController : Controller
             {
                 if (!EstadoPossivelExists(estadopossivel.EstadoPossivelId))
                 {
-                    return NotFound();
+                    return View("NotFound");
                 }
                 else
                 {
@@ -138,14 +138,14 @@ public class EstadoPossivelController : Controller
     {
         if (id == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         var estadopossivel = await _context.EstadoPossivel
             .FirstOrDefaultAsync(m => m.EstadoPossivelId == id);
         if (estadopossivel == null)
         {
-            return NotFound();
+            return View("NotFound");
         }
 
         return View(estadopossivel);
