@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
+using UnivManagement.Models.AccommodationManagement;
 using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Data
