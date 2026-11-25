@@ -1,0 +1,48 @@
+@model ServiceRequestAttachment
+
+@{
+    ViewData["Title"] = "Attachment details";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to the attachments</a>
+
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+            @ViewBag.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <header class="my-4">
+        <h1 class="display-6">Attachment details</h1>
+    </header>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FileName)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.FileName)</dd>
+
+                <dt class="col-sm-3">Request</dt>
+                <dd class="col-sm-9">@Model.ServiceRequest?.Title</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SizeInKb)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.SizeInKb)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.UploadedAt)</dt>
+                <dd class="col-sm-9">@Model.UploadedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.ServiceRequestAttachmentId" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+    </div>
+</div>

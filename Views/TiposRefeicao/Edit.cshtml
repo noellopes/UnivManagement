@@ -1,0 +1,32 @@
+@model UnivManagement.Models.TipoRefeicao
+
+@{
+    ViewData["Title"] = "Editar tipo de refeição";
+}
+
+<h1>Editar tipo de refeição</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" asp-route-id="@Model.TipoRefeicaoId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TipoRefeicaoId" />
+
+            <div class="mb-3">
+                <label asp-for="Nome" class="form-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success">Guardar alterações</button>
+            <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

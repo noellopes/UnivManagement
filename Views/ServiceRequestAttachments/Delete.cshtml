@@ -1,0 +1,40 @@
+@model ServiceRequestAttachment
+
+@{
+    ViewData["Title"] = "Delete attachment";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="link-secondary text-decoration-none">Back to the attachments</a>
+
+    <header class="my-4">
+        <h1 class="display-6">Delete attachment</h1>
+    </header>
+
+    <div class="alert alert-danger" role="alert">
+        Are you sure you want to delete this attachment? This action cannot be undone.
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FileName)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.FileName)</dd>
+
+                <dt class="col-sm-3">Request</dt>
+                <dd class="col-sm-9">@Model.ServiceRequest?.Title</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SizeInKb)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.SizeInKb)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.UploadedAt)</dt>
+                <dd class="col-sm-9">@Model.UploadedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.ServiceRequestAttachmentId" method="post" class="mt-4">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

@@ -1,0 +1,103 @@
+@model UnivManagement.Models.ServiceRequest
+
+@{
+    ViewData["Title"] = "Edit request";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="mb-4">
+                <h1 class="h2 mb-1">Edit request</h1>
+                <p class="text-body-secondary mb-0">Update the request's information below.</p>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-body-tertiary py-3">
+                    <h2 class="h5 mb-0">
+                        <i class="bi bi-pencil-square me-2" aria-hidden="true"></i>
+                        Request information
+                    </h2>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ServiceRequestId" />
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-semibold"></label>
+                            <input asp-for="Title" class="form-control" placeholder="Enter a short title" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ServiceRequestTypeId" class="form-label fw-semibold"></label>
+                            <select asp-for="ServiceRequestTypeId" asp-items="ViewBag.Types" class="form-select"></select>
+                            <span asp-validation-for="ServiceRequestTypeId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ServiceRequestStatusId" class="form-label fw-semibold"></label>
+                            @if (ViewBag.IsClosed == true)
+                            {
+                                <input value="@ViewBag.StatusName" class="form-control" disabled />
+                                <div class="form-text">This request is closed, so its status cannot change.</div>
+                            }
+                            else
+                            {
+                                <select asp-for="ServiceRequestStatusId" asp-items="ViewBag.Statuses" class="form-select"></select>
+                                <span asp-validation-for="ServiceRequestStatusId" class="text-danger small"></span>
+                                <div class="form-text">To cancel the request, use the Cancel request button in its details.</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="RequesterName" class="form-label fw-semibold"></label>
+                            <input asp-for="RequesterName" class="form-control" placeholder="Enter the requester's name" />
+                            <span asp-validation-for="RequesterName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="RequesterEmail" class="form-label fw-semibold"></label>
+                            <input asp-for="RequesterEmail" class="form-control" placeholder="Enter the requester's email" />
+                            <span asp-validation-for="RequesterEmail" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AssignedTo" class="form-label fw-semibold"></label>
+                            <input asp-for="AssignedTo" class="form-control" placeholder="Optional: who is in charge of the request" />
+                            <span asp-validation-for="AssignedTo" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-semibold"></label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Optional description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-1" aria-hidden="true"></i>
+                                Save Changes
+                            </button>
+
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left-square me-1" aria-hidden="true"></i>
+                                Back to List
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
