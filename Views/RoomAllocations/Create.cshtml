@@ -1,0 +1,92 @@
+﻿@using UnivManagement.Models.AccommodationManagement
+@model UnivManagement.Models.AccommodationManagement.RoomAllocation
+
+@{
+    ViewData["Title"] = "New Room Allocation";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 pt-4 px-4">
+                    <h1 class="h4 fw-bold mb-1">
+                        <i class="bi bi-plus-circle text-primary me-2"></i>New Room Allocation
+                    </h1>
+                    <p class="text-body-secondary mb-0">Fill in the details of the room allocation.</p>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="AccommodationApplicationId" class="form-label">Accommodation Application</label>
+                            <select asp-for="AccommodationApplicationId"
+                                    asp-items="ViewBag.AccommodationApplicationId"
+                                    class="form-select">
+                                <option value="">-- Select an application --</option>
+                            </select>
+                            <span asp-validation-for="AccommodationApplicationId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="StudentId" class="form-label">Student</label>
+                            <select asp-for="StudentId"
+                                    asp-items="ViewBag.StudentId"
+                                    class="form-select">
+                                <option value="">-- Select a student --</option>
+                            </select>
+                            <span asp-validation-for="StudentId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="RoomId" class="form-label">Room</label>
+                            <select asp-for="RoomId"
+                                    asp-items="ViewBag.RoomId"
+                                    class="form-select">
+                                <option value="">-- Select a room --</option>
+                            </select>
+                            <span asp-validation-for="RoomId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="StartDate" class="form-label">Start Date</label>
+                            <input asp-for="StartDate" type="date" class="form-control" />
+                            <span asp-validation-for="StartDate" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="EndDate" class="form-label">End Date</label>
+                            <input asp-for="EndDate" type="date" class="form-control" />
+                            <span asp-validation-for="EndDate" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Status" class="form-label">Status</label>
+                            <select asp-for="Status"
+                                    class="form-select"
+                                    asp-items="Html.GetEnumSelectList<AllocationStatus>()">
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-end mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-1"></i> Create
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
