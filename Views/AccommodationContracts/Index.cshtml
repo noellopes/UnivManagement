@@ -1,47 +1,402 @@
 @model IEnumerable<UnivManagement.Models.AccommodationManagement.AccommodationContract>
 
 @{
-    ViewData["Title"] = "Contratos de Alojamento";
+    ViewData["Title"] = "Accommodation Contracts";
+    var contractsList = Model?.ToList() ?? new List<UnivManagement.Models.AccommodationManagement.AccommodationContract>();
+    var today = DateOnly.FromDateTime(DateTime.Today);
+
+    string GetStatusNormalized(UnivManagement.Models.AccommodationManagement.AccommodationContract c)
+    {
+        var raw = c.Status?.Name ?? string.Empty;
+
+        if (raw.Contains("Cancel", StringComparison.OrdinalIgnoreCase) || raw.Contains("Terminad", StringComparison.OrdinalIgnoreCase))
+            return "Cancelado";
+        if (raw.Contains("Expir", StringComparison.OrdinalIgnoreCase) || c.EndDate < today)
+            return "Expirado";
+        if (raw.Contains("Pend", StringComparison.OrdinalIgnoreCase))
+            return "Pendente";
+
+        return "Ativo";
+    }
+
+    int totalCount = contractsList.Count;
+    int activeCount = contractsList.Count(c => GetStatusNormalized(c) == "Ativo");
+    int pendingCount = contractsList.Count(c => GetStatusNormalized(c) == "Pendente");
+    int expiredCount = contractsList.Count(c => GetStatusNormalized(c) == "Expirado");
+    int cancelledCount = contractsList.Count(c => GetStatusNormalized(c) == "Cancelado");
 }
 
-<h1>Contratos de Alojamento</h1>
+<style>
+    .contracts-wrapper {
+        max-width: 1220px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.5rem;
+    }
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Novo Contrato</a>
-</p>
+    .contracts-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.RoomAllocationId)</th>
-            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
-            <th>@Html.DisplayNameFor(model => model.EndDate)</th>
-            <th>@Html.DisplayNameFor(model => model.MonthlyRent)</th>
-            <th>@Html.DisplayNameFor(model => model.Deposit)</th>
-            <th>Renda Total</th>
-            <th>@Html.DisplayNameFor(model => model.ContractStatusId)</th>
-            <th>@Html.DisplayNameFor(model => model.SignedDocumentId)</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.RoomAllocationId)</td>
-                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.MonthlyRent)</td>
-                <td>@Html.DisplayFor(modelItem => item.Deposit)</td>
-                <td>@item.CalculateTotalRent().ToString("C")</td>
-                <td>@(item.Status?.Name ?? item.ContractStatusId.ToString())</td>
-                <td>@(item.SignedDocumentId?.ToString() ?? "-")</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.AccommodationContractId">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.AccommodationContractId">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@item.AccommodationContractId">Eliminar</a>
-                </td>
-            </tr>
+    .contracts-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .contracts-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.15rem;
+    }
+
+    .status-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .status-tab-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.45rem 0.9rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.5rem;
+        background-color: #ffffff;
+        color: #374151;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+        .status-tab-btn:hover {
+            background-color: #f9fafb;
+            border-color: #9ca3af;
         }
-    </tbody>
-</table>
+
+        .status-tab-btn.active {
+            background-color: #eff6ff;
+            border-color: #3b82f6;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+
+    .tab-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 22px;
+        height: 20px;
+        padding: 0 0.4rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .pill-all {
+        background-color: #6b7280;
+    }
+
+    .pill-active {
+        background-color: #198754;
+    }
+
+    .pill-pending {
+        background-color: #f59e0b;
+        color: #111827;
+    }
+
+    .pill-expired {
+        background-color: #dc3545;
+    }
+
+    .pill-cancelled {
+        background-color: #4b5563;
+    }
+
+    .search-box {
+        position: relative;
+        min-width: 280px;
+        flex: 0 1 340px;
+    }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.48rem 0.85rem 0.48rem 2.2rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            color: #111827;
+            background-color: #ffffff;
+        }
+
+            .search-box input:focus {
+                outline: none;
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+            }
+
+    .search-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        font-size: 0.9rem;
+        pointer-events: none;
+    }
+
+    .contracts-table-card {
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+    }
+
+        .contracts-table-card .table {
+            margin-bottom: 0;
+        }
+
+            .contracts-table-card .table thead th {
+                background-color: #f3f4f6;
+                color: #1f2937;
+                font-weight: 600;
+                font-size: 0.92rem;
+                padding: 0.85rem 1rem;
+                border-bottom: 1px solid #e5e7eb;
+                white-space: nowrap;
+            }
+
+            .contracts-table-card .table tbody td {
+                padding: 0.85rem 1rem;
+                color: #1f2937;
+                font-size: 0.92rem;
+                vertical-align: middle;
+                border-bottom: 1px solid #eef0f2;
+            }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.7rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .badge-active {
+        background-color: #dcfce7;
+        color: #166534;
+    }
+
+    .badge-pending {
+        background-color: #fef3c7;
+        color: #92400e;
+    }
+
+    .badge-expired {
+        background-color: #fee2e2;
+        color: #991b1b;
+    }
+
+    .badge-cancelled {
+        background-color: #e5e7eb;
+        color: #374151;
+    }
+
+    .action-btn-outline {
+        border: 1px solid #cbd5e1;
+        color: #334155;
+        background-color: #ffffff;
+        font-size: 0.82rem;
+        padding: 0.28rem 0.65rem;
+        border-radius: 0.3rem;
+        text-decoration: none;
+    }
+
+        .action-btn-outline:hover {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+    .contracts-table-footer {
+        padding: 0.85rem 1rem;
+        color: #6b7280;
+        font-size: 0.88rem;
+        background-color: #ffffff;
+    }
+</style>
+
+<div class="contracts-wrapper">
+    <div class="contracts-header">
+        <h1 class="contracts-title">
+            <i class="bi bi-file-earmark-check text-primary me-2"></i>@ViewData["Title"]
+        </h1>
+        <a asp-action="Create" class="btn btn-primary">+ Novo Contrato</a>
+    </div>
+
+    <div class="contracts-toolbar">
+        <div class="status-tabs" role="tablist">
+            <button type="button" class="status-tab-btn active" data-filter="all">
+                Todos <span class="tab-pill pill-all">@totalCount</span>
+            </button>
+            <button type="button" class="status-tab-btn" data-filter="Ativo">
+                Ativos <span class="tab-pill pill-active">@activeCount</span>
+            </button>
+            <button type="button" class="status-tab-btn" data-filter="Pendente">
+                Pendentes <span class="tab-pill pill-pending">@pendingCount</span>
+            </button>
+            <button type="button" class="status-tab-btn" data-filter="Expirado">
+                Expirados <span class="tab-pill pill-expired">@expiredCount</span>
+            </button>
+            <button type="button" class="status-tab-btn" data-filter="Cancelado">
+                Cancelados <span class="tab-pill pill-cancelled">@cancelledCount</span>
+            </button>
+        </div>
+
+        <div class="search-box">
+            <span class="search-icon">&#128269;</span>
+            <input type="text" id="contractSearchInput" placeholder="Pesquisar por contrato, atribuição ou estado..." />
+        </div>
+    </div>
+
+    <div class="contracts-table-card">
+        <div class="table-responsive">
+            <table class="table" id="contractsTable">
+                <thead>
+                    <tr>
+                        <th>Contrato</th>
+                        <th>Atribuição de Quarto</th>
+                        <th>Data de Início</th>
+                        <th>Data de Fim</th>
+                        <th>Renda Mensal</th>
+                        <th>Caução</th>
+                        <th>Estado</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!contractsList.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                Não existem contratos registados.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in contractsList)
+                        {
+                            var statusText = GetStatusNormalized(item);
+                            var badgeClass = statusText switch
+                            {
+                                "Ativo" => "badge-active",
+                                "Pendente" => "badge-pending",
+                                "Expirado" => "badge-expired",
+                                _ => "badge-cancelled"
+                            };
+
+                            var contractLabel = $"Contrato #{item.AccommodationContractId}";
+                            var allocationLabel = $"Atribuição #{item.RoomAllocationId}";
+
+                            <tr class="contract-row"
+                                data-status="@statusText"
+                                data-search="@($"{contractLabel} {allocationLabel} {statusText}".ToLowerInvariant())">
+                                <td>@contractLabel</td>
+                                <td>@allocationLabel</td>
+                                <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                                <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                                <td>@item.MonthlyRent.ToString("C")</td>
+                                <td>@item.Deposit.ToString("C")</td>
+                                <td><span class="status-badge @badgeClass">@statusText</span></td>
+                                <td class="text-end">
+                                    <a asp-action="Edit" asp-route-id="@item.AccommodationContractId" class="action-btn-outline">Editar</a>
+                                    <a asp-action="Details" asp-route-id="@item.AccommodationContractId" class="action-btn-outline">Detalhes</a>
+                                    <a asp-action="Delete" asp-route-id="@item.AccommodationContractId" class="action-btn-outline">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="contracts-table-footer" id="contractsFooter">
+            A mostrar @(contractsList.Any() ? 1 : 0) a @contractsList.Count de @totalCount registos
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="Accommodation" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Back to Accommodation Management
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const tabButtons = document.querySelectorAll('.status-tab-btn');
+            const searchInput = document.getElementById('contractSearchInput');
+            const rows = document.querySelectorAll('.contract-row');
+            const footer = document.getElementById('contractsFooter');
+            const totalCount = @totalCount;
+
+            let currentStatus = 'all';
+
+            function filterTable() {
+                const query = (searchInput.value || '').trim().toLowerCase();
+                let visibleCount = 0;
+
+                rows.forEach(row => {
+                    const rowStatus = row.getAttribute('data-status');
+                    const rowSearch = row.getAttribute('data-search') || '';
+
+                    const matchesStatus = currentStatus === 'all' || rowStatus === currentStatus;
+                    const matchesSearch = !query || rowSearch.includes(query);
+
+                    if (matchesStatus && matchesSearch) {
+                        row.style.display = '';
+                        visibleCount++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                if (footer) {
+                    footer.textContent = visibleCount > 0
+                        ? `A mostrar 1 a ${visibleCount} de ${totalCount} registos`
+                        : `Nenhum contrato encontrado (0 de ${totalCount} registos)`;
+                }
+            }
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentStatus = btn.getAttribute('data-filter');
+                    filterTable();
+                });
+            });
+
+            if (searchInput) {
+                searchInput.addEventListener('input', filterTable);
+            }
+        })();
+    </script>
+}
