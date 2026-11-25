@@ -26,23 +26,14 @@
 
                 <div class="card-body p-4">
 
+                   
                     <!-- Success Message -->
                     @if (ViewBag.SuccessMessage != null)
                     {
-                        var successType = ViewBag.SuccessType as string ?? "success";
-
-                        <div class="alert alert-@successType alert-dismissible fade show border-0 shadow-sm"
+                        <div class="alert alert-success alert-dismissible fade show shadow-sm"
                              role="alert">
 
-                            @if (successType == "success")
-                            {
-                                <i class="bi bi-check-circle-fill me-2"></i>
-                            }
-                            else if (successType == "warning")
-                            {
-                                <i class="bi bi-pencil-square me-2"></i>
-                            }
-
+                            <i class="bi bi-check-circle-fill me-2"></i>
                             @ViewBag.SuccessMessage
 
                             <button type="button"
@@ -52,6 +43,7 @@
                             </button>
                         </div>
                     }
+
 
                     <!-- Application Type Name -->
                     <div class="mb-4">
