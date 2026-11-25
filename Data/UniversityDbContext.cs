@@ -3,8 +3,9 @@ using UnivManagement.Models;
 
 namespace UnivManagement.Data
 {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
     {
+
         public DbSet<Catalogo> Catalogos { get; set; }
         public DbSet<Exemplar> Exemplares { get; set; }
         public DbSet<Autor> Autores { get; set; }
@@ -29,7 +30,7 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;        
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
@@ -43,8 +44,9 @@ namespace UnivManagement.Data
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
-        
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             base.OnModelCreating(modelBuilder);
 
             // ServiceRequestType: two request types cannot have the same name
@@ -107,6 +109,13 @@ namespace UnivManagement.Data
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
+
+            // Avoid SQL Server multiple cascade paths.
+            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
+                .HasOne(item => item.Course)
+                .WithMany()
+                .HasForeignKey(item => item.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
