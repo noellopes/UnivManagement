@@ -10,6 +10,7 @@ namespace UnivManagement.Models.AccommodationManagement
         [Required(ErrorMessage = "A {0} é obrigatória.")]
         [Display(Name = "Atribuição de Quarto")]
         public int RoomAllocationId { get; set; }
+        // public RoomAllocation? RoomAllocation { get; set; } // Descomenta se a entidade existir
 
         [Required(ErrorMessage = "A {0} é obrigatória.")]
         [DataType(DataType.Date)]
@@ -59,7 +60,7 @@ namespace UnivManagement.Models.AccommodationManagement
 
             return months * MonthlyRent;
         }
-
+        
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (EndDate <= StartDate)

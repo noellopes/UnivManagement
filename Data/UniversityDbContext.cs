@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
+using UnivManagement.Models.AccommodationManagement;
 using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Data
@@ -36,6 +37,16 @@ namespace UnivManagement.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // ServiceRequestAttachment: a request cannot have two attachments with the same file name
+            modelBuilder.Entity<Models.ServiceRequestAttachment>()
+                .HasIndex(a => new { a.ServiceRequestId, a.FileName })
+                .IsUnique();
+
+            // ServiceRequestAttachment: when a request is deleted, its attachments are deleted with it
+            modelBuilder.Entity<Models.ServiceRequestAttachment>()
+                .HasOne(a => a.ServiceRequest)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
             // ServiceRequestHistory: the history belongs to its request and is deleted with it
             modelBuilder.Entity<Models.ServiceRequestHistory>()
                 .HasOne(h => h.ServiceRequest)
@@ -155,6 +166,13 @@ namespace UnivManagement.Data
             modelBuilder.Entity<InscrUC>()
                 .Property(i => i.Grade)
                 .HasPrecision(4, 2);
+
+            // ApplicationStatusHistory: prevent deleting an application that already has status history
+            modelBuilder.Entity<Models.AccommodationManagement.ApplicationStatusHistory>()
+                    .HasOne(h => h.AccommodationApplication)
+                    .WithMany()
+                    .HasForeignKey(h => h.AccommodationApplicationId)
+                    .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Obra> Obras { get; set; } = default!;
@@ -163,11 +181,10 @@ namespace UnivManagement.Data
         public DbSet<Autor> Autores { get; set; } = default!;
         public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;
         public DbSet<UnivManagement.Models.ReservaSala> Reserva { get; set; } = default!;
-        public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
-        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestAttachment> ServiceRequestAttachments { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestHistory> ServiceRequestHistories { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestAssignment> ServiceRequestAssignments { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestComment> ServiceRequestComments { get; set; } = default!;
@@ -193,7 +210,10 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;
+        public DbSet<PossibleStatus> PossibleStatus { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;      
+        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;     
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
@@ -206,7 +226,10 @@ namespace UnivManagement.Data
         public DbSet<GestorEstagio> GestoresEstagio { get; set; }
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
-        public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
+        public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }        
         public DbSet<EstadoPossivel> EstadoPossivel { get; set; } = default!;
+        public DbSet<UnivManagement.Models.HorarioAtendimento> HorarioAtendimento { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AtribuicaoDocente> AtribuicaoDocente { get; set; } = default!;
+        public DbSet<UnivManagement.Models.FuncaoDocente> FuncaoDocente { get; set; } = default!;
     }
 }
