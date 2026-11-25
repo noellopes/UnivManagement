@@ -1,0 +1,36 @@
+@model IEnumerable<UnivManagement.Models.AtribuicaoDocente>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.DocenteId)</th>
+            <th>@Html.DisplayNameFor(model => model.UcId)</th>
+            <th>@Html.DisplayNameFor(model => model.AcademicYearId)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.DocenteId)</td>
+                <td>@Html.DisplayFor(model => item.UcId)</td>
+                <td>@Html.DisplayFor(model => item.AcademicYearId)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-atribuicaodocenteid="@item.AtribuicaoDocenteId">Edit</a> |
+                    <a asp-action="Details" asp-route-atribuicaodocenteid="@item.AtribuicaoDocenteId">Details</a> |
+                    <a asp-action="Delete" asp-route-atribuicaodocenteid="@item.AtribuicaoDocenteId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

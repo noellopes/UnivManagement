@@ -1,13 +1,330 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using UnivManagement.Models.AcademicManagement;
 using UnivManagement.Models;
 
-namespace UnivManagement.Data {
-    public class SeedData {
-        internal static void Populate(UniversityDbContext? db) {
+namespace UnivManagement.Data
+{
+    public class SeedData
+    {
+        internal static void Populate(UniversityDbContext? db)
+        {
             if (db == null) throw new ArgumentNullException(nameof(db));
 
             PopulateFuncoesDocentes(db);
+            PopulateEstadoPossivel(db);
+            PopulateCourseStates(db);
+            PopulateStudents(db);
+            PopulateServicosFuncionarios(db);
+            PopulateServiceRequestTypes(db);
+            PopulateServiceRequestCatalogItems(db);
+            PopulateServiceRequestStatuses(db);
+            PopulateServiceRequestPriorities(db);
+            PopulateFuncionarios(db);
+        }
 
+        private static void PopulateEstadoPossivel(UniversityDbContext db)
+        {
+            if (db.EstadoPossivel.Any()) return;
+
+            db.EstadoPossivel.AddRange(new List<EstadoPossivel> {
+                new EstadoPossivel {
+                    NomeEstado = "Submetida",
+                    Descricao = "A candidatura foi submetida pelo estudante e aguarda análise."
+                },
+                new EstadoPossivel {
+                    NomeEstado = "Em análise",
+                    Descricao = "A candidatura está a ser analisada por um técnico dos serviços de ação social."
+                },
+                new EstadoPossivel {
+                    NomeEstado = "A aguardar documentos",
+                    Descricao = "Foram pedidos documentos em falta ou correções ao estudante."
+                },
+                new EstadoPossivel {
+                    NomeEstado = "Aprovada",
+                    Descricao = "A candidatura cumpre os critérios de elegibilidade e a bolsa foi atribuída."
+                },
+                new EstadoPossivel {
+                    NomeEstado = "Rejeitada",
+                    Descricao = "A candidatura não cumpre os critérios de elegibilidade."
+                },
+                new EstadoPossivel {
+                    NomeEstado = "Cancelada",
+                    Descricao = "A candidatura foi cancelada pelo estudante ou anulada pelos serviços."
+                }
+            });
+
+            db.SaveChanges();
+        }
+      
+        private static void PopulateServicosFuncionarios(UniversityDbContext db)
+        {
+            if (db.ServicoFuncionario.Any()) return;
+
+            var servicos = new List<ServicoFuncionario>
+            {
+                new ServicoFuncionario { Nome = "Recursos Humanos", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Serviços Académicos", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Tecnologias de Informação", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Contabilidade e Finanças", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Manutenção e Instalações", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Biblioteca e Documentação", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Ação Social e Apoio ao Estudante", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Relações Internacionais e Mobilidade", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Comunicação e Imagem", Ativo = true, DataCriacao = DateTime.Now },
+                new ServicoFuncionario { Nome = "Gabinete Jurídico", Ativo = true, DataCriacao = DateTime.Now }
+            };
+
+            db.ServicoFuncionario.AddRange(servicos);
+
+            db.SaveChanges();
+        }
+
+        internal static void PopulateServiceRequestTypes(UniversityDbContext? db) {
+            if (db == null || db.ServiceRequestTypes.Any()) return;
+
+            db.ServiceRequestTypes.AddRange(
+                new ServiceRequestType { Name = "Certificate", Description = "Request an enrolment or attendance certificate." },
+                new ServiceRequestType { Name = "Official document", Description = "Request an official academic document." },
+                new ServiceRequestType { Name = "Student support", Description = "Ask for help or guidance from student services." },
+                new ServiceRequestType { Name = "Maintenance", Description = "Report a problem in a building, room or equipment." },
+                new ServiceRequestType { Name = "Other" }
+            );
+        }
+
+        private static void PopulateServiceRequestCatalogItems(UniversityDbContext db)
+        {
+            // If there are already services, do nothing (so the data is not duplicated on every start)
+            if (db.ServiceRequestCatalogItems.Any()) return;
+
+            // Request types: reuse the ones that exist (by name) and create only the missing ones
+            var types = db.ServiceRequestTypes.ToDictionary(t => t.Name, t => t.ServiceRequestTypeId, StringComparer.OrdinalIgnoreCase);
+            var typeNames = new[] { "Certificate", "Official document", "Student support", "Maintenance" };
+
+            foreach (var name in typeNames)
+            {
+                if (!types.ContainsKey(name))
+                {
+                    db.ServiceRequestTypes.Add(new ServiceRequestType { Name = name });
+                }
+            }
+            db.SaveChanges();
+
+            // Read them again so every type has its id
+            types = db.ServiceRequestTypes.ToDictionary(t => t.Name, t => t.ServiceRequestTypeId, StringComparer.OrdinalIgnoreCase);
+
+            var services = new List<ServiceRequestCatalogItem> {
+                new ServiceRequestCatalogItem { Name = "Enrolment certificate", Description = "Official proof that the student is enrolled this year.", ServiceRequestTypeId = types["Certificate"], ProcessingDays = 3, RequiredDocuments = "Student card", IsActive = true },
+                new ServiceRequestCatalogItem { Name = "Attendance certificate", Description = "Proof of attendance to the classes of a course.", ServiceRequestTypeId = types["Certificate"], ProcessingDays = 3, RequiredDocuments = "Student card", IsActive = true },
+                new ServiceRequestCatalogItem { Name = "Grades transcript", Description = "Official list of the grades obtained so far.", ServiceRequestTypeId = types["Official document"], ProcessingDays = 5, RequiredDocuments = "Student card and payment receipt", IsActive = true },
+                new ServiceRequestCatalogItem { Name = "Diploma copy", Description = "A certified copy of the diploma.", ServiceRequestTypeId = types["Official document"], ProcessingDays = 15, RequiredDocuments = "Identification document and payment receipt", IsActive = true },
+                new ServiceRequestCatalogItem { Name = "Academic counselling", Description = "A meeting with the student support service.", ServiceRequestTypeId = types["Student support"], ProcessingDays = 7, IsActive = true },
+                new ServiceRequestCatalogItem { Name = "Classroom equipment repair", Description = "Report a broken projector, computer or chair.", ServiceRequestTypeId = types["Maintenance"], ProcessingDays = 2, RequiredDocuments = "Room number and a short description", IsActive = true },
+                new ServiceRequestCatalogItem { Name = "Paper enrolment form", Description = "Replaced by the online enrolment.", ServiceRequestTypeId = types["Official document"], ProcessingDays = 20, IsActive = false }
+            };
+
+            db.ServiceRequestCatalogItems.AddRange(services);
+        }
+
+        private static void PopulateServiceRequestStatuses(UniversityDbContext db)
+        {
+            if (db.ServiceRequestStatuses.Any()) return;
+
+            var statuses = new List<ServiceRequestStatus> {
+                new ServiceRequestStatus { Name = "Submitted", DisplayOrder = 1, Color = "secondary",
+                    Description = "The request was received and is waiting to be reviewed." },
+                new ServiceRequestStatus { Name = "In progress", DisplayOrder = 2, Color = "primary",
+                    Description = "The administrative services are working on the request." },
+                new ServiceRequestStatus { Name = "Waiting for information", DisplayOrder = 3, Color = "warning", RequiresNote = true,
+                    Description = "More information or documents are needed from the requester." },
+                new ServiceRequestStatus { Name = "Resolved", DisplayOrder = 4, Color = "success", IsFinal = true,
+                    Description = "The request was completed." },
+                new ServiceRequestStatus { Name = "Rejected", DisplayOrder = 5, Color = "danger", IsFinal = true, RequiresNote = true,
+                    Description = "The request cannot be accepted; the note explains why." },
+                new ServiceRequestStatus { Name = "Cancelled", DisplayOrder = 6, Color = "dark", IsFinal = true,
+                    Description = "The request was cancelled." }
+            };
+
+            db.ServiceRequestStatuses.AddRange(statuses);
+        }
+
+        private static void PopulateServiceRequestPriorities(UniversityDbContext db)
+        {
+            // If there are already priorities, do nothing (so the data is not duplicated on every start)
+            if (db.ServiceRequestPriorities.Any()) return;
+
+            var priorities = new List<ServiceRequestPriority> {
+                new ServiceRequestPriority { Name = "Low", Level = 1, ResponseDays = 14, Color = "success" },
+                new ServiceRequestPriority { Name = "Medium", Level = 2, ResponseDays = 7, Color = "info" },
+                new ServiceRequestPriority { Name = "High", Level = 3, ResponseDays = 3, Color = "warning" },
+                new ServiceRequestPriority { Name = "Urgent", Level = 4, ResponseDays = 1, Color = "danger" }
+            };
+
+            db.ServiceRequestPriorities.AddRange(priorities);
+        }
+
+        private static void PopulateFuncionarios(UniversityDbContext db)
+        {
+            // 1. Garantir que existem Serviços na BD
+            if (!db.ServicoFuncionario.Any())
+            {
+                var servicos = new List<ServicoFuncionario> {
+                    new ServicoFuncionario { Nome = "Recursos Humanos", Ativo = true },
+                    new ServicoFuncionario { Nome = "Serviços Académicos", Ativo = true },
+                    new ServicoFuncionario { Nome = "Tecnologias de Informação", Ativo = true },
+                    new ServicoFuncionario { Nome = "Gestão Financeira", Ativo = true }
+                };
+
+                db.ServicoFuncionario.AddRange(servicos);
+                db.SaveChanges();
+            }
+
+            // 2. Se a tabela Funcionario já tiver registos, não faz nada
+            if (db.Funcionario.Any()) return;
+
+            // Obter os serviços da BD (ou o primeiro disponível como fallback seguro)
+            var servicoPadrao = db.ServicoFuncionario.First();
+
+            var servicoRH = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Recursos Humanos") ?? servicoPadrao;
+            var servicoAcad = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Serviços Académicos") ?? servicoPadrao;
+            var servicoTI = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Tecnologias de Informação") ?? servicoPadrao;
+            var servicoFin = db.ServicoFuncionario.FirstOrDefault(s => s.Nome == "Gestão Financeira") ?? servicoPadrao;
+
+            // 3. Adicionar lista de Funcionários iniciais
+            var funcionarios = new List<Funcionario> {
+                new Funcionario {
+                    Nome = "Ana Maria Silva",
+                    Nif = "234567890",
+                    Email = "ana.silva@upg.pt",
+                    Telefone = "912345678",
+                    Ativo = true,
+                    DataAdmissao = new DateTime(2020, 3, 15),
+                    Morada = "Av. são bento, 12, Guarda",
+                    ServicoFuncionarioId = servicoRH.ServicoFuncionarioId
+                },
+                new Funcionario {
+                    Nome = "Carlos Alberto Santos",
+                    Nif = "245678901",
+                    Email = "carlos.santos@upg.pt",
+                    Telefone = "934567890",
+                    Ativo = true,
+                    DataAdmissao = new DateTime(2018, 9, 1),
+                    Morada = "Rua Direita, 45, Guarda",
+                    ServicoFuncionarioId = servicoTI.ServicoFuncionarioId
+                },
+                new Funcionario {
+                    Nome = "Beatriz Rocha",
+                    Nif = "256789012",
+                    Email = "beatriz.rocha@upg.pt",
+                    Telefone = "965432109",
+                    Ativo = true,
+                    DataAdmissao = new DateTime(2021, 1, 10),
+                    Morada = "Rua Duque de bragança, 8, Guarda",
+                    ServicoFuncionarioId = servicoAcad.ServicoFuncionarioId
+                },
+                new Funcionario {
+                    Nome = "João Pedro Ferreira",
+                    Nif = "267890123",
+                    Email = "joao.ferreira@upg.pt",
+                    Telefone = "921122334",
+                    Ativo = false,
+                    DataAdmissao = new DateTime(2019, 6, 20),
+                    Morada = "Paiva couceiro, 102, Guarda",
+                    ServicoFuncionarioId = servicoFin.ServicoFuncionarioId
+                }
+            };
+
+            db.Funcionario.AddRange(funcionarios);
+            db.SaveChanges();
+        }
+
+        private static void PopulateStudents(UniversityDbContext dbContext)
+        {
+            if (dbContext.Student.Any()) return;
+
+            var students = new List<Student>
+    {
+        /* 1000001 */ new Student { NumStudent = "1000001", Name = "Ana Silva",           Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 3, 15),  Address = "Rua das Flores, 12, Lisboa",            NIF = "123456789", Email = "ana.silva@uni.pt",          CountryPhoneCode = "+351", Telephone = "912345678" },
+        /* 1000002 */ new Student { NumStudent = "1000002", Name = "Bruno Costa",         Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 7, 22),  Address = "Avenida da Liberdade, 45, Porto",        NIF = "987654322", Email = "bruno.costa@uni.pt",        CountryPhoneCode = "+351", Telephone = "913456789" },
+        /* 1000003 */ new Student { NumStudent = "1000003", Name = "Carla Mendes",        Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2012, 1, 10),  Address = "Praça do Comércio, 3, Coimbra",           NIF = "111222338", Email = "carla.mendes@uni.pt",       CountryPhoneCode = "+351", Telephone = "914567890" },
+        /* 1000004 */ new Student { NumStudent = "1000004", Name = "David Johnson",       Gender = "M", Nationality = "Britânica",  BirthDate = new DateOnly(2001, 11, 5),  Address = "Rua de São Bento, 78, Braga",             NIF = "222333448", Email = "david.johnson@uni.pt",      CountryPhoneCode = "+44",  Telephone = "7911123456" },
+        /* 1000005 */ new Student { NumStudent = "1000005", Name = "Eva Rodrigues",       Gender = "F", Nationality = "Brasileira", BirthDate = new DateOnly(1998, 9, 30),  Address = "Rua Augusta, 100, Lisboa",                NIF = "333444558", Email = "eva.rodrigues@uni.pt",      CountryPhoneCode = "+55",  Telephone = "11987654321" },
+        /* 1000006 */ new Student { NumStudent = "1000006", Name = "Pedro Silva",         Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2002, 5, 18),  Address = "Rua das Flores, 12, Lisboa",              NIF = "555666492", Email = "pedro.silva@uni.pt",        CountryPhoneCode = "+351", Telephone = "912345698" },
+
+        /* 1000007 */ new Student { NumStudent = "1000007", Name = "João Pereira",        Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 4, 12),  Address = "Rua do Sol, 8, Aveiro",                   NIF = "200000004", Email = "joao.pereira@uni.pt",       CountryPhoneCode = "+351", Telephone = "916000001" },
+        /* 1000008 */ new Student { NumStudent = "1000008", Name = "Maria Santos",        Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 6, 3),   Address = "Travessa do Carmo, 14, Setúbal",          NIF = "200000012", Email = "maria.santos@uni.pt",       CountryPhoneCode = "+351", Telephone = "916000002" },
+        /* 1000009 */ new Student { NumStudent = "1000009", Name = "Miguel Ferreira",     Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 9, 21),  Address = "Rua Nova, 27, Viseu",                     NIF = "200000020", Email = "miguel.ferreira@uni.pt",    CountryPhoneCode = "+351", Telephone = "916000003" },
+        /* 1000010 */ new Student { NumStudent = "1000010", Name = "Sofia Oliveira",      Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2002, 1, 8),   Address = "Alameda D. Afonso, 3, Guimarães",         NIF = "200000039", Email = "sofia.oliveira@uni.pt",     CountryPhoneCode = "+351", Telephone = "916000004" },
+        /* 1000011 */ new Student { NumStudent = "1000011", Name = "Tiago Almeida",       Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 11, 30), Address = "Rua das Pedras, 22, Faro",                NIF = "200000047", Email = "tiago.almeida@uni.pt",      CountryPhoneCode = "+351", Telephone = "916000005" },
+        /* 1000012 */ new Student { NumStudent = "1000012", Name = "Beatriz Costa",       Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 3, 5),   Address = "Praça Velha, 9, Leiria",                  NIF = "200000055", Email = "beatriz.costa@uni.pt",      CountryPhoneCode = "+351", Telephone = "916000006" },
+        /* 1000013 */ new Student { NumStudent = "1000013", Name = "Ricardo Rodrigues",   Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1998, 7, 17),  Address = "Rua da Sé, 55, Évora",                    NIF = "200000063", Email = "ricardo.rodrigues@uni.pt",  CountryPhoneCode = "+351", Telephone = "916000007" },
+        /* 1000014 */ new Student { NumStudent = "1000014", Name = "Inês Martins",        Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2003, 2, 14),  Address = "Rua do Comércio, 18, Santarém",           NIF = "200000071", Email = "ines.martins@uni.pt",       CountryPhoneCode = "+351", Telephone = "916000008" },
+        /* 1000015 */ new Student { NumStudent = "1000015", Name = "André Sousa",         Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 8, 22),  Address = "Avenida Central, 41, Vila Real",          NIF = "200000080", Email = "andre.sousa@uni.pt",        CountryPhoneCode = "+351", Telephone = "916000009" },
+        /* 1000016 */ new Student { NumStudent = "1000016", Name = "Mariana Fernandes",   Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 12, 9),  Address = "Rua do Carmo, 7, Bragança",               NIF = "200000098", Email = "mariana.fernandes@uni.pt",  CountryPhoneCode = "+351", Telephone = "916000010" },
+
+        /* 1000017 */ new Student { NumStudent = "1000017", Name = "Filipe Gonçalves",    Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 5, 27),  Address = "Rua Nova do Almada, 30, Guarda",          NIF = "200000101", Email = "filipe.goncalves@uni.pt",   CountryPhoneCode = "+351", Telephone = "916000011" },
+        /* 1000018 */ new Student { NumStudent = "1000018", Name = "Catarina Gomes",      Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2002, 9, 11),  Address = "Largo do Município, 5, Castelo Branco",   NIF = "200000110", Email = "catarina.gomes@uni.pt",     CountryPhoneCode = "+351", Telephone = "916000012" },
+        /* 1000019 */ new Student { NumStudent = "1000019", Name = "Rui Lopes",           Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1998, 4, 3),   Address = "Rua Direita, 12, Beja",                   NIF = "200000128", Email = "rui.lopes@uni.pt",          CountryPhoneCode = "+351", Telephone = "916000013" },
+        /* 1000020 */ new Student { NumStudent = "1000020", Name = "Joana Marques",       Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 6, 18),  Address = "Rua da República, 66, Portalegre",        NIF = "200000136", Email = "joana.marques@uni.pt",      CountryPhoneCode = "+351", Telephone = "916000014" },
+        /* 1000021 */ new Student { NumStudent = "1000021", Name = "Nuno Alves",          Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 10, 25), Address = "Avenida dos Combatentes, 19, Funchal",    NIF = "200000144", Email = "nuno.alves@uni.pt",         CountryPhoneCode = "+351", Telephone = "916000015" },
+        /* 1000022 */ new Student { NumStudent = "1000022", Name = "Rita Ribeiro",        Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2003, 7, 4),   Address = "Rua do Mercado, 33, Ponta Delgada",       NIF = "200000152", Email = "rita.ribeiro@uni.pt",       CountryPhoneCode = "+351", Telephone = "916000016" },
+        /* 1000023 */ new Student { NumStudent = "1000023", Name = "Diogo Pinto",         Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 11, 14), Address = "Rua da Liberdade, 87, Viana do Castelo",  NIF = "200000160", Email = "diogo.pinto@uni.pt",        CountryPhoneCode = "+351", Telephone = "916000017" },
+        /* 1000024 */ new Student { NumStudent = "1000024", Name = "Teresa Carvalho",     Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 3, 21),  Address = "Largo da Sé, 2, Braga",                   NIF = "200000179", Email = "teresa.carvalho@uni.pt",    CountryPhoneCode = "+351", Telephone = "916000018" },
+        /* 1000025 */ new Student { NumStudent = "1000025", Name = "Pedro Teixeira",      Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2002, 5, 30),  Address = "Rua de Santa Catarina, 55, Porto",        NIF = "200000187", Email = "pedro.teixeira@uni.pt",     CountryPhoneCode = "+351", Telephone = "916000019" },
+        /* 1000026 */ new Student { NumStudent = "1000026", Name = "Marta Moreira",       Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 8, 12),  Address = "Avenida da Boavista, 120, Porto",         NIF = "200000195", Email = "marta.moreira@uni.pt",      CountryPhoneCode = "+351", Telephone = "916000020" },
+
+        /* 1000027 */ new Student { NumStudent = "1000027", Name = "Luís Correia",        Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1998, 2, 27),  Address = "Rua Garrett, 88, Lisboa",                 NIF = "200000209", Email = "luis.correia@uni.pt",       CountryPhoneCode = "+351", Telephone = "917000001" },
+        /* 1000028 */ new Student { NumStudent = "1000028", Name = "Ana Mendes",          Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 7, 9),   Address = "Avenida Almirante Reis, 42, Lisboa",      NIF = "200000217", Email = "ana.mendes@uni.pt",         CountryPhoneCode = "+351", Telephone = "917000002" },
+        /* 1000029 */ new Student { NumStudent = "1000029", Name = "Carlos Nunes",        Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 1, 15),  Address = "Rua do Ouro, 31, Lisboa",                 NIF = "200000225", Email = "carlos.nunes@uni.pt",       CountryPhoneCode = "+351", Telephone = "917000003" },
+        /* 1000030 */ new Student { NumStudent = "1000030", Name = "Patrícia Soares",     Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2002, 4, 6),   Address = "Rua Augusta, 200, Lisboa",                NIF = "200000233", Email = "patricia.soares@uni.pt",    CountryPhoneCode = "+351", Telephone = "917000004" },
+        /* 1000031 */ new Student { NumStudent = "1000031", Name = "António Vieira",      Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 6, 22),  Address = "Praça do Município, 14, Lisboa",          NIF = "200000241", Email = "antonio.vieira@uni.pt",     CountryPhoneCode = "+351", Telephone = "917000005" },
+        /* 1000032 */ new Student { NumStudent = "1000032", Name = "Helena Monteiro",     Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(1998, 12, 3),  Address = "Travessa do Sol, 8, Cascais",             NIF = "200000250", Email = "helena.monteiro@uni.pt",    CountryPhoneCode = "+351", Telephone = "917000006" },
+        /* 1000033 */ new Student { NumStudent = "1000033", Name = "Paulo Cardoso",       Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2003, 8, 17),  Address = "Avenida do Mar, 26, Sesimbra",            NIF = "200000268", Email = "paulo.cardoso@uni.pt",      CountryPhoneCode = "+351", Telephone = "917000007" },
+        /* 1000034 */ new Student { NumStudent = "1000034", Name = "Cláudia Rocha",       Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 5, 29),  Address = "Rua das Amoreiras, 11, Sintra",           NIF = "200000276", Email = "claudia.rocha@uni.pt",      CountryPhoneCode = "+351", Telephone = "917000008" },
+        /* 1000035 */ new Student { NumStudent = "1000035", Name = "Bruno Neves",         Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 10, 12), Address = "Estrada da Luz, 99, Oeiras",              NIF = "200000284", Email = "bruno.neves@uni.pt",        CountryPhoneCode = "+351", Telephone = "917000009" },
+        /* 1000036 */ new Student { NumStudent = "1000036", Name = "Sandra Coelho",       Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 3, 8),   Address = "Rua dos Navegantes, 45, Almada",          NIF = "200000292", Email = "sandra.coelho@uni.pt",      CountryPhoneCode = "+351", Telephone = "917000010" },
+
+        /* 1000037 */ new Student { NumStudent = "1000037", Name = "Hugo Cruz",           Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 9, 19),  Address = "Avenida da República, 22, Barreiro",      NIF = "200000306", Email = "hugo.cruz@uni.pt",          CountryPhoneCode = "+351", Telephone = "917000011" },
+        /* 1000038 */ new Student { NumStudent = "1000038", Name = "Vera Cunha",          Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(1998, 6, 25),  Address = "Rua do Mercado, 7, Setúbal",              NIF = "200000314", Email = "vera.cunha@uni.pt",         CountryPhoneCode = "+351", Telephone = "917000012" },
+        /* 1000039 */ new Student { NumStudent = "1000039", Name = "Sérgio Pires",        Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2002, 11, 2),  Address = "Largo do Chafariz, 3, Leiria",            NIF = "200000322", Email = "sergio.pires@uni.pt",       CountryPhoneCode = "+351", Telephone = "917000013" },
+        /* 1000040 */ new Student { NumStudent = "1000040", Name = "Cristina Ramos",      Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 1, 30),  Address = "Rua da Estação, 68, Coimbra",             NIF = "200000330", Email = "cristina.ramos@uni.pt",     CountryPhoneCode = "+351", Telephone = "917000014" },
+        /* 1000041 */ new Student { NumStudent = "1000041", Name = "Marco Reis",          Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 7, 7),   Address = "Avenida Sá da Bandeira, 15, Aveiro",      NIF = "200000349", Email = "marco.reis@uni.pt",         CountryPhoneCode = "+351", Telephone = "917000015" },
+        /* 1000042 */ new Student { NumStudent = "1000042", Name = "Susana Simões",       Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2003, 4, 24),  Address = "Rua do Pinhal, 40, Viseu",                NIF = "200000357", Email = "susana.simoes@uni.pt",      CountryPhoneCode = "+351", Telephone = "917000016" },
+        /* 1000043 */ new Student { NumStudent = "1000043", Name = "Alexandre Antunes",   Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 12, 13), Address = "Praça da República, 11, Braga",           NIF = "200000365", Email = "alexandre.antunes@uni.pt",  CountryPhoneCode = "+351", Telephone = "917000017" },
+        /* 1000044 */ new Student { NumStudent = "1000044", Name = "Daniela Matos",       Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(1998, 8, 5),   Address = "Rua dos Combatentes, 84, Guimarães",      NIF = "200000373", Email = "daniela.matos@uni.pt",      CountryPhoneCode = "+351", Telephone = "917000018" },
+        /* 1000045 */ new Student { NumStudent = "1000045", Name = "Gonçalo Fonseca",     Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 5, 16),  Address = "Avenida Central, 5, Faro",                NIF = "200000381", Email = "goncalo.fonseca@uni.pt",    CountryPhoneCode = "+351", Telephone = "917000019" },
+        /* 1000046 */ new Student { NumStudent = "1000046", Name = "Bárbara Machado",     Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2002, 2, 21),  Address = "Rua do Carmo, 60, Évora",                 NIF = "200000390", Email = "barbara.machado@uni.pt",    CountryPhoneCode = "+351", Telephone = "917000020" },
+
+        /* 1000047 */ new Student { NumStudent = "1000047", Name = "Rodrigo Araújo",      Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1999, 3, 29),  Address = "Largo da Matriz, 4, Bragança",            NIF = "200000403", Email = "rodrigo.araujo@uni.pt",     CountryPhoneCode = "+351", Telephone = "918000001" },
+        /* 1000048 */ new Student { NumStudent = "1000048", Name = "Liliana Barbosa",     Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 10, 8),  Address = "Rua Nova, 56, Guarda",                    NIF = "200000411", Email = "liliana.barbosa@uni.pt",    CountryPhoneCode = "+351", Telephone = "918000002" },
+        /* 1000049 */ new Student { NumStudent = "1000049", Name = "Fernando Tavares",    Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(1998, 6, 12),  Address = "Avenida do Brasil, 12, Castelo Branco",   NIF = "200000420", Email = "fernando.tavares@uni.pt",   CountryPhoneCode = "+351", Telephone = "918000003" },
+        /* 1000050 */ new Student { NumStudent = "1000050", Name = "Sónia Campos",        Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2002, 1, 4),   Address = "Rua das Flores, 77, Santarém",            NIF = "200000438", Email = "sonia.campos@uni.pt",       CountryPhoneCode = "+351", Telephone = "918000004" },
+        /* 1000051 */ new Student { NumStudent = "1000051", Name = "Jorge Baptista",      Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 9, 27),  Address = "Travessa do Rosário, 9, Beja",            NIF = "200000446", Email = "jorge.baptista@uni.pt",     CountryPhoneCode = "+351", Telephone = "918000005" },
+        /* 1000052 */ new Student { NumStudent = "1000052", Name = "Andreia Freitas",     Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2003, 5, 11),  Address = "Rua do Sol, 30, Portalegre",              NIF = "200000454", Email = "andreia.freitas@uni.pt",    CountryPhoneCode = "+351", Telephone = "918000006" },
+        /* 1000053 */ new Student { NumStudent = "1000053", Name = "Raquel Amaral",       Gender = "F", Nationality = "Portuguesa", BirthDate = new DateOnly(2001, 8, 15),  Address = "Avenida das Descobertas, 27, Funchal",    NIF = "200000462", Email = "raquel.amaral@uni.pt",      CountryPhoneCode = "+351", Telephone = "918000007" },
+        /* 1000054 */ new Student { NumStudent = "1000054", Name = "Simão Barros",        Gender = "M", Nationality = "Portuguesa", BirthDate = new DateOnly(2000, 11, 23), Address = "Rua Nova, 3, Ponta Delgada",              NIF = "200000470", Email = "simao.barros@uni.pt",       CountryPhoneCode = "+351", Telephone = "918000008" },
+        /* 1000055 */ new Student { NumStudent = "1000055", Name = "Elena García",        Gender = "F", Nationality = "Espanhola",  BirthDate = new DateOnly(2001, 4, 18),  Address = "Rua de São Bento, 100, Lisboa",           NIF = "200000489", Email = "elena.garcia@uni.pt",       CountryPhoneCode = "+34",  Telephone = "612345678" },
+        /* 1000056 */ new Student { NumStudent = "1000056", Name = "Lukas Meyer",         Gender = "M", Nationality = "Alemã",      BirthDate = new DateOnly(1999, 12, 6),  Address = "Avenida da Liberdade, 50, Lisboa",        NIF = "200000497", Email = "lukas.meyer@uni.pt",        CountryPhoneCode = "+49",  Telephone = "15112345678" },
+    };
+
+            dbContext.Student.AddRange(students);
+            dbContext.SaveChanges();
+        }
+
+        private static void PopulateCourseStates(UniversityDbContext dbContext)
+        {
+            if (dbContext.CourseState.Any()) return;
+
+            var courseStates = new List<CourseState>
+        {
+            new CourseState { Name = "DRAFT", Description = "Curso em preparação, ainda não publicado."},
+            new CourseState { Name = "ACTIVE", Description = "Curso a decorrer normalmente."},
+            new CourseState { Name = "SUSPENDED", Description = "Curso temporariamente suspenso."},
+            new CourseState { Name = "CONCLUDED", Description = "Curso terminado, sem novas inscrições."},
+            new CourseState { Name = "ARCHIVED", Description = "Curso arquivado historicamente."}
+        };
+
+            dbContext.CourseState.AddRange(courseStates);
+            dbContext.SaveChanges();
         }
 
         private static void PopulateFuncoesDocentes(UniversityDbContext db)

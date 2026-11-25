@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Gestão de Cantina e Alimentação";
+}
+
+
+    <!-- Banner de Aviso Temporário -->
+    <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4 p-3" role="alert">
+        <div class="d-flex align-items-center">
+            <div class="bg-warning text-dark rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+            </div>
+            <div>
+                <h6 class="alert-heading fw-bold mb-1">Aviso Temporário</h6>
+                <p class="mb-0 text-dark opacity-75 small">
+                    Esta página de seleção de perfis é <strong>temporária</strong> enquanto o sistema de autenticação não se encontra totalmente funcional.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cabeçalho -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-primary display-6 mb-2">
+            <i class="bi bi-basket2-fill me-2"></i> Gestão de cantina & alimentação
+        </h1>
+        <p class="lead text-muted fs-6">Selecione o perfil de acesso pretendido</p>
+    </div>
+
+    <!-- Opções de Perfil (Cards) -->
+    <div class="row justify-content-center g-4">
+        <!-- Opção Gestão (Painel Administrativo) -->
+        <div class="col-md-5 col-lg-4">
+            <div class="card h-100 shadow border-0 text-center p-4 rounded-3">
+                <div class="card-body d-flex flex-column align-items-center">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 70px; height: 70px;">
+                        <i class="bi bi-gear-fill fs-2"></i>
+                    </div>
+                    <h3 class="card-title h4 fw-bold">Gestão</h3>
+                    <p class="card-text text-muted flex-grow-1">
+                        Acesso ao painel administrativo para gestão de serviços, funcionários e menus.
+                    </p>
+                    <a asp-controller="PerfilAcessoGestaoCantinaAlimentacao" asp-action="Gestao" class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm mt-3 fw-bold">
+                        <i class="bi bi-shield-lock-fill me-1"></i> Aceder à Gestão
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Opção Cliente / Aluno -->
+        <div class="col-md-5 col-lg-4">
+            <div class="card h-100 shadow border-0 text-center p-4 rounded-3">
+                <div class="card-body d-flex flex-column align-items-center">
+                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 70px; height: 70px;">
+                        <i class="bi bi-person-fill fs-2"></i>
+                    </div>
+                    <h3 class="card-title h4 fw-bold">Área do Cliente</h3>
+                    <p class="card-text text-muted flex-grow-1">
+                        Consultar ementas do dia, efetuar reservas de refeições e consultar saldo.
+                    </p>
+                <a asp-controller="PerfilAcessoGestaoCantinaAlimentacao" asp-action="Consumidor" class="btn btn-success btn-lg w-100 rounded-pill shadow-sm mt-3 fw-bold">
+                        <i class="bi bi-cart-fill me-1"></i> Entrar como Cliente
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,26 @@
+@model UnivManagement.Models.AtribuicaoDocente
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>AtribuicaoDocente</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DocenteId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DocenteId)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.UcId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.UcId)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.AcademicYearId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.AcademicYearId)</dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-atribuicaodocenteid="@Model?.AtribuicaoDocenteId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

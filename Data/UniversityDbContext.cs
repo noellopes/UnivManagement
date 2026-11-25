@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Models.AcademicManagement;
 
@@ -6,11 +6,14 @@ namespace UnivManagement.Data
 {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
     {
-        public DbSet<UnivManagement.Models.FuncaoDocente> FuncaoDocente { get; set; } = default!;
-        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Biblioteca: impedir associações duplicadas entre obras e autores
+            modelBuilder.Entity<ObraAutor>()
+                .HasIndex(la => new { la.ObraId, la.AutorId })
+                .IsUnique();
 
             // ServiceRequestType: two request types cannot have the same name
             modelBuilder.Entity<Models.ServiceRequestType>()
@@ -32,6 +35,42 @@ namespace UnivManagement.Data
                 .HasOne(r => r.Status)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // ServiceRequestHistory: the history belongs to its request and is deleted with it
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.ServiceRequest)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ServiceRequestHistory: a status that appears in the history cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.OldStatus)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.NewStatus)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+            // ServiceRequestCatalogItem: two services cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
+            // ServiceRequestCatalogItem: a type that is used by a service cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
+                .HasOne(c => c.Type)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+            // ServiceRequestPriority: two priorities cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
+            // ServiceRequestPriority: two priorities cannot have the same level
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Level)
+                .IsUnique();
 
             // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
@@ -68,33 +107,55 @@ namespace UnivManagement.Data
                 .HasIndex(c => c.Code)
                 .IsUnique();
 
-            modelBuilder.Entity<CourseStudyPlanYear>()
-          .HasOne(c => c.Course)
-          .WithMany()
-          .HasForeignKey(c => c.CourseId)
-          .OnDelete(DeleteBehavior.Restrict);
+            // StateInscCourse: cada estado tem unico nome
+            modelBuilder.Entity<StateInscCourse>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
 
-            modelBuilder.Entity<CourseStudyPlanYear>()
-                .HasOne(c => c.StudyPlan)
-                .WithMany()
-                .HasForeignKey(c => c.StudyPlanId)
-                .OnDelete(DeleteBehavior.Restrict);
+            // CourseState: Name do tipo curso é único
+            modelBuilder.Entity<Models.AcademicManagement.CourseState>()
+                .HasIndex(cs => cs.Name)
+                .IsUnique();
+            // StateInscrUc: cada estado de uma inscrição de UC é unico
+            modelBuilder.Entity<StateInscrUc>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
 
-            modelBuilder.Entity<CourseStudyPlanYear>()
-                .HasOne(c => c.AcademicYear)
-                .WithMany()
-                .HasForeignKey(c => c.AcademicYearId)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<InscrCourse>()
+                .Property(i => i.FinalAvgGrade)
+                .HasPrecision(4, 2);
+
+            modelBuilder.Entity<InscrUC>()
+                .Property(i => i.Grade)
+                .HasPrecision(4, 2);
+
+            // ApplicationStatusHistory: prevent deleting an application that already has status history
+            modelBuilder.Entity<Models.AccommodationManagement.ApplicationStatusHistory>()
+                    .HasOne(h => h.AccommodationApplication)
+                    .WithMany()
+                    .HasForeignKey(h => h.AccommodationApplicationId)
+                    .OnDelete(DeleteBehavior.Restrict);
         }
 
+        public DbSet<Obra> Obras { get; set; } = default!;
+        public DbSet<TipoObra> Tipos { get; set;  } = default!;
+        public DbSet<Exemplar> Exemplares { get; set; } = default!;
+        public DbSet<Autor> Autores { get; set; } = default!;
+        public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;     
+        public DbSet<UnivManagement.Models.ReservaSala> Reserva { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
-
+        public DbSet<UnivManagement.Models.ServiceRequestHistory> ServiceRequestHistories { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestAssignment> ServiceRequestAssignments { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestComment> ServiceRequestComments { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestCatalogItem> ServiceRequestCatalogItems { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestPriority> ServiceRequestPriorities { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
         public DbSet<Refeicao> Refeicoes { get; set; }
+        public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<TipoRefeicao> TiposRefeicao { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.StayRecord> StayRecord { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationPayment> AccommodationPayment { get; set; } = default!;
@@ -109,9 +170,13 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
-
-        public DbSet<AntigoAluno> AntigosAlunos { get; set; } 
+        public DbSet<PossibleStatus> PossibleStatus { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;      
+        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;     
+        public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;  
+        public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
         public DbSet<Empregador> Empregadores { get; set; }
@@ -121,6 +186,10 @@ namespace UnivManagement.Data
         public DbSet<GestorEstagio> GestoresEstagio { get; set; }
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
-        public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
+        public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }        
+        public DbSet<EstadoPossivel> EstadoPossivel { get; set; } = default!;
+        public DbSet<UnivManagement.Models.HorarioAtendimento> HorarioAtendimento { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AtribuicaoDocente> AtribuicaoDocente { get; set; } = default!;
+        public DbSet<UnivManagement.Models.FuncaoDocente> FuncaoDocente { get; set; } = default!;
     }
 }
