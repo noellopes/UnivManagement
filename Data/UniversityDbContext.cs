@@ -89,6 +89,13 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
                 .IsUnique();
+
+            // Avoid SQL Server multiple cascade paths.
+            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
+                .HasOne(item => item.Course)
+                .WithMany()
+                .HasForeignKey(item => item.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public DbSet<Obra> Obras { get; set; } = default!;

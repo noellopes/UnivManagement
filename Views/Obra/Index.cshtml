@@ -100,23 +100,26 @@
                                     </td>
 
                                     <td>
-                                        @if (item.ObrasAutores.Any())
-                                        {
-                                            @string.Join(", ",
-                                                item.ObrasAutores
-                                                    .Where(oa => oa.Autor != null)
-                                                    .Select(oa => oa.Autor!.Nome))
-                                        }
-                                        else
-                                        {
-                                            <span class="text-muted fst-italic">
-                                                Sem autores associados
-                                            </span>
-                                        }
+                                        <div class="text-nowrap"
+                                             style="max-width: 300px; overflow-x: auto;">
+                                            @if (item.ObrasAutores.Any())
+                                            {
+                                                @string.Join(", ",
+                                                    item.ObrasAutores
+                                                        .Where(oa => oa.Autor != null)
+                                                        .Select(oa => oa.Autor!.Nome))
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted fst-italic">
+                                                    Sem autores associados
+                                                </span>
+                                            }
+                                        </div>
                                     </td>
 
-                                    <td>
-                                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                    <td class="text-nowrap">
+                                        <div class="d-flex justify-content-center gap-2 flex-nowrap">
 
                                             <a asp-action="Details"
                                                asp-route-id="@item.ObraId"
