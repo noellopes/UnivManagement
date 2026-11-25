@@ -1,0 +1,175 @@
+@model IEnumerable<UnivManagement.Models.AcademicManagement.Student>
+
+
+@{
+    ViewData["Title"] = "Alunos";
+}
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+        @ViewBag.SuccessMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Alunos</h1>
+        <p class="text-muted mb-0">Gestão dos alunos da universidade</p>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
+        Novo Aluno
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-people me-2" aria-hidden="true"></i>
+            Lista de Alunos
+        </h2>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.NumStudent)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        @*
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Gender)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Nationality)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.BirthDate)
+                        </th>
+                        *@
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th scope="col">
+                            Telefone
+                        </th>
+						@*
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.NIF)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        *@
+                        <th scope="col" class="text-end">
+                            Ações
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">
+                                    @Html.DisplayFor(modelItem => item.NumStudent)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+
+                                @*
+                                <td>
+                                    <span class="badge @(item.Gender == "F" ? "text-bg-info" : "text-bg-primary")">
+                                        @Html.DisplayFor(modelItem => item.Gender)
+                                    </span>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nationality)
+                                </td>
+                                <td class="text-nowrap">
+                                    @item.BirthDate?.ToString("dd/MM/yyyy")
+                                </td>
+                                *@
+
+                                <td>
+                                    <a href="mailto:@item.Email" class="text-decoration-none">
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </a>
+                                </td>
+                                <td class="text-nowrap">
+                                    <span class="text-muted">@item.CountryPhoneCode</span>
+                                    @Html.DisplayFor(modelItem => item.Telephone)
+                                </td>
+                                @*
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NIF)
+                                </td>
+                                <td class="text-truncate" style="max-width: 200px;" title="@item.Address">
+                                    @Html.DisplayFor(modelItem => item.Address)
+                                </td>
+                                *@
+
+                                <td class="text-end text-nowrap">
+                                    <div class="btn-group" role="group" aria-label="Ações para @item.Name">
+
+                                        <a asp-action="Edit" asp-route-id="@item.StudentId"
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="Editar" aria-label="Editar @item.Name">
+                                            <i class="bi bi-pencil" aria-hidden="true"></i>
+                                        </a>
+
+                                        <a asp-action="Details" asp-route-id="@item.StudentId"
+                                           class="btn btn-sm btn-outline-secondary"
+                                           title="Detalhes" aria-label="Detalhes de @item.Name">
+                                            <i class="bi bi-eye" aria-hidden="true"></i>
+                                        </a>
+
+                                        <a asp-action="Delete" asp-route-id="@item.StudentId"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="Eliminar" aria-label="Eliminar @item.Name">
+                                            <i class="bi bi-trash" aria-hidden="true"></i>
+                                        </a>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="10" class="text-center py-5">
+                                <i class="bi bi-inbox fs-2 text-muted d-block mb-2" aria-hidden="true"></i>
+                                <p class="text-muted mb-0">Não existem alunos registados.</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="card-footer bg-body text-muted">
+            <small>
+                <i class="bi bi-list-ul me-1" aria-hidden="true"></i>
+                Total de alunos: @Model.Count()
+            </small>
+        </div>
+    }
+</div>
+
+
