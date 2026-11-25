@@ -155,18 +155,13 @@ namespace UnivManagement.Data
             modelBuilder.Entity<InscrUC>()
                 .Property(i => i.Grade)
                 .HasPrecision(4, 2);
-
-            // Evita duplicações na tabela CourseStudyPlanYear:
-            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
-                .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
-                .IsUnique();
         }
 
         public DbSet<Obra> Obras { get; set; } = default!;
-        public DbSet<TipoObra> Tipos { get; set;  } = default!;
+        public DbSet<TipoObra> Tipos { get; set; } = default!;
         public DbSet<Exemplar> Exemplares { get; set; } = default!;
         public DbSet<Autor> Autores { get; set; } = default!;
-        public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;     
+        public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;
         public DbSet<UnivManagement.Models.ReservaSala> Reserva { get; set; } = default!;
         public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
@@ -197,22 +192,4 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AcademicManagement.InscrCourse> InscrCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
-        public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;     
-        public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
-        public DbSet<AntigoAluno> AntigosAlunos { get; set; }
-        public DbSet<Carreira> Carreiras { get; set; }
-        public DbSet<Empresa> Empresas { get; set; }
-        public DbSet<Empregador> Empregadores { get; set; }
-        public DbSet<Oferta> Ofertas { get; set; }
-        public DbSet<Candidatura> Candidaturas { get; set; }
-        public DbSet<Estagio> Estagios { get; set; }
-        public DbSet<GestorEstagio> GestoresEstagio { get; set; }
-        public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
-        public DbSet<Avaliacao> Avaliacoes { get; set; }
-        public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
-        public DbSet<EstadoPossivel> EstadoPossivel { get; set; } = default!;
-    }
-}
+        public DbSet<UnivManagement.Models.
