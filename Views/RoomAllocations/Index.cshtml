@@ -1,65 +1,167 @@
-@model IEnumerable<UnivManagement.Models.RoomAllocation>
+﻿@using UnivManagement.Models.AccommodationManagement
+@model IEnumerable<UnivManagement.Models.AccommodationManagement.RoomAllocation>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Room Allocations";
 }
 
-<h1>Index</h1>
+<div class="container py-4">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AccommodationApplicationId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StudentId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.AccommodationApplicationId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.StudentId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.RoomId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Status)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RoomAllocationId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RoomAllocationId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RoomAllocationId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    @if (TempData["DeleteMessage"] is string deleteMessage)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-trash me-2"></i>@deleteMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] is string successMessage)
+    {
+        var alertClass = successMessage.Contains("deleted", StringComparison.OrdinalIgnoreCase)
+            ? "alert-danger"
+            : "alert-success";
+
+        var alertIcon = successMessage.Contains("deleted", StringComparison.OrdinalIgnoreCase)
+            ? "bi-trash"
+            : "bi-check-circle";
+
+        <div class="alert @alertClass alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi @alertIcon me-2"></i>@successMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] is string errorMessage)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@errorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @* Page header *@
+    <header class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="h2 fw-bold mb-1">
+                <i class="bi bi-person-check text-primary me-2"></i>Room Allocations
+            </h1>
+            <p class="text-body-secondary mb-0">
+                Review and manage student room allocations.
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> New Allocation
+        </a>
+    </header>
+
+    @* Room allocations table *@
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+                    <tr>
+                        <th>Application ID</th>
+                        <th>Student ID</th>
+                        <th>Room ID</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var badge = item.Status == AllocationStatus.Confirmed ? "text-bg-success"
+                                  : item.Status == AllocationStatus.Rejected ? "text-bg-danger"
+                                  : "text-bg-warning";
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AccommodationApplicationId)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StudentId)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RoomId)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartDate)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EndDate)
+                            </td>
+
+                            <td>
+                                <span class="badge @badge">
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </span>
+                            </td>
+
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm" role="group">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.RoomAllocationId"
+                                       class="btn btn-outline-secondary"
+                                       title="Details"
+                                       aria-label="Details">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.RoomAllocationId"
+                                       class="btn btn-outline-primary"
+                                       title="Edit"
+                                       aria-label="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.RoomAllocationId"
+                                       class="btn btn-outline-danger"
+                                       title="Delete"
+                                       aria-label="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                    @* Empty table message *@
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-body-secondary py-5">
+                                <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                No room allocations found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    @* Back button *@
+    <div class="mt-4">
+        <a asp-controller="Accommodation"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Accommodation Management
+        </a>
+    </div>
+
+</div>

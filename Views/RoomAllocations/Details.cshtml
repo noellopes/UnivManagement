@@ -1,59 +1,61 @@
-@model UnivManagement.Models.RoomAllocation
+﻿@using UnivManagement.Models.AccommodationManagement
+@model UnivManagement.Models.AccommodationManagement.RoomAllocation
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Room Allocation Details";
+
+    var badge = Model.Status == AllocationStatus.Confirmed ? "text-bg-success"
+              : Model.Status == AllocationStatus.Rejected ? "text-bg-danger"
+              : "text-bg-warning";
 }
 
-<h1>Details</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 pt-4 px-4">
+                    <h1 class="h4 fw-bold mb-1">
+                        <i class="bi bi-door-open text-primary me-2"></i>Room Allocation Details
+                    </h1>
+                    <p class="text-body-secondary mb-0">Information about this room allocation.</p>
+                </div>
 
-<div>
-    <h4>RoomAllocation</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AccommodationApplicationId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AccommodationApplicationId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StudentId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StudentId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RoomId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RoomId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.RoomAllocationId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                <div class="card-body p-4">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5 text-body-secondary">Application ID</dt>
+                        <dd class="col-sm-7">@Html.DisplayFor(model => model.AccommodationApplicationId)</dd>
+
+                        <dt class="col-sm-5 text-body-secondary">Student ID</dt>
+                        <dd class="col-sm-7">@Html.DisplayFor(model => model.StudentId)</dd>
+
+                        <dt class="col-sm-5 text-body-secondary">Room ID</dt>
+                        <dd class="col-sm-7">@Html.DisplayFor(model => model.RoomId)</dd>
+
+                        <dt class="col-sm-5 text-body-secondary">Start Date</dt>
+                        <dd class="col-sm-7">@Html.DisplayFor(model => model.StartDate)</dd>
+
+                        <dt class="col-sm-5 text-body-secondary">End Date</dt>
+                        <dd class="col-sm-7">@Html.DisplayFor(model => model.EndDate)</dd>
+
+                        <dt class="col-sm-5 text-body-secondary">Status</dt>
+                        <dd class="col-sm-7 mb-0">
+                            <span class="badge @badge">@Html.DisplayFor(model => model.Status)</span>
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="card-footer bg-transparent border-0 pb-4 px-4 d-flex gap-2 justify-content-end">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Back to List
+                    </a>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@Model?.RoomAllocationId"
+                       class="btn btn-primary">
+                        <i class="bi bi-pencil me-1"></i> Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

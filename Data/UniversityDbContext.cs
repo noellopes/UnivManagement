@@ -176,7 +176,7 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AccommodationManagement.Room1> Room { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.RoomType> RoomType { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.RoomStatus> RoomStatus { get; set; } = default!;
-        public DbSet<UnivManagement.Models.RoomAllocation> RoomAllocation { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.RoomAllocation> RoomAllocation { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.Residence> Residence { get; set; } = default!;
         public DbSet<Refeicao> Refeicoes { get; set; }
         public DbSet<TipoRefeicao> TiposRefeicao { get; set; } = default!;
