@@ -108,6 +108,35 @@ namespace UnivManagement.Data
                 .HasIndex(u => u.Code)
                 .IsUnique();
 
+            // AccommodationContract: relação com ContractStatus sem eliminação em cascata:
+            modelBuilder.Entity<Models.AccommodationManagement.AccommodationContract>()
+                .HasOne(c => c.Status)
+                .WithMany(s => s.AccommodationContracts)
+                .HasForeignKey(c => c.ContractStatusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // AccommodationContract: precisão dos valores monetários:
+            modelBuilder.Entity<Models.AccommodationManagement.AccommodationContract>()
+                .Property(c => c.MonthlyRent)
+                .HasPrecision(10, 2);
+
+            modelBuilder.Entity<Models.AccommodationManagement.AccommodationContract>()
+                .Property(c => c.Deposit)
+                .HasPrecision(10, 2);
+
+            // ContractStatus: atributo Name é único e dados iniciais (seed):
+            modelBuilder.Entity<Models.AccommodationManagement.ContractStatus>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<Models.AccommodationManagement.ContractStatus>().HasData(
+                new Models.AccommodationManagement.ContractStatus { ContractStatusId = 1, Name = "Pendente" },
+                new Models.AccommodationManagement.ContractStatus { ContractStatusId = 2, Name = "Ativo" },
+                new Models.AccommodationManagement.ContractStatus { ContractStatusId = 3, Name = "Terminado" },
+                new Models.AccommodationManagement.ContractStatus { ContractStatusId = 4, Name = "Expirado" });
+        
+        
+
             // Room: número único por residência:
             modelBuilder.Entity<Models.AccommodationManagement.Room>()
                 .HasIndex(r => new { r.ResidenceId, r.Number })
@@ -172,6 +201,7 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AccommodationManagement.StayRecord> StayRecord { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationPayment> AccommodationPayment { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.ContractStatus> ContractStatus { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory> ApplicationStatusHistory { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationApplication> AccommodationApplication { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.Room> Room { get; set; } = default!;
