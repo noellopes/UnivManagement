@@ -54,7 +54,7 @@ namespace UnivManagement.Data
 
             db.SaveChanges();
         }
-      
+
         private static void PopulateServicosFuncionarios(UniversityDbContext db)
         {
             if (db.ServicoFuncionario.Any()) return;
@@ -78,7 +78,8 @@ namespace UnivManagement.Data
             db.SaveChanges();
         }
 
-        internal static void PopulateServiceRequestTypes(UniversityDbContext? db) {
+        internal static void PopulateServiceRequestTypes(UniversityDbContext? db)
+        {
             if (db == null || db.ServiceRequestTypes.Any()) return;
 
             db.ServiceRequestTypes.AddRange(
@@ -86,8 +87,10 @@ namespace UnivManagement.Data
                 new ServiceRequestType { Name = "Official document", Description = "Request an official academic document." },
                 new ServiceRequestType { Name = "Student support", Description = "Ask for help or guidance from student services." },
                 new ServiceRequestType { Name = "Maintenance", Description = "Report a problem in a building, room or equipment." },
-                new ServiceRequestType { Name = "Other" }
+                new ServiceRequestType { Name = "Other", Description = "Other general requests." }
             );
+
+            db.SaveChanges();
         }
 
         private static void PopulateServiceRequestCatalogItems(UniversityDbContext db)
@@ -103,7 +106,7 @@ namespace UnivManagement.Data
             {
                 if (!types.ContainsKey(name))
                 {
-                    db.ServiceRequestTypes.Add(new ServiceRequestType { Name = name });
+                    db.ServiceRequestTypes.Add(new ServiceRequestType { Name = name, Description = name });
                 }
             }
             db.SaveChanges();
@@ -122,6 +125,7 @@ namespace UnivManagement.Data
             };
 
             db.ServiceRequestCatalogItems.AddRange(services);
+            db.SaveChanges();
         }
 
         private static void PopulateServiceRequestStatuses(UniversityDbContext db)
@@ -144,6 +148,7 @@ namespace UnivManagement.Data
             };
 
             db.ServiceRequestStatuses.AddRange(statuses);
+            db.SaveChanges();
         }
 
         private static void PopulateServiceRequestPriorities(UniversityDbContext db)
@@ -159,6 +164,7 @@ namespace UnivManagement.Data
             };
 
             db.ServiceRequestPriorities.AddRange(priorities);
+            db.SaveChanges();
         }
 
         private static void PopulateFuncionarios(UniversityDbContext db)
