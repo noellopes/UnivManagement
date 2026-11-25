@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace UnivManagement.Models.AccommodationManagement
 {
@@ -9,13 +10,13 @@ namespace UnivManagement.Models.AccommodationManagement
 
         /* ACCOMMODATION CONTRACT: */
         [Required(ErrorMessage = "Please select a valid {0}.")]
-        [Display(Name = "contract ID")]
+        [Display(Name = "Contract")]
         public int? AccommodationContractId { get; set; }
 
         /* DUE DATE: */
         [Required(ErrorMessage = "Please fill in a {0}")]
         [DataType(DataType.Date)]
-        [Display(Name = "due date")]
+        [Display(Name = "Due Date")]
         public DateOnly? DueDate { get; set; }
 
         /* AMOUNT: */
