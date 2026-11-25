@@ -13,8 +13,10 @@ public class TipoBolsaController : Controller
     }
 
     // GET: TIPOBOLSAS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index(string? successMessage, string? successType)
     {
+        ViewBag.SuccessMessage = successMessage;
+        ViewBag.SuccessType = successType;
         return View(await _context.TipoBolsa.ToListAsync());
     }
 
@@ -23,14 +25,14 @@ public class TipoBolsaController : Controller
     {
         if (id == null)
         {
-            return View("NotFound");
+            return NotFound();
         }
 
         var tipobolsa = await _context.TipoBolsa
             .FirstOrDefaultAsync(m => m.TipoBolsaId == id);
         if (tipobolsa == null)
         {
-            return View("NotFound");
+            return NotFound();
         }
 
         return View(tipobolsa);
@@ -49,11 +51,17 @@ public class TipoBolsaController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("TipoBolsaId,Nome,Descricao,RendimentoMaximo,EctsMinimos,MediaMinima,CriteriosElegibilidade")] TipoBolsa tipobolsa)
     {
+        if (_context.TipoBolsa.Any(t => t.Nome == tipobolsa.Nome))
+        {
+            ViewBag.Erro = "Já existe um tipo de bolsa com este nome.";
+            return View(tipobolsa);
+        }
+
         if (ModelState.IsValid)
         {
             _context.Add(tipobolsa);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { successMessage = "Tipo de bolsa criado com sucesso.", successType = "success" });
         }
         return View(tipobolsa);
     }
@@ -63,13 +71,13 @@ public class TipoBolsaController : Controller
     {
         if (id == null)
         {
-            return View("NotFound");
+            return NotFound();
         }
 
         var tipobolsa = await _context.TipoBolsa.FindAsync(id);
         if (tipobolsa == null)
         {
-            return View("NotFound");
+            return NotFound();
         }
         return View(tipobolsa);
     }
@@ -86,6 +94,12 @@ public class TipoBolsaController : Controller
             return NotFound();
         }
 
+        if (_context.TipoBolsa.Any(t => t.Nome == tipobolsa.Nome && t.TipoBolsaId != tipobolsa.TipoBolsaId))
+        {
+            ViewBag.Erro = "Já existe um tipo de bolsa com este nome.";
+            return View(tipobolsa);
+        }
+
         if (ModelState.IsValid)
         {
             try
@@ -97,14 +111,14 @@ public class TipoBolsaController : Controller
             {
                 if (!TipoBolsaExists(tipobolsa.TipoBolsaId))
                 {
-                    return View("NotFound");
+                    return NotFound();
                 }
                 else
                 {
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { successMessage = "Tipo de bolsa atualizado com sucesso.", successType = "warning" });
         }
         return View(tipobolsa);
     }
@@ -114,14 +128,14 @@ public class TipoBolsaController : Controller
     {
         if (id == null)
         {
-            return View("NotFound");
+            return NotFound();
         }
 
         var tipobolsa = await _context.TipoBolsa
             .FirstOrDefaultAsync(m => m.TipoBolsaId == id);
         if (tipobolsa == null)
         {
-            return View("NotFound");
+            return NotFound();
         }
 
         return View(tipobolsa);
@@ -139,7 +153,7 @@ public class TipoBolsaController : Controller
         }
 
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { successMessage = "Tipo de bolsa eliminado com sucesso.", successType = "danger" });
     }
 
     private bool TipoBolsaExists(int id)
