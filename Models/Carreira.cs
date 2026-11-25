@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Models
 {
@@ -14,9 +15,9 @@ namespace UnivManagement.Models
         public string Certificacoes { get; set; }
         public string HistoricoProfissional { get; set; }
 
-        [ForeignKey("AntigoAluno")]
+        [ForeignKey("Student")]
         public int IdAluno { get; set; }
-        public AntigoAluno AntigoAluno { get; set; }
+        public Student Student { get; set; }
 
         public void AtualizarCarreira() { }
         public void ConsultarHistorico() { }

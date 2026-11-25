@@ -3,6 +3,7 @@ using UnivManagement.Models;
 
 namespace UnivManagement.Data {
     public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+        public DbSet<UnivManagement.Models.Area> Area { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
@@ -84,17 +85,18 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-        
-        public DbSet<AntigoAluno> AntigosAlunos { get; set; }
-        public DbSet<Carreira> Carreiras { get; set; }
-        public DbSet<Empresa> Empresas { get; set; }
-        public DbSet<Empregador> Empregadores { get; set; }
-        public DbSet<Oferta> Ofertas { get; set; }
-        public DbSet<Candidatura> Candidaturas { get; set; }
-        public DbSet<Estagio> Estagios { get; set; }
-        public DbSet<GestorEstagio> GestoresEstagio { get; set; }
-        public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
-        public DbSet<Avaliacao> Avaliacoes { get; set; }
-        public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
+
+        // Adição os DbSet para as entidades do Grupo 8
+        public DbSet<UnivManagement.Models.Carreira> Carreiras { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Empresa> Empresas { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Empregador> Empregadores { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Oferta> Ofertas { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Candidatura> Candidaturas { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Estagio> Estagios { get; set; } = default!;
+        public DbSet<UnivManagement.Models.GestorEstagio> GestoresEstagio { get; set; } = default!;
+        public DbSet<UnivManagement.Models.OrientadorEstagio> OrientadoresEstagio { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Avaliacao> Avaliacoes { get; set; } = default!;
+        public DbSet<UnivManagement.Models.RelatorioEstagio> RelatoriosEstagio { get; set; } = default!;
+        //---------------------------------------------------------------------------------------------------//
     }
 }

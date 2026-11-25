@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UnivManagement.Data;
 
 #nullable disable
 
-namespace UnivManagement.Migrations
+namespace UnivManagement.Data.Migrations.University
 {
     [DbContext(typeof(UniversityDbContext))]
-    [Migration("20261116132800_IntegrarEstagios")]
-    partial class IntegrarEstagios
+    partial class UniversityDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -588,37 +585,27 @@ namespace UnivManagement.Migrations
                     b.ToTable("StayRecord");
                 });
 
-            modelBuilder.Entity("UnivManagement.Models.AntigoAluno", b =>
+            modelBuilder.Entity("UnivManagement.Models.Area", b =>
                 {
-                    b.Property<int>("IdAluno")
+                    b.Property<int>("AreaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdAluno"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AreaId"));
 
-                    b.Property<string>("Curso")
+                    b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("AreaId");
 
-                    b.Property<string>("SituacaoProfissional")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdAluno");
-
-                    b.ToTable("AntigosAlunos");
+                    b.ToTable("Area");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.Avaliacao", b =>
@@ -721,8 +708,7 @@ namespace UnivManagement.Migrations
 
                     b.HasKey("IdCarreira");
 
-                    b.HasIndex("IdAluno")
-                        .IsUnique();
+                    b.HasIndex("IdAluno");
 
                     b.ToTable("Carreiras");
                 });
@@ -841,11 +827,11 @@ namespace UnivManagement.Migrations
 
             modelBuilder.Entity("UnivManagement.Models.Estagio", b =>
                 {
-                    b.Property<int>("IdEstagio")
+                    b.Property<int>("EstagioId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEstagio"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EstagioId"));
 
                     b.Property<DateTime>("DataFim")
                         .HasColumnType("datetime2");
@@ -860,13 +846,13 @@ namespace UnivManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GestorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdEmpresa")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdGestor")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdOrientador")
+                    b.Property<int?>("OrientadorId")
                         .HasColumnType("int");
 
                     b.Property<string>("PlanoTrabalhos")
@@ -876,13 +862,13 @@ namespace UnivManagement.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
-                    b.HasKey("IdEstagio");
+                    b.HasKey("EstagioId");
+
+                    b.HasIndex("GestorId");
 
                     b.HasIndex("IdEmpresa");
 
-                    b.HasIndex("IdGestor");
-
-                    b.HasIndex("IdOrientador");
+                    b.HasIndex("OrientadorId");
 
                     b.HasIndex("StudentId");
 
@@ -964,11 +950,11 @@ namespace UnivManagement.Migrations
 
             modelBuilder.Entity("UnivManagement.Models.OrientadorEstagio", b =>
                 {
-                    b.Property<int>("IdOrientador")
+                    b.Property<int>("OrientadorId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOrientador"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrientadorId"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -978,11 +964,7 @@ namespace UnivManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdOrientador");
+                    b.HasKey("OrientadorId");
 
                     b.ToTable("OrientadoresEstagio");
                 });
@@ -1234,8 +1216,8 @@ namespace UnivManagement.Migrations
 
             modelBuilder.Entity("UnivManagement.Models.Candidatura", b =>
                 {
-                    b.HasOne("UnivManagement.Models.AntigoAluno", "AntigoAluno")
-                        .WithMany("Candidaturas")
+                    b.HasOne("UnivManagement.Models.AcademicManagement.Student", "Student")
+                        .WithMany()
                         .HasForeignKey("IdAluno")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1246,20 +1228,20 @@ namespace UnivManagement.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AntigoAluno");
-
                     b.Navigation("Oferta");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.Carreira", b =>
                 {
-                    b.HasOne("UnivManagement.Models.AntigoAluno", "AntigoAluno")
-                        .WithOne("Carreira")
-                        .HasForeignKey("UnivManagement.Models.Carreira", "IdAluno")
+                    b.HasOne("UnivManagement.Models.AcademicManagement.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("IdAluno")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AntigoAluno");
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("UnivManagement.Models.Empregador", b =>
@@ -1275,19 +1257,19 @@ namespace UnivManagement.Migrations
 
             modelBuilder.Entity("UnivManagement.Models.Estagio", b =>
                 {
+                    b.HasOne("UnivManagement.Models.GestorEstagio", "GestorEstagio")
+                        .WithMany("Estagios")
+                        .HasForeignKey("GestorId");
+
                     b.HasOne("UnivManagement.Models.Empresa", "Empresa")
                         .WithMany()
                         .HasForeignKey("IdEmpresa")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UnivManagement.Models.GestorEstagio", "GestorEstagio")
-                        .WithMany("Estagios")
-                        .HasForeignKey("IdGestor");
-
                     b.HasOne("UnivManagement.Models.OrientadorEstagio", "OrientadorEstagio")
                         .WithMany("Estagios")
-                        .HasForeignKey("IdOrientador");
+                        .HasForeignKey("OrientadorId");
 
                     b.HasOne("UnivManagement.Models.AcademicManagement.Student", "Student")
                         .WithMany()
@@ -1343,14 +1325,6 @@ namespace UnivManagement.Migrations
                     b.Navigation("Status");
 
                     b.Navigation("Type");
-                });
-
-            modelBuilder.Entity("UnivManagement.Models.AntigoAluno", b =>
-                {
-                    b.Navigation("Candidaturas");
-
-                    b.Navigation("Carreira")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("UnivManagement.Models.Empresa", b =>
