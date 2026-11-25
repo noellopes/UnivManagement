@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using UnivManagement.Models.AcademicManagement;
-using UnivManagement.Models.AccommodationManagement;
+
 namespace UnivManagement.Models
 {
     public class HorarioAtendimento : IValidatableObject
     {
+        [Key]
         public int AtendimentoId { get; set; }
 
         [Required(ErrorMessage = "Por favor, indique o {0}.")]
@@ -64,11 +65,12 @@ namespace UnivManagement.Models
         public Departamento? Departamento { get; set; }
 
         // relacao com sala (opcional: atendimento online)
-        [Display(Name = "Sala")]
-        public int? SalaId { get; set; }
-
-        [ForeignKey("SalaId")]
-        public Room? Sala { get; set; }
+        // A repor quando a Sala entrar na main
+        // [Display(Name = "Sala")]
+        // public int? SalaId { get; set; }
+        //
+        // [ForeignKey("SalaId")]
+        // public Sala? Sala { get; set; }
 
         // relacao com ano letivo
         [Display(Name = "Ano Letivo")]
