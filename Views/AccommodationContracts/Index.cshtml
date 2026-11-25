@@ -1,7 +1,7 @@
 @model IEnumerable<UnivManagement.Models.AccommodationManagement.AccommodationContract>
 
 @{
-    ViewData["Title"] = "Contratos de Alojamento";
+    ViewData["Title"] = "Accommodation Contracts";
     var contractsList = Model?.ToList() ?? new List<UnivManagement.Models.AccommodationManagement.AccommodationContract>();
     var today = DateOnly.FromDateTime(DateTime.Today);
 
@@ -44,9 +44,11 @@
 
     .contracts-title {
         font-size: 2rem;
-        font-weight: 600;
+        font-weight: 700;
         color: #111827;
         margin: 0;
+        display: flex;
+        align-items: center;
     }
 
     .contracts-toolbar {
@@ -241,7 +243,9 @@
 
 <div class="contracts-wrapper">
     <div class="contracts-header">
-        <h1 class="contracts-title">@ViewData["Title"]</h1>
+        <h1 class="contracts-title">
+            <i class="bi bi-file-earmark-check text-primary me-2"></i>@ViewData["Title"]
+        </h1>
         <a asp-action="Create" class="btn btn-primary">+ Novo Contrato</a>
     </div>
 
@@ -335,6 +339,12 @@
         <div class="contracts-table-footer" id="contractsFooter">
             A mostrar @(contractsList.Any() ? 1 : 0) a @contractsList.Count de @totalCount registos
         </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="Accommodation" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Back to Accommodation Management
+        </a>
     </div>
 </div>
 
