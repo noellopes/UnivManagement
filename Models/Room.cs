@@ -11,9 +11,8 @@ namespace UnivManagement.Models
         [StringLength(20, ErrorMessage = "O {0} não pode exceder {1} caracteres.")]
         public required string NumeroSala { get; set; }
 
-        [Required(ErrorMessage = "Por favor, indique o {0}.")]
         [Display(Name = "Piso / Andar")]
-        public int Piso { get; set; }
+        public int? Piso { get; set; } = 0;
 
         [Required(ErrorMessage = "Por favor, indique a {0}.")]
         [Display(Name = "Lotação")]
