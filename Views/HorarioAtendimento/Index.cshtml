@@ -1,0 +1,55 @@
+@model IEnumerable<UnivManagement.Models.HorarioAtendimento>
+
+@{
+    ViewData["Title"] = "Horário de atendimento";
+    string[] dias = { "", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo" };
+}
+
+<h1>Horário de atendimento</h1>
+
+@if (TempData["Mensagem"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensagem"]</div>
+}
+@if (TempData["Erro"] != null)
+{
+    <div class="alert alert-danger">@TempData["Erro"]</div>
+}
+
+<form asp-action="Gerar" method="post" class="mb-3">
+    <input type="hidden" name="semestre" value="1" />
+    <button type="submit" class="btn btn-primary">Gerar atendimentos (1.º semestre)</button>
+    <span class="text-muted ms-2">Um terço das horas de aula de cada docente, num espaço livre do docente e dos alunos.</span>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Docente</th>
+            <th>Dia</th>
+            <th>Início</th>
+            <th>Fim</th>
+            <th>Modalidade</th>
+            <th>Estado</th>
+            <th>Observações</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Docente?.Nome</td>
+                <td>@(item.DiaSemana >= 1 && item.DiaSemana <= 7 ? dias[item.DiaSemana] : item.DiaSemana.ToString())</td>
+                <td>@item.HoraInicio.ToString("HH:mm")</td>
+                <td>@item.HoraFim.ToString("HH:mm")</td>
+                <td>@item.Modalidade</td>
+                <td>@item.Estado</td>
+                <td>@item.Observacoes</td>
+                <td>
+                    <a asp-action="Details" asp-route-atendimentoid="@item.AtendimentoId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
