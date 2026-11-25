@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using UnivManagement.Models;
+using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Data
 {
@@ -8,6 +10,68 @@ namespace UnivManagement.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Biblioteca: impedir associações duplicadas entre obras e autores
+            modelBuilder.Entity<ObraAutor>()
+                .HasIndex(la => new { la.ObraId, la.AutorId })
+                .IsUnique();
+
+            // ServiceRequestType: two request types cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestType>()
+                .HasIndex(t => t.Name)
+                .IsUnique();
+
+            // ServiceRequestStatus: two statuses cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestStatus>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            // ServiceRequest: a type or status that is used by a request cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequest>()
+                .HasOne(r => r.Type)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.ServiceRequest>()
+                .HasOne(r => r.Status)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ServiceRequestHistory: the history belongs to its request and is deleted with it
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.ServiceRequest)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ServiceRequestHistory: a status that appears in the history cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.OldStatus)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.ServiceRequestHistory>()
+                .HasOne(h => h.NewStatus)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+            // ServiceRequestCatalogItem: two services cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
+            // ServiceRequestCatalogItem: a type that is used by a service cannot be deleted
+            modelBuilder.Entity<Models.ServiceRequestCatalogItem>()
+                .HasOne(c => c.Type)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+            // ServiceRequestPriority: two priorities cannot have the same name
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
+            // ServiceRequestPriority: two priorities cannot have the same level
+            modelBuilder.Entity<Models.ServiceRequestPriority>()
+                .HasIndex(p => p.Level)
+                .IsUnique();
 
             // Student: atributo NumStudent é único:
             modelBuilder.Entity<Models.AcademicManagement.Student>()
@@ -39,7 +103,7 @@ namespace UnivManagement.Data
                 .HasIndex(r => new { r.ResidenceId, r.Number })
                 .IsUnique();
 
-            // Room: relações com RoomType e RoomStatus (sem apagar quartos em cascata):
+// Room: relações com RoomType e RoomStatus (sem apagar quartos em cascata):
             modelBuilder.Entity<Models.AccommodationManagement.Room1>()
                 .HasOne(r => r.RoomType)
                 .WithMany(t => t.Rooms)
@@ -69,10 +133,10 @@ namespace UnivManagement.Data
                 new Models.AccommodationManagement.RoomType { RoomTypeId = 3, Name = "Triple" });
 
             modelBuilder.Entity<Models.AccommodationManagement.RoomStatus>().HasData(
-    new Models.AccommodationManagement.RoomStatus { RoomStatusId = 1, Name = "Livre" },
-    new Models.AccommodationManagement.RoomStatus { RoomStatusId = 2, Name = "Ocupado" },
-    new Models.AccommodationManagement.RoomStatus { RoomStatusId = 3, Name = "Cheio" },
-    new Models.AccommodationManagement.RoomStatus { RoomStatusId = 4, Name = "Em Manutenção" });
+                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 1, Name = "Livre" },
+                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 2, Name = "Ocupado" },
+                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 3, Name = "Cheio" },
+                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 4, Name = "Em Manutenção" });
 
             // Room: chave primária e número único por residência:
             modelBuilder.Entity<Models.AccommodationManagement.Room1>()
@@ -81,14 +145,87 @@ namespace UnivManagement.Data
             modelBuilder.Entity<Models.AccommodationManagement.Room1>()
                 .HasIndex(r => new { r.ResidenceId, r.Number })
                 .IsUnique();
+
+            // indica que o atributo Code é único na tabela Course:
+            modelBuilder.Entity<Models.AcademicManagement.Course>()
+                .HasIndex(c => c.Code)
+                .IsUnique();
+
+            // StateInscCourse: cada estado tem unico nome
+            modelBuilder.Entity<StateInscCourse>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            // CourseState: Name do tipo curso é único
+            modelBuilder.Entity<Models.AcademicManagement.CourseState>()
+                .HasIndex(cs => cs.Name)
+                .IsUnique();
+
+            // StateInscrUc: cada estado de uma inscrição de UC é unico
+            modelBuilder.Entity<StateInscrUc>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<InscrCourse>()
+                .Property(i => i.FinalAvgGrade)
+                .HasPrecision(4, 2);
+
+            modelBuilder.Entity<InscrUC>()
+                .Property(i => i.Grade)
+                .HasPrecision(4, 2);
         }
 
+        public DbSet<Obra> Obras { get; set; } = default!;
+        public DbSet<TipoObra> Tipos { get; set; } = default!;
+        public DbSet<Exemplar> Exemplares { get; set; } = default!;
+        public DbSet<Autor> Autores { get; set; } = default!;
+        public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ReservaSala> Reserva { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestHistory> ServiceRequestHistories { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestAssignment> ServiceRequestAssignments { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestComment> ServiceRequestComments { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestCatalogItem> ServiceRequestCatalogItems { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestPriority> ServiceRequestPriorities { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
-
+        public DbSet<Refeicao> Refeicoes { get; set; }
+        public DbSet<Departamento> Departamentos { get; set; }
+        public DbSet<TipoRefeicao> TiposRefeicao { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.StayRecord> StayRecord { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationPayment> AccommodationPayment { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory> ApplicationStatusHistory { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationApplication> AccommodationApplication { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.Room1> Room { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.RoomType> RoomType { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.RoomStatus> RoomStatus { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.SchoolCalendar> SchoolCalendar { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.Course> Course { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.InscrUC> InscrUC { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.InscrCourse> InscrCourse { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;
+        public DbSet<AntigoAluno> AntigosAlunos { get; set; }
+        public DbSet<Carreira> Carreiras { get; set; }
+        public DbSet<Empresa> Empresas { get; set; }
+        public DbSet<Empregador> Empregadores { get; set; }
+        public DbSet<Oferta> Ofertas { get; set; }
+        public DbSet<Candidatura> Candidaturas { get; set; }
+        public DbSet<Estagio> Estagios { get; set; }
+        public DbSet<GestorEstagio> GestoresEstagio { get; set; }
+        public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
+        public DbSet<Avaliacao> Avaliacoes { get; set; }
+        public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
+        public DbSet<EstadoPossivel> EstadoPossivel { get; set; } = default!;
     }
 }

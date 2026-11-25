@@ -1,0 +1,104 @@
+@model UnivManagement.Models.ServiceRequestHistory
+
+@{
+    ViewData["Title"] = "History entry details";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            @if (ViewBag.SuccessMessage != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+                    @ViewBag.SuccessMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h1 class="h2 mb-1">History entry details</h1>
+                    <p class="text-body-secondary mb-0">View information about this history entry.</p>
+                </div>
+                <span class="badge text-bg-primary">History</span>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-body-tertiary py-3">
+                    <h2 class="h5 mb-0">
+                        <i class="bi bi-clock-history me-2" aria-hidden="true"></i>
+                        History entry information
+                    </h2>
+                </div>
+
+                <div class="card-body p-4">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.ServiceRequestId)
+                        </dt>
+                        <dd class="col-sm-8 fw-semibold mb-3">
+                            @Model.ServiceRequest?.Title
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.OldStatusId)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @(Model.OldStatus?.Name ?? "(none)")
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.NewStatusId)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @(Model.NewStatus?.Name ?? "(none)")
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.Action)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @Html.DisplayFor(model => model.Action)
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.Note)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @(Model.Note ?? "(No note)")
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.ChangedAt)
+                        </dt>
+                        <dd class="col-sm-8 mb-0">
+                            @Html.DisplayFor(model => model.ChangedAt)
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="card-footer bg-body-tertiary p-3">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-action="Edit" asp-route-id="@Model?.ServiceRequestHistoryId" class="btn btn-primary">
+                            <i class="bi bi-pencil-square me-1" aria-hidden="true"></i>
+                            Edit
+                        </a>
+
+                        <a asp-action="Delete" asp-route-id="@Model?.ServiceRequestHistoryId" class="btn btn-danger">
+                            <i class="bi bi-trash" aria-hidden="true"></i>
+                            Delete
+                        </a>
+
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left-square me-1" aria-hidden="true"></i>
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
