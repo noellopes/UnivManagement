@@ -1,5 +1,4 @@
-﻿
-using UnivManagement.Models;
+﻿using UnivManagement.Models;
 using UnivManagement.Models.AcademicManagement;
 using UnivManagement.Models.AccommodationManagement;
 
@@ -13,7 +12,64 @@ namespace UnivManagement.Data
                 throw new ArgumentNullException(nameof(db));
 
             PopulateFuncionarios(db);
+            PopulateStudents(db);
             PopulateAccommodation(db);
+        }
+
+        private static void PopulateStudents(UniversityDbContext db)
+        {
+            var students = new[]
+            {
+                new Student
+                {
+                    StudentId = 0,
+                    Name = "Tiago Mendes",
+                    Email = "tiago.mendes@alunos.upg.pt",
+                    NumStudent = 1707961m,
+                    NIF = 251234567m,
+                    Gender = "M",
+                    Nationality = "Portuguesa",
+                    BirthDate = new DateTime(2004, 5, 12),
+                    Address = "Rua Soeiro Viegas 10, 6300-758 Guarda",
+                    Telephone = "912345671"
+                },
+                new Student
+                {
+                    StudentId = 0,
+                    Name = "Mariana Costa",
+                    Email = "mariana.costa@alunos.upg.pt",
+                    NumStudent = 1707962m,
+                    NIF = 252345678m,
+                    Gender = "F",
+                    Nationality = "Portuguesa",
+                    BirthDate = new DateTime(2004, 9, 23),
+                    Address = "Avenida Sá Carneiro 24, 6300-559 Guarda",
+                    Telephone = "912345672"
+                },
+                new Student
+                {
+                    StudentId = 0,
+                    Name = "Diogo Almeida",
+                    Email = "diogo.almeida@alunos.upg.pt",
+                    NumStudent = 1707963m,
+                    NIF = 253456789m,
+                    Gender = "M",
+                    Nationality = "Portuguesa",
+                    BirthDate = new DateTime(2003, 11, 4),
+                    Address = "Rua Direita 45, 6300-683 Guarda",
+                    Telephone = "912345673"
+                }
+            };
+
+            foreach (var student in students)
+            {
+                if (!db.Student.Any(s => s.NumStudent == student.NumStudent))
+                {
+                    db.Student.Add(student);
+                }
+            }
+
+            db.SaveChanges();
         }
 
         private static void PopulateAccommodation(UniversityDbContext db)
@@ -21,7 +77,10 @@ namespace UnivManagement.Data
             PopulateAcademicYears(db);
             PopulateResidences(db);
             PopulatePossibleStatuses(db);
+            PopulateRoomTypes(db);
+            PopulateRoomStatuses(db);
             PopulateAccommodationApplications(db);
+            PopulateApplicationStatusHistories(db);
             PopulateRooms(db);
             PopulateRoomAllocations(db);
             PopulateStayRecords(db);
@@ -127,6 +186,37 @@ namespace UnivManagement.Data
             db.SaveChanges();
         }
 
+        // NOTA: Confirma nos modelos RoomType.cs e RoomStatus.cs se a propriedade se chama "Name".
+        private static void PopulateRoomTypes(UniversityDbContext db)
+        {
+            var types = new[] { "Single", "Double", "Triple" };
+
+            foreach (var name in types)
+            {
+                if (!db.RoomType.Any(t => t.Name == name))
+                {
+                    db.RoomType.Add(new RoomType { Name = name });
+                }
+            }
+
+            db.SaveChanges();
+        }
+
+        private static void PopulateRoomStatuses(UniversityDbContext db)
+        {
+            var statuses = new[] { "Available", "Occupied", "Maintenance" };
+
+            foreach (var name in statuses)
+            {
+                if (!db.RoomStatus.Any(s => s.Name == name))
+                {
+                    db.RoomStatus.Add(new RoomStatus { Name = name });
+                }
+            }
+
+            db.SaveChanges();
+        }
+
         private static void PopulateAccommodationApplications(UniversityDbContext db)
         {
             var students = db.Student
@@ -135,16 +225,16 @@ namespace UnivManagement.Data
                 .ToList();
 
             if (students.Count < 3)
-            {
-                throw new InvalidOperationException(
-                    "At least three students must exist before seeding accommodation applications.");
-            }
+                return;
 
-            var year2026 = db.AcademicYear.First(a =>
+            var year2026 = db.AcademicYear.FirstOrDefault(a =>
                 a.StartYear == 2026 && a.EndYear == 2027);
 
-            var year2027 = db.AcademicYear.First(a =>
+            var year2027 = db.AcademicYear.FirstOrDefault(a =>
                 a.StartYear == 2027 && a.EndYear == 2028);
+
+            if (year2026 == null || year2027 == null)
+                return;
 
             var applications = new[]
             {
@@ -198,11 +288,70 @@ namespace UnivManagement.Data
             db.SaveChanges();
         }
 
+        private static void PopulateApplicationStatusHistories(UniversityDbContext db)
+        {
+            var firstApplication = db.AccommodationApplication
+                .OrderBy(a => a.AccommodationApplicationId)
+                .FirstOrDefault();
+
+            var submittedStatus = db.PossibleStatus.FirstOrDefault(s => s.Name == "Submitted");
+            var approvedStatus = db.PossibleStatus.FirstOrDefault(s => s.Name == "Approved");
+
+            if (firstApplication == null || submittedStatus == null || approvedStatus == null)
+                return;
+
+            var histories = new[]
+            {
+                new ApplicationStatusHistory
+                {
+                    AccommodationApplicationId = firstApplication.AccommodationApplicationId,
+                    PossibleStatusId = submittedStatus.PossibleStatusId,
+                    ChangedAt = new DateTime(2026, 9, 2, 10, 15, 30),
+                    ChangedBy = "System",
+                    Notes = "Application submitted by student."
+                },
+                new ApplicationStatusHistory
+                {
+                    AccommodationApplicationId = firstApplication.AccommodationApplicationId,
+                    PossibleStatusId = approvedStatus.PossibleStatusId,
+                    ChangedAt = new DateTime(2026, 9, 5, 15, 0, 0),
+                    ChangedBy = "Gestor_Residencia_1",
+                    Notes = "Scholarship priority verified and approved."
+                }
+            };
+
+            foreach (var history in histories)
+            {
+                bool exists = db.ApplicationStatusHistory.Any(h =>
+                    h.AccommodationApplicationId == history.AccommodationApplicationId &&
+                    h.PossibleStatusId == history.PossibleStatusId);
+
+                if (!exists)
+                {
+                    db.ApplicationStatusHistory.Add(history);
+                }
+            }
+
+            db.SaveChanges();
+        }
+
         private static void PopulateRooms(UniversityDbContext db)
         {
-            var feminina1 = db.Residence.First(r => r.Name == "Feminina 1");
-            var masculina1 = db.Residence.First(r => r.Name == "Masculina 1");
-            var masculina2 = db.Residence.First(r => r.Name == "Masculina 2");
+            var feminina1 = db.Residence.FirstOrDefault(r => r.Name == "Feminina 1");
+            var masculina1 = db.Residence.FirstOrDefault(r => r.Name == "Masculina 1");
+            var masculina2 = db.Residence.FirstOrDefault(r => r.Name == "Masculina 2");
+
+            var singleType = db.RoomType.FirstOrDefault(t => t.Name == "Single") ?? db.RoomType.FirstOrDefault();
+            var doubleType = db.RoomType.FirstOrDefault(t => t.Name == "Double") ?? singleType;
+            var tripleType = db.RoomType.FirstOrDefault(t => t.Name == "Triple") ?? singleType;
+
+            var availableStatus = db.RoomStatus.FirstOrDefault(s => s.Name == "Available") ?? db.RoomStatus.FirstOrDefault();
+            var occupiedStatus = db.RoomStatus.FirstOrDefault(s => s.Name == "Occupied") ?? availableStatus;
+
+            if (feminina1 == null || masculina1 == null || masculina2 == null ||
+                singleType == null || doubleType == null || tripleType == null ||
+                availableStatus == null || occupiedStatus == null)
+                return;
 
             var rooms = new[]
             {
@@ -213,8 +362,8 @@ namespace UnivManagement.Data
                     Floor = 1,
                     CurrentOccupancy = 0,
                     Capacity = 1,
-                    RoomTypeId = 1,
-                    RoomStatusId = 1
+                    RoomTypeId = singleType.RoomTypeId,
+                    RoomStatusId = availableStatus.RoomStatusId
                 },
                 new Room1
                 {
@@ -223,8 +372,8 @@ namespace UnivManagement.Data
                     Floor = 1,
                     CurrentOccupancy = 0,
                     Capacity = 2,
-                    RoomTypeId = 2,
-                    RoomStatusId = 1
+                    RoomTypeId = doubleType.RoomTypeId,
+                    RoomStatusId = availableStatus.RoomStatusId
                 },
                 new Room1
                 {
@@ -233,8 +382,8 @@ namespace UnivManagement.Data
                     Floor = 2,
                     CurrentOccupancy = 0,
                     Capacity = 2,
-                    RoomTypeId = 2,
-                    RoomStatusId = 1
+                    RoomTypeId = doubleType.RoomTypeId,
+                    RoomStatusId = availableStatus.RoomStatusId
                 },
                 new Room1
                 {
@@ -243,8 +392,8 @@ namespace UnivManagement.Data
                     Floor = 3,
                     CurrentOccupancy = 0,
                     Capacity = 3,
-                    RoomTypeId = 3,
-                    RoomStatusId = 2
+                    RoomTypeId = tripleType.RoomTypeId,
+                    RoomStatusId = occupiedStatus.RoomStatusId
                 }
             };
 
@@ -261,10 +410,10 @@ namespace UnivManagement.Data
 
         private static void PopulateRoomAllocations(UniversityDbContext db)
         {
-            var year2026 = db.AcademicYear.First(a =>
+            var year2026 = db.AcademicYear.FirstOrDefault(a =>
                 a.StartYear == 2026 && a.EndYear == 2027);
 
-            var year2027 = db.AcademicYear.First(a =>
+            var year2027 = db.AcademicYear.FirstOrDefault(a =>
                 a.StartYear == 2027 && a.EndYear == 2028);
 
             var students = db.Student
@@ -272,27 +421,28 @@ namespace UnivManagement.Data
                 .Take(3)
                 .ToList();
 
-            if (students.Count < 3)
-            {
-                throw new InvalidOperationException(
-                    "At least three students must exist before seeding room allocations.");
-            }
+            if (students.Count < 3 || year2026 == null || year2027 == null)
+                return;
 
-            var application1 = db.AccommodationApplication.First(a =>
+            var application1 = db.AccommodationApplication.FirstOrDefault(a =>
                 a.StudentId == students[0].StudentId &&
                 a.AcademicYearId == year2026.AcademicYearId);
 
-            var application2 = db.AccommodationApplication.First(a =>
+            var application2 = db.AccommodationApplication.FirstOrDefault(a =>
                 a.StudentId == students[1].StudentId &&
                 a.AcademicYearId == year2026.AcademicYearId);
 
-            var application3 = db.AccommodationApplication.First(a =>
+            var application3 = db.AccommodationApplication.FirstOrDefault(a =>
                 a.StudentId == students[2].StudentId &&
                 a.AcademicYearId == year2027.AcademicYearId);
 
-            var room101 = db.Room.First(r => r.Number == "101");
-            var room102 = db.Room.First(r => r.Number == "102");
-            var room204 = db.Room.First(r => r.Number == "204");
+            var room101 = db.Room.FirstOrDefault(r => r.Number == "101");
+            var room102 = db.Room.FirstOrDefault(r => r.Number == "102");
+            var room204 = db.Room.FirstOrDefault(r => r.Number == "204");
+
+            if (application1 == null || application2 == null || application3 == null ||
+                room101 == null || room102 == null || room204 == null)
+                return;
 
             var allocations = new[]
             {
@@ -342,18 +492,24 @@ namespace UnivManagement.Data
 
         private static void PopulateStayRecords(UniversityDbContext db)
         {
-            var room101 = db.Room.First(r => r.Number == "101");
-            var room204 = db.Room.First(r => r.Number == "204");
-            var room102 = db.Room.First(r => r.Number == "102");
+            var room101 = db.Room.FirstOrDefault(r => r.Number == "101");
+            var room204 = db.Room.FirstOrDefault(r => r.Number == "204");
+            var room102 = db.Room.FirstOrDefault(r => r.Number == "102");
 
-            var allocation1 = db.RoomAllocation.First(a =>
+            if (room101 == null || room204 == null || room102 == null)
+                return;
+
+            var allocation1 = db.RoomAllocation.FirstOrDefault(a =>
                 a.RoomId == room101.RoomId);
 
-            var allocation2 = db.RoomAllocation.First(a =>
+            var allocation2 = db.RoomAllocation.FirstOrDefault(a =>
                 a.RoomId == room204.RoomId);
 
-            var allocation3 = db.RoomAllocation.First(a =>
+            var allocation3 = db.RoomAllocation.FirstOrDefault(a =>
                 a.RoomId == room102.RoomId);
+
+            if (allocation1 == null || allocation2 == null || allocation3 == null)
+                return;
 
             var records = new[]
             {
@@ -401,18 +557,24 @@ namespace UnivManagement.Data
 
         private static void PopulateAccommodationContracts(UniversityDbContext db)
         {
-            var room101 = db.Room.First(r => r.Number == "101");
-            var room204 = db.Room.First(r => r.Number == "204");
-            var room102 = db.Room.First(r => r.Number == "102");
+            var room101 = db.Room.FirstOrDefault(r => r.Number == "101");
+            var room204 = db.Room.FirstOrDefault(r => r.Number == "204");
+            var room102 = db.Room.FirstOrDefault(r => r.Number == "102");
 
-            var allocation1 = db.RoomAllocation.First(a =>
+            if (room101 == null || room204 == null || room102 == null)
+                return;
+
+            var allocation1 = db.RoomAllocation.FirstOrDefault(a =>
                 a.RoomId == room101.RoomId);
 
-            var allocation2 = db.RoomAllocation.First(a =>
+            var allocation2 = db.RoomAllocation.FirstOrDefault(a =>
                 a.RoomId == room204.RoomId);
 
-            var allocation3 = db.RoomAllocation.First(a =>
+            var allocation3 = db.RoomAllocation.FirstOrDefault(a =>
                 a.RoomId == room102.RoomId);
+
+            if (allocation1 == null || allocation2 == null || allocation3 == null)
+                return;
 
             var contracts = new[]
             {
@@ -462,20 +624,29 @@ namespace UnivManagement.Data
 
         private static void PopulateAccommodationPayments(UniversityDbContext db)
         {
-            var room101 = db.Room.First(r => r.Number == "101");
-            var room204 = db.Room.First(r => r.Number == "204");
+            var room101 = db.Room.FirstOrDefault(r => r.Number == "101");
+            var room204 = db.Room.FirstOrDefault(r => r.Number == "204");
 
-            var allocation1 = db.RoomAllocation.First(a =>
+            if (room101 == null || room204 == null)
+                return;
+
+            var allocation1 = db.RoomAllocation.FirstOrDefault(a =>
                 a.RoomId == room101.RoomId);
 
-            var allocation2 = db.RoomAllocation.First(a =>
+            var allocation2 = db.RoomAllocation.FirstOrDefault(a =>
                 a.RoomId == room204.RoomId);
 
-            var contract1 = db.AccommodationContract.First(c =>
+            if (allocation1 == null || allocation2 == null)
+                return;
+
+            var contract1 = db.AccommodationContract.FirstOrDefault(c =>
                 c.RoomAllocationId == allocation1.RoomAllocationId);
 
-            var contract2 = db.AccommodationContract.First(c =>
+            var contract2 = db.AccommodationContract.FirstOrDefault(c =>
                 c.RoomAllocationId == allocation2.RoomAllocationId);
+
+            if (contract1 == null || contract2 == null)
+                return;
 
             var payments = new[]
             {
