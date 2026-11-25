@@ -125,6 +125,13 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<InscrUC>()
                 .Property(i => i.Grade)
                 .HasPrecision(4, 2);
+
+            // ApplicationStatusHistory: prevent deleting an application that already has status history
+            modelBuilder.Entity<Models.AccommodationManagement.ApplicationStatusHistory>()
+                    .HasOne(h => h.AccommodationApplication)
+                    .WithMany()
+                    .HasForeignKey(h => h.AccommodationApplicationId)
+                    .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Obra> Obras { get; set; } = default!;
