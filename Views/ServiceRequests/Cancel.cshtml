@@ -1,0 +1,109 @@
+@model UnivManagement.Models.ServiceRequest
+
+@{
+    ViewData["Title"] = "Cancel request";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="mb-4">
+                <h1 class="h2 mb-1">Cancel request</h1>
+                <p class="text-body-secondary mb-0">Review the request information before cancelling it.</p>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger d-flex align-items-start m-3 mb-0" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-3 mt-1" aria-hidden="true"></i>
+                        <div>@ViewBag.ErrorMessage</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning d-flex align-items-start m-3 mb-0" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-3 mt-1" aria-hidden="true"></i>
+                        <div>
+                            <h2 class="h5 alert-heading mb-2">Confirm cancellation</h2>
+                            <strong>Are you sure?</strong>
+                            <p class="mb-0">The request will be closed with the status Cancelled and it cannot be reopened. Please confirm before continuing.</p>
+                        </div>
+                    </div>
+                }
+
+                <div class="card-body p-4">
+                    <h3 class="h6 text-body-secondary mb-3">Request information</h3>
+
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.Title)
+                        </dt>
+                        <dd class="col-sm-8 fw-semibold mb-3">
+                            @Model.Title
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.Type)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @Model.Type?.Name
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.ServiceRequestStatusId)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @Model.Status?.Name
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.RequesterName)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @Model.RequesterName
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.RequesterEmail)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @Model.RequesterEmail
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.CreatedAt)
+                        </dt>
+                        <dd class="col-sm-8 mb-0">
+                            @Model.CreatedAt.ToString("g")
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="card-footer bg-body-tertiary p-3">
+                    <form asp-action="Cancel" method="post">
+                        <input type="hidden" asp-for="ServiceRequestId" />
+
+                        <div class="d-flex flex-wrap gap-2">
+                            @if (ViewBag.ErrorMessage == null)
+                            {
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="bi bi-x-circle me-1" aria-hidden="true"></i>
+                                    Cancel request
+                                </button>
+                            }
+
+                            <a asp-action="Details" asp-route-id="@Model.ServiceRequestId" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left-square me-1" aria-hidden="true"></i>
+                                Back to request
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

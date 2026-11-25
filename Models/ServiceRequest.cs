@@ -50,5 +50,11 @@ namespace UnivManagement.Models
 
         [Display(Name = "Closed at")]
         public DateTime? ClosedAt { get; set; }
+
+        // A request is closed when its status closes it (Resolved, Rejected or Cancelled); it cannot be reopened
+        public bool IsClosed()
+        {
+            return ClosedAt != null || Status?.IsFinal == true;
+        }
     }
 }

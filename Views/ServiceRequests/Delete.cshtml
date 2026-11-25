@@ -1,0 +1,104 @@
+@model UnivManagement.Models.ServiceRequest
+
+@{
+    ViewData["Title"] = "Delete request";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="mb-4">
+                <h1 class="h2 mb-1">Delete request</h1>
+                <p class="text-body-secondary mb-0">Review the request information before proceeding.</p>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="alert alert-danger d-flex align-items-start m-3 mb-0" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-3 mt-1" aria-hidden="true"></i>
+                    <div>
+                        <h2 class="h5 alert-heading mb-2">Confirm Deletion</h2>
+                        <strong>Are you sure?</strong>
+                        <p class="mb-0">This action will permanently delete this request. Please confirm before continuing.</p>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <h3 class="h6 text-body-secondary mb-3">Request information</h3>
+
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.Title)
+                        </dt>
+                        <dd class="col-sm-8 fw-semibold mb-3">
+                            @Model.Title
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @(Model.Description ?? "(No description)")
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.Type)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @Model.Type?.Name
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.ServiceRequestStatusId)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @Model.Status?.Name
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.RequesterName)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @Model.RequesterName
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.RequesterEmail)
+                        </dt>
+                        <dd class="col-sm-8 mb-3">
+                            @Model.RequesterEmail
+                        </dd>
+
+                        <dt class="col-sm-4 text-body-secondary mb-2">
+                            @Html.DisplayNameFor(model => model.CreatedAt)
+                        </dt>
+                        <dd class="col-sm-8 mb-0">
+                            @Model.CreatedAt.ToString("g")
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="card-footer bg-body-tertiary p-3">
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="ServiceRequestId" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1" aria-hidden="true"></i>
+                                Delete
+                            </button>
+
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left-square me-1" aria-hidden="true"></i>
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

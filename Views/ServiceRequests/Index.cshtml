@@ -1,0 +1,106 @@
+@model IEnumerable<UnivManagement.Models.ServiceRequest>
+
+@{
+    ViewData["Title"] = "Requests";
+}
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+        @ViewBag.SuccessMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 pb-3 border-bottom">
+    <div>
+        <h1 class="h2 text-body-emphasis fw-bold mb-1">Requests</h1>
+        <p class="text-muted small mb-0">Submit new administrative requests and follow their progress.</p>
+    </div>
+    <div class="mt-2 mt-sm-0">
+        <a asp-action="Create" class="btn btn-primary shadow-sm">Add New</a>
+    </div>
+</div>
+
+<form asp-action="Index" method="get" class="row g-2 mb-4">
+    <div class="col-12 col-md-4">
+        <input type="search" name="search" value="@ViewData["Search"]" class="form-control"
+               placeholder="Search by title, name or email" aria-label="Search" />
+    </div>
+    <div class="col-6 col-md-3">
+        <select name="status" asp-items="ViewBag.Statuses" class="form-select" aria-label="Status">
+            <option value="">All statuses</option>
+        </select>
+    </div>
+    <div class="col-6 col-md-3">
+        <select name="type" asp-items="ViewBag.Types" class="form-select" aria-label="Request type">
+            <option value="">All types</option>
+        </select>
+    </div>
+    <div class="col-12 col-md-2 d-flex gap-2">
+        <button type="submit" class="btn btn-primary flex-fill">Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary flex-fill">Clear</a>
+    </div>
+</form>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Title)</th>
+                    <th>@Html.DisplayNameFor(model => model.Type)</th>
+                    <th>@Html.DisplayNameFor(model => model.Status)</th>
+                    <th>Requester</th>
+                    <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
+                    <th class="text-end" style="width: 180px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">No requests found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@item.Title</td>
+                            <td>@item.Type?.Name</td>
+                            <td>
+                                <span class="badge text-bg-@(item.Status?.Color ?? "secondary")">@item.Status?.Name</span>
+                            </td>
+                            <td>
+                                @item.RequesterName
+                                <div class="small text-muted">@item.RequesterEmail</div>
+                            </td>
+                            <td>@item.CreatedAt.ToString("g")</td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Request actions">
+                                    <a asp-action="Edit" asp-route-id="@item.ServiceRequestId"
+                                       class="btn btn-outline-secondary" title="Edit">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+
+                                    <a asp-action="Details" asp-route-id="@item.ServiceRequestId"
+                                       class="btn btn-outline-secondary" title="Details">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </a>
+
+                                    <a asp-action="Delete" asp-route-id="@item.ServiceRequestId"
+                                       class="btn btn-outline-danger" title="Delete">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

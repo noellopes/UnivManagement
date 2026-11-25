@@ -1,0 +1,55 @@
+@model IEnumerable<UnivManagement.Models.Departamento>
+
+@{
+    ViewData["Title"] = "Departamentos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Departamentos</h1>
+    <a asp-action="Create" class="btn btn-primary">+ Novo departamento</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Nome</th>
+                    <th>Estado</th>
+                    <th>Data de criação</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">Ainda não existem departamentos.</td>
+                    </tr>
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@item.Nome</td>
+                        <td>
+                            @if (item.Ativo)
+                            {
+                                <span class="badge bg-success">Ativo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inativo</span>
+                            }
+                        </td>
+                        <td>@item.DataCriacao.ToString("dd/MM/yyyy")</td>
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@item.DepartamentoId" class="btn btn-sm btn-outline-warning">Editar</a>
+                            <a asp-action="Details" asp-route-id="@item.DepartamentoId" class="btn btn-sm btn-outline-secondary">Detalhes</a>
+                            <a asp-action="Delete" asp-route-id="@item.DepartamentoId" class="btn btn-sm btn-outline-danger">Apagar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

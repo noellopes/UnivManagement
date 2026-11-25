@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Request type not found";
+}
+
+<div class="alert alert-danger d-flex align-items-start gap-3" role="alert">
+    <i class="bi bi-exclamation-triangle-fill fs-3" aria-hidden="true"></i>
+    <div>
+        <h4 class="alert-heading">Could not find request type</h4>
+        <p>The selected request type no longer exists. It may have been deleted.</p>
+        <a asp-action="Index" class="btn btn-primary">Back to request types</a>
+    </div>
+</div>
