@@ -2,9 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models;
 using UnivManagement.Models.AcademicManagement;
 
-namespace UnivManagement.Data {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+namespace UnivManagement.Data
+{
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
+    {
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             base.OnModelCreating(modelBuilder);
 
             // Biblioteca: impedir associações duplicadas entre obras e autores
@@ -88,14 +92,57 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.Telephone)
                 .IsUnique();
-          
+
             // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
                 .IsUnique();
 
             // Room: número único por residência:
-            modelBuilder.Entity<Models.AccommodationManagement.Room>()
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
+                .HasIndex(r => new { r.ResidenceId, r.Number })
+                .IsUnique();
+
+// Room: relações com RoomType e RoomStatus (sem apagar quartos em cascata):
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
+                .HasOne(r => r.RoomType)
+                .WithMany(t => t.Rooms)
+                .HasForeignKey(r => r.RoomTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
+                .HasOne(r => r.RoomStatus)
+                .WithMany(s => s.Rooms)
+                .HasForeignKey(r => r.RoomStatusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // RoomType: nome único:
+            modelBuilder.Entity<Models.AccommodationManagement.RoomType>()
+                .HasIndex(t => t.Name)
+                .IsUnique();
+
+            // RoomStatus: nome único:
+            modelBuilder.Entity<Models.AccommodationManagement.RoomStatus>()
+                .HasIndex(s => s.Name)
+                .IsUnique();
+
+            // Seed dos valores que antes eram enums:
+            modelBuilder.Entity<Models.AccommodationManagement.RoomType>().HasData(
+                new Models.AccommodationManagement.RoomType { RoomTypeId = 1, Name = "Single" },
+                new Models.AccommodationManagement.RoomType { RoomTypeId = 2, Name = "Double" },
+                new Models.AccommodationManagement.RoomType { RoomTypeId = 3, Name = "Triple" });
+
+            modelBuilder.Entity<Models.AccommodationManagement.RoomStatus>().HasData(
+                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 1, Name = "Livre" },
+                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 2, Name = "Ocupado" },
+                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 3, Name = "Cheio" },
+                new Models.AccommodationManagement.RoomStatus { RoomStatusId = 4, Name = "Em Manutenção" });
+
+            // Room: chave primária e número único por residência:
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
+                .HasKey(r => r.RoomId);
+
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
                 .HasIndex(r => new { r.ResidenceId, r.Number })
                 .IsUnique();
 
@@ -113,6 +160,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.CourseState>()
                 .HasIndex(cs => cs.Name)
                 .IsUnique();
+
             // StateInscrUc: cada estado de uma inscrição de UC é unico
             modelBuilder.Entity<StateInscrUc>()
                 .HasIndex(s => s.Name)
@@ -128,10 +176,10 @@ namespace UnivManagement.Data {
         }
 
         public DbSet<Obra> Obras { get; set; } = default!;
-        public DbSet<TipoObra> Tipos { get; set;  } = default!;
+        public DbSet<TipoObra> Tipos { get; set; } = default!;
         public DbSet<Exemplar> Exemplares { get; set; } = default!;
         public DbSet<Autor> Autores { get; set; } = default!;
-        public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;     
+        public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;
         public DbSet<UnivManagement.Models.ReservaSala> Reserva { get; set; } = default!;
         public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
         public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
@@ -154,7 +202,9 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationContract> AccommodationContract { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory> ApplicationStatusHistory { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationApplication> AccommodationApplication { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AccommodationManagement.Room> Room { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.Room1> Room { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.RoomType> RoomType { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.RoomStatus> RoomStatus { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.SchoolCalendar> SchoolCalendar { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.Course> Course { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.InscrUC> InscrUC { get; set; } = default!;
@@ -162,9 +212,9 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;     
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;  
+        public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
