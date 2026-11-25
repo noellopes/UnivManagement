@@ -7,40 +7,6 @@
 }
 
 <div class="container py-4">
-
-    @if (TempData["DeleteMessage"] is string deleteMessage)
-    {
-        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-            <i class="bi bi-trash me-2"></i>@deleteMessage
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-
-
-    @if (TempData["SuccessMessage"] is string successMessage)
-    {
-        var alertClass = successMessage.Contains("deleted", StringComparison.OrdinalIgnoreCase)
-            ? "alert-danger"
-            : "alert-success";
-
-        var alertIcon = successMessage.Contains("deleted", StringComparison.OrdinalIgnoreCase)
-            ? "bi-trash"
-            : "bi-check-circle";
-
-        <div class="alert @alertClass alert-dismissible fade show shadow-sm" role="alert">
-            <i class="bi @alertIcon me-2"></i>@successMessage
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-
-    @if (TempData["ErrorMessage"] is string errorMessage)
-    {
-        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-            <i class="bi bi-exclamation-triangle me-2"></i>@errorMessage
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-
     @* Page header *@
     <header class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
