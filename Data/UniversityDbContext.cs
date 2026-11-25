@@ -3,9 +3,12 @@ using UnivManagement.Models;
 using UnivManagement.Models.AccommodationManagement;
 using UnivManagement.Models.AcademicManagement;
 
-namespace UnivManagement.Data {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {        
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+namespace UnivManagement.Data
+{
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
+    {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             base.OnModelCreating(modelBuilder);
 
             // Biblioteca: impedir associações duplicadas entre obras e autores
@@ -89,7 +92,7 @@ namespace UnivManagement.Data {
             modelBuilder.Entity<Models.AcademicManagement.Student>()
                 .HasIndex(u => u.Telephone)
                 .IsUnique();
-          
+
             // Indica que o atributo code é unico, não podendo haver duas UCs com o mesmo código:
             modelBuilder.Entity<Models.AcademicManagement.UC>()
                 .HasIndex(u => u.Code)
@@ -187,6 +190,7 @@ namespace UnivManagement.Data {
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }        
         public DbSet<EstadoPossivel> EstadoPossivel { get; set; } = default!;
         public DbSet<UnivManagement.Models.HorarioAtendimento> HorarioAtendimento { get; set; } = default!;
-         public DbSet<UnivManagement.Models.AtribuicaoDocente> AtribuicaoDocente { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AtribuicaoDocente> AtribuicaoDocente { get; set; } = default!;
+        public DbSet<UnivManagement.Models.FuncaoDocente> FuncaoDocente { get; set; } = default!;
     }
 }
