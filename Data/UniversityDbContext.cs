@@ -3,8 +3,11 @@ using UnivManagement.Models;
 
 namespace UnivManagement.Data
 {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options)
+    public class UniversityDbContext : DbContext
     {
+        public UniversityDbContext(DbContextOptions<UniversityDbContext> options) : base(options)
+        {
+        }
 
         public DbSet<Catalogo> Catalogos { get; set; }
         public DbSet<Exemplar> Exemplares { get; set; }
@@ -29,21 +32,6 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
-        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseStudyPlanYear> CourseStudyPlanYear { get; set; } = default!;
-        public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
-        public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
-        public DbSet<AntigoAluno> AntigosAlunos { get; set; }
-        public DbSet<Carreira> Carreiras { get; set; }
-        public DbSet<Empresa> Empresas { get; set; }
-        public DbSet<Empregador> Empregadores { get; set; }
-        public DbSet<Oferta> Ofertas { get; set; }
-        public DbSet<Candidatura> Candidaturas { get; set; }
-        public DbSet<Estagio> Estagios { get; set; }
-        public DbSet<GestorEstagio> GestoresEstagio { get; set; }
-        public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; }
-        public DbSet<Avaliacao> Avaliacoes { get; set; }
-        public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -104,18 +92,6 @@ namespace UnivManagement.Data
             modelBuilder.Entity<Models.AcademicManagement.Course>()
                 .HasIndex(c => c.Code)
                 .IsUnique();
-
-            // Evita duplicações na tabela CourseStudyPlanYear:
-            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
-                .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
-                .IsUnique();
-
-            // Avoid SQL Server multiple cascade paths.
-            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
-                .HasOne(item => item.Course)
-                .WithMany()
-                .HasForeignKey(item => item.CourseId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
