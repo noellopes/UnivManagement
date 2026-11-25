@@ -1,0 +1,81 @@
+﻿@model UnivManagement.Models.QuadroCursoViewModel
+@{
+    ViewData["Title"] = Model.Curso.Nome;
+    string[] dias = { "Segunda", "Terça", "Quarta", "Quinta", "Sexta" };
+    int horaIni = 8;
+    int horaFim = 20;
+}
+
+<style>
+    .qh-grid { display: flex; border: 1px solid #ccc; }
+    .qh-horas { width: 60px; flex: none; }
+    .qh-dia { flex: 1; border-left: 1px solid #ccc; min-width: 120px; }
+    .qh-titulo { height: 32px; line-height: 32px; text-align: center; font-weight: bold; background: #f1f1f1; border-bottom: 1px solid #ccc; }
+    .qh-hora { height: 60px; font-size: 12px; color: #666; padding: 2px 6px; box-sizing: border-box; }
+    .qh-corpo { position: relative; background: repeating-linear-gradient(to bottom, #fff 0, #fff 59px, #e5e5e5 59px, #e5e5e5 60px); }
+    .qh-bloco { position: absolute; box-sizing: border-box; padding: 3px 5px; font-size: 12px; overflow: hidden; border-radius: 4px; border: 1px solid rgba(0,0,0,.25); }
+    .qh-bloco strong { display: block; }
+    .tipo-t { background: #cfe2ff; }
+    .tipo-tp { background: #d1e7dd; }
+    .tipo-pl { background: #fff3cd; }
+    .tipo-at{ background: #f8d7da}
+</style>
+
+<h1>@Model.Curso.Nome</h1>
+<p><a asp-action="Index">← Todos os cursos</a></p>
+
+<div class="mb-3">
+    <span class="me-2"><strong>Ano:</strong></span>
+    @foreach (var a in Model.Anos)
+    {
+        <a class="btn btn-sm @(a == Model.Ano ? "btn-primary" : "btn-outline-primary")"
+           asp-action="Curso" asp-route-cursoid="@Model.Curso.CursoId" asp-route-ano="@a" asp-route-semestre="@Model.Semestre">@(a)º</a>
+    }
+    <span class="ms-4 me-2"><strong>Semestre:</strong></span>
+    @for (int s = 1; s <= 2; s++)
+    {
+        <a class="btn btn-sm @(s == Model.Semestre ? "btn-primary" : "btn-outline-primary")"
+           asp-action="Curso" asp-route-cursoid="@Model.Curso.CursoId" asp-route-ano="@Model.Ano" asp-route-semestre="@s">@(s)º</a>
+    }
+</div>
+
+@if (!Model.Blocos.Any())
+{
+    <div class="alert alert-info">Sem aulas para este ano e semestre.</div>
+}
+
+<div class="qh-grid">
+    <div class="qh-horas">
+        <div class="qh-titulo"></div>
+        @for (int h = horaIni; h < horaFim; h++)
+        {
+            <div class="qh-hora">@h.ToString("00"):00</div>
+        }
+    </div>
+
+    @for (int d = 1; d <= 5; d++)
+    {
+        <div class="qh-dia">
+            <div class="qh-titulo">@dias[d - 1]</div>
+            <div class="qh-corpo" style="height:@((horaFim - horaIni) * 60)px">
+                @foreach (var b in Model.Blocos.Where(x => x.Dia == d))
+                {
+                    <div class="qh-bloco tipo-@b.Tipo.ToLower()"
+                         style="top:@(b.Topo)px;height:@(b.Altura)px;left:@(b.Esq)%;width:@(b.Larg)%">
+                        <strong>@b.Uc</strong>
+                        @b.Tipo @(b.Turma == "—" ? "" : "· " + b.Turma)<br />
+                        @b.Inicio.ToString(@"hh\:mm")–@b.Fim.ToString(@"hh\:mm")<br />
+                        @b.Sala<br />
+                        @b.Docente
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<p class="mt-3 text-muted">
+    <span class="badge" style="background:#cfe2ff;color:#000">T – Teórica</span>
+    <span class="badge" style="background:#d1e7dd;color:#000">TP – Teórico-prática</span>
+    <span class="badge" style="background:#fff3cd;color:#000">PL – Prática laboratorial</span>
+</p>
