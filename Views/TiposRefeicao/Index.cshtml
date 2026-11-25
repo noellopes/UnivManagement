@@ -1,0 +1,44 @@
+@model IEnumerable<UnivManagement.Models.TipoRefeicao>
+
+@{
+    ViewData["Title"] = "Tipos de refeição";
+}
+
+<h1>Tipos de refeição</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Criar novo tipo</a>
+</p>
+
+<table class="table table-hover align-middle">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Nome)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@item.TipoRefeicaoId" class="btn btn-sm btn-outline-warning">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.TipoRefeicaoId" class="btn btn-sm btn-outline-info">Detalhes</a>
+                        <a asp-action="Delete" asp-route-id="@item.TipoRefeicaoId" class="btn btn-sm btn-outline-danger">Apagar</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2" class="text-center text-muted py-4">
+                    Ainda não há tipos de refeição registados.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
