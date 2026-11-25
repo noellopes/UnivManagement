@@ -1,0 +1,35 @@
+@model UnivManagement.Models.TipoRefeicao
+
+@{
+    ViewData["Title"] = "Apagar tipo de refeição";
+    var numRefeicoes = ViewData["NumRefeicoes"] as int? ?? 0;
+}
+
+<h1>Apagar tipo de refeição</h1>
+
+@if (numRefeicoes > 0)
+{
+    <div class="alert alert-warning">
+        Este tipo não pode ser apagado porque está a ser usado em
+        <strong>@numRefeicoes refeição(ões)</strong>.
+        Altere primeiro o tipo dessas refeições ou apague-as.
+    </div>
+}
+else
+{
+    <h4 class="text-danger">Tem a certeza de que quer apagar este tipo de refeição?</h4>
+}
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nome)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Nome)</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.TipoRefeicaoId">
+    @if (numRefeicoes == 0)
+    {
+        <button type="submit" class="btn btn-danger">Apagar</button>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
+</form>
