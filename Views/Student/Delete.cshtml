@@ -1,0 +1,123 @@
+@model UnivManagement.Models.AcademicManagement.Student
+
+@{
+    ViewData["Title"] = "Eliminar Aluno";
+}
+
+<div class="mb-4">
+    <h1 class="h2 mb-1">Eliminar Aluno</h1>
+    <p class="text-muted mb-0">Confirme a eliminação do aluno selecionado.</p>
+</div>
+
+<div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-3 fs-4" aria-hidden="true"></i>
+    <div>
+        <strong>Atenção!</strong>
+        Tem a certeza de que pretende eliminar este aluno?
+        Esta ação poderá ser irreversível.
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-person-vcard me-2" aria-hidden="true"></i>
+            Dados do Aluno
+        </h2>
+    </div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.NumStudent)
+            </dt>
+            <dd class="col-sm-9 fw-semibold">
+                @Html.DisplayFor(model => model.NumStudent)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-9 fw-semibold">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-9">
+                <a href="mailto:@Model.Email" class="text-decoration-none">
+                    @Html.DisplayFor(model => model.Email)
+                </a>
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                Telefone
+            </dt>
+            <dd class="col-sm-9">
+                <span class="text-muted">@Html.DisplayFor(model => model.CountryPhoneCode)</span>
+                @Html.DisplayFor(model => model.Telephone)
+            </dd>
+
+            @* ─── Campos adicionais  ─── *@
+            @*
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Gender)
+            </dt>
+            <dd class="col-sm-9">
+                <span class="badge @(Model.Gender == "F" ? "text-bg-info" : "text-bg-primary")">
+                    @(Model.Gender == "F" ? "Feminino" : "Masculino")
+                </span>
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Nationality)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Nationality)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </dt>
+            <dd class="col-sm-9">
+                @Model.BirthDate?.ToString("dd/MM/yyyy")
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.NIF)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.NIF)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+            *@
+        </dl>
+    </div>
+
+    <div class="card-footer bg-body">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="StudentId" />
+
+            <div class="d-flex justify-content-end flex-wrap gap-2">
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                    Voltar à Lista
+                </a>
+
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash me-2" aria-hidden="true"></i>
+                    Confirmar Eliminação
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
