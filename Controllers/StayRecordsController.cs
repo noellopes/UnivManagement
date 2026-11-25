@@ -53,6 +53,7 @@ namespace UnivManagement.Controllers
             {
                 _context.Add(stayRecord);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Stay record created successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(stayRecord);
@@ -102,6 +103,7 @@ namespace UnivManagement.Controllers
                         throw;
                     }
                 }
+                TempData["SuccessMessage"] = "Stay record edited successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(stayRecord);
@@ -137,6 +139,7 @@ namespace UnivManagement.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Stay record deleted successfully!";
             return RedirectToAction(nameof(Index));
         }
 
