@@ -12,40 +12,76 @@ namespace UnivManagement.Data
             if (db == null)
                 throw new ArgumentNullException(nameof(db));
 
+            PopulateDepartamentosETecnicos(db);
             PopulateTipoCandidaturas(db);
             PopulateTipoDocumento(db);
             PopulateTipoBolsa(db);
             PopulateEstadoPossivel(db);
         }
 
-        private static void PopulateTipoDocumento(UniversityDbContext db)
+        private static void PopulateDepartamentosETecnicos(UniversityDbContext db)
         {
-            var tipos = new List<TipoDocumento>
+            if (!db.Departamentos.Any())
             {
-                new TipoDocumento { NomeTipo = "Cartão de Cidadão", Obrigatorio = true },
-                new TipoDocumento { NomeTipo = "Comprovativo de Matrícula", Obrigatorio = true },
-                new TipoDocumento { NomeTipo = "Comprovativo de ECTS Realizados", Obrigatorio = true },
-                new TipoDocumento { NomeTipo = "Declaração de IRS", Obrigatorio = true },
-                new TipoDocumento { NomeTipo = "Nota de Liquidação de IRS", Obrigatorio = true },
-                new TipoDocumento { NomeTipo = "Composição do Agregado Familiar", Obrigatorio = true },
-                new TipoDocumento { NomeTipo = "Comprovativo de IBAN", Obrigatorio = true },
-                new TipoDocumento { NomeTipo = "Comprovativo de Morada", Obrigatorio = false },
-                new TipoDocumento { NomeTipo = "Certificado de Habilitações", Obrigatorio = false }
-            };
+                db.Departamentos.AddRange(
+                    new Departamento
+                    {
+                        Nome = "Escola Superior de Tecnologia e Gestão (ESTG)",
+                        Ativo = true,
+                        DataCriacao = DateTime.Now
+                    },
+                    new Departamento
+                    {
+                        Nome = "Escola Superior de Educação, Comunicação e Desporto (ESECD)",
+                        Ativo = true,
+                        DataCriacao = DateTime.Now
+                    },
+                    new Departamento
+                    {
+                        Nome = "Escola Superior de Saúde (ESS)",
+                        Ativo = true,
+                        DataCriacao = DateTime.Now
+                    },
+                    new Departamento
+                    {
+                        Nome = "Escola Superior de Turismo e Hotelaria (ESTH)",
+                        Ativo = true,
+                        DataCriacao = DateTime.Now
+                    }
+                );
 
-            var existentes = db.TipoDocumento
-                .Select(t => t.NomeTipo)
-                .ToHashSet();
+                db.SaveChanges();
+            }
 
-            var novos = tipos
-                .Where(t => !existentes.Contains(t.NomeTipo))
-                .ToList();
+            if (!db.Tecnicos.Any())
+            {
+                var estg = db.Departamentos.FirstOrDefault();
 
-            if (novos.Count == 0)
-                return;
+                if (estg == null)
+                {
+                    throw new InvalidOperationException(
+                        "Não foi possível encontrar um departamento para associar aos técnicos.");
+                }
 
-            db.TipoDocumento.AddRange(novos);
-            db.SaveChanges();
+                var esecd = db.Departamentos.Skip(1).FirstOrDefault() ?? estg;
+
+                db.Tecnicos.AddRange(
+                    new Tecnico
+                    {
+                        Nome = "João Silva",
+                        Email = "joao.silva@ipg.pt",
+                        DepartamentoId = estg.DepartamentoId
+                    },
+                    new Tecnico
+                    {
+                        Nome = "Mariana Costa",
+                        Email = "mariana.costa@ipg.pt",
+                        DepartamentoId = esecd.DepartamentoId
+                    }
+                );
+
+                db.SaveChanges();
+            }
         }
 
         private static void PopulateTipoCandidaturas(UniversityDbContext db)
@@ -88,6 +124,36 @@ namespace UnivManagement.Data
             };
 
             db.TipoCandidatura.AddRange(tipos);
+            db.SaveChanges();
+        }
+
+        private static void PopulateTipoDocumento(UniversityDbContext db)
+        {
+            var tipos = new List<TipoDocumento>
+            {
+                new TipoDocumento { NomeTipo = "Cartão de Cidadão", Obrigatorio = true },
+                new TipoDocumento { NomeTipo = "Comprovativo de Matrícula", Obrigatorio = true },
+                new TipoDocumento { NomeTipo = "Comprovativo de ECTS Realizados", Obrigatorio = true },
+                new TipoDocumento { NomeTipo = "Declaração de IRS", Obrigatorio = true },
+                new TipoDocumento { NomeTipo = "Nota de Liquidação de IRS", Obrigatorio = true },
+                new TipoDocumento { NomeTipo = "Composição do Agregado Familiar", Obrigatorio = true },
+                new TipoDocumento { NomeTipo = "Comprovativo de IBAN", Obrigatorio = true },
+                new TipoDocumento { NomeTipo = "Comprovativo de Morada", Obrigatorio = false },
+                new TipoDocumento { NomeTipo = "Certificado de Habilitações", Obrigatorio = false }
+            };
+
+            var existentes = db.TipoDocumento
+                .Select(t => t.NomeTipo)
+                .ToHashSet();
+
+            var novos = tipos
+                .Where(t => !existentes.Contains(t.NomeTipo))
+                .ToList();
+
+            if (novos.Count == 0)
+                return;
+
+            db.TipoDocumento.AddRange(novos);
             db.SaveChanges();
         }
 

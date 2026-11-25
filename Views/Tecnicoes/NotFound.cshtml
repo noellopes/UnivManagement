@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Técnico Não Encontrado";
+}
+
+<div class="py-4">
+    <div class="alert alert-danger border-0 shadow-sm rounded-4 p-4 d-flex align-items-start gap-3"
+         role="alert">
+
+        <div class="bg-danger-subtle text-danger rounded-3 p-3 flex-shrink-0">
+            <i class="bi bi-person-badge fs-3" aria-hidden="true"></i>
+        </div>
+
+        <div class="flex-grow-1">
+            <h4 class="alert-heading fs-5 fw-semibold mb-2">
+                Não foi possível encontrar o técnico
+            </h4>
+
+            <p class="mb-3">
+                O técnico selecionado não foi encontrado. Pode ter sido
+                eliminado ou já não estar disponível.
+            </p>
+
+            <hr class="border-danger opacity-25">
+
+            <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+                <a asp-action="Index"
+                   class="btn btn-primary">
+                    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                    Voltar aos Técnicos
+                </a>
+                <span class="text-body-secondary small">
+                    Volte à lista de técnicos para continuar.
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

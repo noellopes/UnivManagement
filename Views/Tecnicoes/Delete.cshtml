@@ -1,0 +1,70 @@
+@model UnivManagement.Models.Tecnico
+
+@{
+    ViewData["Title"] = "Eliminar técnico";
+}
+
+<div class="container py-4">
+    <!-- Main Header -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start mb-4">
+        <div>
+            <h1 class="h2 fw-bold mb-1" style="color: #174966;">Eliminar técnico</h1>
+            <p class="text-muted small mb-0">
+                Tem a certeza de que pretende eliminar este técnico?
+            </p>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <a asp-action="Index"
+               class="btn btn-outline-secondary bg-white text-dark border px-3 py-2"
+               style="border-radius: 6px;">
+                Voltar à lista
+            </a>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card border-0 shadow-sm bg-white" style="border-top: 3px solid #e5a93b !important; border-radius: 8px;">
+                <div class="card-body p-4">
+                    <div class="alert alert-warning py-2 px-3 mb-4 small">
+                        <i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>
+                        Esta ação não pode ser anulada.
+                    </div>
+
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="small text-muted fw-semibold mb-1">Nome</div>
+                        <div class="text-dark fw-semibold">@Html.DisplayFor(model => model.Nome)</div>
+                    </div>
+
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="small text-muted fw-semibold mb-1">Email</div>
+                        <div class="text-dark">@Html.DisplayFor(model => model.Email)</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="small text-muted fw-semibold mb-1">Departamento</div>
+                        <div class="text-dark">@Html.DisplayFor(model => model.Departamento!.Nome)</div>
+                    </div>
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="TecnicoId" />
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="submit"
+                                    class="btn btn-danger px-3 py-2"
+                                    style="border-radius: 6px;">
+                                Confirmar eliminação
+                            </button>
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary bg-white text-dark border px-3 py-2"
+                               style="border-radius: 6px;">
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

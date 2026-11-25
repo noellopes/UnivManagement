@@ -23,6 +23,7 @@ namespace UnivManagement.Data
         public DbSet<TipoCandidatura> TipoCandidatura { get; set; } = default!;
         public DbSet<TipoBolsa> TipoBolsa { get; set; } = default!;
         public DbSet<CriterioElegibilidade> CriterioElegibilidade { get; set; } = default!;
+        public DbSet<EstadoPossivel> EstadoPossivel { get; set; } = default!;
 
         public DbSet<AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
@@ -58,7 +59,9 @@ namespace UnivManagement.Data
         public DbSet<OrientadorEstagio> OrientadoresEstagio { get; set; } = default!;
         public DbSet<Avaliacao> Avaliacoes { get; set; } = default!;
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; } = default!;
-        public DbSet<EstadoPossivel> EstadoPossivel { get; set; } = default!;
+
+        public DbSet<Tecnico> Tecnicos { get; set; } = default!;
+        public DbSet<Departamento> Departamentos { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -68,7 +71,7 @@ namespace UnivManagement.Data
                 .HasOne(item => item.Course)
                 .WithMany()
                 .HasForeignKey(item => item.CourseId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AcademicManagement.CourseStudyPlanYear>()
                 .HasIndex(item => new
