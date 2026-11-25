@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<UnivManagement.Models.AccommodationManagement.Room1>
 
 @{
-    ViewData["Title"] = " Rooms";
+    ViewData["Title"] = "Rooms";
     var roomsList = Model?.ToList() ?? new List<UnivManagement.Models.AccommodationManagement.Room1>();
 
     bool IsMaintenance(UnivManagement.Models.AccommodationManagement.Room1 r) =>
@@ -43,9 +43,11 @@
 
     .rooms-title {
         font-size: 2rem;
-        font-weight: 600;
+        font-weight: 700;
         color: #111827;
         margin: 0;
+        display: flex;
+        align-items: center;
     }
 
     .residence-filter-group {
@@ -234,7 +236,9 @@
 
 <div class="rooms-wrapper">
     <div class="rooms-top-bar">
-        <h1 class="rooms-title">@ViewData["Title"]</h1>
+        <h1 class="rooms-title">
+            <i class="bi bi-door-open text-primary me-2"></i>@ViewData["Title"]
+        </h1>
 
         <form method="get" asp-action="Index" class="residence-filter-group">
             <span class="residence-filter-prefix">Residência</span>
@@ -393,9 +397,10 @@
     <div class="new-room-btn-row">
         <a asp-action="Create" class="btn btn-primary">+ Novo Quarto</a>
     </div>
-</div>
-<div class="mt-4">
-    <a asp-controller="Accommodation" asp-action="Index" class="btn btn-outline-secondary">
-        &larr; Back to Accommodation Management
-    </a>
+
+    <div class="mt-4">
+        <a asp-controller="Accommodation" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Back to Accommodation Management
+        </a>
+    </div>
 </div>
