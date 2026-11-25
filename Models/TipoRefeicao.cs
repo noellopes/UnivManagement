@@ -2,9 +2,9 @@
 
 namespace UnivManagement.Models
 {
-    public class Regime
+    public class TipoRefeicao
     {
-        public int RegimeId { get; set; }
+        public int TipoRefeicaoId { get; set; }
 
         [Required(ErrorMessage = "Por favor, insira o {0}.")]
         [StringLength(50, ErrorMessage = "O campo {0} não pode exceder {1} carateres.")]
