@@ -140,8 +140,6 @@ namespace UnivManagement.Data {
         public DbSet<Autor> Autores { get; set; } = default!;
         public DbSet<ObraAutor> ObrasAutores { get; set; } = default!;     
         public DbSet<UnivManagement.Models.ReservaSala> Reserva { get; set; } = default!;
-        public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;
-        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
@@ -169,6 +167,8 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
+        public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;      
+        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;     
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;  
