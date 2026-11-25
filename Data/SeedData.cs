@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Models.AcademicManagement;
 using UnivManagement.Models;
+using UnivManagement.Models.AccommodationManagement;
 
 namespace UnivManagement.Data
 {
@@ -13,6 +14,7 @@ namespace UnivManagement.Data
             PopulateEstadoPossivel(db);
             PopulateCourseStates(db);
             PopulateStudents(db);
+            PopulateAccommodationApplications(db);
             PopulateServicosFuncionarios(db);
             PopulateServiceRequestTypes(db);
             PopulateServiceRequestCatalogItems(db);
@@ -324,6 +326,98 @@ namespace UnivManagement.Data
 
             dbContext.CourseState.AddRange(courseStates);
             dbContext.SaveChanges();
+        }
+
+        private static void PopulateAccommodationApplications(UniversityDbContext db)
+        {
+            if (db.AccommodationApplication.Any()) return;
+
+            // 1. Garantir que existe pelo menos um Ano Letivo na BD
+            if (!db.AcademicYear.Any())
+            {
+                db.AcademicYear.AddRange(new List<AcademicYear>
+        {
+            new AcademicYear { AcademicYearId = 0, StartYear = 2025, EndYear = 2026 },
+            new AcademicYear { AcademicYearId = 0, StartYear = 2026, EndYear = 2027 }
+        });
+                db.SaveChanges();
+            }
+
+            // 2. Garantir que existem Estudantes na BD
+            if (!db.Student.Any())
+            {
+                PopulateStudents(db);
+            }
+
+            var academicYear = db.AcademicYear
+                .OrderByDescending(y => y.StartYear)
+                .First();
+
+            var students = db.Student.Take(6).ToList();
+            if (!students.Any()) return;
+
+            // 3. Criar candidaturas de teste cobrindo todos os estados possíveis
+            var applications = new List<AccommodationApplication>
+    {
+        new AccommodationApplication
+        {
+            StudentId = students[0 % students.Count].StudentId,
+            AcademicYearId = academicYear.AcademicYearId,
+            Status = ApplicationStatus.Submitted,
+            SubmittedAt = DateTime.Now.AddDays(-2),
+            HasScholarshipPriority = false
+        },
+        new AccommodationApplication
+        {
+            StudentId = students[1 % students.Count].StudentId,
+            AcademicYearId = academicYear.AcademicYearId,
+            Status = ApplicationStatus.UnderReview,
+            SubmittedAt = DateTime.Now.AddDays(-5),
+            HasScholarshipPriority = true,
+            PriorityCheckedAt = DateTime.Now.AddDays(-3),
+            PriorityOverrideReason = "Bolseiro DGES confirmado."
+        },
+        new AccommodationApplication
+        {
+            StudentId = students[2 % students.Count].StudentId,
+            AcademicYearId = academicYear.AcademicYearId,
+            Status = ApplicationStatus.Approved,
+            SubmittedAt = DateTime.Now.AddDays(-12),
+            HasScholarshipPriority = true,
+            PriorityCheckedAt = DateTime.Now.AddDays(-10),
+            PriorityOverrideReason = "Prioridade atribuída por comprovativo de bolsa."
+        },
+        new AccommodationApplication
+        {
+            StudentId = students[3 % students.Count].StudentId,
+            AcademicYearId = academicYear.AcademicYearId,
+            Status = ApplicationStatus.Approved,
+            SubmittedAt = DateTime.Now.AddDays(-15),
+            HasScholarshipPriority = false,
+            PriorityCheckedAt = DateTime.Now.AddDays(-11)
+        },
+        new AccommodationApplication
+        {
+            StudentId = students[4 % students.Count].StudentId,
+            AcademicYearId = academicYear.AcademicYearId,
+            Status = ApplicationStatus.Rejected,
+            SubmittedAt = DateTime.Now.AddDays(-20),
+            HasScholarshipPriority = false,
+            PriorityCheckedAt = DateTime.Now.AddDays(-18),
+            PriorityOverrideReason = "Distância da residência habitual inferior ao mínimo exigido."
+        },
+        new AccommodationApplication
+        {
+            StudentId = students[5 % students.Count].StudentId,
+            AcademicYearId = academicYear.AcademicYearId,
+            Status = ApplicationStatus.Withdrawn,
+            SubmittedAt = DateTime.Now.AddDays(-8),
+            HasScholarshipPriority = false
+        }
+    };
+
+            db.AccommodationApplication.AddRange(applications);
+            db.SaveChanges();
         }
     }
 }
