@@ -14,7 +14,7 @@ public class AccommodationPaymentsController : Controller
     }
 
     // GET: ACCOMMODATIONPAYMENTS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index()
     {
         return View(await _context.AccommodationPayment.ToListAsync());
     }
@@ -54,8 +54,12 @@ public class AccommodationPaymentsController : Controller
         {
             _context.Add(accommodationpayment);
             await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Payment created successfully!";
             return RedirectToAction(nameof(Index));
         }
+
+        TempData["ErrorMessage"] = "Could not create the payment. Please check the form errors.";
         return View(accommodationpayment);
     }
 
@@ -93,6 +97,8 @@ public class AccommodationPaymentsController : Controller
             {
                 _context.Update(accommodationpayment);
                 await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Payment updated successfully!";
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -107,6 +113,8 @@ public class AccommodationPaymentsController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+
+        TempData["ErrorMessage"] = "Could not update the payment. Please check the form errors.";
         return View(accommodationpayment);
     }
 
@@ -133,13 +141,26 @@ public class AccommodationPaymentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var accommodationpayment = await _context.AccommodationPayment.FindAsync(id);
-        if (accommodationpayment != null)
+        try
         {
-            _context.AccommodationPayment.Remove(accommodationpayment);
+            var accommodationpayment = await _context.AccommodationPayment.FindAsync(id);
+            if (accommodationpayment != null)
+            {
+                _context.AccommodationPayment.Remove(accommodationpayment);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Payment deleted successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Payment not found.";
+            }
+        }
+        catch (Exception)
+        {
+            TempData["ErrorMessage"] = "Cannot delete this payment because it has associated records.";
         }
 
-        await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 

@@ -8,28 +8,36 @@ namespace UnivManagement.Models.AccommodationManagement
         public int AccommodationPaymentId { get; set; }
 
         /* ACCOMMODATION CONTRACT: */
-        [Required(ErrorMessage = "The {0} is required.")]
-        public int AccommodationContractId { get; set; }
+        [Required(ErrorMessage = "Please select a valid {0}.")]
+        [Display(Name = "contract ID")]
+        public int? AccommodationContractId { get; set; }
 
         /* DUE DATE: */
-        [Required(ErrorMessage = "The {0} is required.")]
+        [Required(ErrorMessage = "Please fill in a {0}")]
         [DataType(DataType.Date)]
-        public DateOnly DueDate { get; set; }
+        [Display(Name = "due date")]
+        public DateOnly? DueDate { get; set; }
 
         /* AMOUNT: */
-        [Required(ErrorMessage = "The {0} is required.")]
-        public decimal Amount { get; set; }
+        [Required(ErrorMessage = "{0} missing.")]
+        [Range(0.01, 1000000, ErrorMessage = "The {0} must be greater than zero.")]
+        [Display(Name = "Amount")]
+        public decimal? Amount { get; set; }
 
         /* PAID AMOUNT: */
-        [Required(ErrorMessage = "The {0} is required.")]
-        public decimal PaidAmount { get; set; }
+        [Required(ErrorMessage = "{0} missing.")]
+        [Range(0, 1000000, ErrorMessage = "The {0} cannot be negative.")]
+        [Display(Name = "Paid Amount")]
+        public decimal? PaidAmount { get; set; }
 
         /* PAYMENT DATE: */
         [DataType(DataType.DateTime)]
+        [Display(Name = "Paid At")]
         public DateTime? PaidAt { get; set; }
 
         /* STATUS: */
-        [Required(ErrorMessage = "The {0} is required.")]
+        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = "Status")]
         public PaymentStatus Status { get; set; }
 
         /* RULE: the paid amount cannot be greater than the amount due */
