@@ -1,57 +1,76 @@
 @model UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory
 
 @{
-    ViewData["Title"] = "Status History Record Details";
+    ViewData["Title"] = "Status Change Details";
     var statusName = Model.PossibleStatus?.Name ?? "Unknown";
     var badgeClass = statusName switch
     {
-        "Submitted" => "bg-secondary",
-        "UnderReview" or "Under Review" => "bg-warning text-dark",
-        "Approved" => "bg-success",
-        "Rejected" => "bg-danger",
-        "Withdrawn" => "bg-dark",
-        _ => "bg-info"
+        "Submitted" => "text-bg-secondary",
+        "UnderReview" or "Under Review" => "text-bg-warning",
+        "Approved" => "text-bg-success",
+        "Rejected" => "text-bg-danger",
+        "Withdrawn" => "text-bg-dark",
+        _ => "text-bg-info"
     };
 }
 
-<h1>Status Change Details</h1>
-<hr />
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 pt-4 px-4">
+                    <h1 class="h4 fw-bold mb-1">
+                        <i class="bi bi-clock-history text-primary me-2"></i>Status Change Details
+                    </h1>
+                    <p class="text-body-secondary mb-0">Information about this application status change.</p>
+                </div>
+                <div class="card-body p-4">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5 text-body-secondary">@Html.DisplayNameFor(model => model.AccommodationApplicationId)</dt>
+                        <dd class="col-sm-7">Application #@Model.AccommodationApplicationId</dd>
 
-<div class="card shadow-sm mb-4">
-    <div class="card-body">
-        <dl class="row mb-0">
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.AccommodationApplicationId)</dt>
-            <dd class="col-sm-9">Application #@Model.AccommodationApplicationId</dd>
+                        @if (Model.AccommodationApplication != null)
+                        {
+                            <dt class="col-sm-5 text-body-secondary">Student ID</dt>
+                            <dd class="col-sm-7">@Model.AccommodationApplication.StudentId</dd>
+                        }
 
-            @if (Model.AccommodationApplication != null)
-            {
-                <dt class="col-sm-3">Student ID</dt>
-                <dd class="col-sm-9">@Model.AccommodationApplication.StudentId</dd>
-            }
+                        <dt class="col-sm-5 text-body-secondary">@Html.DisplayNameFor(model => model.PossibleStatus)</dt>
+                        <dd class="col-sm-7">
+                            <span class="badge @badgeClass">@statusName</span>
+                        </dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PossibleStatus)</dt>
-            <dd class="col-sm-9">
-                <span class="badge @badgeClass">@statusName</span>
-            </dd>
+                        <dt class="col-sm-5 text-body-secondary">@Html.DisplayNameFor(model => model.ChangedAt)</dt>
+                        <dd class="col-sm-7">@Model.ChangedAt.ToString("dd/MM/yyyy HH:mm:ss")</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ChangedAt)</dt>
-            <dd class="col-sm-9">@Model.ChangedAt.ToString("dd/MM/yyyy HH:mm:ss")</dd>
+                        <dt class="col-sm-5 text-body-secondary">@Html.DisplayNameFor(model => model.ChangedBy)</dt>
+                        <dd class="col-sm-7">@Model.ChangedBy</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ChangedBy)</dt>
-            <dd class="col-sm-9">@Model.ChangedBy</dd>
-
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Notes)</dt>
-            <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Notes) ? "No notes provided." : Model.Notes)</dd>
-        </dl>
+                        <dt class="col-sm-5 text-body-secondary">@Html.DisplayNameFor(model => model.Notes)</dt>
+                        <dd class="col-sm-7 mb-0">
+                            @if (!string.IsNullOrWhiteSpace(Model.Notes))
+                            {
+                                @Model.Notes
+                            }
+                            else
+                            {
+                                <span class="text-body-secondary">&mdash;</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-transparent border-0 pb-4 px-4 d-flex flex-wrap gap-2 justify-content-end">
+                    <a asp-action="Index" asp-route-applicationId="@Model.AccommodationApplicationId" class="btn btn-outline-primary">
+                        <i class="bi bi-funnel me-1"></i> Application History
+                    </a>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Back to List
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.ApplicationStatusHistoryId" class="btn btn-outline-danger">
+                        <i class="bi bi-trash me-1"></i> Delete
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
-<div class="d-flex gap-2">
-    <a asp-action="Index" asp-route-applicationId="@Model.AccommodationApplicationId" class="btn btn-outline-primary">
-        View History for this Application
-    </a>
-    <a asp-action="Index" class="btn btn-secondary">Back to Full List</a>
-    <a asp-action="Delete" asp-route-id="@Model.ApplicationStatusHistoryId" class="btn btn-outline-danger">
-        Delete
-    </a>
 </div>
