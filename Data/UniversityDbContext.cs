@@ -95,7 +95,7 @@ namespace UnivManagement.Data {
                 .IsUnique();
 
             // Room: número único por residência:
-            modelBuilder.Entity<Models.AccommodationManagement.Room>()
+            modelBuilder.Entity<Models.AccommodationManagement.Room1>()
                 .HasIndex(r => new { r.ResidenceId, r.Number })
                 .IsUnique();
 
@@ -146,6 +146,11 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AcademicManagement.Student> Student { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicYear> AcademicYear { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.UC> UC { get; set; } = default!;
+
+        public DbSet<UnivManagement.Models.AccommodationManagement.Room1> Room { get; set; } = default!;
+
+        public DbSet<UnivManagement.Models.AccommodationManagement.RoomType> RoomType { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.RoomStatus> RoomStatus { get; set; } = default!;
         public DbSet<Refeicao> Refeicoes { get; set; }
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<TipoRefeicao> TiposRefeicao { get; set; } = default!;
