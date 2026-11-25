@@ -1,0 +1,312 @@
+﻿@{
+    ViewData["Title"] = "Painel de Administração - Cantina e Alimentação";
+}
+
+
+    <div class="row">
+        <!-- Sidebar Lateral Estilo SIGA -->
+        <nav class="col-md-3 col-lg-2 d-md-block siga-sidebar p-3 collapse">
+            <div class="d-flex align-items-center mb-4 px-2 pt-2">
+                <div class="bg-white text-primary p-2 rounded-3 me-2 shadow-sm d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                    <i class="bi bi-basket2-fill fs-5"></i>
+                </div>
+                <div>
+                    <span class="fs-6 fw-bold d-block leading-tight">Cantina & Alim.</span>
+                    <small class="text-white-50 fs-7">Painel Admin</small>
+                </div>
+            </div>
+
+            <hr class="text-white-50 opacity-25 my-3" />
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#"><i class="bi bi-grid-1x2-fill me-2"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Ementa" asp-action="Index"><i class="bi bi-journal-text me-2"></i> Ementas & Pratos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="ReservaRefeicao" asp-action="Index"><i class="bi bi-calendar-check-fill me-2"></i> Reservas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="CarteiraDigital" asp-action="Index"><i class="bi bi-credit-card-2-front-fill me-2"></i> Carteiras & Saldos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Cliente" asp-action="Index"><i class="bi bi-people-fill me-2"></i> Consumidores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Funcionario" asp-action="Index"><i class="bi bi-person-badge-fill me-2"></i> Pessoal & Serviço</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" asp-controller="Departamento" asp-action="Index"><i class="bi bi-sliders me-2"></i> Estrutura de Apoio</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Área Principal de Conteúdo -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4" style="background-color: var(--admin-bg-light);">
+
+            <!-- Barra Superior de Informação -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center pb-3 mb-4 border-bottom gap-3">
+                <div>
+                    <h1 class="h3 fw-bold text-dark mb-1">Gestão de Cantina e Alimentação</h1>
+                    <p class="text-muted mb-0">Painel administrativo.</p>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-white text-dark border px-3 py-2 shadow-sm rounded-pill fw-semibold">
+                        <i class="bi bi-calendar3 text-primary me-1"></i> Ano Letivo 2026/2027
+                    </span>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-3">
+                        <i class="bi bi-box-arrow-left me-1"></i> Sair do Módulo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Grelha dos Módulos da Base de Dados (Operações CRUD) -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-5">
+
+                <!-- 1. Gestão de Alimentação (Prato, Ementa, EmentaPratos, TipoRefeicao) -->
+                <div class="col">
+                    <div class="card card-dashboard h-100 p-3 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary-subtle text-primary icon-shape me-3">
+                                    <i class="bi bi-egg-fried fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="card-title fw-bold text-dark mb-0">Ementas & Cardápio</h5>
+                                    <small class="text-muted">Prato, Ementa, EmentaPratos, TipoRefeicao</small>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow-1">
+                                <!-- Entidade Prato -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-primary"></i> Pratos</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="Prato" asp-action="Index" class="btn btn-outline-primary" title="Listar / Gerir"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="Prato" asp-action="Create" class="btn btn-primary" title="Adicionar Novo"><i class="bi bi-plus-lg"></i> Novo</a>
+                                    </div>
+                                </div>
+                                <!-- Entidade Ementa -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-primary"></i> Ementas</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="Ementa" asp-action="Index" class="btn btn-outline-primary" title="Listar / Gerir"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="Ementa" asp-action="Create" class="btn btn-primary" title="Adicionar Nova"><i class="bi bi-plus-lg"></i> Nova</a>
+                                    </div>
+                                </div>
+                                <!-- Entidade TipoRefeicao -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-primary"></i> Tipos de Refeição</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="TipoRefeicao" asp-action="Index" class="btn btn-outline-primary" title="Listar / Gerir"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="TipoRefeicao" asp-action="Create" class="btn btn-primary" title="Adicionar Novo"><i class="bi bi-plus-lg"></i> Novo</a>
+                                    </div>
+                                </div>
+                                <!-- Entidade EmentaPratos -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center mb-0">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-primary"></i> Associação de Pratos</span>
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-controller="TipoRefeicao" asp-action="Index" class="btn btn-outline-primary" title="Listar / Gerir"><i class="bi bi-list"></i></a>
+                                    <a asp-controller="TipoRefeicao" asp-action="Create" class="btn btn-primary" title="Adicionar Novo"><i class="bi bi-plus-lg"></i> Associar</a>
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Reservas e Marcações (ReservaRefeicao, EstadoReserva) -->
+                <div class="col">
+                    <div class="card card-dashboard h-100 p-3 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-success-subtle text-success icon-shape me-3">
+                                    <i class="bi bi-calendar-check fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="card-title fw-bold text-dark mb-0">Reservas</h5>
+                                    <small class="text-muted">ReservaRefeicao, EstadoReserva</small>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow-1">
+                                <!-- Entidade ReservaRefeicao -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-success"></i> Reservas de Refeições</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="ReservaRefeicao" asp-action="Index" class="btn btn-outline-success" title="Listar Todas"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="ReservaRefeicao" asp-action="Create" class="btn btn-success" title="Nova Reserva"><i class="bi bi-plus-lg"></i> Criar</a>
+                                    </div>
+                                </div>
+                                <!-- Entidade EstadoReserva -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center mb-0">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-success"></i> Estados de Reserva</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="EstadoReserva" asp-action="Index" class="btn btn-outline-success" title="Listar / Gerir"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="EstadoReserva" asp-action="Create" class="btn btn-success" title="Novo Estado"><i class="bi bi-plus-lg"></i> Novo</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Carteiras & Finanças (CarteiraDigital, Transacao) -->
+                <div class="col">
+                    <div class="card card-dashboard h-100 p-3 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-warning-subtle text-warning-emphasis icon-shape me-3">
+                                    <i class="bi bi-wallet2 fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="card-title fw-bold text-dark mb-0">Carteira & Movimentos</h5>
+                                    <small class="text-muted">CarteiraDigital, Transacao</small>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow-1">
+                                <!-- Entidade CarteiraDigital -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-warning"></i> Carteiras Digitais</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="CarteiraDigital" asp-action="Index" class="btn btn-outline-warning text-dark" title="Listar Carteiras / gerir "><i class="bi bi-list"></i></a>
+                                        <a asp-controller="CarteiraDigital" asp-action="Create" class="btn btn-warning text-dark" title="Criar Carteira"><i class="bi bi-plus-lg"></i> Criar</a>
+                                    </div>
+                                </div>
+                                <!-- Entidade Transacao -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center mb-0">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-warning"></i> Histórico de Transações</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="Transacao" asp-action="Index" class="btn btn-outline-warning text-dark" title="Ver Histórico"><i class="bi bi-list"></i></a>
+                                    <a asp-controller="Transacao" asp-action="Create" class="btn btn-warning text-dark" title="Nova Transação/Carregamento"><i class="bi bi-plus-lg"></i> carregar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Pessoas e Consumidores (Cliente, Docente, Convidado) -->
+                <div class="col">
+                    <div class="card card-dashboard h-100 p-3 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-info-subtle text-info-emphasis icon-shape me-3">
+                                    <i class="bi bi-people fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="card-title fw-bold text-dark mb-0">Consumidores</h5>
+                                <small class="text-muted">Funcionário, Docente, Convidado</small>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow-1">
+                                <!-- Entidade Cliente -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center">
+                                <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-info"></i> Funcionários </span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="Funcionario" asp-action="Index" class="btn btn-outline-info" title="Gerir Funcionario"><i class="bi bi-list"></i></a>
+                                    <a asp-controller="Funcionario" asp-action="Create" class="btn btn-info text-white" title="Adicionar Funcionario"><i class="bi bi-plus-lg"></i> Novo</a>
+                                    </div>
+                                </div>
+                                <!-- Entidade Docente -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-info"></i> Corpo Docente</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="Docente" asp-action="Index" class="btn btn-outline-info" title="Gerir Docentes"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="Docente" asp-action="Create" class="btn btn-info text-white" title="Adicionar Docente"><i class="bi bi-plus-lg"></i> Novo</a>
+                                    </div>
+                                </div>
+                                <!-- Entidade Convidado -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center mb-0">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-info"></i> Convidados</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="Convidado" asp-action="Index" class="btn btn-outline-info" title="Gerir Convidados"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="Convidado" asp-action="Create" class="btn btn-info text-white" title="Adicionar Convidado"><i class="bi bi-plus-lg"></i> Novo</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Pessoal da Cantina (Funcionario, ServicoFuncionario) -->
+                <div class="col">
+                    <div class="card card-dashboard h-100 p-3 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-danger-subtle text-danger icon-shape me-3">
+                                    <i class="bi bi-person-badge fs-3"></i>
+                                </div>
+                                <div>
+                                <h5 class="card-title fw-bold text-dark mb-0">Pessoal da Cantina & Serviço</h5>
+                                    <small class="text-muted">Funcionario, ServicoFuncionario</small>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow-1">
+                                <!-- Entidade Funcionario -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-danger"></i> Funcionários</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="Funcionario" asp-action="Index" class="btn btn-outline-danger" title="Gerir Funcionários"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="Funcionario" asp-action="Create" class="btn btn-danger" title="Novo Funcionário"><i class="bi bi-plus-lg"></i> Novo</a>
+                                    </div>
+                                </div>
+                                <!-- Entidade ServicoFuncionario -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center mb-0">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-danger"></i> Serviços de Funcionário</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="ServicoFuncionario" asp-action="Index" class="btn btn-outline-danger" title="Gerir Serviços"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="ServicoFuncionario" asp-action="Create" class="btn btn-danger" title="Novo Serviço"><i class="bi bi-plus-lg"></i> Novo</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Tabelas de Apoio Institucional (Departamento, FuncaoDocente) -->
+                <div class="col">
+                    <div class="card card-dashboard h-100 p-3 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-secondary-subtle text-secondary icon-shape me-3">
+                                    <i class="bi bi-sliders fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="card-title fw-bold text-dark mb-0">Estrutura de Apoio</h5>
+                                    <small class="text-muted">Departamento, FuncaoDocente</small>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow-1">
+                                <!-- Entidade Departamento -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-secondary"></i> Departamentos</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="Departamento" asp-action="Index" class="btn btn-outline-secondary" title="Gerir Departamentos"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="Departamento" asp-action="Create" class="btn btn-secondary" title="Novo Departamento"><i class="bi bi-plus-lg"></i> Novo</a>
+                                    </div>
+                                </div>
+                                <!-- Entidade FuncaoDocente -->
+                                <div class="crud-group-item d-flex justify-content-between align-items-center mb-0">
+                                    <span class="fw-semibold text-dark fs-7"><i class="bi bi-record-circle me-1 text-secondary"></i> Funções de Docente</span>
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-controller="FuncaoDocente" asp-action="Index" class="btn btn-outline-secondary" title="Gerir Funções"><i class="bi bi-list"></i></a>
+                                        <a asp-controller="FuncaoDocente" asp-action="Create" class="btn btn-secondary" title="Nova Função"><i class="bi bi-plus-lg"></i> Nova</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>

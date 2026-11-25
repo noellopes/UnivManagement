@@ -1,13 +1,13 @@
 @model IEnumerable<UnivManagement.Models.AccommodationManagement.AccommodationApplication>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Applications";
 }
 
-<h1>Index</h1>
+<h1>Accommodation Applications</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary mb-3">Create New Application</a>
 </p>
 <table class="table">
     <thead>
@@ -61,9 +61,9 @@
                 @Html.DisplayFor(model => item.PriorityOverrideReason)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.AccommodationApplicationId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AccommodationApplicationId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AccommodationApplicationId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.AccommodationApplicationId" class="btn btn-sm btn-outline-success">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.AccommodationApplicationId" class="btn btn-sm btn-outline-secondary">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.AccommodationApplicationId" class="btn btn-sm btn-outline-danger">Delete</a>
             </td>
         </tr>
 }
