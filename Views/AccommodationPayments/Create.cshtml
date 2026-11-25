@@ -1,3 +1,4 @@
+
 @using UnivManagement.Models.AccommodationManagement
 @model UnivManagement.Models.AccommodationManagement.AccommodationPayment
 
@@ -15,13 +16,20 @@
                     </h1>
                     <p class="text-body-secondary mb-0">Fill in the details of the accommodation payment.</p>
                 </div>
+
                 <div class="card-body p-4">
-                    <form asp-action="Create">
+                    <form asp-action="Create" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <div class="mb-3">
                             <label asp-for="AccommodationContractId" class="form-label">Contract</label>
-                            <input asp-for="AccommodationContractId" class="form-control" />
+
+                            <select asp-for="AccommodationContractId"
+                                    asp-items="ViewBag.AccommodationContractId"
+                                    class="form-select">
+                                <option value="">-- Select a contract --</option>
+                            </select>
+
                             <span asp-validation-for="AccommodationContractId" class="text-danger small"></span>
                         </div>
 
@@ -40,6 +48,7 @@
                                 </div>
                                 <span asp-validation-for="Amount" class="text-danger small"></span>
                             </div>
+
                             <div class="col-md-6 mb-3">
                                 <label asp-for="PaidAmount" class="form-label">Paid Amount</label>
                                 <div class="input-group">
@@ -58,12 +67,16 @@
 
                         <div class="mb-3">
                             <label asp-for="Status" class="form-label">Status</label>
-                            <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<PaymentStatus>()"></select>
+                            <select asp-for="Status"
+                                    class="form-select"
+                                    asp-items="Html.GetEnumSelectList<PaymentStatus>()">
+                            </select>
                             <span asp-validation-for="Status" class="text-danger small"></span>
                         </div>
 
                         <div class="d-flex gap-2 justify-content-end mt-4">
                             <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-lg me-1"></i> Create
                             </button>
@@ -74,3 +87,9 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
