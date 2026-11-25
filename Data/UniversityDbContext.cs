@@ -37,6 +37,16 @@ namespace UnivManagement.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // ServiceRequestAttachment: a request cannot have two attachments with the same file name
+            modelBuilder.Entity<Models.ServiceRequestAttachment>()
+                .HasIndex(a => new { a.ServiceRequestId, a.FileName })
+                .IsUnique();
+
+            // ServiceRequestAttachment: when a request is deleted, its attachments are deleted with it
+            modelBuilder.Entity<Models.ServiceRequestAttachment>()
+                .HasOne(a => a.ServiceRequest)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Cascade);
             // ServiceRequestHistory: the history belongs to its request and is deleted with it
             modelBuilder.Entity<Models.ServiceRequestHistory>()
                 .HasOne(h => h.ServiceRequest)
@@ -147,6 +157,7 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.ServiceRequestType> ServiceRequestTypes { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestStatus> ServiceRequestStatuses { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequest> ServiceRequests { get; set; } = default!;
+        public DbSet<UnivManagement.Models.ServiceRequestAttachment> ServiceRequestAttachments { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestHistory> ServiceRequestHistories { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestAssignment> ServiceRequestAssignments { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServiceRequestComment> ServiceRequestComments { get; set; } = default!;
