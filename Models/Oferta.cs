@@ -25,7 +25,11 @@ namespace UnivManagement.Models
         public int IdEmpresa { get; set; }
         public Empresa Empresa { get; set; }
 
-        public ICollection<Candidatura> Candidaturas { get; set; } = new List<Candidatura>();
+        [ForeignKey("Area")]
+        public int IdArea { get; set; }
+        public Area? Area { get; set; }
+
+        public ICollection<Candidaturas> Candidaturas { get; set; } = new List<Candidaturas>();
 
         public void Publicar() { }
         public void Editar() { }

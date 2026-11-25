@@ -16,7 +16,7 @@ namespace UnivManagement.Models
         public string Contacto { get; set; }
 
         public ICollection<Empregador> Empregadores { get; set; } = new List<Empregador>();
-        public ICollection<Oferta> Ofertas { get; set; } = new List<Oferta>();
+        public ICollection<Ofertas> Ofertas { get; set; } = new List<Ofertas>();
 
         public void AtualizarDados() { }
         public void ConsultarDados() { }

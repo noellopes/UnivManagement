@@ -19,7 +19,7 @@ namespace UnivManagement.Models
 
         [ForeignKey("Oferta")]
         public int IdOferta { get; set; }
-        public Oferta Oferta { get; set; }
+        public Ofertas Oferta { get; set; }
 
         public void Submeter() { }
         public void ConsultarEstado() { }

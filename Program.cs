@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UnivManagement.Data;
+using UnivManagement.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +39,7 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Seed the database with test data for EstagiosTesteDbContext
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     using (var servicesScope = app.Services.CreateScope())
@@ -55,11 +56,21 @@ if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
 
-    using (var servicesScope = app.Services.CreateScope())
+    using var servicesScope = app.Services.CreateScope();
+
+    var estagiosTesteDb = servicesScope.ServiceProvider
+        .GetService<EstagiosTesteDbContext>();
+    if (estagiosTesteDb != null)
     {
-        var db = servicesScope.ServiceProvider.GetService<UniversityDbContext>();
-        SeedData.Populate(db);
+        EstagiosTesteSeedData.Populate(estagiosTesteDb);
     }
+
+    var universityDb = servicesScope.ServiceProvider
+        .GetRequiredService<UniversityDbContext>();
+
+    // Garante que a base de dados está criada e aplica o Seed Data completo
+    universityDb.Database.EnsureCreated();
+    SeedData.Initialize(universityDb);
 }
 else
 {

@@ -17,7 +17,7 @@ namespace UnivManagement.Models
         [Required]
         public string Password { get; set; }
 
-        public ICollection<Estagio> Estagios { get; set; } = new List<Estagio>();
+        public ICollection<Estagios> Estagios { get; set; } = new List<Estagios>();
 
         public void IniciarSessao() { }
         public void GerirOfertas() { }

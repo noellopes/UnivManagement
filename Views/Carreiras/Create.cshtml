@@ -1,0 +1,73 @@
+@model UnivManagement.Models.Carreiras
+
+@{
+    ViewData["Title"] = "Nova Carreira";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h4 class="mb-0 fw-bold">Nova Carreira</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="IdAluno" class="form-label fw-semibold">Estudante</label>
+                                <select asp-for="IdAluno" asp-items="ViewBag.IdAluno" class="form-select">
+                                    <option value="">-- Selecione um estudante --</option>
+                                </select>
+                                <span asp-validation-for="IdAluno" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="CargoAtual" class="form-label fw-semibold">Cargo Atual</label>
+                                <input asp-for="CargoAtual" class="form-control" placeholder="Ex.: Software Engineer" />
+                                <span asp-validation-for="CargoAtual" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="EmpresaAtual" class="form-label fw-semibold">Empresa Atual</label>
+                                <input asp-for="EmpresaAtual" class="form-control" placeholder="Ex.: Critical TechWorks" />
+                                <span asp-validation-for="EmpresaAtual" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Competencias" class="form-label fw-semibold">Competências</label>
+                                <textarea asp-for="Competencias" class="form-control" rows="2" placeholder="Ex.: C#, ASP.NET Core, SQL"></textarea>
+                                <span asp-validation-for="Competencias" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Certificacoes" class="form-label fw-semibold">Certificações</label>
+                                <textarea asp-for="Certificacoes" class="form-control" rows="2" placeholder="Ex.: AZ-900, Cisco CCNA"></textarea>
+                                <span asp-validation-for="Certificacoes" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="HistoricoProfissional" class="form-label fw-semibold">Histórico Profissional</label>
+                                <textarea asp-for="HistoricoProfissional" class="form-control" rows="4" placeholder="Resumo de experiências, estágios e funções anteriores..."></textarea>
+                                <span asp-validation-for="HistoricoProfissional" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                            <a asp-action="Index" class="btn btn-light border">Cancelar</a>
+                            <button type="submit" class="btn btn-primary px-4">Criar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

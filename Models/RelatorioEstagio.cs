@@ -15,7 +15,7 @@ namespace UnivManagement.Models
 
         [ForeignKey("Estagio")]
         public int IdEstagio { get; set; }
-        public Estagio Estagio { get; set; }
+        public Estagios Estagio { get; set; }
 
         public void SubmeterRelatorio() { }
         public void ConsultarRelatorio() { }

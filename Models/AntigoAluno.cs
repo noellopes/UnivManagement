@@ -22,9 +22,9 @@ namespace UnivManagement.Models
 
         public string SituacaoProfissional { get; set; }
 
-        public Carreira Carreira { get; set; }
-        public ICollection<Candidatura> Candidaturas { get; set; } = new List<Candidatura>();
-        public ICollection<Estagio> Estagios { get; set; } = new List<Estagio>();
+        public Carreiras Carreira { get; set; }
+        public ICollection<Candidaturas> Candidaturas { get; set; } = new List<Candidaturas>();
+        public ICollection<Estagios> Estagios { get; set; } = new List<Estagios>();
 
         public void CriarConta() { }
         public void IniciarSessao() { }

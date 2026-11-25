@@ -1,0 +1,60 @@
+@model UnivManagement.Models.Candidaturas
+
+@{
+    ViewData["Title"] = "Eliminar Candidatura";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-danger text-white py-3">
+                    <h4 class="mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>Eliminar Candidatura</h4>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-danger fw-semibold">Tem a certeza de que pretende eliminar esta candidatura?</p>
+                    <hr />
+                    
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 text-muted">Estudante</dt>
+                        <dd class="col-sm-8 fw-semibold text-dark">
+                            @(Model.Estudante != null ? Model.Estudante.Nome : "Estudante Desconhecido")
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Oferta</dt>
+                        <dd class="col-sm-8 fw-semibold text-dark">
+                            @(Model.Oferta != null ? Model.Oferta.Titulo : "Oferta Desconhecida")
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Data da Candidatura</dt>
+                        <dd class="col-sm-8">
+                            @Model.DataCandidatura.ToShortDateString()
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Estado</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-secondary px-2 py-1">@Model.Estado</span>
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Currículo</dt>
+                        <dd class="col-sm-8">
+                            @Model.Curriculo
+                        </dd>
+                    </dl>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="IdCandidatura" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Voltar à Lista
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i> Confirmar Eliminação
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

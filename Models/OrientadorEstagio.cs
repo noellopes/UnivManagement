@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UnivManagement.Models
 {
-    public class OrientadorEstagio
+    public class OrientadorEstagios
     {
         [Key]
         public int IdOrientador { get; set; }
@@ -17,7 +17,7 @@ namespace UnivManagement.Models
         [Required]
         public string Password { get; set; }
 
-        public ICollection<Estagio> Estagios { get; set; } = new List<Estagio>();
+        public ICollection<Estagios> Estagios { get; set; } = new List<Estagios>();
         public ICollection<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();
 
         public void IniciarSessao() { }

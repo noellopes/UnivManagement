@@ -1,0 +1,74 @@
+@model IEnumerable<UnivManagement.Models.Carreiras>
+
+@{
+    ViewData["Title"] = "Carreiras";
+}
+
+<div class="container py-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-0 fw-bold">Gestão de Carreiras</h2>
+            <small class="text-muted">Percurso profissional, cargos e competências dos estudantes</small>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            Nova Carreira
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Estudante</th>
+                            <th>Cargo Atual</th>
+                            <th>Empresa Atual</th>
+                            <th>Competências</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">
+                                    @(item.AntigoAluno?.Nome ?? $"Aluno #{item.IdAluno}")
+                                </td>
+                                <td>@(string.IsNullOrWhiteSpace(item.CargoAtual) ? "—" : item.CargoAtual)</td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(item.EmpresaAtual))
+                                    {
+                                        <span class="badge bg-secondary-subtle text-secondary">@item.EmpresaAtual</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">—</span>
+                                    }
+                                </td>
+                                <td class="text-truncate" style="max-width: 240px;">
+                                    @(string.IsNullOrWhiteSpace(item.Competencias) ? "—" : item.Competencias)
+                                </td>
+                                <td class="text-end">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a asp-action="Details" asp-route-id="@item.IdCarreira" class="btn btn-outline-info">Detalhes</a>
+                                        <a asp-action="Edit" asp-route-id="@item.IdCarreira" class="btn btn-outline-warning">Editar</a>
+                                        <a asp-action="Delete" asp-route-id="@item.IdCarreira" class="btn btn-outline-danger">Eliminar</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

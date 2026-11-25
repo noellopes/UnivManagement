@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UnivManagement.Models
 {
-    public class Carreira
+    public class Carreiras
     {
         [Key]
         public int IdCarreira { get; set; }

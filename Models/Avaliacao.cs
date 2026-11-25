@@ -15,11 +15,11 @@ namespace UnivManagement.Models
 
         [ForeignKey("Estagio")]
         public int IdEstagio { get; set; }
-        public Estagio Estagio { get; set; }
+        public Estagios Estagio { get; set; }
 
         [ForeignKey("OrientadorEstagio")]
         public int IdOrientador { get; set; }
-        public OrientadorEstagio OrientadorEstagio { get; set; }
+        public OrientadorEstagios OrientadorEstagio { get; set; }
 
         public void RegistrarAvaliacao() { }
         public void ConsultarAvaliacao() { }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UnivManagement.Models
 {
-    public class Estagio
+    public class Estagios
     {
         [Key]
         public int IdEstagio { get; set; }
@@ -26,11 +26,11 @@ namespace UnivManagement.Models
 
         [ForeignKey("GestorEstagio")]
         public int IdGestor { get; set; }
-        public GestorEstagio GestorEstagio { get; set; }
+        public GestorEstagios GestorEstagio { get; set; }
 
         [ForeignKey("OrientadorEstagio")]
         public int? IdOrientador { get; set; }
-        public OrientadorEstagio OrientadorEstagio { get; set; }
+        public OrientadorEstagios OrientadorEstagio { get; set; }
 
         public ICollection<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();
         public ICollection<RelatorioEstagio> Relatorios { get; set; } = new List<RelatorioEstagio>();

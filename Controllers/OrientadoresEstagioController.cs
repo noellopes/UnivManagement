@@ -48,7 +48,7 @@ public class OrientadoresEstagioController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Nome,Email,Password")] OrientadorEstagio orientadorestagio)
+        [Bind("Nome,Email,Password")] OrientadorEstagios orientadorestagio)
     {
         if (ModelState.IsValid)
         {
