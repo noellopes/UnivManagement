@@ -155,6 +155,7 @@ namespace UnivManagement.Data {
         public DbSet<UnivManagement.Models.AccommodationManagement.ApplicationStatusHistory> ApplicationStatusHistory { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.AccommodationApplication> AccommodationApplication { get; set; } = default!;
         public DbSet<UnivManagement.Models.AccommodationManagement.Room> Room { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AccommodationManagement.RoomAllocation> RoomAllocation { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.SchoolCalendar> SchoolCalendar { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.Course> Course { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.InscrUC> InscrUC { get; set; } = default!;
