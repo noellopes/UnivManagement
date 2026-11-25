@@ -15,9 +15,9 @@ public class Residence
     [Display(Name = "Address")]
     public required string Address { get; set; }
 
-    [Required(ErrorMessage = "The Capacity (Beds) is required.")]
+    [Required(ErrorMessage = "The Capacity is required.")]
     [Range(1, 5000, ErrorMessage = "Capacity must be at least 1 bed.")]
-    [Display(Name = "Capacity (Beds)")]
+    [Display(Name = "Capacity (Number of beds)")]
     public int? Capacity { get; set; }
 
     [Display(Name = "Active")]
