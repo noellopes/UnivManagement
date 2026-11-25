@@ -4,7 +4,7 @@ using UnivManagement.Models.AccommodationManagement;
 using UnivManagement.Models.AcademicManagement;
 
 namespace UnivManagement.Data {
-    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {
+    public class UniversityDbContext(DbContextOptions<UniversityDbContext> options) : DbContext(options) {        
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
@@ -187,5 +187,6 @@ namespace UnivManagement.Data {
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }        
         public DbSet<EstadoPossivel> EstadoPossivel { get; set; } = default!;
         public DbSet<UnivManagement.Models.HorarioAtendimento> HorarioAtendimento { get; set; } = default!;
+         public DbSet<UnivManagement.Models.AtribuicaoDocente> AtribuicaoDocente { get; set; } = default!;
     }
 }
