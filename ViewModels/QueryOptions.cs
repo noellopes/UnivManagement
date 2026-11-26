@@ -24,6 +24,10 @@ namespace UnivManagement.ViewModels {
             int currentPage,
             int itemsPerPage = 10)
         {
+            if (itemsPerPage < 1) {
+                throw new ArgumentOutOfRangeException(nameof(itemsPerPage), "Page size must be greater than zero.");
+            }
+
             int totalItems = await queryData.CountAsync();
 
             int pageCount = Math.Max(1, (int)Math.Ceiling((double)totalItems / itemsPerPage));
