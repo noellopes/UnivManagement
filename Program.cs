@@ -28,7 +28,7 @@ if (app.Environment.IsDevelopment()) {
 
     using (var servicesScope = app.Services.CreateScope()) {
         var db = servicesScope.ServiceProvider.GetService<UniversityDbContext>();
-        SeedData.Populate(app.Services);
+        SeedData.Populate(db);
     }
 } else {
     app.UseExceptionHandler("/Home/Error");
