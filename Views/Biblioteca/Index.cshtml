@@ -1,17 +1,25 @@
-﻿
-@{
-
-	ViewData["Title"] = "Gestão da Biblioteca";
-
-	<p>Bem vindo ao módulo da biblioteca</p>
-
-    <div>
-        <a asp-controller="Biblioteca"
-           asp-action="Catalogo"
-           class="btn btn-primary">Catálogo</a>
-
-        <a asp-controller="Biblioteca"
-           asp-action="Exemplares"
-           class="btn btn-secondary">Exemplares</a>
-    </div>
+﻿@{
+    ViewData["Title"] = "Gestão de Biblioteca";
 }
+
+<div class="container mt-4">
+    <h2>Gestão da Biblioteca</h2>
+    <p class="text-muted">Selecione uma das secções para gerir a biblioteca universitária.</p>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-3">
+                <h4>Exemplares</h4>
+                <p>Gerir cópias físicas e disponibilidade.</p>
+                <a asp-controller="Exemplar" asp-action="Index" class="btn btn-primary">Ver Exemplares</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-3">
+                <h4>Empréstimos</h4>
+                <p>Gerir requisições e devoluções.</p>
+                <a asp-controller="Emprestimos" asp-action="Index" class="btn btn-primary">Ver Empréstimos</a>
+            </div>
+        </div>
+    </div>
+</div>

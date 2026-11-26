@@ -1,0 +1,51 @@
+@model UnivManagement.Models.Exemplar
+
+@{
+    ViewData["Title"] = "Detalhes do Exemplar";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Detalhes do Exemplar</h4>
+                    @if (Model.Estado == "Disponível")
+                    {
+                        <span class="badge bg-success">Disponível</span>
+                    }
+                    else if (Model.Estado == "Emprestado")
+                    {
+                        <span class="badge bg-warning text-dark">Emprestado</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">@Model.Estado</span>
+                    }
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Código</dt>
+                        <dd class="col-sm-8">@Model.Codigo</dd>
+
+                        <dt class="col-sm-4">Obra</dt>
+                        <dd class="col-sm-8">
+                            @(Model.Obra != null
+                                ? $"{Model.Obra.Titulo} (#{Model.ObraId})"
+                                : $"Obra #{Model.ObraId}")
+                        </dd>
+
+                        <dt class="col-sm-4">Estado</dt>
+                        <dd class="col-sm-8">@Model.Estado</dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">Voltar à lista</a>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@Model.ExemplarId" class="btn btn-primary">Editar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

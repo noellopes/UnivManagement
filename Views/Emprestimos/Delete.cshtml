@@ -1,0 +1,41 @@
+@model UnivManagement.Models.Emprestimo
+
+@{
+    ViewData["Title"] = "Eliminar Empréstimo";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger shadow-sm">
+                <div class="card-header bg-danger text-white py-3">
+                    <h4 class="mb-0">Eliminar Empréstimo #@Model.EmprestimoId</h4>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-danger fw-bold">Confirma que pretende eliminar este empréstimo? O exemplar voltará a ficar disponível.</p>
+                    <hr />
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-muted">Data de Empréstimo</dt>
+                        <dd class="col-sm-8">@Model.dataEmprestimo.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-4 text-muted">Data de Devolução</dt>
+                        <dd class="col-sm-8">@Model.dataDevolucao.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-4 text-muted">Estado</dt>
+                        <dd class="col-sm-8">@Model.estado</dd>
+
+                        <dt class="col-sm-4 text-muted">Exemplar</dt>
+                        <dd class="col-sm-8">@(Model.Exemplar?.Codigo ?? "N/D") (#@Model.ExemplarId)</dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-light px-4 py-3 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                    <form asp-action="Delete" asp-route-id="@Model.EmprestimoId" method="post">
+                        <input type="hidden" asp-for="EmprestimoId" />
+                        <button type="submit" class="btn btn-danger">Confirmar Eliminação</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+@model UnivManagement.Models.Emprestimo
+
+@{
+    ViewData["Title"] = "Editar Empréstimo";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-secondary text-white py-3">
+                    <h4 class="mb-0">Editar Empréstimo #@Model.EmprestimoId</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" asp-route-id="@Model.EmprestimoId" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <input type="hidden" asp-for="EmprestimoId" />
+
+                        <div class="mb-3">
+                            <label asp-for="dataEmprestimo" class="form-label fw-bold">Data de Empréstimo</label>
+                            <input asp-for="dataEmprestimo" class="form-control" type="date" />
+                            <span asp-validation-for="dataEmprestimo" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="dataDevolucao" class="form-label fw-bold">Data de Devolução</label>
+                            <input asp-for="dataDevolucao" class="form-control" type="date" />
+                            <span asp-validation-for="dataDevolucao" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="estado" class="form-label fw-bold">Estado</label>
+                            <select asp-for="estado" class="form-select">
+                                <option value="Ativo">Ativo</option>
+                                <option value="Devolvido">Devolvido</option>
+                            </select>
+                            <span asp-validation-for="estado" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ExemplarId" class="form-label fw-bold">Exemplar</label>
+                            <select asp-for="ExemplarId" class="form-select" asp-items="ViewBag.ExemplarId"></select>
+                            <span asp-validation-for="ExemplarId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Guardar Alterações</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

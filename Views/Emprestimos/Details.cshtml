@@ -1,0 +1,32 @@
+@model UnivManagement.Models.Emprestimo
+
+@{
+    ViewData["Title"] = "Detalhes do Empréstimo";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-info text-dark py-3">
+            <h4 class="mb-0">Detalhes do Empréstimo #@Model.EmprestimoId</h4>
+        </div>
+        <div class="card-body p-4">
+            <dl class="row mb-0">
+                <dt class="col-sm-3 text-muted">Data de Empréstimo</dt>
+                <dd class="col-sm-9">@Model.dataEmprestimo.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3 text-muted">Data de Devolução</dt>
+                <dd class="col-sm-9">@Model.dataDevolucao.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3 text-muted">Estado</dt>
+                <dd class="col-sm-9">@Model.estado</dd>
+
+                <dt class="col-sm-3 text-muted">Exemplar</dt>
+                <dd class="col-sm-9">@(Model.Exemplar?.Codigo ?? "N/D") (#@Model.ExemplarId)</dd>
+            </dl>
+        </div>
+        <div class="card-footer bg-light px-4 py-3 d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+            <a asp-action="Edit" asp-route-id="@Model.EmprestimoId" class="btn btn-primary">Editar</a>
+        </div>
+    </div>
+</div>

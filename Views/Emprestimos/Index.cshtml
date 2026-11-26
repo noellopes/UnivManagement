@@ -1,0 +1,79 @@
+@model IEnumerable<UnivManagement.Models.Emprestimo>
+
+@{
+    ViewData["Title"] = "Empréstimos";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">Empréstimos</h1>
+            <p class="text-muted mb-0">Gestão de empréstimos e devoluções de exemplares.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">+ Novo Empréstimo</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="py-3 px-3">Data de Empréstimo</th>
+                            <th class="py-3">Data de Devolução</th>
+                            <th class="py-3">Estado</th>
+                            <th class="py-3">Exemplar</th>
+                            <th class="py-3 text-end px-3">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">Sem empréstimos registados.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="px-3">@item.dataEmprestimo.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.dataDevolucao.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        @if (item.estado == "Ativo")
+                                        {
+                                            <span class="badge bg-warning text-dark">Ativo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">@item.estado</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <strong>@(item.Exemplar?.Codigo ?? $"#{item.ExemplarId}")</strong>
+                                        <span class="text-muted small">(#@item.ExemplarId)</span>
+                                    </td>
+                                    <td class="text-end px-3">
+                                        <a asp-action="Edit" asp-route-id="@item.EmprestimoId" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                        <a asp-action="Details" asp-route-id="@item.EmprestimoId" class="btn btn-sm btn-outline-info">Detalhes</a>
+                                        <a asp-action="Delete" asp-route-id="@item.EmprestimoId" class="btn btn-sm btn-outline-danger">Eliminar</a>
+
+                                        @if (item.estado == "Ativo")
+                                        {
+                                            <form asp-action="ReturnBook" asp-route-id="@item.EmprestimoId" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Confirma a devolução deste exemplar?');">
+                                                    Devolver
+                                                </button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
