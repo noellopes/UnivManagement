@@ -6,7 +6,7 @@
     // GetEnumSelectList returns the enum as (Value, Text) pairs, where Text is
     // the [Display] label. Pick the pair matching the course's state and take
     // its text, e.g. CourseStateEnum.Active -> "Ativo".
-    var courseStateLabel = Html.GetEnumSelectList<CourseStateEnum>()
+    var courseStateLabel = Html.GetEnumSelectList<UnivManagement.Models.AcademicManagement.CourseStateEnum>()
         .First(option => option.Value == ((int)Model.CourseState).ToString())
         .Text;
 }

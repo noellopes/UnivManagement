@@ -56,8 +56,8 @@
                 <label for="courseState" class="form-label fw-semibold">Estado do Curso</label>
 
                 @{
-                    var selectedCourseState = ViewData["CourseState"] as CourseStateEnum?;
-                    var courseStateItems = Html.GetEnumSelectList<CourseStateEnum>();
+                    var selectedCourseState = ViewData["CourseState"] as UnivManagement.Models.AcademicManagement.CourseStateEnum?;
+                    var courseStateItems = Html.GetEnumSelectList<UnivManagement.Models.AcademicManagement.CourseStateEnum>();
                 }
 
                 <select id="courseState" name="courseState" class="form-select">
@@ -127,7 +127,7 @@
                     @if (Model.Any()) {
                         @foreach (var item in Model) {
                             // Gets the CourseStateEnum value display string:
-                            var stateLabel = Html.GetEnumSelectList<CourseStateEnum>()
+                            var stateLabel = Html.GetEnumSelectList<UnivManagement.Models.AcademicManagement.CourseStateEnum>()
                                 .First(option => option.Value == ((int)item.CourseState).ToString()).Text;
 
                             <tr>
