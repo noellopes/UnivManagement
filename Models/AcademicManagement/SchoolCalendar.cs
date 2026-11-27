@@ -6,7 +6,7 @@ namespace UnivManagement.Models.AcademicManagement;
 /// School calendar model class from Academic Management domain.
 /// A school calendar belongs to one AcademicYear and contains one or more Semesters.
 /// </summary>
-public class SchoolCalendar : IValidatableObject {
+public class SchoolCalendar {
     public int SchoolCalendarId { get; set; }
 
     [Range(1, int.MaxValue, ErrorMessage = "O {0} é obrigatório.")]
@@ -42,18 +42,4 @@ public class SchoolCalendar : IValidatableObject {
     [DataType(DataType.Date)]
     [Display(Name = "Fim dos Exames Especiais")]
     public DateOnly EndSpecialExam { get; set; }
-
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
-        if (EndDate < StartDate) {
-            yield return new ValidationResult(
-                "A data de fim do calendário não pode ser anterior à data de início.",
-                new[] { nameof(EndDate) });
-        }
-
-        if (EndSpecialExam < StartSpecialExam) {
-            yield return new ValidationResult(
-                "A data de fim dos exames especiais não pode ser anterior à data de início.",
-                new[] { nameof(EndSpecialExam) });
-        }
-    }
 }
