@@ -192,10 +192,6 @@ namespace UnivManagement.Data
                 .Property(i => i.Grade)
                 .HasPrecision(4, 2);
           
-            // Evita duplicações na tabela CourseStudyPlanYear:
-            modelBuilder.Entity<Models.AcademicManagement.CourseStudyPlanYear>()
-                .HasIndex(c => new { c.CourseId, c.StudyPlanId, c.AcademicYearId })
-                .IsUnique();
 
             // ApplicationStatusHistory: prevent deleting an application that already has status history
             modelBuilder.Entity<Models.AccommodationManagement.ApplicationStatusHistory>()
@@ -244,8 +240,7 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<PossibleStatus> PossibleStatus { get; set; } = default!;
         public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;      
-        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;     
+        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;   
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;  
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }

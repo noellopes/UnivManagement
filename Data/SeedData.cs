@@ -15,7 +15,6 @@ namespace UnivManagement.Data
             PopulateServiceRequestAttachments(db);
             PopulateFuncoesDocentes(db);
             PopulateEstadoPossivel(db);
-            PopulateCourseStates(db);
             PopulateStudents(db);
             PopulateServicosFuncionarios(db);
             PopulateServiceRequestTypes(db);
@@ -26,9 +25,9 @@ namespace UnivManagement.Data
 
         }
 
-        private static void PopulateCourseStates(UniversityDbContext dbContext)
+        private static void PopulateCourseStates(UniversityDbContext db)
         {
-            if (dbContext.CourseState.Any()) return;
+            if (db.CourseState.Any()) return;
 
             var courseStates = new List<CourseState>
             {
@@ -39,8 +38,8 @@ namespace UnivManagement.Data
                 new CourseState { Name = "archived",  Description = "Curso arquivado historicamente." }
             };
 
-            dbContext.CourseState.AddRange(courseStates);
-            dbContext.SaveChanges(); 
+            db.CourseState.AddRange(courseStates);
+            db.SaveChanges(); 
         }
 
 
@@ -473,22 +472,7 @@ namespace UnivManagement.Data
             dbContext.SaveChanges();
         }
 
-        private static void PopulateCourseStates(UniversityDbContext dbContext)
-        {
-            if (dbContext.CourseState.Any()) return;
 
-            var courseStates = new List<CourseState>
-            {
-                new CourseState { Name = "DRAFT", Description = "Curso em preparação, ainda não publicado."},
-                new CourseState { Name = "ACTIVE", Description = "Curso a decorrer normalmente."},
-                new CourseState { Name = "SUSPENDED", Description = "Curso temporariamente suspenso."},
-                new CourseState { Name = "CONCLUDED", Description = "Curso terminado, sem novas inscrições."},
-                new CourseState { Name = "ARCHIVED", Description = "Curso arquivado historicamente."}
-            };
-
-            dbContext.CourseState.AddRange(courseStates);
-            dbContext.SaveChanges();
-        }
 
         private static void PopulateFuncoesDocentes(UniversityDbContext db)
         {
