@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using UnivManagement.Models.AccommodationManagement;
 namespace UnivManagement.Models
 {
     public class Room
@@ -19,10 +20,12 @@ namespace UnivManagement.Models
         [Range(1, 500, ErrorMessage = "A {0} deve ser entre {1} e {2} lugares.")]
         public int Lotacao { get; set; }
 
-        [Required(ErrorMessage = "Por favor, indique o {0}.")]
+        // Relação com Estado Operacional
         [Display(Name = "Estado Operacional")]
-        [StringLength(30)]
-        public string Estado { get; set; } = "Ativa";
+        public int RoomStatusId { get; set; }
+
+        [ForeignKey("RoomStatusId")]
+        public RoomStatus? RoomStatus { get; set; }
 
         // relacao com edificio
         [Display(Name = "Edifício")]

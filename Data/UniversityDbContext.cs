@@ -184,5 +184,6 @@ namespace UnivManagement.Data {
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<RelatorioEstagio> RelatoriosEstagio { get; set; }
         public DbSet<EstadoPossivel> EstadoPossivel { get; set; } = default!;
+        public DbSet<RoomStatus> RoomStatus { get; set; }
     }
 }
