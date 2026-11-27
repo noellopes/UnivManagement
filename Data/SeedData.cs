@@ -10,6 +10,8 @@ namespace UnivManagement.Data
         {
             if (db == null) throw new ArgumentNullException(nameof(db));
 
+            PopulateCourseStates(db);
+            PopulateAcademicDegrees(db);
             PopulateServiceRequestAttachments(db);
             PopulateFuncoesDocentes(db);
             PopulateEstadoPossivel(db);
@@ -21,6 +23,43 @@ namespace UnivManagement.Data
             PopulateServiceRequestStatuses(db);
             PopulateServiceRequestPriorities(db);
             PopulateFuncionarios(db);
+
+        }
+
+        private static void PopulateCourseStates(UniversityDbContext dbContext)
+        {
+            if (dbContext.CourseState.Any()) return;
+
+            var courseStates = new List<CourseState>
+            {
+                new CourseState { Name = "draft",     Description = "Curso em preparação, ainda não publicado." },
+                new CourseState { Name = "active",    Description = "Curso a decorrer normalmente." },
+                new CourseState { Name = "suspended", Description = "Curso temporariamente suspenso." },
+                new CourseState { Name = "concluded", Description = "Curso terminado, sem novas inscrições." },
+                new CourseState { Name = "archived",  Description = "Curso arquivado historicamente." }
+            };
+
+            dbContext.CourseState.AddRange(courseStates);
+            dbContext.SaveChanges(); 
+        }
+
+
+
+        private static void PopulateAcademicDegrees(UniversityDbContext db)
+        {
+            if (db.AcademicDegree.Any()) return;
+
+            var academicDegrees = new List<AcademicDegree>
+            {
+                new AcademicDegree { Name = "CTeSP", Level = 5, Description = "Curso Técnico Superior Profissional." },
+                new AcademicDegree { Name = "Licenciatura", Level = 6, Description = "Licenciatura." },
+                new AcademicDegree { Name = "Mestrado", Level = 7, Description = "Mestrado." },
+                new AcademicDegree { Name = "Doutoramento", Level = 8, Description = "Doutoramento."}
+
+            };
+
+            db.AcademicDegree.AddRange(academicDegrees);
+            db.SaveChanges();
             PopulateServiceRequests(db);
         }
 
