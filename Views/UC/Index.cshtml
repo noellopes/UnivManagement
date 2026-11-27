@@ -9,9 +9,87 @@
     <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
         <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
         @ViewBag.SuccessMessage
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
     </div>
 }
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+        <i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>
+        @ViewBag.ErrorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-funnel me-2" aria-hidden="true"></i>
+            Pesquisar e Filtrar
+        </h2>
+    </div>
+
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-3 align-items-end">
+            <div class="col-12 col-lg-3">
+                <label for="search" class="form-label fw-semibold">Pesquisar</label>
+
+                <input type="search"
+                       id="search"
+                       name="search"
+                       value="@(ViewData["Search"])"
+                       class="form-control"
+                       placeholder="Código, nome ou sigla..." />
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <label for="studyPlanId" class="form-label fw-semibold">Plano de Estudos</label>
+
+                <select id="studyPlanId"
+                        name="studyPlanId"
+                        class="form-select"
+                        asp-items="ViewBag.StudyPlans"></select>
+            </div>
+
+            <div class="col-6 col-md-3 col-lg-2">
+                <label for="semester" class="form-label fw-semibold">Semestre</label>
+
+                <select id="semester"
+                        name="semester"
+                        class="form-select"
+                        asp-items="ViewBag.Semesters">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+
+            <div class="col-6 col-md-3 col-lg-2">
+                <label for="year" class="form-label fw-semibold">Ano</label>
+
+                <select id="year"
+                        name="year"
+                        class="form-select"
+                        asp-items="ViewBag.Years">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-lg-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1">
+                    <i class="bi bi-search me-1" aria-hidden="true"></i>
+                    Filtrar
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary"
+                   title="Limpar filtros"
+                   aria-label="Limpar filtros">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
     <div>
@@ -47,8 +125,20 @@
                         <th scope="col">
                             @Html.DisplayNameFor(model => model.Acronym)
                         </th>
+                        <th scope="col" class="text-center">
+                            @Html.DisplayNameFor(model => model.ValueECTS)
+                        </th>
+                        <th scope="col" class="text-center">
+                            @Html.DisplayNameFor(model => model.NumHours)
+                        </th>
+                        <th scope="col" class="text-center">
+                            @Html.DisplayNameFor(model => model.Semester)
+                        </th>
+                        <th scope="col" class="text-center">
+                            @Html.DisplayNameFor(model => model.Year)
+                        </th>
                         <th scope="col">
-                            @Html.DisplayNameFor(model => model.Description)
+                            Plano de Estudos
                         </th>
                         <th scope="col" class="text-end">
                             Ações
@@ -69,47 +159,82 @@
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
-                                    <span class="badge text-bg-secondary">
-                                        @Html.DisplayFor(modelItem => item.Acronym)
-                                    </span>
+                                    @if (!string.IsNullOrWhiteSpace(item.Acronym))
+                                    {
+                                        <span class="badge text-bg-secondary">
+                                            @item.Acronym
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">—</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @item.ValueECTS
+                                </td>
+                                <td class="text-center">
+                                    @item.NumHours
+                                </td>
+                                <td class="text-center">
+                                    @(item.Semester).º
+                                </td>
+                                <td class="text-center">
+                                    @(item.Year).º
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Description)
+                                    @if (item.StudyPlan != null)
+                                    {
+                                        <span class="badge text-bg-info">
+                                            @item.StudyPlan.Code
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sem plano de estudos</span>
+                                    }
                                 </td>
-                                
+
                                 <td class="text-end text-nowrap">
-                                <div class="btn-group" role="group" aria-label="Ações para @item.Name">
+                                    <div class="btn-group" role="group" aria-label="Ações para @item.Name">
 
-                                    <a asp-action="Edit" asp-route-id="@item.UcId"
-                                       class="btn btn-sm btn-outline-primary"
-                                       title="Editar" aria-label="Editar @item.Name">
-                                        <i class="bi bi-pencil" aria-hidden="true"></i>
-                                    </a>
+                                        <a asp-action="Edit" asp-route-id="@item.UcId"
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="Editar" aria-label="Editar @item.Name">
+                                            <i class="bi bi-pencil" aria-hidden="true"></i>
+                                        </a>
 
-                                    <a asp-action="Details" asp-route-id="@item.UcId"
-                                       class="btn btn-sm btn-outline-secondary"
-                                       title="Detalhes" aria-label="Detalhes de @item.Name">
-                                        <i class="bi bi-eye" aria-hidden="true"></i>
-                                    </a>
+                                        <a asp-action="Details" asp-route-id="@item.UcId"
+                                           class="btn btn-sm btn-outline-secondary"
+                                           title="Detalhes" aria-label="Detalhes de @item.Name">
+                                            <i class="bi bi-eye" aria-hidden="true"></i>
+                                        </a>
 
-                                    <a asp-action="Delete" asp-route-id="@item.UcId"
-                                       class="btn btn-sm btn-outline-danger"
-                                       title="Eliminar" aria-label="Eliminar @item.Name">
-                                        <i class="bi bi-trash" aria-hidden="true"></i>
-                                    </a>
+                                        <a asp-action="Delete" asp-route-id="@item.UcId"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="Eliminar" aria-label="Eliminar @item.Name">
+                                            <i class="bi bi-trash" aria-hidden="true"></i>
+                                        </a>
 
-                                </div>
-                            </td>
-
+                                    </div>
+                                </td>
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="5" class="text-center py-5">
+                            <td colspan="9" class="text-center py-5">
                                 <i class="bi bi-inbox fs-2 text-muted d-block mb-2" aria-hidden="true"></i>
-                                <p class="text-muted mb-0">Não existem unidades curriculares registadas.</p>
+
+                                @if (ViewData["HasFilters"] is true)
+                                {
+                                    <p class="text-muted mb-0">Nenhuma unidade curricular corresponde aos critérios de pesquisa.</p>
+                                }
+                                else
+                                {
+                                    <p class="text-muted mb-0">Não existem unidades curriculares registadas.</p>
+                                }
                             </td>
                         </tr>
                     }
@@ -123,7 +248,7 @@
         <div class="card-footer bg-body text-muted">
             <small>
                 <i class="bi bi-list-ul me-1" aria-hidden="true"></i>
-                Total de unidades curriculares: @Model.Count()
+                Resultados: @Model.Count()
             </small>
         </div>
     }
