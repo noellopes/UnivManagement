@@ -152,24 +152,13 @@ namespace UnivManagement.Data
                 .HasIndex(a => a.Name)
                 .IsUnique();
 
-            // Evita duplicados de estados de curso na tabela CourseState
-            modelBuilder.Entity<Models.AcademicManagement.CourseState>()
-                .HasIndex(cs => cs.Name)
-                .IsUnique();
-
-            // CourseState usado por um Course não pode ser apagado
-            modelBuilder.Entity<Models.AcademicManagement.Course>()
-                .HasOne(c => c.CourseState)
-                .WithMany()
-                .HasForeignKey(c => c.CourseStateId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             // AcademicDegree usado por um Course não pode ser apagado
             modelBuilder.Entity<Models.AcademicManagement.Course>()
                 .HasOne(c => c.AcademicDegree)
                 .WithMany()
                 .HasForeignKey(c => c.AcademicDegreeId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             // StateInscCourse: cada estado tem unico nome
             modelBuilder.Entity<StateInscCourse>()
                 .HasIndex(s => s.Name)
@@ -235,12 +224,10 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlan> StudyPlan { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StudyPlanUC> StudyPlanUC { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.AcademicDegree> AcademicDegree { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;
         public DbSet<UnivManagement.Models.ServicoFuncionario> ServicoFuncionario { get; set; } = default!;
         public DbSet<PossibleStatus> PossibleStatus { get; set; } = default!;
         public DbSet<UnivManagement.Models.Funcionario> Funcionario { get; set; } = default!;      
-        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;
-        public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;     
+        public DbSet<UnivManagement.Models.Convidado> Convidado { get; set; } = default!;   
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;  
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
