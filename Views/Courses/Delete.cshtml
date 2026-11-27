@@ -1,0 +1,119 @@
+@model UnivManagement.Models.AcademicManagement.Course
+
+@{
+    ViewData["Title"] = "Eliminar Curso";
+
+    // GetEnumSelectList returns the enum as (Value, Text) pairs, where Text is
+    // the [Display] label. Pick the pair matching the course's state and take
+    // its text, e.g. CourseStateEnum.Active -> "Ativo".
+    var courseStateLabel = Html.GetEnumSelectList<UnivManagement.Models.AcademicManagement.CourseStateEnum>()
+        .First(option => option.Value == ((int)Model.CourseState).ToString())
+        .Text;
+}
+
+<div class="mb-4">
+    <h1 class="h2 mb-1">Eliminar Curso</h1>
+    <p class="text-muted mb-0">Confirme a eliminação do curso selecionado.</p>
+</div>
+
+<div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-3 fs-4" aria-hidden="true"></i>
+    <div>
+        <strong>Atenção!</strong>
+        Tem a certeza de que pretende eliminar este curso?
+        Esta ação poderá ser irreversível.
+
+        <span class="d-block mt-2 small">
+            As associações deste curso a calendários escolares serão eliminadas em conjunto.
+        </span>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-mortarboard me-2" aria-hidden="true"></i>
+            Dados do Curso
+        </h2>
+    </div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Code)
+            </dt>
+            <dd class="col-sm-9 fw-semibold">
+                @Html.DisplayFor(model => model.Code)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Acronym)
+            </dt>
+            <dd class="col-sm-9">
+                <span class="badge text-bg-secondary">
+                    @Html.DisplayFor(model => model.Acronym)
+                </span>
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.CreationDate)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.AcademicDegreeId)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.AcademicDegree!.Name)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.DocenteId)
+            </dt>
+            <dd class="col-sm-9">
+                @(Model.Docente?.Nome ?? "Sem diretor atribuído")
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.CourseState)
+            </dt>
+            <dd class="col-sm-9">
+                @courseStateLabel
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="card-footer bg-body">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="CourseId" />
+
+            <div class="d-flex justify-content-end flex-wrap gap-2">
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+                    Voltar à Lista
+                </a>
+
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash me-2" aria-hidden="true"></i>
+                    Confirmar Eliminação
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

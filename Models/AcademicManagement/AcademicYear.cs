@@ -1,30 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace UnivManagement.Models.AcademicManagement;
 
-/*
-AcademicYear:
-* IdAcademicYear    int
-* StartYear         decimal     (valor de 2000 a 9999)
-* EndYear           decimal     (valor de 2000 a 9999)
-*/
-
 /// <summary>
-/// Academic Year model class from Academic Management domain.
+/// Academic year model class from Academic Management domain.
+/// Represents a consecutive academic year interval, e.g. 2024/2025.
 /// </summary>
 public class AcademicYear {
-    /* ID: */
-    public required int AcademicYearId { get; set; }
+    public int AcademicYearId { get; set; }
 
-    /* START YEAR: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [Range(2000, 9999, ErrorMessage = "Ano de início deve ter o máximo de 4 dígitos | Start year must have the maximum of 9 digits.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
     [Display(Name = "Início")]
-    public required int StartYear { get; set; }
+    public int StartYear { get; set; }
 
-    /* END YEAR: */
-    [Required(ErrorMessage = "O {0} é obrigatório. | The {0} is required.")]
-    [Range(2000, 9999, ErrorMessage = "Ano de fim deve ter o máximo de 4 dígitos | End year must have the maximum of 9 digits.")]
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
     [Display(Name = "Fim")]
-    public required int EndYear { get; set; }
+    public int EndYear { get; set; }
 }
