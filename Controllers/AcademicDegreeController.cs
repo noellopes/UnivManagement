@@ -60,12 +60,29 @@ public class AcademicDegreeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("AcademicDegreeId,Name, Level, Description")] AcademicDegree academicdegree)
     {
+        /* Unicidade do Name */
+        if (await _context.AcademicDegree.AnyAsync(ad => ad.Name == academicdegree.Name))
+            ModelState.AddModelError(nameof(AcademicDegree.Name),
+                "Já existe um grau académico com este Nome.");
+
         if (ModelState.IsValid)
         {
-            _context.Add(academicdegree);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), new { id = academicdegree.AcademicDegreeId, successMessage = "Grau académico criado com sucesso." });
+            try
+            {
+                _context.Add(academicdegree);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id = academicdegree.AcademicDegreeId, successMessage = "Grau académico criado com sucesso." });
+            }
+            catch (DbUpdateException ex) when (IsUniqueViolation(ex))
+            {
+                ModelState.AddModelError("",
+                    "Não foi possível guardar: já existe um grau com este Nome.");
+            }
         }
+
         return View(academicdegree);
     }
 
@@ -97,25 +114,34 @@ public class AcademicDegreeController : Controller
             return NotFound();
         }
 
+        /* Unicidade do Name (excluindo o próprio) */
+        if (await _context.AcademicDegree.AnyAsync(ad =>
+                ad.Name == academicdegree.Name && ad.AcademicDegreeId != academicdegree.AcademicDegreeId))
+            ModelState.AddModelError(nameof(AcademicDegree.Name),
+                "Já existe outro grau académico com este Nome.");
+
+
         if (ModelState.IsValid)
         {
             try
             {
                 _context.Update(academicdegree);
                 await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Details),
+                    new { id = academicdegree.AcademicDegreeId, successMessage = "Grau académico atualizado com sucesso." });
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!AcademicDegreeExists(academicdegree.AcademicDegreeId))
-                {
                     return View("NotFound");
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
-            return RedirectToAction(nameof(Details), new { id = academicdegree.AcademicDegreeId, successMessage = "Grau académico atualizado com sucesso." });
+            catch (DbUpdateException ex) when (IsUniqueViolation(ex))
+            {
+                ModelState.AddModelError("",
+                    "Não foi possível guardar: já existe um grau com este Nome.");
+            }
         }
         return View(academicdegree);
     }
@@ -157,5 +183,11 @@ public class AcademicDegreeController : Controller
     private bool AcademicDegreeExists(int? id)
     {
         return _context.AcademicDegree.Any(e => e.AcademicDegreeId == id);
+    }
+
+    private static bool IsUniqueViolation(DbUpdateException ex)
+    {
+        return ex.InnerException is Microsoft.Data.SqlClient.SqlException sql
+            && (sql.Number == 2601 || sql.Number == 2627);
     }
 }

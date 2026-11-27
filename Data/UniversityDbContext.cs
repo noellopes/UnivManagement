@@ -152,12 +152,6 @@ namespace UnivManagement.Data
                 .HasIndex(a => a.Name)
                 .IsUnique();
 
-            // AcademicDegree usado por um Course não pode ser apagado
-            modelBuilder.Entity<Models.AcademicManagement.Course>()
-                .HasOne(c => c.AcademicDegree)
-                .WithMany()
-                .HasForeignKey(c => c.AcademicDegreeId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             // StateInscCourse: cada estado tem unico nome
             modelBuilder.Entity<StateInscCourse>()

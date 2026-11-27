@@ -13,6 +13,7 @@ namespace UnivManagement.Data
             PopulateServiceRequestAttachments(db);
             PopulateFuncoesDocentes(db);
             PopulateEstadoPossivel(db);
+            PopulateAcademicDegrees(db);
             PopulateCourseStates(db);
             PopulateStudents(db);
             PopulateServicosFuncionarios(db);
@@ -467,5 +468,24 @@ namespace UnivManagement.Data
             db.FuncaoDocente.AddRange(funcoes);
             db.SaveChanges();
         }
+
+        private static void PopulateAcademicDegrees(UniversityDbContext db)
+        {
+            if (db.AcademicDegree.Any()) return;
+
+            var academicDegrees = new List<AcademicDegree>
+            {
+                new AcademicDegree { Name = "CTeSP", Level = 5, Description = "Curso Técnico Superior Profissional." },
+                new AcademicDegree { Name = "Licenciatura", Level = 6, Description = "Licenciatura." },
+                new AcademicDegree { Name = "Mestrado", Level = 7, Description = "Mestrado." },
+                new AcademicDegree { Name = "Doutoramento", Level = 8, Description = "Doutoramento."}
+
+            };
+
+            db.AcademicDegree.AddRange(academicDegrees);
+            db.SaveChanges();
+        }
+
+
     }
 }
