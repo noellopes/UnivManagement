@@ -1,0 +1,179 @@
+@model UnivManagement.Models.AcademicManagement.Course
+@using UnivManagement.Models.AcademicManagement
+
+@{
+    ViewData["Title"] = "Detalhes do Curso";
+    var courseCalendars = ViewData["CourseCalendars"] as IEnumerable<CourseCalendar>
+        ?? Enumerable.Empty<CourseCalendar>();
+
+    // GetEnumSelectList returns the enum as (Value, Text) pairs, where Text is
+    // the [Display] label. Pick the pair matching the course's state and take
+    // its text, e.g. CourseStateEnum.Active -> "Ativo".
+    var courseStateLabel = Html.GetEnumSelectList<CourseStateEnum>()
+        .First(option => option.Value == ((int)Model.CourseState).ToString())
+        .Text;
+}
+
+@if (ViewBag.SuccessMessage != null) {
+    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+        @ViewBag.SuccessMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
+<div class="mb-4">
+    <h1 class="h2 mb-1">Detalhes do Curso</h1>
+    <p class="text-muted mb-0">Consulte a informação do curso selecionado.</p>
+</div>
+
+<!-- COURSE INFO -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-mortarboard me-2" aria-hidden="true"></i>
+            Dados do Curso
+        </h2>
+    </div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Code)
+            </dt>
+            <dd class="col-sm-9 fw-semibold">
+                @Html.DisplayFor(model => model.Code)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Acronym)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Acronym)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.CreationDate)
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.AcademicDegreeId)
+            </dt>
+            <dd class="col-sm-9">
+                <span class="badge text-bg-secondary">
+                    @Html.DisplayFor(model => model.AcademicDegree!.Name)
+                </span>
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.DocenteId)
+            </dt>
+            <dd class="col-sm-9">
+                @(Model.Docente?.Nome ?? "Sem diretor atribuído")
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.CourseState)
+            </dt>
+            <dd class="col-sm-9">
+                <span class="badge text-bg-secondary">
+                    @courseStateLabel
+                </span>
+            </dd>
+
+            <dt class="col-sm-3 text-muted">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<!-- CALENDARS -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-body py-3">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-calendar-range me-2" aria-hidden="true"></i>
+            Calendários Escolares
+        </h2>
+    </div>
+
+    <div class="card-body p-0">
+        @if (!courseCalendars.Any()) {
+            <div class="p-4 text-muted">
+                <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+                Este curso ainda não tem calendários escolares associados. Pode associá-los através da edição do curso.
+            </div>
+        }
+        else {
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Ano Letivo</th>
+                            <th scope="col">Código</th>
+                            <th scope="col">Início</th>
+                            <th scope="col">Fim</th>
+                            <th scope="col" class="text-center">Semestres</th>
+                            <th scope="col">Exames Especiais</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var link in courseCalendars) {
+                            var calendar = link.SchoolCalendar;
+                            var year = calendar?.AcademicYear;
+
+                            <tr>
+                                <td class="fw-semibold">
+                                    @(year == null ? "—" : $"{year.StartYear}/{year.EndYear}")
+                                </td>
+                                <td>@(calendar?.Code ?? "—")</td>
+                                <td>@(calendar == null ? "—" : calendar.StartDate.ToString("dd/MM/yyyy"))</td>
+                                <td>@(calendar == null ? "—" : calendar.EndDate.ToString("dd/MM/yyyy"))</td>
+                                <td class="text-center">@(calendar?.TotalSemesters.ToString() ?? "—")</td>
+                                <td>
+                                    @if (calendar == null) {
+                                        <span class="text-muted">—</span>
+                                    }
+                                    else {
+                                        @($"{calendar.StartSpecialExam:dd/MM/yyyy} – {calendar.EndSpecialExam:dd/MM/yyyy}")
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- ACTIONS -->
+<div class="d-flex justify-content-end flex-wrap gap-2">
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>
+        Voltar à Lista
+    </a>
+
+    <a asp-action="Edit" asp-route-id="@Model?.CourseId" class="btn btn-primary">
+        <i class="bi bi-pencil me-2" aria-hidden="true"></i>
+        Editar
+    </a>
+
+    <a asp-action="Delete" asp-route-id="@Model?.CourseId" class="btn btn-danger">
+        <i class="bi bi-trash me-2" aria-hidden="true"></i>
+        Eliminar
+    </a>
+</div>

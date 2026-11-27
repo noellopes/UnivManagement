@@ -1,0 +1,146 @@
+@model UnivManagement.Models.AcademicManagement.Course
+
+@{
+    ViewData["Title"] = "Criar Curso";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+
+        <div class="mb-4">
+            <h1 class="h2 mb-1">Criar Curso</h1>
+            <p class="text-body-secondary mb-0">
+                Adicionar um novo curso à universidade.
+            </p>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-body-tertiary py-3">
+                <h2 class="h5 mb-0">
+                    <i class="bi bi-mortarboard me-2" aria-hidden="true"></i>
+                    Informação do novo Curso
+                </h2>
+            </div>
+
+            <div class="card-body p-4">
+                <form asp-action="Create" method="post">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger"
+                         role="alert"></div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label asp-for="Code" class="form-label fw-semibold"></label>
+
+                            <input asp-for="Code"
+                                   class="form-control"
+                                   placeholder="Ex.: LEI"
+                                   autofocus />
+
+                            <span asp-validation-for="Code" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-8">
+                            <label asp-for="Name" class="form-label fw-semibold"></label>
+
+                            <input asp-for="Name"
+                                   class="form-control"
+                                   placeholder="Introduza o nome do curso" />
+
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="Acronym" class="form-label fw-semibold"></label>
+
+                            <input asp-for="Acronym"
+                                   class="form-control"
+                                   placeholder="Introduza a sigla" />
+
+                            <span asp-validation-for="Acronym" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="CreationDate" class="form-label fw-semibold"></label>
+
+                            <input asp-for="CreationDate" class="form-control" />
+
+                            <span asp-validation-for="CreationDate" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="AcademicDegreeId" class="form-label fw-semibold"></label>
+
+                            <select asp-for="AcademicDegreeId"
+                                    class="form-select"
+                                    asp-items="ViewBag.AcademicDegrees">
+                                <option value="">-- Selecione o grau académico --</option>
+                            </select>
+
+                            <span asp-validation-for="AcademicDegreeId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="DocenteId" class="form-label fw-semibold">
+                                Diretor do Curso
+                                <span class="text-muted fw-normal">(opcional)</span>
+                            </label>
+
+                            <select asp-for="DocenteId"
+                                    class="form-select"
+                                    asp-items="ViewBag.Docentes">
+                                <option value="">-- Sem diretor atribuído --</option>
+                            </select>
+
+                            <span asp-validation-for="DocenteId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="CourseState" class="form-label fw-semibold"></label>
+
+                            <select asp-for="CourseState"
+                                    class="form-select"
+                                    asp-items="Html.GetEnumSelectList<CourseStateEnum>()">
+                                <option value="">-- Selecione o estado do curso --</option>
+                            </select>
+
+                            <span asp-validation-for="CourseState" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="Description" class="form-label fw-semibold"></label>
+
+                            <textarea asp-for="Description"
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Introduza a descrição do curso"></textarea>
+
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
+                            Criar Curso
+                        </button>
+
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>
+                            Voltar à Lista
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

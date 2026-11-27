@@ -1,67 +1,66 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using UnivManagement.Models; // Import necessario ter acesso classe Docente de outro namespace
+using UnivManagement.Models; // Access to the external Docente model
 
+namespace UnivManagement.Models.AcademicManagement;
 
-namespace UnivManagement.Models.AcademicManagement
-{
-    public class Course
-    {
-        
-        public int CourseId { get; set; }
+public enum CourseStateEnum {
+    [Display(Name = "Rascunho")]
+    Draft,
 
-        [Required(ErrorMessage = "The {0} is required.")]
-        [RegularExpression(@"^[A-Z0-9]{3,6}$", ErrorMessage = "The {0} must be between 3 and 6 alphanumeric characters (letters and numbers only).")]
-        [Display(Name = "Course Code")]
-        public required string Code { get; set; }
+    [Display(Name = "Ativo")]
+    Active,
 
-        [Required(ErrorMessage = "The {0} is required.")]
-        [StringLength(100, ErrorMessage = "The {0} cannot be longer than {1} characters.")]
-        [Display(Name = "Course Name")]
-        public required string Name { get; set; }
+    [Display(Name = "Suspenso")]
+    Suspended,
 
+    [Display(Name = "Concluído")]
+    Concluded,
 
-        [Required(ErrorMessage = "The {0} is required.")]
-        [RegularExpression(@"^(CTeSP|Licenciatura|Mestrado|Doutoramento)$", ErrorMessage = "The {0} must be 'CTeSP', 'Licenciatura', 'Mestrado', or 'Doutoramento'.")]
-        [Display(Name = "Academic Degree")]
-        public required string AcademicDegree { get; set; }
+    [Display(Name = "Arquivado")]
+    Archived
+}
 
+/// <summary>
+/// Academic course model class from Academic Management domain.
+/// </summary>
+public class Course {
+    public int CourseId { get; set; }
 
-        [Required(ErrorMessage = "The {0} is required.")]
-        [StringLength(5, MinimumLength = 2, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
-        [Display(Name = "Acronym")]
-        public required string Acronym { get; set; }
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [StringLength(6, MinimumLength = 1, ErrorMessage = "O {0} não pode ter mais de {1} caracteres.")]
+    [RegularExpression(@"^[A-Za-z0-9]{1,6}$", ErrorMessage = "O {0} deve conter entre 1 e 6 caracteres alfanuméricos.")]
+    [Display(Name = "Código")]
+    public string Code { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [StringLength(100, ErrorMessage = "O {0} não pode ter mais de {1} caracteres.")]
+    [Display(Name = "Nome do Curso")]
+    public string Name { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "The {0} is required.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Creation Date")]
-        public DateTime CreationDate { get; set; }
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [StringLength(10, ErrorMessage = "O {0} não pode ter mais de {1} caracteres.")]
+    [Display(Name = "Sigla")]
+    public string Acronym { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "A {0} é obrigatória.")]
+    [DataType(DataType.Date)]
+    [Display(Name = "Data de Criação")]
+    public DateOnly CreationDate { get; set; }
 
-        [Required(ErrorMessage = "The {0} is required.")]
-        [StringLength(20, ErrorMessage = "The {0} cannot be longer than {1} characters.")]
-        [Display(Name = "Course State")]
-        public required string CourseState { get; set; }
+    [StringLength(1000, ErrorMessage = "A {0} não pode ter mais de {1} caracteres.")]
+    [Display(Name = "Descrição")]
+    public string? Description { get; set; }
 
+    [Display(Name = "Estado do Curso")]
+    public CourseStateEnum CourseState { get; set; } = CourseStateEnum.Draft;
 
-        [StringLength(1000, ErrorMessage = "The {0} cannot be longer than {1} characters.")]
-        [Display(Name = "Description")]
-        public string? Description { get; set; }
+    [Range(1, int.MaxValue, ErrorMessage = "O {0} é obrigatório.")]
+    [Display(Name = "Grau Académico")]
+    public int AcademicDegreeId { get; set; }
+    public AcademicDegree? AcademicDegree { get; set; }
 
-
-        // --- Foreign Key para o Calendário Escolar ---
-        [Display(Name = "School Calendar")]
-        public int SchoolCalendarId { get; set; }
-
-        public SchoolCalendar? SchoolCalendar { get; set; }
-
-
-        // --- Foreign Key para o Diretor de Curso (tabela do grupo do Simão (Docente)) ---
-        [Display(Name = "Course Director")]
-        public int DocenteId { get; set; }
-
-        public Docente? Docente { get; set; }
-
-    }
+    [Display(Name = "Docente ID")]
+    public int? DocenteId { get; set; } // Optional.
+    public Docente? Docente { get; set; }
 }

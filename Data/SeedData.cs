@@ -13,7 +13,11 @@ namespace UnivManagement.Data
             PopulateServiceRequestAttachments(db);
             PopulateFuncoesDocentes(db);
             PopulateEstadoPossivel(db);
+            PopulateAcademicDegrees(db);
+            PopulateAcademicYears(db);
+            PopulateSchoolCalendars(db);
             PopulateCourseStates(db);
+            PopulateCourses(db);
             PopulateStudents(db);
             PopulateServicosFuncionarios(db);
             PopulateServiceRequestTypes(db);
@@ -22,6 +26,182 @@ namespace UnivManagement.Data
             PopulateServiceRequestPriorities(db);
             PopulateFuncionarios(db);
             PopulateServiceRequests(db);
+        }
+
+        internal static void PopulateAcademicDegrees(UniversityDbContext db) {
+            if (db.AcademicDegree.Any()) return;
+
+            db.AcademicDegree.AddRange(
+                new AcademicDegree {
+                    Name = "CTeSP",
+                    Level = 5,
+                    Description = "Curso Técnico Superior Profissional."
+                },
+                new AcademicDegree {
+                    Name = "Licenciatura",
+                    Level = 6,
+                    Description = "Licenciatura."
+                },
+                new AcademicDegree {
+                    Name = "Mestrado",
+                    Level = 7,
+                    Description = "Mestrado."
+                },
+                new AcademicDegree {
+                    Name = "Doutoramento",
+                    Level = 8,
+                    Description = "Doutoramento."
+                }
+            );
+            db.SaveChanges();
+        }
+
+        internal static void PopulateAcademicYears(UniversityDbContext db) {
+            if (db.AcademicYear.Any()) return;
+
+            db.AcademicYear.AddRange(
+                new AcademicYear { StartYear = 2024, EndYear = 2025 },
+                new AcademicYear { StartYear = 2025, EndYear = 2026 },
+                new AcademicYear { StartYear = 2026, EndYear = 2027 }
+            );
+            db.SaveChanges();
+        }
+
+        internal static void PopulateSchoolCalendars(UniversityDbContext db) {
+            if (db.SchoolCalendar.Any()) return;
+
+            var years = db.AcademicYear.OrderBy(y => y.StartYear).ToList();
+            if (years.Count == 0) return;
+
+            // One calendar per academic year; the code stays short and unique.
+            var calendars = years.Select(year => new SchoolCalendar {
+                AcademicYearId = year.AcademicYearId,
+                Code = $"CAL{year.StartYear % 100:00}",
+                TotalSemesters = 2,
+                StartDate = new DateOnly(year.StartYear, 9, 1),
+                EndDate = new DateOnly(year.EndYear, 7, 31),
+                StartSpecialExam = new DateOnly(year.EndYear, 7, 1),
+                EndSpecialExam = new DateOnly(year.EndYear, 7, 15)
+            }).ToList();
+
+            db.SchoolCalendar.AddRange(calendars);
+            db.SaveChanges();
+
+            // A SchoolCalendar must contain at least one Semester, so seed two.
+            /*foreach (var calendar in calendars) {
+                var year = years.First(y => y.AcademicYearId == calendar.AcademicYearId);
+                var startYear = year.StartYear;
+                var endYear = year.EndYear;
+
+                db.Semester.AddRange(
+                    new Semester {
+                        SchoolCalendarId = calendar.SchoolCalendarId,
+                        OrderNum = 1,
+                        StartSemester = new DateOnly(startYear, 9, 1),
+                        EndSemester = new DateOnly(endYear, 1, 31),
+                        StartFreqExam = new DateOnly(endYear, 1, 5),
+                        EndFreqExam = new DateOnly(endYear, 1, 20),
+                        StartResitExam = new DateOnly(endYear, 2, 1),
+                        EndResitExam = new DateOnly(endYear, 2, 15)
+                    },
+                    new Semester {
+                        SchoolCalendarId = calendar.SchoolCalendarId,
+                        OrderNum = 2,
+                        StartSemester = new DateOnly(endYear, 2, 1),
+                        EndSemester = new DateOnly(endYear, 6, 30),
+                        StartFreqExam = new DateOnly(endYear, 6, 1),
+                        EndFreqExam = new DateOnly(endYear, 6, 20),
+                        StartResitExam = new DateOnly(endYear, 7, 1),
+                        EndResitExam = new DateOnly(endYear, 7, 15)
+                    }
+                );
+            }*/
+            db.SaveChanges();
+        }
+
+        internal static void PopulateCourses(UniversityDbContext db) {
+            if (db.Course.Any()) return;
+
+            var ctesp = db.AcademicDegree.First(d => d.Name == "CTeSP");
+            var licenciatura = db.AcademicDegree.First(d => d.Name == "Licenciatura");
+            var mestrado = db.AcademicDegree.First(d => d.Name == "Mestrado");
+
+            db.Course.AddRange(
+                new Course {
+                    Code = "LEI",
+                    Name = "Engenharia Informática",
+                    Acronym = "LEI",
+                    CreationDate = new DateOnly(2010, 9, 1),
+                    Description = "Formação em programação, sistemas, redes e engenharia de software.",
+                    AcademicDegreeId = licenciatura.AcademicDegreeId,
+                    CourseState = CourseStateEnum.Draft
+                },
+                new Course {
+                    Code = "LEMat",
+                    Name = "Matemática",
+                    Acronym = "LMAT",
+                    CreationDate = new DateOnly(2012, 9, 1),
+                    Description = "Formação sólida em matemática pura e aplicada.",
+                    AcademicDegreeId = licenciatura.AcademicDegreeId,
+                    CourseState = CourseStateEnum.Active
+                },
+                new Course {
+                    Code = "LEC",
+                    Name = "Engenharia Civil",
+                    Acronym = "LEC",
+                    CreationDate = new DateOnly(2008, 9, 1),
+                    Description = "Estruturas, materiais, geotecnia e construção.",
+                    AcademicDegreeId = licenciatura.AcademicDegreeId,
+                    CourseState = CourseStateEnum.Active
+                },
+                new Course {
+                    Code = "LEG",
+                    Name = "Gestão",
+                    Acronym = "LGES",
+                    CreationDate = new DateOnly(2015, 9, 1),
+                    Description = "Gestão de empresas, contabilidade e marketing.",
+                    AcademicDegreeId = licenciatura.AcademicDegreeId,
+                    CourseState = CourseStateEnum.Active
+                },
+                new Course {
+                    Code = "MEI",
+                    Name = "Engenharia Informática",
+                    Acronym = "MEI",
+                    CreationDate = new DateOnly(2014, 9, 1),
+                    Description = "Especialização em engenharia de software, IA e sistemas distribuídos.",
+                    AcademicDegreeId = mestrado.AcademicDegreeId,
+                    CourseState = CourseStateEnum.Archived
+                },
+                new Course {
+                    Code = "MES",
+                    Name = "Engenharia de Software",
+                    Acronym = "MES",
+                    CreationDate = new DateOnly(2026, 9, 1),
+                    Description = "Mestrado em preparação, arranque previsto para 2026/2027.",
+                    AcademicDegreeId = mestrado.AcademicDegreeId,
+                    CourseState = CourseStateEnum.Suspended
+                },
+                new Course {
+                    Code = "TPSI",
+                    Name = "Tecnologias e Programação de Sistemas de Informação",
+                    Acronym = "TPSI",
+                    CreationDate = new DateOnly(2018, 9, 1),
+                    Description = "Curso técnico superior profissional em desenvolvimento de software.",
+                    AcademicDegreeId = ctesp.AcademicDegreeId,
+                    CourseState = CourseStateEnum.Concluded
+                },
+                new Course {
+                    Code = "REDES",
+                    Name = "Redes e Infraestruturas",
+                    Acronym = "CRINF",
+                    CreationDate = new DateOnly(2020, 9, 1),
+                    Description = "Curso técnico superior profissional em administração de redes.",
+                    AcademicDegreeId = ctesp.AcademicDegreeId,
+                    CourseState = CourseStateEnum.Active
+                }
+            );
+
+            db.SaveChanges();
         }
 
         private static void PopulateServiceRequestAttachments(UniversityDbContext db)

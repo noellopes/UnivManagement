@@ -156,6 +156,12 @@ namespace UnivManagement.Data
             modelBuilder.Entity<Models.AcademicManagement.CourseState>()
                 .HasIndex(cs => cs.Name)
                 .IsUnique();
+
+            // SchoolCalendar: Code is unique
+            modelBuilder.Entity<Models.AcademicManagement.SchoolCalendar>()
+                .HasIndex(c => new { c.Code })
+                .IsUnique();
+
             // StateInscrUc: cada estado de uma inscrição de UC é unico
             modelBuilder.Entity<StateInscrUc>()
                 .HasIndex(s => s.Name)
@@ -218,6 +224,8 @@ namespace UnivManagement.Data
         public DbSet<UnivManagement.Models.AcademicManagement.CourseState> CourseState { get; set; } = default!;     
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscCourse> StateInscCourse { get; set; } = default!;
         public DbSet<UnivManagement.Models.AcademicManagement.StateInscrUc> StateInscrUc { get; set; } = default!;  
+        public DbSet<UnivManagement.Models.AcademicManagement.AcademicDegree> AcademicDegree { get; set; } = default!;
+        public DbSet<UnivManagement.Models.AcademicManagement.CourseCalendar> CourseCalendar { get; set; } = default!;
         public DbSet<AntigoAluno> AntigosAlunos { get; set; }
         public DbSet<Carreira> Carreiras { get; set; }
         public DbSet<Empresa> Empresas { get; set; }
