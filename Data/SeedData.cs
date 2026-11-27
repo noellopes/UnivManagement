@@ -13,6 +13,7 @@ namespace UnivManagement.Data
             PopulateServiceRequestAttachments(db);
             PopulateFuncoesDocentes(db);
             PopulateEstadoPossivel(db);
+            PopulateUCs(db);
             PopulateCourseStates(db);
             PopulateStudents(db);
             PopulateServicosFuncionarios(db);
@@ -22,6 +23,133 @@ namespace UnivManagement.Data
             PopulateServiceRequestPriorities(db);
             PopulateFuncionarios(db);
             PopulateServiceRequests(db);
+        }
+
+        internal static void PopulateUCs(UniversityDbContext db) {
+            if (db.UC.Any()) return;
+            db.UC.AddRange(
+                new UC {
+                    Code = "PROG01",
+                    Name = "Programação I",
+                    Acronym = "PROG1",
+                    Description = "Introdução aos fundamentos da programação imperativa.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "PROG02",
+                    Name = "Programação II",
+                    Acronym = "PROG2",
+                    Description = "Programação orientada a objetos e estruturas de dados.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "MAT01",
+                    Name = "Análise Matemática",
+                    Acronym = "AMAT",
+                    Description = "Cálculo diferencial e integral.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "MAT02",
+                    Name = "Álgebra Linear",
+                    Acronym = "ALIN",
+                    Description = "Matrizes, sistemas lineares e espaços vetoriais.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "BD01",
+                    Name = "Bases de Dados",
+                    Acronym = "BD",
+                    Description = "Modelação relacional, SQL e normalização.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "SO01",
+                    Name = "Sistemas Operativos",
+                    Acronym = "SO",
+                    Description = "Processos, threads, gestão de memória e sistemas de ficheiros.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "RC01",
+                    Name = "Redes de Computadores",
+                    Acronym = "RC",
+                    Description = "Modelo OSI/TCP-IP, routing e switching.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "EST01",
+                    Name = "Estatística",
+                    Acronym = "EST",
+                    Description = "Probabilidade, inferência estatística e amostragem.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "ES01",
+                    Name = "Engenharia de Software",
+                    Acronym = "ES",
+                    Description = "Ciclo de vida, requisitos, arquitetura e testes.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "IA01",
+                    Name = "Inteligência Artificial",
+                    Acronym = "IA",
+                    Description = "Pesquisa, representação do conhecimento e machine learning introdutório.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "SEG01",
+                    Name = "Segurança Informática",
+                    Acronym = "SEG",
+                    Description = "Criptografia, autenticação e segurança de aplicações.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                },
+                new UC {
+                    Code = "PDM01",
+                    Name = "Programação para Dispositivos Móveis",
+                    Acronym = "PDM",
+                    Description = "Desenvolvimento de aplicações móveis.",
+                    ValueECTS = 6,
+                    NumHours = 60,
+                    Semester = 1,
+                    Year = 1
+                }
+            );
+            db.SaveChanges();
         }
 
         private static void PopulateServiceRequestAttachments(UniversityDbContext db)
