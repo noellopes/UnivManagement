@@ -98,6 +98,10 @@ public class UCController : Controller {
         uc.Year = 1;
         uc.Semester = 1;
 
+        // They are not part of this form, so discard the binding errors raised for the missing values.
+        ModelState.Remove(nameof(UC.Year));
+        ModelState.Remove(nameof(UC.Semester));
+
         await ValidateSelectionsAsync(uc);
 
         if (ModelState.IsValid) {
@@ -139,6 +143,10 @@ public class UCController : Controller {
         // Year and Semester are managed by the StudyPlan editor; keep the stored values.
         uc.Year = existing.Year;
         uc.Semester = existing.Semester;
+
+        // They are not part of this form, so discard the binding errors raised for the missing values.
+        ModelState.Remove(nameof(UC.Year));
+        ModelState.Remove(nameof(UC.Semester));
 
         await ValidateSelectionsAsync(uc);
 
