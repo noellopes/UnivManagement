@@ -2,6 +2,11 @@
 
 namespace UnivManagement.Models.AcademicManagement
 {
+
+    /// <summary>
+    /// Academic degree reference entity from Academic Management domain.
+    /// Records are predefined and must be seeded at database initialization.
+    /// </summary>
     public class AcademicDegree
     {
 
@@ -10,8 +15,9 @@ namespace UnivManagement.Models.AcademicManagement
 
         /* ACADEMIC DEGREE NAME */
         [Required(ErrorMessage = "O {0} é obrigatório.")]
-        [StringLength(25, MinimumLength = 2, ErrorMessage = "O {0} deve ter entre {2} e {1} caracteres.")]
-        [Display(Name = "Nome do Grau Académico")]
+        [StringLength(50, ErrorMessage = "O {0} não pode ter mais de {1} caracteres.")]
+        [RegularExpression(@"^[\p{L} _]+$", ErrorMessage = "O {0} deve conter apenas letras, espaços e underscores.")]
+        [Display(Name = "Grau Académico")]
         public required string Name { get; set; }
 
 
@@ -25,6 +31,7 @@ namespace UnivManagement.Models.AcademicManagement
         [StringLength(100, ErrorMessage = "O {0} não pode exceder {1} caracteres.")]
         [Display(Name = "Descrição")]
         public string? Description { get; set; }
+
 
     }
 }

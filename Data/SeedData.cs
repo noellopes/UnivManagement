@@ -33,22 +33,23 @@ namespace UnivManagement.Data
             dbContext.SaveChanges(); 
         }
 
-        private static void PopulateAcademicDegrees(UniversityDbContext dbContext)
+
+
+        private static void PopulateAcademicDegrees(UniversityDbContext db)
         {
-            if (dbContext.AcademicDegree.Any()) return;
+            if (db.AcademicDegree.Any()) return;
 
             var academicDegrees = new List<AcademicDegree>
             {
-                new AcademicDegree { Name = "CTeSP", Level=5, Description = "Curso Técnico Superior Profissional." },
-                new AcademicDegree { Name = "Licenciatura", Level=6, Description = "Grau de licenciado (3–4 anos)." },
-                new AcademicDegree { Name = "Mestrado",  Level=7,    Description = "Grau de mestre (2 anos)." },
-                new AcademicDegree { Name = "Doutoramento",  Level=8,  Description = "Grau de doutor." }
-                
+                new AcademicDegree { Name = "CTeSP", Level = 5, Description = "Curso Técnico Superior Profissional." },
+                new AcademicDegree { Name = "Licenciatura", Level = 6, Description = "Licenciatura." },
+                new AcademicDegree { Name = "Mestrado", Level = 7, Description = "Mestrado." },
+                new AcademicDegree { Name = "Doutoramento", Level = 8, Description = "Doutoramento."}
+
             };
 
-            dbContext.AcademicDegree.AddRange(academicDegrees);
-            dbContext.SaveChanges();
-            
+            db.AcademicDegree.AddRange(academicDegrees);
+            db.SaveChanges();
         }
 
         private static void PopulateFuncionarios(UniversityDbContext db)
